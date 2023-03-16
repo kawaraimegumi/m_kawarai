@@ -1,0 +1,285 @@
+<div id="ca_MDCMV1280_MDCMV1030_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV1280_MDCMV1170_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV1280_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>売上属性</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+			
+		<div id="content">
+			
+			<div id="selected" class="ca_MDCMV1280_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_MDCMV1280_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_MDCMV1280_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_MDCMV1280_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit half">
+							<p class="fieldName">売上属性</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft" id="ca_MDCMV1280_anaattr"></select>
+							  </div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<div id="fieldgroup">
+			<div class="fieldgroupInBox">
+				<div id="ca_MDCMV1280_result" class="fieldUnitsOption"></div>
+			</div>
+		</div>
+		
+		
+		
+		<script id="ca_MDCMV1280_text_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<div class="">
+				<input type="text" placeholder="" class="form-control wt280 flleft cl_valid cl_required" id="ca_MDCMV1280_val">
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_MDCMV1280_text_fromto_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<div class="">
+				<input type="text" placeholder="" class="form-control wt280 flleft cl_valid ime-disabled"
+					data-required2="group1" data-limit="len:9 digit" id="ca_MDCMV1280_val">
+				<span class="txtInFieldUnitblk">～</span>
+				<input type="text" placeholder="" class="form-control wt280 flleft cl_valid ime-disabled"
+					data-required2="group1" data-limit="len:9 digit" id="ca_MDCMV1280_val2">
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_MDCMV1280_date_fromto_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<div class="">
+				<div class="datepicker_wrap">
+					<input type="text" placeholder="" class="flleft cl_date cl_valid ime-disabled"
+					data-required2="group1" data-limit="len:10" id="ca_MDCMV1280_val">
+				</div>
+				<span class="txtInFieldUnitblk">～</span>
+				<div class="datepicker_wrap">
+					<input type="text" placeholder="" class="flleft cl_date cl_valid ime-disabled"
+					data-required2="group1" data-limit="len:10" id="ca_MDCMV1280_val2">
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_MDCMV1280_onoff_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<ul>
+				<li><label class="radio flleft"><input type="radio" name="ca_MDCMV1280_val" value="1" data-toggle="radio" checked>ON</label></li>
+				<li><label class="radio flleft"><input type="radio" name="ca_MDCMV1280_val" value="0" data-toggle="radio">OFF</label></li>
+			</ul>
+		</div>
+		</script>
+		<script id="ca_MDCMV1280_MDCMV1030_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<p class="fieldName">商品</p>
+			<div class="fieldBox">
+				<input class="form-control wt280 flleft cl_valid cl_required" type="text" placeholder="" id="ca_MDCMV1280_name" disabled>
+				<button class="btn btn-default wt160 flleft mrgl10" id="ca_MDCMV1280_show_MDCMV1030">参照...</button>
+				<input type="hidden" id="ca_MDCMV1280_val">
+				<input type="hidden" id="ca_MDCMV1280_code">
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_MDCMV1280_table_template" type="text/x-jquery-tmpl">
+		<div class="table fieldUnit hta">
+			<table class="hilightRow ca_MDCMV1280_tbl">
+				<tr>
+					<th width="40px">
+						<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_MDCMV1280_chkall"></label>
+					</th>
+					<th width="150px">コード</th>
+					<th width="">名称</th>
+				</tr>
+			</table>
+		<div class="ht340 yScroll ca_tbody">
+			<table class="hilightRow ca_MDCMV1280_tbl">
+				<tbody id="ca_MDCMV1280_tbody">
+				</tbody>
+			</table>
+		</div>
+		</div>
+		</script>
+		<script id="ca_MDCMV1280_tbody_type_tmp" type="text/x-jquery-tmpl">
+			<tr id="${type_id}">
+				<td width="40px"><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1280_chk"></label></td>
+				<td width="150px">${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		<script id="ca_MDCMV1280_tbody_cdname_tmp" type="text/x-jquery-tmpl">
+			<tr id="${cn_id}">
+				<td width="40px"><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1280_chk"></label></td>
+				<td width="150px">${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		
+		<!-- 2015/9/24 No79対応 藤岡 -->
+		<!-- 2015/10/30 検索枠表示のため、[fieldgroup][fieldgroupInBox search]のクラス追加 -->
+		<script id="ca_MDCMV1280_searchbox_tmp" type="text/x-jquery-tmpl">
+		<div class="fieldgroup">
+			<div id="ca_MDCMV1280_searchbox_div" class="fieldgroupInBox search">
+				<div class="fieldUnit half mrgr20">
+					<p class="fieldName">コード</p>
+					<div class="fieldBox">
+						<input type="text" placeholder="コードを入力して下さい" class="form-control wt280 flleft mrgr20 cl_valid mrgb10" id="ca_MDCMV1280_code" data-limit="len:4 digit">
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="fieldUnit half mrgr20">
+					<p class="fieldName">名称</p>
+					<div class="fieldBox">
+						<input type="text" placeholder="名称を入力して下さい" class="form-control wt280 flleft cl_valid mrgb10" id="ca_MDCMV1280_name" data-limit="len:30">
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="fieldUnit half mrgr20" id="ca_MDCMV1280_kanaArea">
+					<p class="fieldName">カナ名称</p>
+					<div class="fieldBox">
+						<input type="text" placeholder="カナ名称を入力して下さい" class="form-control wt280 flleft cl_valid cl_hankaku" id="ca_MDCMV1280_kana" data-limit="len:40">
+					</div>
+				</div>
+				<div class="clear"></div>
+	
+				<div class="fieldUnit">
+					<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+						<button class="btn btn-info wt280 mrgr20" id="ca_MDCMV1280_search">検索</button>
+						<button class="btn btn-default wt140" id="ca_MDCMV1280_searchbox_clear">クリア</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<button id="searchAgain" class="dispn btn mrgb20">検索条件を再指定</button>
+		</div>
+
+			<div id="result" class="dispn">
+				<div class="pagination-wrapper">
+					<div class="count" id="ca_MDCMV1280_pager_displaypanel1"></div>
+					<div class="pagination">
+						<ul id="ca_MDCMV1280_pager1"></ul>
+					</div>
+				</div>
+			
+				<div class="table fieldUnit hta">
+
+					<table class="hilightRow" id="ca_MDCMV1280_tbl">
+						<tr>
+							<th width="40px">
+								<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_MDCMV1280_chkall"></label>
+							</th>
+							<th width="180px" class="ca_th_sort" key="CODE"><span>コード</span></th>
+							<th width="" class="ca_th_sort" key="NAME"><span>名称</span></th>
+							<th width="" class="ca_th_sort ca_th_kana" key="KANA"><span>カナ名称</span></th>
+						</tr>
+						<tbody id="ca_MDCMV1280_tbody">
+						</tbody>
+					</table>
+				</div>
+				<div class="mrgb20"></div>
+					
+				<div class="pagination-wrapper">
+					<div class="count" id="ca_MDCMV1280_pager_displaypanel2"></div>
+					<div class="pagination">
+						<ul id="ca_MDCMV1280_pager2">
+						</ul>
+					</div>
+				</div>
+			</div>
+		</script>
+		
+		
+		<script id="ca_MDCMV1280_tbody_single_kana_tmp" type="text/x-jquery-tmpl">
+			<tr id="${id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_MDCMV1280_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${kana}</td>
+			</tr>
+		</script>
+		<script id="ca_MDCMV1280_tbody_multiple_kana_tmp" type="text/x-jquery-tmpl">
+			<tr id="${id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1280_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${kana}</td>
+			</tr>
+		</script>
+		
+		<script id="ca_MDCMV1280_tbody_single_tmp" type="text/x-jquery-tmpl">
+			<tr id="${id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_MDCMV1280_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		<script id="ca_MDCMV1280_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+			<tr id="${id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1280_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		
+		
+		<!-- No79対応 ここまで -->
+
+		<script id="ca_MDCMV1280_tbody_cdname2_tmp" type="text/x-jquery-tmpl">
+			<tr id="${id}">
+				<td width="40px"><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1280_chk"></label></td>
+				<td width="150px">${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+
+
+		<div class="mrgb20"></div>
+		
+		<div class="clear"></div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_MDCMV1280_multi" id="ca_MDCMV1280_add">選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_MDCMV1280_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_MDCMV1280_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

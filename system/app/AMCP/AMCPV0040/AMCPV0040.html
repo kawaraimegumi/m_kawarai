@@ -1,0 +1,401 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>プライス別棚卸</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMCPV0040.css">
+	<link href="../../../css/multiple-select.css" rel="stylesheet">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0040/AMPAV0040.js"></script>
+
+	<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css' >
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+<script src="../../../js/Chart.js"></script>
+</head>
+
+<body class="cl_body_hidden">
+
+<script src="AMCPV0040.js"></script>
+
+<div id="ca_main">
+<!-- 共通ヘッダは MDBaseView によって置き換えるので、設置不要。-->
+
+<div id="container">
+
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0040_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- #title -->
+
+		<div id="content">
+
+			<div class="fieldgroup" id="ca_base_form">
+				<div class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 half flleft" id="div_ca_unitID">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox" id="div_ca_unitID">
+							<select class="mbn wt280" name="info" id="ca_unitID"></select>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox" id="div_ca_store">
+							<input type="text" placeholder="" class="form-control wt280 flleft" name="storeName" id="ca_storeName"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select"tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">報告名</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright pa_reportName" style="margin-left: 440px;"></span>
+							<input type="text" placeholder="" class="form-control wt480 flleft" data-tflimit="30" id="ca_reportName" name="reportName"/>
+
+							<input type="hidden" placeholder="" class="form-control" name="recno" id="ca_recno"/>
+							<input type="hidden" placeholder="" class="form-control" name="state" id="ca_state"/>
+							<input type="hidden" placeholder="" class="form-control" name="cntPrcRprtID" id="ca_cntPrcRprtID" value="0"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280" name="stditgrpName"  id="ca_stditgrpName"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20 ">
+						<p class="fieldName">シーズン</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt480" name="seasonList" id="ca_seasonList"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName bl2">品揃え調査の<br />属性</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt100pct flleft" name="attrsName" id="ca_attrsName" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">作成日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap">
+								<input type="text" class="cl_date ime-disabled" name="reportDate" id="ca_reportDate" />
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<div id="result" class="">
+
+			<div class="fieldgroup">
+				<div id="" class="fieldgroupInBox view">
+
+					<div class="mrgb10">
+						<div class="flleft">
+							<canvas id="chart" class="mrgb20" height="400" width="920"></canvas>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<ul class="scaleLabelname mrgb30">
+						<li><span class="line cl_legend" id="ca_line_axis0"></span><span class="cl_legend" id="ca_lbl_axis0">AOKI</span></li>
+						<li><span class="line cl_legend" id="ca_line_axis1"></span><span class="cl_legend" id="ca_lbl_axis1">改善</span></li>
+						<li><span class="line cl_legend" id="ca_line_axis2"></span><span class="cl_legend" id="ca_lbl_axis2">Ａ社</span></li>
+						<li><span class="line cl_legend" id="ca_line_axis3"></span><span class="cl_legend" id="ca_lbl_axis3">Ｋ社</span></li>
+						<li><span class="line cl_legend" id="ca_line_axis4"></span><span class="cl_legend" id="ca_lbl_axis4">Ｈ社</span></li>
+					</ul>
+					<hr>
+
+						<div class="table mrgb20" id="by_table">
+							<table class="hilight drilldown" id="ca_table">
+							<thead id="ca_table_thead"></thead>
+							<tbody id="ca_table_tbody"></tbody>
+							<tfoot id="ca_table_tfoot"></tfoot>
+							</table>
+
+							<script id="ca_thead_template" type="text/x-jquery-tmpl">
+								<tr>
+									<th class="" colspan="2" id=""></th>
+{{each th}}
+	{{if index==0}}
+									<th class="${axis}_toprow" colspan="${nameSpan}" id="ca_th_unitName">${dispName}</th>
+	{{/if}}
+{{/each}}
+								</tr>
+								<tr>
+									<th class="wt100" rowspan="2">集約プライス</th>
+									<th class="wt80" rowspan="2">本体価格</th>
+{{each th}}
+	{{if nop==0}}
+		{{if index==0}}
+									<th colspan="${attr1Span}"><span class="rowClose" data-key="${axis}" data-span="${attr1Span}">${attr1}</span></th>
+									<th colspan="${attr1Span}" class="dispn"><span class="rowOpen" data-key="${axis}" data-span="${nameSpan}">${attr1}</span></th>
+		{{else}}
+									<th class="${axis}" colspan="${attr1Span}" id="ca_th_unitName"><span>${attr1}</span></th>
+		{{/if}}
+	{{/if}}
+{{/each}}
+								</tr>
+								<tr>
+{{each th}}
+	{{if index<2}}
+									<th class=""><span>${attr2}</span></th>
+	{{else}}
+									<th class="${axis}"><span>${attr2}</span></th>
+	{{/if}}
+{{/each}}
+								</tr>
+							</script>
+							<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+								<tr>
+{{if rowGroupIndex==0}}
+	{{if rowType==1}}
+									<td rowspan="${rowSpan}" colspan="${colSpan}" class="txtar">${clutil.comma(priceLine)}</td>
+	{{else}}
+									<td class="reference" rowspan="${rowSpan}" colspan="${colSpan}">${priceLine}</td>
+	{{/if}}
+{{/if}}
+
+{{if colSpan==1}}
+	{{if rowType==1}}
+									<td class="txtar">${clutil.comma(price)}</td>
+	{{else}}
+									<td>${price}</td>
+	{{/if}}
+{{/if}}
+{{each col}}
+	{{if rowType==4}}
+		{{if colIndex==0}}
+									<td class="txtar ${axis}_bottomrow txtar reference colspan="${axisColLength}">${clutil.comma(qy)}</td>
+		{{/if}}
+	{{else recordType==1}}
+									<td class="txtar {{if !isTotalCol}}${axis}{{/if}} {{if rowType==3}}reference{{/if}}">${clutil.comma(qy)}</td>
+	{{else}}
+		{{if rowType==3}}
+									<td class="txtar {{if !isTotalCol}}${axis}{{/if}} reference">${clutil.comma(compRatio.toFixed(1))}</td>
+		{{else}}
+									<td class="txtar {{if !isTotalCol}}${axis}{{/if}}">${clutil.comma(compRatio.toFixed(1))}</td>
+		{{/if}}
+	{{/if}}
+{{/each}}
+								</tr>
+							</script>
+							<script id="ca_tfoot_template" type="text/x-jquery-tmpl">
+								<tr class="reference">
+									<td class="" colspan="2" id="">平均上代</th>
+{{each th}}
+	{{if index==0}}
+									<td class="${axis}_bottomrow txtar" colspan="${nameSpan}" id="ca_th_unitName">${clutil.comma(averagePrice)}</th>
+	{{/if}}
+{{/each}}
+								</tr>
+							</script>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit half flleft hta">
+							<div class="fieldBox table flleft noName mrgl20">
+								<table class="hilightRow" id="ca_unitPriceForeRef_table">
+									<thead>
+										<tr>
+											<th class="" colspan="2">参考情報</th>
+										</tr>
+									</thead>
+									<tbody id="ca_unitPriceForeRef_tbody">
+									</tbody>
+								</table>
+								<script id="ca_unitPriceForeRef_template" type="text/x-jquery-tmpl">
+									<tr>
+										<td>
+											${unitPrcForeTypeName}
+										</td>
+										<td class="txtar">
+											${clutil.comma(unitPrcForeValue)}
+										</td>
+									</tr>
+								</script>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+				</div>
+			</div>
+
+				<div class="fieldgroup" id="ca_fore">
+
+					<div class="fieldgroupInBox">
+
+						<div class="fieldUnit mrgb10">
+							<p class="flleft frwkComment">①商品構成グラフを元に、「割引予測」「単価予測」「コメント」を入力し、登録ボタンを押下してください。</p>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit half flleft hta">
+							<div class="fieldBox table flleft noName mrgl20">
+								<p class="mrgb10">割引予測</p>
+								<table class="hilightRow" id="ca_discFore_table">
+									<thead>
+										<tr>
+											<th class="" colspan="2">使用率 (%)</th>
+											<th class="wt650">割引金額</th>
+										</tr>
+									</thead>
+									<tbody id="ca_discFore_tbody"></tbody>
+								</table>
+								<script id="ca_discFore_template" type="text/x-jquery-tmpl">
+										<tr>
+											<td class="editable wt200">
+												${discForeTypeName}
+												<input type="hidden" name="discForeTypeID" id="ca_discForeTypeID" value="${discForeTypeID}" {{if !isEditable}}readonly{{/if}}/>
+											</td>
+											<td class="editable txtar pdg0 wt120">
+												<input type="text" class="form-control txtar cl_bdr0 cl_valid wt120 cl_decimalPoint" name="discRatio" id="ca_discRatio" value="${discRatio}" data-validator="decimal:3,1 max:100.0" data-filter="comma" {{if !isEditable}}readonly{{/if}}/>
+											</td>
+											<td class="editable pdg0">
+												<input type="text" class="form-control cl_bdr0 cl_valid" name="discComment" id="ca_discComment" value="${discComment}" data-validator="maxlen:10" {{if !isEditable}}readonly{{else}}placeholder="割引を日本語で入力します。"{{/if}}/>
+											</td>
+										</tr>
+								</script>
+							</div>
+						</div>
+
+						<div class="fieldUnit half flleft hta">
+							<div class="fieldBox table flleft">
+								<p class="mrgb10">単価予測</p>
+								<table class="hilightRow" id="ca_unitPriceFore_table">
+									<thead>
+										<tr>
+											<th class="wt280" colspan="2">一品単価予測</th>
+										</tr>
+									</thead>
+									<tbody id="ca_unitPriceFore_tbody"></tbody>
+								</table>
+								<script id="ca_unitPriceFore_template" type="text/x-jquery-tmpl">
+										<tr>
+											<td class="editable wt200">
+												${unitPrcForeTypeName}
+												<input type="hidden" name="unitPrcForeTypeID" id="ca_unitPrcForeTypeID" value="${unitPrcForeTypeID}" {{if !isEditable}}readonly{{/if}}/>
+												<input type="hidden" name="unitPrcRatio" id="ca_unitPrcRatio" value="${unitPrcRatio}" {{if !isEditable}}readonly{{/if}}/>
+												<input type="hidden" name="unitPrcAm" id="ca_unitPrcAm" value="${unitPrcAm}" {{if !isEditable}}readonly{{/if}}/>
+											</td>
+											<td class="editable txtar pdg0 wt120">
+											{{if type==2}}
+												<input type="text" class="form-control txtar cl_bdr0 cl_valid cl_decimalPoint" name="unitPrcRatioInput" id="ca_unitPrcRatioInput" value="${unitPrcRatioInput}" data-validator="decimal:2,1" data-filter="comma" {{if !isEditable}}readonly{{/if}}/>
+											{{else type==1}}
+												<input type="text" class="form-control txtar cl_bdr0 cl_valid" name="unitPrcAmInput" id="ca_unitPrcAmInput" value="${unitPrcAmInput}" data-validator="int:9,0 min:0" data-filter="comma" {{if !isEditable}}readonly{{/if}}/>
+											{{/if}}
+											</td>
+										</tr>
+								</script>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+
+						<div class="fieldUnit flleft mrgb10 hta wt100pct">
+							<p class="fieldName">コメント</p>
+							<div class="fieldBox" id="div_ca_comment">
+								<span class="limit wt40 pa_comment cl_counter"></span>
+								<textarea rows="4" class="form-control wt100pct cl_textarea" data-tflimit="300"  data-validator="maxlen:300" name="comment" id="ca_comment"></textarea>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+					</div>
+					<!-- /#fieldgroupInBox -->
+				</div>
+				<!-- /#fieldgroup -->
+
+			</div>
+			<!-- /#result -->
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>振分</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+	<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css' >
+<!--grid-->
+<link href="/css/slickgrid.css" rel="stylesheet">
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+	<link media="screen" rel="stylesheet" type="text/css" href="AMDSV0120.css">
+	<script src="AMDSV0120.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup mrgbshort">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox required">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_srchItgrpID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName bl2">サイズ</br>パターン</p>
+						<div class="fieldBox required">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchSizePtnID">
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">ブランド</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchBrandID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">スタイル</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchStyleID">
+									<optgroup label=""></optgroup>
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">色</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchColorID">
+									<optgroup label=""></optgroup>
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">柄</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchDesignID">
+									<optgroup label=""></optgroup>
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half">
+						<p class="fieldName bl2">プライス<br />ライン</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchPriceLineID">
+									<optgroup label=""></optgroup>
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">サブクラス1</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchSubClass1ID">
+									<optgroup label=""></optgroup>
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">サブクラス2</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchSubClass2ID">
+									<optgroup label="">	</optgroup>
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">メーカー</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_srchMakerID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">メーカー品番</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="10 hankaku" data-validator="maxlen:10 hankaku"  id="ca_srchItemCode"/>
+							<input type="hidden" id="ca_srchItemID">
+							<input type="hidden" id="ca_itemName">
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">納品形態</p>
+						<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchDlvType">
+									<optgroup label="">	</optgroup>
+								</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<hr>
+					<div class="fieldUnit mrgb20">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 flleft cl_valid" id="ca_srchStoreID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<hr>
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">発注日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_valid cl_date ime-disabled" type="text" id="ca_srchStOdrDate" /></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap"><input class="cl_valid cl_date ime-disabled" type="text" id="ca_srchEdOdrDate" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<p class="fieldName">納品日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_valid cl_date ime-disabled" type="text" id="ca_srchStDlvDate" /></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap"><input class="cl_valid cl_date ime-disabled" type="text" id="ca_srchEdDlvDate" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button id="ca_srch" class="btn btn-info wt280">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn" target="searchAgain">検索条件を再指定</button>
+
+			</div>
+
+			<div class="fieldgroup dispn" id="ca_tableInfoArea">
+				<div id="ca_table_view">
+					<div class="flright">
+						<div class="fieldUnit flleft required mrgbshort">
+							<p class="fieldName">実績参照期間</p>
+							<div class="fieldBox" id="ca_ref_term">
+								<div class="datepicker_wrap ca_tranStDate_div flleft"><input class="flleft cl_valid cl_date cl_required" type="text" id="ca_tranStDate"/></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap ca_tranEdDate_div flleft"><input class="flleft cl_valid cl_date cl_required" type="text" id="ca_tranEdDate"/></div>
+								<!-- <p class="flleft periodComment">&nbsp;&nbsp;指定期間の売上数、指定期間終了日の在庫数が表示されます</p> -->
+								<button id="ca_refStock" class="btn btn-default wt80 mrgl10">実績表示</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="flright" id="ca_filter_div">
+						<p class="flleft filterComment mrgbshort">売上数・在庫数で絞込</p>
+						<p class="flleft filterComment mrgbshort mrgl20 mrgr20">サイズ</p>
+						<div class="fieldUnit mrgbshort flleft">
+							<div class="fieldBox noName">
+								<select name="info" class="mbn wt100 flleft cl_valid" id="ca_filterSizeID">
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<p class="flleft filterComment mrgbshort mrgl20 mrgr20">売上数</p>
+						<div class="fieldUnit mrgbshort flleft">
+							<div class="fieldBox noName">
+								<input type="text" class="form-control wt80 fleft txtar" id="ca_filterSaleNum" data-validator="uint:4" data-filter="comma"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgbshort flleft">
+							<div class="fieldBox noName">
+								<select name="info" class="mbn wt100 flleft" id="ca_filterSaleCompType">
+									<option value="0">&nbsp;</option>
+									<option value="1">等しい</option>
+									<option value="2">以下</option>
+									<option value="3">以上</option>
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<p class="flleft filterComment mrgbshort mrgl20 mrgr20">在庫数</p>
+						<div class="fieldUnit mrgbshort flleft">
+							<div class="fieldBox noName">
+								<input type="text" class="form-control wt80 fleft txtar" id="ca_filterStockNum" data-validator="uint:4" data-filter="comma"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgbshort flleft">
+							<div class="fieldBox noName">
+								<select name="info" class="mbn wt100 flleft" id="ca_filterStockCompType">
+									<option value="0">&nbsp;</option>
+									<option value="1">等しい</option>
+									<option value="2">以下</option>
+									<option value="3">以上</option>
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit2 mrgbshort flright">
+							<div class="fieldBox noName">
+								<button id="ca_filter_btn" class="btn btn-default wt80 mrgl10">絞込</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgbshort mrgr20 flleft" id="ca_totalDistQy_div">
+						<p class="fieldName">振分数合計</p>
+						<div class="fieldBox wt220">
+							<p class="num">0</p>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="flright" id="">
+					<p class="flleft filterComment mrgbshort mrgr20">店舗属性で絞込</p>
+					<div class="fieldUnit mrgbshort flleft">
+						<div class="fieldBox noName flleft" id="">
+							<select name="info" class="mbn wt180 cl_valid" id="ca_storeParent"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgbshort flleft">
+						<div class="fieldBox noName flleft" id="">
+							<select name="info" class="mbn wt180 cl_valid" id="ca_storeChild"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<p class="flleft filterComment mrgbshort mrgl20">サイズで絞込</p>
+					<p class="flleft filterComment mrgbshort mrgl20 mrgr20">体型</p>
+					<div class="fieldUnit mrgbshort flleft mrgrlong">
+						<!-- <p class="fieldName">体型</p> -->
+						<div class="fieldBox noName">
+							<select name="info" class="mbn wt140 flleft" id="ca_bodyTypeID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="cl_datagrid_container" id="div_table">
+					</div><!-- /#table -->
+
+					<script id="HdrCell" type="text/template">
+				        <div class="cell sizeHdr">
+				            <div class="grd-tbl">
+				                <div style="display: table-row;">
+				                    <div class="grd-cell" style="display:table-cell;vertical-align:middle;padding: 0 12px;">
+				                        <%= it.label %>
+				                    </div>
+				                </div>
+				                <div style="display: table-row;">
+				                    <div class="deleteRow" style="display:table-cell;vertical-align:middle;padding: 0 12px; border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+				                        <div style="float: left;"><%- it.value %></div>
+				                        <div class="viewAll">&nbsp;</div>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="StoreFilterView" type="text/template">
+				        <div class="sfv <% !it.editMode && print('cell') %>" style="height: 100%;">
+				            <div class="grd-tbl">
+				                <div style="display: table-row;">
+				                    <div style="display:table-cell;vertical-align:middle;">
+				                            <div class="parentSelect editable" style="position:relative; height: 30px;">
+				                                <% if (!it.editMode){ %>
+				                                <%= it.parent %>
+				                                <% } %>
+				                            </div>
+				                    </div>
+				                </div>
+				                <div style="display: table-row;">
+				                    <div  style="display:table-cell;vertical-align:middle;border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+				                            <div class="childSelect" style="position:relative; height: 30px;">
+				                                <% if (!it.editMode){ %>
+				                                <%= it.child %>
+				                                <% } %>
+				                            </div>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="TotalColFormatter" type="text/template">
+				        <div class="cell">
+				            <div class="grd-tbl">
+				                <div class="grd-cell reference pdg0" style="width: 60px;">
+				                    <div class="txtar sales"><%- clutil.comma(it.saleQy) %></div>
+				                    <div class="txtar stock"><%- clutil.comma(it.stockQy) %></div>
+				                </div>
+				                <div class="grd-cell">
+				                    <div class="txtar">
+				                        <%- it.distQy %>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="SizeEditor" type="text/template">
+				        <div class="cell">
+				            <div class="grd-tbl">
+				                <div class="grd-cell reference pdg0" style="width: 60px;">
+				                    <div class="txtar sales"><%- clutil.comma(it.saleQy) %></div>
+				                    <div class="txtar stock"><%- clutil.comma(it.stockQy) %></div>
+				                </div>
+				                <div class="grd-cell" style="padding: 0;">
+				                    <div class="distQy txtar">
+				                        <% if (it.editMode) { %>
+				                        <input type="text" class="form-control txtar">
+				                        <% } else { %>
+				                        <div class="<% it.editable && print('form-control'); %>">
+				                            <div class=""><%- clutil.comma(it.distQy) %></div>
+				                        </div>
+				                        <% } %>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="SaleStockDistFormatter" type="text/template">
+				        <div class="<%- !it.editable && 'noedit' %>">
+				            <div class="grd-tbl  <%- it.rowClass %>">
+				                <div class="grd-cell">
+				                    <div class="txtar"><%= it.col1 %></div>
+				                </div>
+				                <div class="grd-cell">
+				                    <div class="txtar"><%- it.col2 %></div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				</div>
+			</div>
+		</div>
+		<!-- /#content -->
+		<div id="mainColumnFooter" class="noLeftColumn">
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+
+</div>
+</body>
+</html>

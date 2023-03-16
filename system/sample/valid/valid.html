@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>食材マスタ一覧</title>
+    <meta charset="utf-8">
+    <!-- Bootstrap -->
+    <link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+    <script type="text/javascript" src="../../js/lib.js"></script>
+    <script type="text/javascript" src="../../js/clcom.js"></script>
+    <script type="text/javascript" src="valid.js"></script>
+
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="notice_red_large cl_echoback" style="display: none; "></div>
+      <form id="form1" class="form-horizontal">
+        <legend>
+          必須項目
+        </legend>
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">cl_required</label>
+            <div class="controls">
+              <input id="cl_required" type="text" name="" value="" class="cl_required cl_valid">
+            </div>
+          </div>
+        </fieldset>
+        <legend>
+          月指定
+        </legend>
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month" class="cl_month cl_valid" type="text" value="xxxxyy">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month1" class="cl_month cl_valid" type="text" value="2011/10">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month2" class="cl_month cl_valid" type="text" value="2011/0">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month3" class="cl_month cl_valid" type="text" value="2000/13">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month4" class="cl_month cl_valid" type="text" value="1000/">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month5" class="cl_month cl_valid" type="text" value="1000">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month6" class="cl_month cl_valid" type="text" value="1000 3">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_month</label>
+            <div class="controls">
+              <input id="cl_month7" class="cl_month cl_valid" type="text" value=" 1000/3">
+            </div>
+          </div>
+        </fieldset>
+
+        <legend>
+          時刻指定
+        </legend>
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">cl_time</label>
+            <div class="controls">
+              <input type="text" name="" value="00:00" class="cl_valid cl_time" id="cl_time1">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_time</label>
+            <div class="controls">
+              <input type="text" name="" value="23:59" class="cl_valid cl_time" id="cl_time2">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_time</label>
+            <div class="controls">
+              <input type="text" name="" value="24:00" class="cl_valid cl_time" id="cl_time3">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_time</label>
+            <div class="controls">
+              <input type="text" name="" value="1" class="cl_valid cl_time" id="cl_time4">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_time</label>
+            <div class="controls">
+              <input type="text" name="" value="1:1" class="cl_valid cl_time" id="cl_time5">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">cl_time</label>
+            <div class="controls">
+              <input type="text" name="" value="1:1:1" class="cl_valid cl_time" id="cl_time6">
+            </div>
+          </div>
+        </fieldset>
+        <legend>
+          少くとも1つの入力
+        </legend>
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">data-required2</label>
+            <div class="controls">
+              <input type="text" name="" value="" class="cl_valid" data-required2="group1" id="data-required2-1">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">data-required2</label>
+            <div class="controls">
+              <input type="text" name="" value="" class="cl_valid" data-required2="group1" id="data-required2-2">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">data-required2</label>
+            <div class="controls">
+              <input type="text" name="" value="" class="cl_valid" data-required2="group1" id="data-required2-3">
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button class="btn" type="reset">リセット</button>
+          <button id="submit1" class="btn" type="submit">送信</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>振分推奨値算出</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<link rel="stylesheet" href="AMSDV0080.css" type="text/css">
+
+<script>
+</script>
+
+
+</head>
+
+<body >
+
+<div id="ca_main">
+
+<script src="AMSDV0080.js"></script>
+
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+			<div id="content">
+
+				<div class="fieldgroup">
+					<div id="ca_srchArea" class="fieldgroupInBox search">
+						<div class="">
+							<a class="flleft mrgb20 mrgr20" href="javascript:void(0)" id="ca_AMSDV0010">StoCSカラー商品マスタ検索</a>
+						</div>
+						<div class="clear"></div>
+						<div class="half flleft mrgr20">
+							<div class="fieldUnit mrgb10 half flleft">
+								<p class="fieldName bl2">在庫集約<br />ロジック</p>
+								<div class="fieldBox">
+									<button id="ca_csv_uptake1" class="btn btn-info wt280 mrgl10 cl-file-attach">入出店舗推奨値算出</button>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgb10 half flleft">
+								<p class="fieldName bl2"></p>
+								<div class="fieldBox">
+									<button id="ca_csv_uptake2" class="btn btn-info wt280 mrgl10 cl-file-attach">移動用基準在庫推奨値算出</button>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgb10 half flleft">
+								<p class="fieldName bl2"></p>
+								<div class="fieldBox">
+									<button id="ca_csv_uptake3" class="btn btn-default wt280 mrgl10 cl-file-attach">在庫集約ロジック設定ファイル取込</button>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="half flleft">
+							<div class="fieldUnit mrgb10 half flleft">
+								<p class="fieldName bl2">売上状況<br />ロジック</p>
+								<div class="fieldBox">
+									<button id="ca_csv_uptake4" class="btn btn-default wt280 mrgl10 cl-file-attach">移動設定入力ファイル取込</button>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<div id="result" class="">
+
+					<div class="table">
+						<div class="table_outer">
+							<div class="table_inner">
+								<table class="hilightRow" id="ca_table">
+								<thead id="ca_table_thead">
+									<tr>
+										<th class="th_itgrp">品種</th>
+										<th class="th_maker">メーカー</th>
+										<th class="th_itemCode">品番</th>
+										<th class="th_name">商品名</th>
+										<th class="th_color">カラー</th>
+										<th class="th_storenumtoimport">入荷店舗数</th>
+										<th class="th_storenumtoexport">出荷店舗数</th>
+										<th class="th_storenumtoforce">強制引き上げ店舗数</th>
+										<th class="th_sortreclastupddate">最終推奨値算出日</th>
+										<th class="th_user">実行者</th>
+									</tr>
+								</thead>
+								<tbody id="ca_table_tbody">
+									<!-- ca_table_tbody_template -->
+								</tbody>
+								</table>
+							</div> <!-- /.table_inner -->
+						</div> <!-- /.table_outer -->
+						<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+						<script id="ca_rec_template" type="text/template">
+							<tr class="csptr" id="<%- id %>">
+								<td class="ca_c_link td_itgrp"><%- itgrpName %></td>
+								<td class="ca_c_link td_maker"><%- makerCode %>:<%- makerName %></td>
+								<td class="ca_c_link td_itemCode"><%- makerItemCode %></td>
+								<td class="ca_c_link td_name"><%- name %></td>
+								<td class="ca_c_link td_color"><%- colorName %></td>
+								<td class="ca_c_link"><%- storeNumToImport %></td>
+								<td class="ca_c_link"><%- storeNumToExport %></td>
+								<td class="ca_c_link"><%- storeNumToForce %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(recValLastUpdDate, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- recValLastUpdUserName %></td>
+							</tr>
+						</script>
+					</div>
+
+					<div class="fieldUnit mrgb30">
+						<div class="fieldBox mrgb30 noName cl_opebtngroup">
+							<a class="flright pdr14" href="javascript:void(0)" id="ca_AMTRV0040">移動依頼一括取込</a>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+			</div>
+			<!-- /#content -->
+
+			<div id="mainColumnFooter" class="noLeftColumn">
+			</div>
+			<!-- /#mainColumnFooter -->
+
+		</div>
+		<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

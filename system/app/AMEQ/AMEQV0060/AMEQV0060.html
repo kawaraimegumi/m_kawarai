@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>備品管理</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="AMEQV0060.css">
+<script src="../../../js/function.js"></script>
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+
+<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+<!-- SlickGrid -->
+<link href="/css/slickgrid.css" rel="stylesheet">
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+<!-- SlickGrid -->
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+
+		<script src="AMEQV0060.js"></script>
+
+		<div id="container">
+			<!-- 店舗選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup" id="ca_base_form">
+							<div class="fieldgroupInBox">
+								<div class="fieldUnit mrgb10 half flleft required" id="div_ca_unitID">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 cl_valid cl_required" name="unitID" id="ca_unitID"></select>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 required">
+									<p class="fieldName">店舗</p>
+									<div class="fieldBox" id="div_ca_store">
+										<input type="text" placeholder="" class="form-control wt280 flleft cl_valid cl_required" name="storeID" id="ca_storeID"/>
+										<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required" id="div_ca_staff">
+									<p class="fieldName">社員ID</p>
+									<div class="fieldBox" id="div_ca_staffIDForInput">
+										<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" name="staffIDForInput" id="ca_staffIDForInput" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup">
+							<div class="fieldgroupInBox">
+								<div class="flright">
+									<span>金額は円単位</span>
+								</div>
+								<div class="clear"></div>
+
+								<div id="myGrid">
+								<div class="cl_datagrid_container" id="ca_datagrid"></div>
+								</div>
+								<div class="clear"></div>
+
+								<p class="" style="font-size: 13px;">※1&nbsp;&nbsp;&nbsp;納品予定日は目安です。年末年始や祝日などを挟む場合やその他配送上の都合で納品予定日にお届けできない場合があります。</p>
+							</div>
+						</div>
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+
+				</div>
+				<!-- /#mainColumninBox -->
+
+			</div>
+			<!-- /#mainColumn -->
+
+		</div>
+		<!-- / #container -->
+
+		<div class="clear"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+
+<div class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close"></button>
+    <h3><%- title || '確認' %></h3>
+  </div>
+  <div class="modal-body">
+    <p><%- message %></p>
+  </div>
+  <div class="modal-footer"><% if (typeof closeButton !== 'undefined') { %>
+    <button class="btn btn-primary dlg-close"><%- closeButton %></button><% } %>
+    <% if (typeof applyButton !== 'undefined') { %>
+    <button class="btn dlg-cancel"><%- cancelButton %></button><% } %>
+    <% if (typeof applyButton !== 'undefined') { %>
+    <button class="btn btn-primary dlg-apply"><%- applyButton %></button><% } %>
+  </div>
+</div>

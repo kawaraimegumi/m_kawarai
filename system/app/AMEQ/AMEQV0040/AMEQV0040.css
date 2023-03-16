@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+
+.cl_counter
+{
+	position: absolute;
+	bottom: -5px;
+	right: 5px;
+}
+
+.cl_textarea
+{
+	resize: vertical;
+}
+
+.wt520 {
+  width: 520px;
+}
+.select.wt520 .btn {
+  width: 520px;
+}
+.bootstrap-select.wt520 .btn {
+  width: 520px;
+}
+.bootstrap-select.wt520 {
+  width: 520px;
+}
+
+.wt660  {
+  width: 660px;
+}
+.mrgl620 {
+  margin-left: 620px;
+}
+
+.mrgl40 {
+  margin-left: 40px;
+}

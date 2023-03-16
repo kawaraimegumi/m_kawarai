@@ -1,0 +1,42 @@
+<div id="ca_MDCMV0030_MDCMV0030_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV0030_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>購入点数</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div id="ca_MDCMV0030_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit half mrgr20" id="div_MDCMV0030_anaattr">
+							<p class="fieldName">購入点数</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft cl_valid " id="ca_MDCMV0030_anaattr">
+		          				</select>
+		          			</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mrgb20"></div>
+			<div class="clear"></div>
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_MDCMV0030_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_MDCMV0030_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+</div>
+<!-- /#mainColumn -->
+</div>

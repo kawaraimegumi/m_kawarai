@@ -1,0 +1,160 @@
+<div id="ca_CACMV0240_CACMV0050_dialog" class="cl_dialog"></div>
+<div id="ca_CACMV0240_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>カラーサイズＳＫＵ</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div id="selected" class="ca_CACMV0240_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_CACMV0240_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_CACMV0240_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_CACMV0240_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20" id="ca_CACMV0240_code_fieldUnit" style="display: none;">
+							<p class="fieldName">ＪＡＮコード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" id="ca_CACMV0240_code" data-limit="len:20 digit"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">カラーサイズＳＫＵコード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" id="ca_CACMV0240_old_code" data-limit="len:20 digit"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">商品名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_CACMV0240_item_name" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">カラー名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_CACMV0240_color_name" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">サイズ名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_CACMV0240_size_name" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_CACMV0240_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button class="btn btn-default wt140" id="ca_CACMV0240_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_CACMV0240_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_CACMV0240_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_CACMV0240_tbl">
+			<tr>
+				<th width="40px">
+					<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_CACMV0240_chkall"></label>
+				</th>
+<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+				<th width="220px" class="ca_th_sort" key="CODE"><span id="ca_CACMV0240_tblCodeLabel">カラーサイズＳＫＵコード</span></th>
+				<th width="" class="ca_th_sort" key="ITEMNAME"><span>商品名</span></th>
+				<th width="" class="ca_th_sort" key="COLORNAME"><span>カラー</span></th>
+				<th width="" class="ca_th_sort" key="SIZENAME"><span>サイズ</span></th>
+				<th width="" class="ca_th_sort" key="YEAR"><span>登録年</span></th>
+			</tr>
+			<tbody id="ca_CACMV0240_tbody">
+			</tbody>
+		</table>
+		<script id="ca_CACMV0240_tbody_single_tmp" type="text/x-jquery-tmpl">
+			<tr id="${skucs_id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_CACMV0240_chk"></label></td>
+				<td>${code}</td>
+				<td>${item_name}</td>
+				<td>${color_name}</td>
+				<td>${size_name}</td>
+				<td>${year}</td>
+			</tr>
+		</script>
+		<script id="ca_CACMV0240_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+			<tr id="${skucs_id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_CACMV0240_chk"></label></td>
+				<td>${code}</td>
+				<td>${item_name}</td>
+				<td>${color_name}</td>
+				<td>${size_name}</td>
+				<td>${year}</td>
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_CACMV0240_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_CACMV0240_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_CACMV0240_multi" id="ca_CACMV0240_add">チェックしたものを選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_CACMV0240_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0240_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

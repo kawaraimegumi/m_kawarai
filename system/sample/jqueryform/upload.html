@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="../../../css/jquery-ui.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../../js/json2.js"></script>
+    <script src="../../../js/jquery.js"></script>
+    <script src="../../../js/jquery.blockUI.js"></script>
+    <script src="../../../js/underscore.js"></script>
+    <script src="../../../js/backbone.js"></script>
+    <script src="../../../js/jquery.tmpl.min.js"></script>
+    <script src="../../../js/jquery-ui.js"></script>
+    <script src="../../../js/jquery.ui.core.js"></script>
+    <script src="../../../js/jquery-ui.custom.js"></script>
+    <script src="../../../js/jquery.ui.datepicker.js"></script>
+    <script src="../../../js/jquery.ui.datepicker_ja.js"></script>
+    <script src="../../../js/jquery.tablefix_1.0.0.js"></script>
+    <script src="../../../js/jquery.dragtable.js"></script>
+    <script src="../../../js/bootstrap.js"></script>
+    <script src="../../../js/backbone.syphon.js"></script>
+    <script src="../../../js/backbone.syphon.fix.js"></script>
+    <script src="../../js/clcom.js"></script>
+    <script id="source">
+      $(function () {
+        var fileInput = clutil.fileInput({
+          files: [],
+          fileInput: '#torikomi1'
+        });
+        
+        fileInput
+          .on('success', function (file) {
+            // 一時サーバーにアップロード成功したときに呼ばれる。
+            console.log('成功', file);
+            // サーバーに送信するデータ
+            // サーバーがアップロードしたファイルの処理に必要なfile.idを含める。
+            // ※ あくまで例なので、データ形式は各APごとに定めてください。
+            var request = {
+              file_id: file.id
+            };
+            
+            // これをサーバーAPに送信する。ここのインターフェイスは各画面とサーバー間で決める
+            clutil.postJSON('gsdi_bluetag', request, _.bind(function(data, dataType) {
+              // 何か処理をする。
+            }));
+            
+          });
+      });
+      
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h1>ファイル取込</h1>
+      </div>
+      <div class="row">
+        <div class="span12 page-content">
+          <p>
+            画面からファイルをアップロード。
+            サーバAPはその内容を読み取るが、ファイルの保存は不要の場合。
+          </p>
+          <pre><code>
+              1.  画面からサーバへファイルをアップロードして識別子取得。
+              2.  識別子を送信してサーバAPを起動。
+              3.  サーバAP処理終了後はファイルを消しておく。</code></pre>
+          <p>
+            clutil.fileInput が行なうのは、1.のみです。
+            2. 3. は、それぞれの画面とサーバーAP開発者が行う。
+          </p>
+          <div class="form-horizontal">
+            <div class="control-group ">
+              <label class="control-label ">取込</label>
+              <div class="controls" id="torikomi1">
+                <input type="file" class="hide-input"/>
+                <button class="btn btn-primary cl-file-attach">とりこみ</button>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h3>ソースコード</h3>
+          <h4>HTML</h4>
+          <pre><code id="htmlSource"></code></pre>
+          <script>$('#htmlSource').text($('.form-horizontal')[0].outerHTML);</script>
+          <h4>JavaScript</h4>
+          <pre><code id="jsSource"></code></pre>
+          <script>$('#jsSource').text($('#source').text());</script>
+        </div>
+      </div>
+      <div class="page-footer">
+      </div>
+    </div>
+  </body>
+</html>

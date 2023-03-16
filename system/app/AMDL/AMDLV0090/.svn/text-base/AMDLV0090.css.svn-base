@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+
+.wt580 {
+  width: 580px;
+}

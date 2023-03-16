@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>test_sel</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<!-- Loading Flat UI -->
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<script src="../../../js/lib.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="/system/app/AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="/system/app/AMPA/AMPAV0020/AMPAV0020.js"></script>
+ 	<script src="/system/app/AMPA/AMPAV0030/AMPAV0030.js"></script>
+	<script src="/system/app/AMPA/AMPAV0040/AMPAV0040.js"></script>
+
+    <script src="test_rel.js"></script>
+</head>
+<body>
+<div class="container">
+<div id="mainColumn">
+<div id="mainColumninBox" class="noLeftColumn">
+	<div class="fieldGroup">
+		<div class="fieldgroupInBox">
+			<div class="fieldUnit mrgb10 flleft requiredSelect">
+				<p class="fieldName">事業ユニット</p>
+				<div class="fieldBox">
+					<select id="ca_unitID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 flleft requiredSelect">
+				<p class="fieldName">補正相殺項目</p>
+				<div class="fieldBox">
+					<select id="ca_offsetitemID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 flleft requiredSelect">
+				<p class="fieldName">備品区分</p>
+				<div class="fieldBox">
+					<select id="ca_equipTypeID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 flleft requiredSelect">
+				<p class="fieldName">備品</p>
+				<div class="fieldBox">
+					<input type="text" id="ca_equipID" class="form-control">
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>

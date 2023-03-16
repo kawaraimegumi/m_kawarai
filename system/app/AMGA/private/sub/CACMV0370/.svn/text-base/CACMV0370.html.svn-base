@@ -1,0 +1,107 @@
+<div id="ca_CACMV0370_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>表示属性（マスタ）</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+
+
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox search">
+					<div class="fieldUnit">
+						<div class="fieldBox noName">
+							<input type="text" class="form-control wt280 flleft" id="ca_CACMV0370_dispgroup" disabled />
+							<!--
+							<select name="info" class="mbn wt280 flleft" id="ca_CACMV0370_dispgroup">
+							<option value="0">売上</option>
+							<option value="1">項目2</option>
+							<option value="2">項目3</option>
+							</select>
+							 -->
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="table fieldUnit mrgb20 mrgr20 wt240 flleft hta">
+						<div class="ht340 wt240 yScroll">
+							<table class="hilightRow drilldown selectable" id="ca_CACMV0370_tbl">
+								<tbody id="ca_CACMV0370_tbody">
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<script id="ca_CACMV0370_tbody_tmp" type="text/x-jquery-tmpl">
+					<tr id="${dispitem_id}" class="ca_CACMV0370_dispitem">
+						<td>${name}</td>
+						<input type="hidden" name="dispitem_id" value="${dispitem_id}">
+						<input type="hidden" name="name" value="${name}">
+						<input type="hidden" name="sum_bitset" value="${sum_bitset}">
+					</tr>
+					</script>
+
+					<div class="fieldUnit mrgb20 flleft hta ">
+						<div class="fieldBox noName ht340  btnListbuilder">
+							<button id="" class="btn btn-primary wt120  mrgb30 mrgr10 ca_CACMV0370_add" disabled>
+								選択
+							</button>
+							<div class="clear"></div>
+							<button id="" class="btn btn-primary wt120  mrgb10 mrgr10 ca_CACMV0370_addall">
+								全選択
+							</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="table fieldUnit mrgb20 wt240 flleft hta listbuilder">
+						<div class="control mrgb10">
+							<p class="sortUp mrgr10" id="ca_CACMV0370_up">上へ</p>
+							<p class="sortDown mrgr10" id="ca_CACMV0370_down">下へ</p>
+							<p class="delete" id="ca_CACMV0370_edit_delall">すべて削除</p>
+							<div class="clear"></div>
+						</div>
+						<div class="ht320 wt240 yScroll">
+							<table class="hilightRow drilldown selectable" id="ca_CACMV0370_edit_tbl">
+								<tbody id="ca_CACMV0370_edit_tbody">
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<script id="ca_CACMV0370_edit_tbody_tmp" type="text/x-jquery-tmpl">
+					<tr id="${dispitem_id}" class="ca_CACMV0370_dispitem deletable order">
+						<td>
+							<span class="data ca_CACMV0370_dispitem_name">${name}</span>
+							<span class="btn-delete flright ca_CACMV0370_edit_delete"></span></td>
+						<input type="hidden" name="dispitem_id" value="${dispitem_id}">
+						<input type="hidden" name="name" value="${name}">
+					</tr>
+					</script>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACMV0370_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0370_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div>

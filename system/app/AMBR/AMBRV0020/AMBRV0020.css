@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+}
+
+#ca_tp_compare + .tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+
+#ca_tp_price + .tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+
+#datagrid .bdrTpColor {
+	border-top-color: #a2a9b3;
+}
+
+.unit {
+	font-size: 82%;
+	color: #323a45;
+	margin-left: 8px;
+	margin-right: 4px;
+}

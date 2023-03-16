@@ -1,0 +1,60 @@
+<div id="ca_CACMV0100_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>年代</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="fieldUnit mrgb10">
+						<div class="fieldBox noName" id="ca_CACMV0100_chkall">
+							<p class="checkall">すべて選択</p>
+							<p class="uncheckall dispn">すべて選択をはずす</p>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div id="ca_CACMV0100_age"></div>
+					
+					<!--表テンプレート-->
+					<script id="ca_CACMV0100_age_tmp" type="text/x-jquery-tmpl">
+					<div class="fieldUnit mrgb10">
+						<div class="fieldBox noName ca_CACMV0100_age_div">
+							<label class="checkbox" for="">
+								<input type="checkbox" name="ca_CACMV0020_chk" data-toggle="checkbox">
+								<span class="dispib wt80">${name}</span>
+								<span class="dispib wt80">${val}歳以上</span><span class="dispib wt80">${val2}歳以下</span>
+							</label>
+							<input type="hidden" name="val" value="${val}">
+							<input type="hidden" name="val2" value="${val2}">
+							<input type="hidden" name="name" value="${name}">
+						</div>
+						<div class="clear"></div>
+					</div>
+					</script>
+
+				</div>
+			</div>
+
+
+
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACMV0100_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0100_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+</div>
+<!-- /#mainColumn -->
+
+</div>

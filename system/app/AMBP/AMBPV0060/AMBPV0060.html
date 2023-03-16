@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>計画</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="AMBPV0060.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+
+<!-- SlickGrid -->
+<link href="/css/slickgrid.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+<!-- SlickGrid -->
+
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+
+		<script src="AMBPV0060.js"></script>
+
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+
+						<div class="fieldgroup">
+							<div id="ca_srchArea" class="fieldgroupInBox search">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required" id="div_ca_unitID">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID" name="srchUnitID"></select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 flleft half required">
+									<p class="fieldName">対象月</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 cl_valid cl_required" id="ca_srchMonth" name="srchMonth"></select>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button id="ca_srch" class="btn btn-info wt280">検索</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<!-- /#ca_srchArea -->
+							<button id="searchAgain" class="dispn btn">検索条件を開く</button>
+						</div>
+
+						<div id="result" class="dispn">
+							<div class="fieldgroup">
+								<div class="fieldgroupInBox">
+
+									<div class="fieldUnit mrgb10 flleft " style="width: 100%;">
+										<p class="fieldName">添付ファイル</p>
+										<div class="fieldBox fleft ca_torikomi_div">
+											<span id="ca_label" class="choose form-control wt280 flleft"></span>
+											<input type="hidden" id="ca_attachedFileID" />
+											<button class="flleft btn btn-default mrgl10 cl-file-attach wt200" id="ca_fileUp_btn">添付ファイルを選択</button>
+											<button class="flleft btn btn-default mrgl10 cl-file-attach wt200" id="ca_fileDel_btn">添付ファイルを削除</button>
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<p class="mrgt10 mrgb10 alertTip" style="font-size: 13px;">
+									※&nbsp;<span>&nbsp;&nbsp;!&nbsp;&nbsp;</span>・・・前年と曜日が異なるため、計画立案に注意が必要</p>
+
+									<div id="myGrid">
+										<div class="cl_datagrid_container" id="ca_datagrid"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+						</div>
+						<!-- /#result -->
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+
+		</div>
+		<!-- / #container -->
+
+		<div class="clear"></div>
+
+	</div>
+</body>
+</html>

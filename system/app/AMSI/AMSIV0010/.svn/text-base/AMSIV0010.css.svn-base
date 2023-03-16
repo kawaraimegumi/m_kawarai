@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+
+.boxLink {
+    cursor:pointer;
+    font-size: 82%;
+}
+
+.table thead > tr > th.sz002-feature,
+.table tbody > tr > th.sz002-feature,
+.table tfoot > tr > th.sz002-feature {
+  background: #868f9c;
+}
+
+.table thead > tr > td.sz002-feature,
+.table tbody > tr > td.sz002-feature,
+.table tfoot > tr > td.sz002-feature {
+  background: #bfe3f8;
+}
+
+.dialog-content {
+    padding: 20px;
+}
+
+/* サイズが二段になったとき対策 */
+.sizeList .fieldUnit {
+	height: initial;
+}
+.xwt180 {
+	min-width: 180px;
+}
+
+/* サイズテーブル ヘッダ固定 */
+.table_outer {
+	position:relative;
+	overflow: hidden;
+}
+.table_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  width:100%;
+  margin-left: 60px;
+}
+
+.col1 {
+    position: absolute;
+	left: 0;
+	width: 60px;
+	height: 200px;
+}
+
+.colbd {
+	white-space: nowrap;
+	min-width: 60px;
+}
+
+.sizeTable .col1 {
+	padding-top: 17px;
+}
+
+table.sizevr {
+	table-layout: fixed;
+	width: initial;
+}
+.stockCount li small.prefName {
+  font-size: 85%;
+}
+
+/* MD-1777 20180405 START */
+.bus_hours {
+    display: none;
+	text-align:center;
+}
+
+.stockCount li:hover .bus_hours {
+	margin-top: -3px;
+	margin-bottom: 0px;
+	display: block;
+}
+
+.stockCount li span.time {
+	display: inline-block;
+	font-size: 85%;
+    color: white;
+}
+
+.stockCount li:hover .storeName {
+  font-size: 75%;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}
+.stockCount li:hover .tel {
+  font-size: 105%;
+  display: block;
+}
+.stockCount li:hover .num {
+  font-size: 88%;
+  margin-top: 0;
+}
+
+/* MD-1777 20180405 END */

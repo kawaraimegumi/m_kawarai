@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>分析</title>
+
+<link href="../public/css/bootstrap.css" rel="stylesheet">
+<link href="../public/css/prettify.css" rel="stylesheet">
+<link href="../public/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style.css">
+
+<script src="../public/js/jquery-1.8.3.min.js"></script>
+<script src="../public/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../public/js/jquery.ui.touch-punch.min.js"></script>
+
+<!-- Loading ui-folder -->
+<script type="text/javascript" src="../private/js/ui-folder.js"></script>
+
+<script type="text/javascript" src="../public/js/jquery.easing-1.3.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../public/js/underscore.js"></script>
+<script type="text/javascript" src="../public/js/backbone.js"></script>
+<script type="text/javascript" src="../public/js/json2.js"></script>
+<script type="text/javascript" src="../public/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.exchangeselect.0.1.0.js"></script>
+
+<script type="text/javascript" src="../public/js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../public/js/jquery.fixedheadertable.js"></script>
+<script type="text/javascript" src="../public/js/jquery.skOuterClick.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../public/js/jquery-ui.js"></script>
+<script type="text/javascript" src="../public/js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.form.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="../private/js/aman.js"></script>
+<script type="text/javascript" src="../private/js/clcom-ana.js"></script>
+<script type="text/javascript" src="../private/js/messages2-ana_ja.js"></script>
+<script type="text/javascript" src="../private/js/clcom-ana-fix.js"></script>
+<script type="text/javascript" src="../private/js/ana-testdata.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style-AMGAV.css">
+
+<script type="text/javascript" src="../AMGAV0110/AMGAV0110.js"></script>
+
+<style>
+table#ca_ana_tbl td.lru_tm {
+	width: 134px;
+	text-align: right;
+}
+table#ca_ana_tbl td.lru_tm:hover {
+	background: #d6edfa;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="cl_dialog_area" class="cl_dialog"></div>
+<div id="page-wrap">
+<div id="cl_header"></div><!-- /#header -->
+<div class="cl_echoback msgBox error"></div>
+
+<div id="ca_main">
+<div id="container">
+
+	<div id="title">
+			<h2>分析メニュー（世話人代表向け）</h2>
+			<div class="titleInBoxRight">
+				<p class="reload"><a id="ca_reload">更新</a></p>
+			</div>
+	</div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup half flleft">
+
+				<div class="table">
+					<div class="flleft ht500 yScroll wt100pct" id="ca_tbl_div">
+						<table class="hilightRow tree drilldown selectable" id="ca_tbl">
+							<thead></thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="fieldUnit dispn">
+					<div class="fieldBox noName">
+						<button class="btn btn-default wt140 flleft" id="ca_add">フォルダを追加</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<div class="fieldgroup half flright">
+				<div class="fieldgroupInBox ht500">
+					<div class="table half">
+						<div class="wt100pct flleft yScroll" style="height: 447px;">
+							<table class="hilightRow drilldown" id="ca_ana_tbl">
+							</table>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /#content -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+</div><!-- /#ca_main -->
+
+<div class="clear"></div>
+</div>
+</body>
+</html>

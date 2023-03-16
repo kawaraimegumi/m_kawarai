@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>エディタと縦スクロールなし</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../../css/slickgrid.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../slick-aokmd-themes.css">
+
+    <link rel="stylesheet" href="demo.AMTR0020.css">
+	<script src="../../../js/lib.js"></script>
+	<script src="../../../../js/slickgrid.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../../js/clgrid.js"></script>
+
+	<script src="demo.AMTR0020.js"></script>
+</head>
+
+<body>
+    <div><button id="save" class="btn" type="button">保存</button></div>
+    <div><button id="valid" class="btn" type="button">バリデーション</button></div>
+    <div><button id="addColumn" class="btn" type="button">カラム追加</button></div>
+    <input id="a" type="text" class="form-control" data-limit="digit len:10" data-filter="comma">
+	<!-- データグリッド領域 -->
+	<div class="cl_datagrid_container" id="ca_datagrid" style=" height:400px;">
+	</div>
+    <input type="text" class="form-control">
+    <textarea rows="80" cols="80" id="jsonout"></textarea>
+</body>
+</html>

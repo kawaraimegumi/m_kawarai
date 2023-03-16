@@ -1,0 +1,851 @@
+useSelectpicker2();
+
+$(function(){
+	$.inputlimiter.noTrim = true;
+
+	// Enterキーによるフォーカスをする。
+	clutil.enterFocusMode($('body'));
+
+	// 条件入力部
+	var SrchCondView = Backbone.View.extend({
+		el: $('#ca_srchArea'),
+		events: {
+			'click #ca_srch'					: '_onSrchClick',			// 検索ボタン押下時
+			'change #ca_srchUnitID'				: '_onUnitChanged',			// 事業ユニット変更
+			'change #ca_srchEquipTypeID'		: '_onEquipTypeChanged',	// 備品区分変更
+			"change input[name='srchEquipAdminTypeID']:radio": "_onEquipManTypeChanged"	// ラジオボタン変更
+		},
+
+		initialize: function(opt){
+			_.bindAll(this);
+
+			// validatorエラー時の表示領域
+			this.validator = clutil.validator(this.$el, {
+				echoback		: $('.cl_echoback').hide()
+			});
+		},
+
+		// 初期データ取得後に呼ばれる関数
+		initUIElement: function(){
+			clutil.inputlimiter(this.$el);
+
+			// 事業ユニット
+			this.utl_unit = clutil.clbusunitselector({
+				el: '#ca_srchUnitID',
+				initValue: clcom.userInfo.unit_id
+	    	});
+
+//			// 備品区分
+//			this.utl_equipType = clutil.cltypeselector({
+//				el: '#ca_srchEquipTypeID',
+//				kind: amcm_type.AMCM_TYPE_EQUIP_TYPE,
+//	    	});
+
+			// 備品区分(AOKI用)
+			this.utl_equipType = clutil.cltypeselector({
+				el: '#ca_srchEquipTypeID',
+				kind: amcm_type.AMCM_TYPE_EQUIP_TYPE,
+				ids: [
+						amcm_type.AMCM_VAL_EQUIP_TYPE_PACKING,		// 10:包装
+						amcm_type.AMCM_VAL_EQUIP_TYPE_PACKAGE,		// 11:パッケージ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SYSTEM,		// 13:システム
+						amcm_type.AMCM_VAL_EQUIP_TYPE_RESIZE,		// 21:補正
+						amcm_type.AMCM_VAL_EQUIP_TYPE_BALOON,		// 30:風船関連備品
+						amcm_type.AMCM_VAL_EQUIP_TYPE_DISCOUNT,		// 31:商品割引券
+						amcm_type.AMCM_VAL_EQUIP_TYPE_MAIL,			// 32:メール会員登録他
+						amcm_type.AMCM_VAL_EQUIP_TYPE_POP,			// 33:POP
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SLTAG,		// 39:SL下げ札
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SHTAG,		// 40:肩タグ・肩タグ用シール
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SHTAGSL,		// 41:肩タグ用シール
+						amcm_type.AMCM_VAL_EQUIP_TYPE_CCLTAG,		// 42:円タグ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SLVCOVER_ETC,	// 43:袖かぶせその他
+						amcm_type.AMCM_VAL_EQUIP_TYPE_LEAF,			// 44:リーフレット・ビラ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SLVTAG,		// 45:袖タグ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_PETSL,		// 46:PETシール
+						amcm_type.AMCM_VAL_EQUIP_TYPE_PLC,			// 47:プライスカード
+						amcm_type.AMCM_VAL_EQUIP_TYPE_MDSLVCOVER,	 // 48:マークダウン袖かぶせ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_HALF_MDSLVCOVER,	// 49:半額マークダウン袖かぶせ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_MDSL,			// 50:マークダウンシール
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SIZESL,		// 51:サイズシール
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SIZESLBY,		// 52:サイズシールBY用
+						amcm_type.AMCM_VAL_EQUIP_TYPE_TSSIZESLTS,	// 53:TSサイズシールTS用
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SLETC,		// 54:シールその他
+						amcm_type.AMCM_VAL_EQUIP_TYPE_RACK,			// 55:棚挿し
+						amcm_type.AMCM_VAL_EQUIP_TYPE_COLLECTSL,	// 56:タグ訂正シール
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SIZECHIP,		// 57:サイズチップスーツ・礼服・コート・JK・CY
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SIZECHIPSL,	// 58:サイズチップＳＬ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SIZECHIPL,	// 59:サイズチップレディス
+						amcm_type.AMCM_VAL_EQUIP_TYPE_CCLCHIP,		// 60:円チップ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_HANGERNECKTAG,// 61:ハンガーネックタグ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SCHIP_SMX,	// 62:サイズチップSMX専用
+						amcm_type.AMCM_VAL_EQUIP_TYPE_BLAND_COVER,	// 63:ブランドかぶせ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_HANGER,		// 65:ハンガー
+						amcm_type.AMCM_VAL_EQUIP_TYPE_STORE_EQUIP,	// 68:店内備品
+						amcm_type.AMCM_VAL_EQUIP_TYPE_ENVELOPE,		// 70:事務・封筒
+						amcm_type.AMCM_VAL_EQUIP_TYPE_FAX,			// 72:FAX
+						amcm_type.AMCM_VAL_EQUIP_TYPE_BOOK,			// 80:伝票・冊子
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SWEEP_OUT_OF_STORE,	// 90:除草剤・噴霧器
+
+					],
+					unselectedflag: 1
+	    	});
+
+			// 備品区分(ORI用)
+			this.utl_equipType_ori = clutil.cltypeselector({
+				el: '#ca_srchEquipTypeID_ori',
+				kind: amcm_type.AMCM_TYPE_EQUIP_TYPE,
+				ids: [
+						amcm_type.AMCM_VAL_EQUIP_TYPE_PACKAGE_EQ,	// 0:パッケージ備品
+						amcm_type.AMCM_VAL_EQUIP_TYPE_8H,			// 1:エイトハート
+						amcm_type.AMCM_VAL_EQUIP_TYPE_ORG,			// 2:オリジナル
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SIZECHIP_OR,	// 3:サイズチップ
+						amcm_type.AMCM_VAL_EQUIP_TYPE_ATTACH,		// 4:商品付属品
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SYSTEM_EQ,	// 5:システム備品
+						amcm_type.AMCM_VAL_EQUIP_TYPE_STATIONARY,	// 6:事務用品
+						amcm_type.AMCM_VAL_EQUIP_TYPE_PLSL,			// 7:プライスシール
+						amcm_type.AMCM_VAL_EQUIP_TYPE_SLIP,			// 8:伝票類
+						amcm_type.AMCM_VAL_EQUIP_TYPE_OTHER,		// 9:その他
+						amcm_type.AMCM_VAL_EQUIP_TYPE_STNBAR,		// 66:スタンバー
+					],
+					unselectedflag: 1
+	    	});
+
+			// 備品担当部署区分
+			this.utl_department = clutil.cltypeselector({
+				el: '#ca_srchDepartmentID',
+				kind: amcm_type.AMCM_TYPE_EQUIP_DEPART_TYPE
+				/*ids: [
+						amcm_type.AMCM_VAL_EQUIP_DEPART_TYPE_SOMU,			// 営業支援部
+						amcm_type.AMCM_VAL_EQUIP_DEPART_TYPE_HANSOKU,		// 販促部
+						amcm_type.AMCM_VAL_EQUIP_DEPART_TYPE_SHOUHIN_KANRI,	// 商品管理部
+						amcm_type.AMCM_VAL_EQUIP_DEPART_TYPE_TENPO_KIKAKU,	// 店舗企画建築部
+						amcm_type.AMCM_VAL_EQUIP_DEPART_TYPE_EIGYOU_KANRI	// 営業管理
+					]*/
+	    	});
+			// 備品担当部署区分
+			this.utl_department2 = clutil.cltypeselector({
+				el: '#ca_srchDepartmentID_ori',
+				kind: amcm_type.AMCM_TYPE_EQUIP_DEPART_TYPE,
+				ids: [
+						amcm_type.AMCM_VAL_EQUIP_DEPART_TYPE_EIGYOU_KANRI,
+					]
+	    	});
+
+			$("#div_ca_departmentID").show();
+			$("#div_ca_departmentID_ori").hide();
+
+			// プレミアム商品区分
+			this.utl_premType = clutil.cltypeselector({
+				el: '#ca_srchPremTypeID',
+				kind: amcm_type.AMCM_TYPE_PREM_TYPE
+	    	});
+
+			// 検索日
+			this.utl_date = clutil.datepicker(this.$('#ca_srchDate'));
+
+			// 初期値を設定
+			this.deserialize({
+				srchUnitID: clcom.userInfo.unit_id,		// 事業ユニット
+				srchEquipCode: null,			// 備品コード
+				srchEquipName: null,			// 備品名称
+				srchEquipTypeID: 0,				// 備品区分
+				srchDepartmentID: 0,			// 担当部署
+				srchPremTypeID: 0,				// プレミアム商品区分
+				srchDate: clcom.getOpeDate(),	// 検索日 yyyymmdd
+				allHistFlag: 0,					// 全出力フラグ
+				srchEquipAdminTypeID: amcm_type.AMCM_VAL_EQUIP_ADMIN_TYPE_EQUIP
+			});
+
+			this.setInitializeValue();
+			this.setDefaultEnabledProp();
+
+			// 初期フォーカスオブジェクト設定
+			if(clcom.userInfo.unit_id == clutil.getclsysparam('PAR_AMMS_UNITID_AOKI')){
+				this.$tgtFocus = $("#ca_srchEquipTypeID");
+			}
+			else if(clcom.userInfo.unit_id == clutil.getclsysparam('PAR_AMMS_UNITID_ORI')){
+				this.$tgtFocus = $("#ca_srchEquipTypeID_ori");
+			}
+			else{
+				this.$tgtFocus = $('#ca_srchUnitID');
+			}
+
+			// 初期フォーカス設定
+			clutil.setFocus(this.$tgtFocus);
+
+			this._onEquipManTypeChanged(null);
+
+			$(".txtInFieldUnit.help").tooltip({html: true});
+		},
+
+		setInitializeValue: function(){
+		},
+
+		setDefaultEnabledProp: function(){
+			if (clcom.userInfo.user_typeid== amcm_type.AMCM_VAL_USER_STORE || clcom.userInfo.user_typeid== amcm_type.AMCM_VAL_USER_STORE_MAN){
+				clutil.viewReadonly("#div_ca_srchUnitID");
+			}
+		},
+
+		/**
+		 * UI の設定値から、検索リクエストパケットを生成する。
+		 */
+		serialize: function(){
+			return clutil.view2data(this.$el);
+		},
+
+		/**
+		 * 検索リクエストパケットの設定値を UI へセットする。
+		 */
+		deserialize: function(obj){
+			this.deserializing = true;
+			try{
+				var dto = _.extend({}, obj);
+				clutil.data2view(this.$el, dto);
+
+ 				var callback = this._onUnitChanged;
+				this.utl_unit.done(function() {callback();});
+			}finally{
+				this.deserializing = false;
+			}
+		},
+
+		/**
+		 * 指定プロパティ名（ ⇔ 検索 Req 上のメンバ名）の UI 設定値を取得する。
+		 * defaultVal は、設定値が無い場合に返す値。
+		 */
+		getValue: function(propName, defaultVal){
+			if(_.isUndefined(defaultVal)){
+				defaultVal = null;
+			}
+			if(!_.isString(propName) || _.isEmpty(propName)){
+				return defaultVal;
+			}
+			var dto = this.serialize();
+			var val = dto[propName];
+			return (_.isUndefined(val) || _.isNull(val) || _.isEmpty(val)) ? defaultVal : val;
+		},
+
+		/**
+		 * 入力状態が正しいかどうかチェック。
+		 */
+		isValid: function(){
+			return this.validator.valid();
+		},
+
+		/**
+		 * 検索ボタン押下処理
+		 */
+		_onSrchClick: function(e) {
+			if(!this.isValid()){
+				return;
+			}
+			if ($("#ca_srchArea").find('.cl_error_field').length > 0){
+				this.validator.setErrorHeader(clmsg.cl_echoback);
+				return;
+			}
+
+			var dto = this.serialize();
+
+			if (~~dto.srchUnitID == clutil.getclsysparam('PAR_AMMS_UNITID_ORI')){
+				dto.srchDepartmentID = dto.srchDepartmentID_ori;
+			}
+
+			clutil.mediator.trigger('ca_onSearch', dto);
+		},
+
+
+
+		_onUnitChanged: function(e){
+			if(this.deserializing){
+				return;
+			}
+
+			var val = Number(this.utl_unit.getValue());
+
+			//備品区分のセレクター入れ替え
+			this.setEquipTypeSel(val);
+
+			//事業ユニットがORIHICAの場合は、担当部署に「営業管理部」を表示し操作不可能とする
+			if (val === clutil.getclsysparam('PAR_AMMS_UNITID_ORI')) {
+				$("#div_ca_departmentID").hide();
+				$("#div_ca_departmentID_ori").show();
+
+				this.utl_department2.setValue(amcm_type.AMCM_VAL_EQUIP_DEPART_TYPE_EIGYOU_KANRI);
+				clutil.viewReadonly($("#div_ca_departmentID"));
+				clutil.viewReadonly($("#div_ca_departmentID_ori"));
+
+			} else {
+				$("#div_ca_departmentID").show();
+				$("#div_ca_departmentID_ori").hide();
+
+				clutil.viewRemoveReadonly($("#div_ca_departmentID"));
+				clutil.viewRemoveReadonly($("#div_ca_departmentID_ori"));
+			}
+
+
+			this.utl_unit.prevValue = val;
+		},
+
+
+		/**
+		 * 備品区分入れ替え
+		 */
+		setEquipTypeSel: function(unit){
+			if(unit == clutil.getclsysparam('PAR_AMMS_UNITID_AOKI')){
+				$("#div_ca_equipTypeID").show();
+				$("#div_ca_equipTypeID_ori").hide();
+				clutil.viewRemoveReadonly($("#div_ca_equipTypeID"));
+				clutil.viewRemoveReadonly($("#div_ca_equipTypeID_ori"));
+			}
+			else if(unit == clutil.getclsysparam('PAR_AMMS_UNITID_ORI')){
+				$("#div_ca_equipTypeID").hide();
+				$("#div_ca_equipTypeID_ori").show();
+				clutil.viewRemoveReadonly($("#div_ca_equipTypeID"));
+				clutil.viewRemoveReadonly($("#div_ca_equipTypeID_ori"));
+			}
+			else{
+				$("#div_ca_equipTypeID").show();
+				$("#div_ca_equipTypeID_ori").hide();
+				clutil.viewReadonly($("#div_ca_equipTypeID"));
+				clutil.viewReadonly($("#div_ca_equipTypeID_ori"));
+			}
+		},
+
+
+
+		_onEquipTypeChanged: function(e){
+			if(this.deserializing){
+				// データセット中
+				return;
+			}
+
+			//備品区分が「プレミアム」の場合、プレミアム商品区分が操作可能となる
+		},
+
+		_onEquipManTypeChanged: function(e){
+			if(this.deserializing){
+				// データセット中
+				return;
+			}
+
+			var radio = $("input:radio[name=srchEquipAdminTypeID]:checked");
+			var val = radio.val();
+
+			var $divEQType = $("#div_ca_equipTypeID");
+			var $divPInfo = $("#div_ca_srchPremTypeID");
+
+			// プレミアム
+			if (val == amcm_type.AMCM_VAL_EQUIP_ADMIN_TYPE_PREMIUM) {
+				$divEQType.hide();
+				$divPInfo.show();
+				$("#lblSrchEquipNameE").hide();
+				$("#lblSrchEquipNameP").show();
+			// 備品
+			} else {
+				$divEQType.show();
+				$divPInfo.hide();
+				$("#lblSrchEquipNameE").show();
+				$("#lblSrchEquipNameP").hide();
+			}
+		},
+
+		_eof: 'AMEQV0030.SrchCondView//'
+	});
+
+	//////////////////////////////////////////////
+	// View
+	var MainView = Backbone.View.extend({
+		el:	$('#ca_main'),
+		validator : null,
+		events: {
+			'click #searchAgain'			: '_onSearchAgainClick'	// 検索条件を再指定ボタン押下
+		},
+
+		initialize: function(){
+			_.bindAll(this);
+
+			// 共通ビュー(共通のヘッダなど内包）
+			this.mdBaseView = new clutil.View.MDBaseView({
+				title: '備品・プレミアム商品マスタ',
+				subtitle: '一覧',
+				btn_csv: false
+			});
+
+			// 検索パネル
+			this.srchCondView = new SrchCondView({el: this.$('#ca_srchArea')});
+
+			// グループID -- AMEQV0030 なデータに関連することを表すためのマーキング文字列
+			var groupid = 'AMEQV0030';
+
+			// ページャ
+			this.pagerViews = clutil.View.buildPaginationView(groupid, this.$el);
+
+			// 検索結果リスト
+			this.recListView = new clutil.View.RowSelectListView({
+				el: this.$('#ca_table'),
+				groupid: groupid,
+				template: _.template( $('#ca_rec_template').html() )
+			});
+
+			// イベント
+			clutil.mediator.on('ca_onSearch', this._onSrch);			// 検索パネル srchCondView から検索ボタン押下イベント
+			clutil.mediator.on('onPageChanged', this._onPageChanged);	// ページャから、ページ切り替え等イベント
+
+			// OPE系イベント
+			clutil.mediator.on('onOperation', this._doOpeAction);
+
+			this.validator = clutil.validator(this.$el, {
+				echoback : $(".cl_echoback")
+			});
+		},
+
+		// 初期データ取得後に呼ばれる関数
+		initUIElement: function(){
+			this.mdBaseView.initUIElement();
+			this.srchCondView.initUIElement();
+			this.recListView.initUIElement();
+
+			// 検索条件を再指定ボタンを隠す
+			this.srchAreaCtrl = clutil.controlSrchArea(
+					this.srchCondView.$el,
+					this.srchCondView.$('#ca_srch'),
+					this.$('#result'),
+					this.$('#searchAgain'));
+
+			return this;
+		},
+
+		/**
+		 * 画面描画
+		 */
+		render: function() {
+			this.mdBaseView.render();
+			this.srchCondView.render();
+			this.recListView.render();
+			for(var i = 0; i < this.pagerViews.length; i++){
+				this.pagerViews[i].render();
+			}
+			return this;
+		},
+
+		/**
+		 * 検索条件をつくる
+		 */
+		buildReq: function(argSrchReq){
+			var srchReq;
+			if(arguments.length > 0){
+				srchReq = argSrchReq;
+			}else{
+				if(this.srchCondView.isValid()){
+					srchReq = this.srchCondView.serialize();
+				}else{
+					// メッセージは、srchConcView 側で出力済。
+					return;
+				}
+			}
+
+			// 検索条件
+			var req = {
+				reqHead: {
+					//{ name = 'AM_PROTO_COMMON_RTYPE_NEW',        val = 1, description = '新規登録' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_UPD',        val = 2, description = '編集' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_DEL',        val = 3, description = '削除' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_REL',        val = 4, description = '参照' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_CSV',        val = 5, description = 'CSV出力' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_CSV_INPUT',  val = 6, description = 'CSV取込' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_COPY',       val = 7, description = '複製' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_PDF',        val = 8, description = 'PDF出力' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_DELCANCEL',  val = 9, description = '削除復活' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_RSVCANCEL',  val = 10, description = '予約取消' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_TMPSAVE',    val = 11, description = '一時保存' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_APPLY',      val = 12, description = '申請' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_APPROVAL',   val = 13, description = '承認' },
+					//{ name = 'AM_PROTO_COMMON_RTYPE_PASSBACK',   val = 14, description = '差戻し' },
+					opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL,
+					fileId: 0			// CSV取込などで使用する
+				},
+				reqPage: _.first(this.pagerViews).buildReqPage0(),
+				AMEQV0030GetReq: srchReq
+			};
+
+			if (req.AMEQV0030GetReq.srchEquipAdminTypeID == amcm_type.AMCM_VAL_EQUIP_ADMIN_TYPE_PREMIUM){
+				req.AMEQV0030GetReq.srchEquipTypeID = "";
+			} else {
+				req.AMEQV0030GetReq.srchPremTypeID = "";
+			}
+
+			if(req.AMEQV0030GetReq.srchUnitID == clutil.getclsysparam('PAR_AMMS_UNITID_ORI')){
+				req.AMEQV0030GetReq.srchEquipTypeID = req.AMEQV0030GetReq.srchEquipTypeID_ori;
+			}
+
+			return req;
+		},
+
+		/**
+		 * 検索ボタンクリックからの検索
+		 */
+		_onSrch: function(srchReqDto) {
+			var req = this.buildReq(srchReqDto);
+
+			// 検索実行
+			this.doSrch(req);
+		},
+
+		/**
+		 * ページ切り替え/表示件数変更からの再検索
+		 */
+		_onPageChanged: function(groupid, pageReq, from){
+			if(groupid !== 'AMEQV0030'){
+				return;
+			}
+
+			if(!this.savedReq){
+				console.warn('検索条件が保存されていません。');
+				return;
+			}
+
+			// 検索条件を複製してページリクエストを差し替える
+			var req = _.extend({}, this.savedReq);
+			req.reqPage = pageReq;
+
+			// 検索実行
+			this.doSrch(req);
+		},
+
+		/**
+		 * 検索実行して結果を表示する
+		 * @param srchReq 検索要求パケット
+		 * @param chkData 初期選択行（オプション） -- 他画面から戻ってきたときに以前選択していた行選択の復元に使用。
+		 */
+		doSrch: function(srchReq, chkData, $focusElem){
+			this.clearResult();
+
+			var defer = clutil.postJSON('AMEQV0030', srchReq).done(_.bind(function(data){
+
+				// データ取得
+				var recs = data.AMEQV0030GetRsp.equipList;
+
+				if (_.isEmpty(recs)) {
+					// エラーメッセージ表示
+					clutil.mediator.trigger('onTicker', clmsg.cl_no_data);
+
+					mainView.srchAreaCtrl.reset();
+
+					// フォーカス設定
+					this.resetFocus(this.srchCondView.$tgtFocus);
+				} else {
+					$.each(recs,function(){
+						this.equipTypeDispName = clutil.gettypename(amcm_type.AMCM_TYPE_EQUIP_TYPE, this.equipTypeID);
+						this.premTypeDispName = clutil.gettypename(amcm_type.AMCM_TYPE_PREM_TYPE, this.premTypeID);
+						this.departmentDispName = clutil.gettypename(amcm_type.AMCM_TYPE_EQUIP_DEPART_TYPE, this.departmentID);
+						this.equipAdminTypeID = ~~srchReq.AMEQV0030GetReq.srchEquipAdminTypeID;
+					});
+
+					// リクエストを保存。
+					this.savedReq = srchReq;
+
+					// 結果ペインを表示
+					this.srchAreaCtrl.show_result();
+
+					// 内容物がある場合 --> 結果表示する。
+					this.recListView.setRecs(recs);
+					this.recListView.setDeletedRowUI(function(dto) {
+						return dto.delFlag != 0;
+					});
+
+					// 初期選択の設定（オプション）
+					if(!_.isEmpty(chkData)){
+						this.recListView.setSelectRecs(chkData, true, ['equipID']);
+					}
+
+					// Excelダウンロードボタンを表示する
+					this.mdBaseView.options.btn_csv = true;
+					this.mdBaseView.renderFooterNavi();
+
+					if (~~srchReq.AMEQV0030GetReq.srchEquipAdminTypeID === amcm_type.AMCM_VAL_EQUIP_ADMIN_TYPE_PREMIUM){
+						$("#ca_table .cl_equip").hide();
+						$("#ca_table .cl_prem").show();
+					} else {
+						$("#ca_table .cl_equip").show();
+						$("#ca_table .cl_prem").hide();
+					}
+
+					// フォーカス設定
+					if(typeof $focusElem != 'undefined') {
+						this.resetFocus($focusElem);
+					}
+
+					$.when($('#searchAgain')).done(function () {
+						var $window = $(window);
+						var offset = $('#searchAgain').offset();
+						var location = {
+							left	: offset.left - $window.scrollLeft(),
+							top		: offset.top  - $window.scrollTop()
+						};
+
+					    if (location.top < 0){
+					    	clcom.targetJump('searchAgain', 50);
+					    }
+					});
+				}
+			}, this)).fail(_.bind(function(data){
+
+				mainView.srchAreaCtrl.reset();
+
+				// エラーメッセージを通知。
+				clutil.mediator.trigger('onTicker', data);
+
+				// フォーカスの設定
+				this.resetFocus();
+
+			}, this));
+
+			return defer;
+		},
+
+		/**
+		 * XXX: ダウンロードする
+		 */
+		doDownload: function(){
+			// リクエストをつくる
+			// var srchReq = this.buildReq();
+
+			var srchReq;
+			if(this.srchCondView.isValid()){
+				srchReq = this.srchCondView.serialize();
+			}else{
+				// メッセージは、srchConcView 側で出力済。
+				return;
+			}
+
+			//リクエストの内容をセットする
+			var req = {
+				reqHead: {
+					opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV,
+					fileId: 0			// CSV取込などで使用する
+				},
+				reqPage: {
+					start_record: 0,
+					page_size: 0
+				},
+				AMEQV0030GetReq: srchReq
+			};
+
+			if (req.AMEQV0030GetReq.srchEquipAdminTypeID == amcm_type.AMCM_VAL_EQUIP_ADMIN_TYPE_PREMIUM){
+				req.AMEQV0030GetReq.srchEquipTypeID = "";
+			} else {
+				req.AMEQV0030GetReq.srchPremTypeID = "";
+			}
+
+			if(req.AMEQV0030GetReq.srchUnitID == clutil.getclsysparam('PAR_AMMS_UNITID_ORI')){
+				req.AMEQV0030GetReq.srchEquipTypeID = req.AMEQV0030GetReq.srchEquipTypeID_ori;
+			}
+
+			if(_.isNull(req)){
+				// 入力エラーがある：条件設定ペインを開いてあげる
+				this.srchAreaCtrl.show_srch();
+				return;
+			}
+
+			// 要求を送出
+			// clutil.postDLJSON() を使うと共通ヘッダを補完してくれる。
+			var defer = clutil.postDLJSON('AMEQV0030', req);
+			defer.fail(_.bind(function(data){
+				// 検索ペインを表示？
+				mainView.srchAreaCtrl.show_srch();
+
+				// ヘッダーにメッセージを clutil.View.MDBaseView へ通知
+				// AJAX 呼び出しの共通処理で済ませるべきか・・・
+				clutil.mediator.trigger('onTicker', data);
+			}, this));
+		},
+
+		/**
+		 * 適切な場所へフォーカスを置く
+		 */
+		resetFocus: function($focusElem){
+			if($focusElem){
+				clutil.setFocus($focusElem);
+			}else{
+				if (this.$('#searchAgain').css('display') == 'none') {
+					clutil.setFocus($('#ca_srch'));
+				} else {
+					clutil.setFocus($('#searchAgain'));
+				}
+			}
+		},
+
+		/**
+		 * 検索条件を再指定ボタン押下
+		 */
+		_onSearchAgainClick: function(e){
+			this.mdBaseView.options.btn_csv = false;
+			this.mdBaseView.renderFooterNavi();
+
+			this.srchAreaCtrl.show_srch();
+		},
+
+		/**
+		 * 編集画面への遷移
+		 */
+		_doOpeAction: function(rtyp, pgIndex, e){
+			var url = clcom.appRoot + '/AMEQ/AMEQV0040/AMEQV0040.html';
+			var myData, destData;
+			if(this.savedReq){
+				// 検索結果がある場合
+				myData = {
+					btnId: e.target.id,
+					savedReq: this.savedReq,
+					savedCond: this.savedReq.AMEQV0030GetReq,
+					selectedIds: this.recListView.getSelectedIdList(),
+					chkData: this.recListView.getSelectedRecs()
+				};
+				destData = {
+					opeTypeId: rtyp,
+					srchDate: this.savedReq.srchDate,
+					chkData: this.recListView.getSelectedRecs()
+				};
+			}else{
+				// 検索結果が無い場合
+				myData = {
+					btnId: e.target.id,
+					savedReq: null,
+					savedCond: this.srchCondView.serialize(),
+					selectedIds: [],
+					chkData: []
+				};
+				destData = {
+					opeTypeId: rtyp
+				};
+			}
+
+			var pushPageOpt = {
+				url		: url,
+				args	: destData,
+				saved	: myData
+			};
+
+			// ope_btn 系
+			switch(rtyp){
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:	// 新規
+				// データが無くても可
+				clcom.pushPage(pushPageOpt);
+				break;
+
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:	// 照会
+				var lastClickedRec = this.recListView.getLastClickedRec();
+				if(_.isEmpty(lastClickedRec)){
+					// 最後にクリックした行データがとれなかった
+					console.warn('rtyp[' + rtyp + ']: last clicked item not found.');
+					return;
+				}
+				destData.chkData = [ lastClickedRec ];
+				pushPageOpt.newWindow = true;
+				// fall through
+
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:	// 複製
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:	// 削除
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:	// 予約取消
+				// チェックされたデータが必要（１）
+				if(destData.chkData && destData.chkData.length >= 2){
+					// 複数行選択されている		-- そもそもボタンを押せなくしているのでありえない
+					console.warn('rtyp[' + rtyp + ']: '
+							+ selectedRows.length + ' items selected, but single select only.');
+					return;
+				}
+				// fall through
+
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:	// 編集
+				// チェックされたデータが必要（Ｎ）
+				if(_.isEmpty(destData.chkData)){
+					// 行選択がない				-- そもそもボタンを押せなくしている
+					console.warn('rtyp[' + rtyp + ']: item not specified.');
+					return;
+				}
+
+				//var opeDate = clcom.getOpeDate();
+				for (var i = 0; i < destData.chkData.length; i++) {
+					var data = destData.chkData[i];
+
+					if (data.toDate < clcom.max_date &&
+						(rtyp != am_proto_defs.AM_PROTO_COMMON_RTYPE_REL && rtyp != am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY)) {
+						this.validator.setErrorHeader(clmsg.cl_rtype_r_edit);
+						return;
+					}
+				}
+
+				clcom.pushPage(pushPageOpt);
+				break;
+
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:	// CSV 出力
+				this.doDownload();
+				break;
+
+			default:
+				console.warn('unsupported rtyp[' + rtyp + '] received.');
+				return;
+			}
+		},
+
+		/**
+		 * 結果のクリア
+		 */
+		clearResult: function() {
+			// MDBaseView へのクリア：ヘッダメッセージとリボンクリアする
+			this.mdBaseView.clear();
+
+			// 確定時用のデータを初期化
+			this.savedReq = null;
+
+			// テーブルをクリア
+			this.recListView.clear();
+		},
+
+		/**
+		 * 他ページから復帰し、初期検索など行って、遷移前の状態を復元する。
+		 */
+		load: function(model) {
+			// 条件部の復元
+			if(!_.isEmpty(model.savedCond)){
+				this.srchCondView.deserialize(model.savedCond);
+			}
+			// 再検索
+			if(!_.isEmpty(model.savedReq)){
+				this.doSrch(model.savedReq, model.chkData, $('#' + model.btnId));
+				this.srchCondView._onEquipManTypeChanged();
+			}
+
+		},
+
+		_eof: 'AMEQV0030.MainView//'
+	});
+
+	//--------------------------------------------------------------
+	// 初期データ取得
+	clutil.getIniJSON(null).done(function(data){
+		// ここで、clcom の内容が保証される /////////////////
+		mainView = new MainView().initUIElement().render();
+
+		if(clcom.pageData){
+			// 保存パラメタがある場合
+			// ・新規、編集、削除画面から戻ってきて、再検索するときのケース
+			mainView.load(clcom.pageData);
+		}
+
+	}).fail(function(data){
+		console.error('iniJSON failed.');
+		console.log(arguments);
+
+		// clcom のネタ取得に失敗。
+		// 動かしようがないので、Abort 扱いとしておく？？？
+		clutil.View.doAbort({
+			messages: [
+				//'初期データ取得に失敗しました。'
+				clutil.getclmsg('cl_ini_failed')
+			],
+			rspHead: data.rspHead
+		});
+	});
+
+});

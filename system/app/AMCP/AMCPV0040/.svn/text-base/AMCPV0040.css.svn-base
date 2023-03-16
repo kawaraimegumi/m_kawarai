@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+
+.wt480 {
+  width: 480px;
+}
+
+.cl_counter
+{
+	position: absolute;
+	bottom: -5px;
+	right: 5px;
+}
+
+.cl_textarea
+{
+	resize: vertical;
+}
+
+.wt480 {
+  width: 480px;
+}
+.select.wt480 .btn {
+  width: 480px;
+}
+.bootstrap-select.wt480 .btn {
+  width: 480px;
+}
+.bootstrap-select.wt480 {
+  width: 480px;
+}
+
+table {
+	font-size:12px;
+}
+
+.cl_bdr0 {
+	border:0px;
+}
+
+.cl_bdr0:focus {
+	background-image: none;
+	background-color: white;
+
+	border-radius: 4px;
+	border: 2px solid #1e9ce6;
+}
+
+.wt650 {
+  width: 650px;
+}

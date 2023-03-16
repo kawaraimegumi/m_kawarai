@@ -1,0 +1,62 @@
+<div id="ca_CACMV0200_CACMV0020_dialog"></div>
+<div id="ca_CACMV0200_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>ランク詳細設定</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+		
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div class="fieldUnit mrgb10 half flleft mrgr20">
+					<p class="fieldName" id="ca_CACMV0200_name"></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div id="result">
+			<ul id="ca_CACMV0200_fromto"></ul>
+			<script id="ca_CACMV0200_fromto_tmp" type="text/x-jquery-tmpl">
+			<li><input type="text" class="form-control flleft wt280 ca_CACMV0200_val cl_valid ime-disabled" 
+				name="val" value="${val}" data-limit="len:13 digit" data-filter="comma">
+			<p class="txtInFieldUnit pdg flleft">〜</p>
+			<span class="datepicker_wrap">
+			<input type="text" class="form-control flleft wt280 cl_valid ime-disabled" 
+				name="val2" value="${val2}" data-limit="len:13 digit" data-filter="comma" disabled>
+			</span>
+			<p class="clear"></p>
+			<p class="mrgb10"></p>
+			</li>
+			</script>
+			<div class="mrgb20"></div>
+			
+			<div class="fieldUnit">
+				<div class="fieldBox mrgt20 noName btnCenter">
+					<button class="btn btn-default wt140 mrgr20" id="ca_CACMV0200_clear">クリア</button>
+					<button id="ca_CACMV0200_default" class="btn btn-info wt280">初期値に戻す</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACMV0200_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0200_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

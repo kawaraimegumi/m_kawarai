@@ -1,0 +1,32 @@
+.fieldgroup .fieldUnit {
+  margin-bottom: 10px;
+}
+.fieldName {
+  width: 165px;
+}
+.fieldBox {
+  padding-left: 165px;
+}
+.cl_error_field {
+  background-color: #fde3e5 !important;
+  border: 2px solid;
+  border-color: #f2555f !important;
+}
+#func_tbody td:nth-child(2) .btn-group > .btn:last-of-type,
+.btn-group
+  > .btn:last-of-type:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  margin-top: 10px;
+  width: 100px;
+}
+#func_tbody td:nth-child(4),
+#func_tbody td:nth-child(5) {
+  width: 100px;
+}
+#func_tbody .cl_date {
+  width: 150px;
+}
+#memo2 {
+  font-size: 80%;
+  line-height: 1.5;
+  position: absolute;
+}

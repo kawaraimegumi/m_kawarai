@@ -1,0 +1,1890 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0271.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css'
+	href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+<script src="../lib/ObjTree.js"></script>
+<style>
+#tp_washable+.tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+
+#tp_jkSleeveButton+.tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+
+#ca_brandID_div .btn .caret {
+	display: none;
+}
+</style>
+
+</head>
+
+<body class="cl_body_hidden cl_readonly">
+
+	<div id="ca_main">
+		<script src="AMPOV0271.js"></script>
+
+		<div id="container" style="min-width: 1200px;">
+			<!-- 店舗選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div id="ca_baseField">
+
+							<div class="fieldgroup">
+								<div id="" class="fieldgroupInBox view">
+
+									<!-- 指示ID -->
+									<input type="hidden" id="ca_poOrderID" /> <input type="hidden"
+										id="ca_firstID" /> <input type="hidden" id="ca_recno" /> <input
+										type="hidden" id="ca_state" />
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">管理番号</p>
+										<div class="fieldBox" id="ca_noArea">
+											<p class="txtbox" style="border-bottom: none;">
+												<span id="ca_no"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<div class="fieldBox noName flleft" id="ca_submitTypeFax">
+											<p class="txtbox wt220 text-primary"
+												style="border-bottom: none;">FAXオーダー済みの注文を登録</p>
+										</div>
+										<div class="fieldBox noName flleft" id="ca_submitTypeNew">
+											<p class="txtbox wt220 text-warning"
+												style="border-bottom: none;">新規発注</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup">
+								<p class="gtitle">店舗情報</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">店舗</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_store"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">担当者</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_user"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup">
+								<p class="gtitle">納期</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">商品発注日</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_orderDate"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">店舗着日</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_arrivalDate"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">お渡し日</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_saleDate"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft ca_S_Area">
+										<p class="fieldName bl2">
+											短納期<br>(1,080円)
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_disp_express"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+
+							<div class="fieldgroup">
+								<p class="gtitle">お客様情報</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft half">
+										<p class="fieldName">氏名</p>
+										<div class="fieldBox">
+											<p class="txtbox wt240 flleft">
+												<span id="ca_custName"></span>
+											</p>
+											<p class="txtInFieldUnit pdg flleft">様</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">フリガナ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_custNameKana"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">電話番号</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_telNo"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">会員番号</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_membNo"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup">
+								<p class="gtitle">ブランド・生地</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft half">
+										<p class="fieldName">種別</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 flleft">
+												<span id="ca_disp_orderType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="ca_M_Area" id="ca_M_variety">
+										<div class="fieldUnit mrgr10 mrgb10 flleft">
+											<p class="fieldName">品種</p>
+											<div class="fieldBox">
+												<p class="txtbox wt280">
+													<span id="ca_M_variety"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName2 bl2">
+												ウォッシャブル<br>仕様
+											</p>
+											<div class="fieldBox">
+												<p class="txtbox wt320">
+													<span id="ca_disp_M_wash"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName bl2">
+												ブランド<br>(型紙)
+											</p>
+											<div class="fieldBox">
+												<p class="txtbox wt80 flleft mrgr10">
+													<span id="ca_M_season"></span>
+												</p>
+												<p class="txtbox wt180 flleft">
+													<span id="ca_M_bland"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName">生地</p>
+											<div class="fieldBox">
+												<p class="txtbox wt320">
+													<span id="ca_M_cloth"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="ca_L_Area" id="ca_L_variety">
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName">品種・モデル</p>
+											<div class="fieldBox" id="ca_L_jkVarietyArea">
+												<p
+													class="txtbox wt100  ladies--brand--category__name flleft">
+													ジャケット</p>
+												<p class="txtbox wt180 flleft">
+													<span id="ca_L_jkSel"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<div class="fieldBox noName" id="ca_L_skVarietyArea">
+												<p
+													class="txtbox wt100  ladies--brand--category__name flleft">
+													スカート</p>
+												<p class="txtbox wt180 flleft">
+													<span id="ca_L_skSel"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<div class="fieldBox" id="ca_L_slVarietyArea">
+												<p
+													class="txtbox wt100  ladies--brand--category__name flleft">
+													パンツ</p>
+												<p class="txtbox wt180 flleft">
+													<span id="ca_L_slSel"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<div class="fieldBox noName" id="ca_L_veVarietyArea">
+												<p
+													class="txtbox wt100  ladies--brand--category__name flleft">
+													ベスト</p>
+												<p class="txtbox wt180 flleft">
+													<span id="ca_L_veSel"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgr20 mrgb10 flleft dispn">
+											<p class="fieldName bl2">
+												ブランド<br>(型紙)
+											</p>
+											<div class="fieldBox">
+												<p class="txtbox wt80 flleft mrgr10 dispn">
+													<span id="ca_L_season"></span>
+												</p>
+												<p class="txtbox wt180 flleft">
+													<span id="ca_L_bland"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName">生地</p>
+											<div class="fieldBox">
+												<p class="txtbox wt320">
+													<span id="ca_L_cloth"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="ca_S_Area" id="ca_S_variety">
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName">ブランド</p>
+											<div class="fieldBox">
+												<p class="txtbox wt320">
+													<span id="ca_S_bland"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName">生地</p>
+											<div class="fieldBox">
+												<p class="txtbox wt320">
+													<span id="ca_S_cloth"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit mrgr20 mrgb10 flleft">
+											<p class="fieldName">枚数</p>
+											<div class="fieldBox">
+												<p class="txtbox wt320">
+													<span id="ca_S_num"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+
+
+
+						<div class="ca_M_Area" id="ca_M_Field">
+							<div class="fieldgroup ca_M_Div" id="ca_M_jkDiv">
+								<p class="gtitle">ジャケット</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_style"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_size"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ベント</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_ventType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_amfType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">裏仕様</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_liningType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">腰ポケット</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_pocketType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">重ねボタン</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_layerButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ネーム</p>
+										<div class="fieldBox">
+											<p class="txtbox wt180 mrgr10 flleft">
+												<span id="ca_disp_M_jk_name"></span>
+											</p>
+											<p class="txtbox po--name--confirm__text ca_M_nameNone">
+												<span id="ca_M_name1"></span>
+												<span id="ca_M_name2"></span>
+												<span id="ca_M_name3"></span>
+												<span id="ca_M_name4" class="ca_M_nameLong"></span>
+												<span id="ca_M_name5" class="ca_M_nameLong"></span>
+												<span id="ca_M_name6" class="ca_M_nameLong"></span>
+												<span id="ca_M_name7" class="ca_M_nameLong"></span>
+												<span id="ca_M_name8" class="ca_M_nameLong"></span>
+												<span id="ca_M_name9" class="ca_M_nameLong"></span>
+												<span id="ca_M_name10" class="ca_M_nameLong"></span>
+												<span id="ca_M_name11" class="ca_M_nameLong ca_M_nameLongAlpha"></span>
+												<span id="ca_M_name12" class="ca_M_nameLong ca_M_nameLongAlpha"></span>
+												<span id="ca_M_name13" class="ca_M_nameLong ca_M_nameLongAlpha"></span>
+												<span id="ca_M_name14" class="ca_M_nameLong ca_M_nameLongAlpha"></span>
+												<span id="ca_M_name15" class="ca_M_nameLong ca_M_nameLongAlpha"></span>
+											</p>
+											<p class="txtbox wt80 mrgr10 flleft ca_M_nameNone">
+												<span id="ca_disp_M_jk_nameMakeType"></span>
+											</p>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">左袖丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_armLeft"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">右袖丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_armRigth"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">着丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_length"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">中胴補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_trunk"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">袖ボタン4つ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_sleeveButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											チェンジ<br>ポケット
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_changePocketType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">本切羽</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_cuffsType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">切台場</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_daibaType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">サマー仕様</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_summerType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											有料AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_amfPayType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_changeButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											ボタンホール<br>カラー糸
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_cuffsFirst"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<div class="fieldBox noName">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_buttonThreadColorSel"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">裏地変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_jk_changeLiningType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup ca_M_Div" id="ca_M_slDiv">
+								<p class="gtitle">スラックス</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_sl_style"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_sl_size"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">裾仕上げ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt180 mrgr10 mrgb10 flleft">
+												<span id="ca_disp_M_sl_bottomType"></span>
+											</p>
+											<p class="txtbox wt80 mrgb10 flleft"
+												id="ca_disp_M_sl_bottomDoubleArea">
+												<span id="ca_disp_M_sl_bottom"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft ca_M_sl_lengthArea">
+										<p class="fieldName">丈上股下</p>
+										<div class="fieldBox">
+											<p class="txtInFieldUnit pdg mrgr5 flleft">左</p>
+											<p class="txtbox wt100 mrgr10 flleft">
+												<span id="ca_disp_M_sl_lengthLeft"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft ca_M_sl_lengthArea">
+										<div class="fieldBox noName">
+											<p class="txtInFieldUnit pdg mrgr5 flleft">右</p>
+											<p class="txtbox wt100 mrgr10 flleft">
+												<span id="ca_disp_M_sl_lengthRight"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ウエスト補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_sl_weist"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">アジャスター</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_sl_adjuster"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft"
+										id="ca_M_sl_changeButtonTypeArea">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_sl_changeButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">スペア</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_sl_spareType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft ca_spareDiv">
+										<p class="fieldName bl2">
+											スペア<br>裾仕上げ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt180 mrgr10 flleft">
+												<span id="ca_disp_M_sl_bottomSpareType"></span>
+											</p>
+											<p class="txtbox wt80 mrgb10 flleft"
+												id="ca_disp_M_sl_bottomSpareDoubleArea">
+												<span id="ca_disp_M_sl_bottomSpare"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div>
+										<div
+											class="fieldUnit mrgr20 mrgb10 flleft ca_spareDiv ca_M_sl_lengthArea">
+											<p class="fieldName">丈上股下</p>
+											<div class="fieldBox">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">左</p>
+												<p class="txtbox wt100 mrgr10 flleft">
+													<span id="ca_disp_M_sl_lengthLeftSpare"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div
+											class="fieldUnit mrgr20 mrgb10 flleft ca_spareDiv ca_M_sl_lengthArea">
+											<div class="fieldBox noName">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">右</p>
+												<p class="txtbox wt100 mrgr10 flleft">
+													<span id="ca_disp_M_sl_lengthRightSpare"></span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div class="fieldUnit mrgr20 flleft ca_spareDiv">
+										<p class="fieldName bl2">
+											スペア<br>アジャスター
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_sl_adjusterSpare"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup ca_M_Div" id="ca_M_veDiv">
+								<p class="gtitle">ベスト</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_ve_style"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_ve_size"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName bl2">
+											AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_ve_amfType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">中胴補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_ve_trunk"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											有料AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_ve_amfPayType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_ve_changeButtonSel"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">裏地変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_M_ve_changeLiningSel"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+							<div class="clear"></div>
+
+						</div>
+						<div class="clear"></div>
+
+
+
+
+						<div class="ca_L_Area" id="ca_L_Field">
+							<div class="fieldgroup ca_L_Div" id="ca_L_jkDiv">
+								<p class="gtitle">ジャケット</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_style"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_size"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">裏仕様</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_liningType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">胸ポケット</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_pocketType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											リターン<br>カフス
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_cuffsType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<!-- 2016/1/26 PRS追加削除 -->
+									<!-- 2015/12/8 STB追加対応 -->
+									<!--  
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											リターン<br>カフスボタン
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_cuffsButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									-->
+									<!-- 2015/12/8 STB追加対応 ここまで-->
+									<div class="clear"></div>
+
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ネーム</p>
+										<div class="fieldBox">
+											<p class="txtbox wt180 mrgr10 flleft">
+												<span id="ca_disp_L_jk_name"></span>
+											</p>
+											<p class="txtbox po--name--confirm__text ca_L_nameNone">
+												<span id="ca_L_name1"></span>
+												<span id="ca_L_name2"></span>
+												<span id="ca_L_name3"></span>
+												<span id="ca_L_name4" class="ca_L_nameLong"></span>
+												<span id="ca_L_name5" class="ca_L_nameLong"></span>
+												<span id="ca_L_name6" class="ca_L_nameLong"></span>
+												<span id="ca_L_name7" class="ca_L_nameLong"></span>
+												<span id="ca_L_name8" class="ca_L_nameLong"></span>
+												<span id="ca_L_name9" class="ca_L_nameLong"></span>
+												<span id="ca_L_name10" class="ca_L_nameLong"></span>
+												<span id="ca_L_name11" class="ca_L_nameLong ca_L_nameLongAlpha"></span>
+												<span id="ca_L_name12" class="ca_L_nameLong ca_L_nameLongAlpha"></span>
+												<span id="ca_L_name13" class="ca_L_nameLong ca_L_nameLongAlpha"></span>
+												<span id="ca_L_name14" class="ca_L_nameLong ca_L_nameLongAlpha"></span>
+												<span id="ca_L_name15" class="ca_L_nameLong ca_L_nameLongAlpha"></span>
+											</p>
+											<p class="txtbox wt80 mrgr10 flleft ca_L_nameNone">
+												<span id="ca_disp_L_jk_nameMakeType"></span>
+											</p>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">左袖丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_armLeft"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">右袖丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_armRight"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">着丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_length"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">
+											ベント
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_ventType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											有料リターン<br>カフス
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_cuffsPayType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_amfType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">胸内ポケット</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_pocketInnerType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									
+									
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">本切羽</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_cuffsFirstType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ボタンホールカラー糸</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_buttonHoleType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_changeButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">裏地変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_changeLiningType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<!--  
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											サイド<br>ベンツ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_jk_sideVentType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									-->
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup ca_L_Div" id="ca_L_skDiv">
+								<p class="gtitle">スカート</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sk_style"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sk_size"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName bl2">
+											スカート丈<br>補正
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sk_length"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ウエスト補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sk_waist"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup ca_L_Div" id="ca_L_slDiv">
+								<p class="gtitle">パンツ</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sl_style"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sl_size"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">裾仕上げ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sl_bottomType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft ca_L_sl_lengthArea">
+										<p class="fieldName">丈上股下</p>
+										<div class="fieldBox">
+											<p class="txtInFieldUnit pdg mrgr5 flleft">左</p>
+											<p class="txtbox wt100 mrgr10 flleft">
+												<span id="ca_disp_L_sl_lengthLeft"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft ca_L_sl_lengthArea">
+										<div class="fieldBox noName">
+											<p class="txtInFieldUnit pdg mrgr5 flleft">右</p>
+											<p class="txtbox wt100 mrgr10 flleft">
+												<span id="ca_disp_L_sl_lengthRight"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ウエスト補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 flleft">
+												<span id="ca_disp_L_sl_waist"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">裾幅補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sl_bottomWidth"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr id="ca_disp_L_sl_changeButtonTypeHr">
+
+									<div class="fieldUnit mrgr20 flleft"
+										id="ca_disp_L_sl_changeButtonTypeDiv">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_sl_changeButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup ca_L_Div" id="ca_L_veDiv">
+								<p class="gtitle">ベスト</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_style"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_size"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">胸ポケット</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_pocketType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">着丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_length"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_amfType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">尾錠</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_buckleType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_changeButtonType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">裏地変更</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_L_ve_changeLiningType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+
+
+						<div class="ca_S_Area" id="ca_S_Field">
+							<div class="fieldgroup">
+								<p class="gtitle">衿</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">衿型</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_collar"></span>
+											</p>
+											<p class="txtbox wt150 flleft" id="ca_S_miterDiv">マイター(540円)</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">衿芯地</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_collarType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup">
+								<p class="gtitle">袖・カフス</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">袖</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_cuffsType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">カフス</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_cuffsSel"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup">
+								<p class="gtitle">クレリック</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">クレリック</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_cleric"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup">
+								<p class="gtitle">身頃</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">前身頃</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_frontType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">後身頃</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_backType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName bl2">
+											AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_amf"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ポケット</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_pocket"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup">
+								<p class="gtitle">ボタン</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ボタン</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_button"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ボタンホール</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_buttonHole"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">ボタン付糸</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_buttonThread"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup">
+								<p class="gtitle">ネーム</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ネーム</p>
+										<div class="fieldBox">
+											<p class="txtbox wt180 mrgr10 flleft">
+												<span id="ca_disp_S_name"></span>
+											</p>
+											<p class="txtbox po--name--confirm__text ca_S_nameNone">
+												<span id="ca_S_name1"></span> <span id="ca_S_name2"></span>
+												<span id="ca_S_name3"></span> <span id="ca_S_name4"
+													class="ca_S_nameLong"></span> <span id="ca_S_name5"
+													class="ca_S_nameLong"></span> <span id="ca_S_name6"
+													class="ca_S_nameLong"></span> <span id="ca_S_name7"
+													class="ca_S_nameLong"></span> <span id="ca_S_name8"
+													class="ca_S_nameLong"></span> <span id="ca_S_name9"
+													class="ca_S_nameLong"></span> <span id="ca_S_name10"
+													class="ca_S_nameLong"></span> <span id="ca_S_name11"
+													class="ca_S_nameLong"></span> <span id="ca_S_name12"
+													class="ca_S_nameLong"></span>
+											</p>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft ca_S_nameNone">
+										<p class="fieldName">字体</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_nameType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 flleft ca_S_nameNone">
+										<p class="fieldName">場所</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_namePlace"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft ca_S_nameNone">
+										<p class="fieldName">色</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_nameColor"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup">
+								<p class="gtitle">縫製</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">縫製</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280min mrgr10 flleft">
+												<span id="ca_disp_S_sewingType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName bl2">
+											ポケット<br>チーフ
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_pocketChiefType"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup">
+								<p class="gtitle">サイズ</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">ボディ型</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_body"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">首まわり</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_neck"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">左裄丈</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_armLeft"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">右裄丈</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_armRigth"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+									<p class="fix--slider--price">下記の補正は何種類でも1,080円です。</p>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">肩幅補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_shoulder"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">胸回り補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_chest"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">胴回り補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_waist"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">裾回り補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_bottom"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">身丈補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_length"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											左カフス回り<br>補正
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_cuffsLeft"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName bl2">
+											右カフス回り<br>補正
+										</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280 mrgr10 flleft">
+												<span id="ca_disp_S_cuffsRight"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+							<div class="clear"></div>
+
+						</div>
+
+
+						<div id="ca_otherField">
+							<div class="fieldgroup">
+								<p class="gtitle">その他</p>
+								<div id="" class="fieldgroupInBox view">
+									<div class="fieldUnit mrgr20 mrgb10 flleft"
+										id="ca_otStoreAdjTypeID_div">
+										<p class="fieldName">店舗補正</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_disp_otStoreAdjTypeID"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 mrgb10 flleft">
+										<p class="fieldName">レシート番号</p>
+										<div class="fieldBox">
+											<p class="txtbox wt280">
+												<span id="ca_otRcptNo"></span>
+											</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 hta wt100pct">
+										<p class="fieldName">店舗用備考欄</p>
+										<div class="fieldBox">
+											<p class="txtbox multiline">
+												<span id="ca_otStoreMemo"></span>
+											</p>
+											<p class="noteMsg txt-danger">※メーカー様には一切通知されません</p>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+		</div>
+		<!-- / #container -->
+
+		<div class="clear"></div>
+
+
+	</div>
+
+</body>
+</html>
+

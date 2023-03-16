@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0100.css">
+
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<script>
+
+</script>
+
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+		<script src="AMPOV0100.js"></script>
+
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+					<!--
+		<div id="title">
+			<h2>生地品番<span class="divider">|</span>一覧</h2>
+			<div class="titleInBoxRight">
+				<p class="addNew"><a href="../PO014/mdPtod-Pnum-Edit.html">新規作成</a></p>
+			</div>
+		</div>
+-->
+					<!-- /#title -->
+
+
+					<div id="content">
+
+						<div class="fieldgroup">
+							<div id="ca_srchArea" class="fieldgroupInBox search">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="srchUnitID" id="ca_srchUnitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox">
+										<select name="info"
+											class="mbn wt280 flleft cl_valid cl_required"
+											name="srchPOTypeID" id="ca_srchPOTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">ブランド</p>
+									<div class="fieldBox" id="ca_srchBrandID_div" >
+										<input type="text"
+											class="form-control wt280 ime-active cl_valid "
+											name="srchBrandID" id="ca_srchBrandID" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">生地ID</p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt280 cl_valid cl_regex"
+											name="srchCode" id="ca_srchCode"  data-validator="maxlen:13" data-pattern="^[A-Za-z0-9-]*$"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">生地ID名</p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt280 cl_valid"
+											name="srchName" id="ca_srchName" data-validator="maxlen:30"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half mrgr20">
+									<p class="fieldName">最終更新者</p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt280"
+											name="srchUserID" id="ca_srchUserID" data-validator="maxlen:6 digit"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft">
+									<p class="fieldName"></p>
+									<div class="fieldBox">
+										<label class="checkbox ib flleft" for="ca_showDelFlag"
+											><input type="checkbox" value=""
+											id="ca_showDelFlag" data-toggle="checkbox">販売終了レコードを表示</label>
+										<!-- ツールチップでヘルプを表示 -->
+										<p class="txtInFieldUnit flright help"
+											title="販売終了レコードが背景赤の行で表示されます。">
+											<span>?</span>
+										</p>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button id="ca_srch" class="btn btn-info wt280">検索</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+						</div>
+
+						<div id="result" class="dispn">
+
+							<div class="pagination-wrapper"></div>
+
+							<div class="table">
+								<table class="hilightRow" id="ca_table">
+									<thead>
+										<tr>
+											<th width="40px" class="cl_checkbox_selectall">☑全選択</th>
+											<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+											<th width="120px">生地ID</th>
+											<th width="120px">生地ID名</th>
+											<th width="120px">プライスライン</th>
+											<th width="120px">シーズン</th>
+											<th width="120px">最終更新者</th>
+										</tr>
+									</thead>
+									<tbody id="ca_table_tbody"></tbody>
+								</table>
+							</div>
+
+							<div class="pagination-wrapper"></div>
+
+							<div class="fieldUnit">
+								<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup"
+									data-cl_groupid="AMPOV0100">
+									<button class="btn btn-primary wt280 mrgr10" id="cl_edit">編集</button>
+									<button class="btn btn-default wt140 flright mrgl20 delete"
+										id="cl_delete">削除</button>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- /#content -->
+
+				<div id="mainColumnFooter" class="noLeftColumn">
+					<p class="center">
+						<a id="ca_csvOut" href="javascript:void(0)">CSV出力</a>
+					</p>
+					<div class="clear"></div>
+				</div>
+
+			</div>
+			<!-- /#mainColumninBox -->
+
+		</div>
+		<!-- /#mainColumn -->
+
+	</div>
+	<!-- / #container -->
+	<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+	<script id="ca_rec_template" type="text/template">
+		<tr class="contextmenu csptr" name="ca_table_tr" id="<%- id %>">
+			<td class="cl_checkbox_selectrec">☑行選択</td>
+			<td class="ca_c_link"><%- code %></td>
+			<td class="ca_c_link"><%- name %></td>
+			<td class="ca_c_link txtar"><%- AMPOV0100EmptyPriceLine ? '' :  clutil.comma(priceLine) %></td>
+			<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_SEASON, seasonTypeID, 1) %></td>
+			<td class="ca_c_link"><%- userName %></td>
+		</tr>
+	</script>
+	<div class="clear"></div>
+
+</body>
+</html>

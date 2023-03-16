@@ -1,0 +1,520 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>組織マスタ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMMSV0260.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="AMMSV0260.js"></script>
+
+<script>
+
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+
+		<div id="container">
+
+			<div id="mainColumn">
+			<div id="mainColumninBox" class="noLeftColumn">
+				<div id="title">
+					<h2>組織マスタ<span class="divider">|</span>登録・修正</h2>
+					<div class="titleInBoxRight">
+					</div>
+				</div>
+				<!-- /#title -->
+
+
+
+				<div id="content">
+					<div id="ca_baseView">
+						<div class="fieldgroup">
+							<div id="ca_term" class="fieldgroupInBox setaddr">
+								<div class="fieldUnit flleft mrgr20 wt500 required ca_afterIn">
+									<p class="fieldName">適用期間</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_fromDate_div"><input type="text" class="cl_date cl_valid cl_required" id="ca_fromDate" data-validator="len:10"/></div>
+										<p class="txtInFieldUnit pdg flleft deldspn">〜</p>
+										<div class="datepicker_wrap ca_toDate_div deldspn"><input type="text" class="cl_date cl_valid cl_required" id="ca_toDate"  data-validator="len:10" readonly/></div>
+									</div>
+									<input type="hidden" id="ca_id" value="">
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup">
+							<p class="gtitle">組織マスタ設定</p>
+							<div id="ssetaddr" class="fieldgroupInBox setaddr">
+
+								<div class="fieldUnit mrgb10 mrgr20 half flleft required">
+									<p class="fieldName">組織体系</p>
+									<div class="fieldBox">
+										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_orgfuncID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName">組織階層</p>
+									<div class="fieldBox">
+										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_orglevelID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 mrgr20 half flleft required ca_afterIn">
+									<p class="fieldName">上位組織</p>
+									<div class="fieldBox">
+										<input type="text" class="form-control wt280 ime-active cl_valid cl_required" id="ca_parentID" data-validator="maxlen:25"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft required ca_afterIn">
+									<p class="fieldName">組織区分</p>
+									<div class="fieldBox" id="ca_orgTypeID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_orgTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 mrgr20 half flleft mrgr20 ca_afterIn">
+									<p class="fieldName bl2">仮コード<br />フラグ</p>
+									<div class="fieldBox">
+										<label class="checkbox ib disabled" for="ca_tmpCodeFlag"><input type="checkbox" id="ca_tmpCodeFlag" data-toggle="checkbox" disabled/></label>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft required ca_afterIn">
+									<p class="fieldName">組織コード</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240 code_limit_span"></span>
+										<input type="text" class="form-control wt280 ime-disabled cl_valid cl_required" id="ca_code" data-tflimit="4" data-validator="len:4,4 numeric"/>
+									</div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 mrgr20 half flleft ca_afterIn">
+									<p class="fieldName bl2">会計用<br />コード</p>
+									<div class="fieldBox">
+										<input type="text" class="form-control wt280 ime-disabled" id="ca_accCode" readonly/>
+									</div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 mrgr20 half flleft required ca_afterIn">
+									<p class="fieldName">組織名称</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" class="form-control wt280 cl_valid cl_required " data-tflimit="20" data-validator="maxlen:20 zenkaku" id="ca_name"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft required ca_afterIn">
+									<p class="fieldName bl2">組織<br />名称カナ</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" class="form-control wt280 cl_valid cl_required" data-tflimit="20"  data-validator="maxlen:20 hankaku" id="ca_nameKana"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 mrgr20 half flleft ca_afterIn">
+									<p class="fieldName">組織略称</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240 pa_shortName"></span>
+										<input type="text" class="form-control wt280 cl_valid" data-tflimit="7"  data-validator="maxlen:7 zenkaku" id="ca_shortName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft ca_afterIn">
+									<p class="fieldName bl2">組織<br />略称カナ</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240 pa_shortNameKana"></span>
+										<input type="text" class="form-control wt280 cl_valid" data-tflimit="10u" data-validator="maxlen:10 hankaku" id="ca_shortNameKana"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgr20 half flleft ca_afterIn">
+									<p class="fieldName bl2">ＳＣＭラベル<br />表示名称</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240 pa_scmName"></span>
+										<input type="text" class="form-control wt280 cl_valid ime-active" data-tflimit="10"  data-validator="maxlen:10 zenkaku" id="ca_scmName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 flleft mrgr120 ca_afterIn">
+									<p class="fieldName bl2">在庫管理対象<br />フラグ</p>
+									<div class="fieldBox">
+										<label class="checkbox ib" for="ca_stockMngFlag"><input type="checkbox" id="ca_stockMngFlag" data-toggle="checkbox"/></label>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20 ca_afterIn">
+									<p class="fieldName bl2">在庫変動不可<br />フラグ</p>
+									<div class="fieldBox">
+										<label class="checkbox ib" for="ca_stockNotChangeFlag"><input type="checkbox" id="ca_stockNotChangeFlag" data-toggle="checkbox"/></label>
+									</div>
+									<div class="clear"></div>
+								</div>
+							<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+
+					<div id="ca_addressView"><!-- 住所設定 -->
+
+						<div class="fieldgroup">
+							<p class="gtitle">住所設定</p>
+							<div class="clear ht10 mrgt-10 mrgb10">
+								<p class="expandFieldUnits mrgb20" id="expand_address"><span class="expand">住所設定を開く</span><span class="unexpand dispn">閉じる</span></p>
+							</div>
+							<div class="fieldgroupInBox">
+								<div class="ca_address_field">
+									<div class="fieldUnit mrgb10 mrgr20 half flleft">
+										<p class="fieldName">都道府県</p>
+										<div class="fieldBox">
+											<input type="text" class="form-control wt280 ime-active cl_valid" id="ca_prefID" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft">
+										<p class="fieldName">郵便番号</p>
+										<div class="fieldBox">
+											<!-- <span class="limit wt40 flright mrgl240"></span> -->
+											<input type="text" class="form-control wt280 ime-disabled cl_valid" data-validator="maxlen:7 digit" id="ca_postalno"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 mrgr20 half flleft">
+										<p class="fieldName">住所1</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240"></span>
+											<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="16" data-validator="maxlen:16" id="ca_addr1"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft">
+										<p class="fieldName">住所2</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240"></span>
+											<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="16" data-validator="maxlen:16" id="ca_addr2"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 mrgr20 half flleft">
+										<p class="fieldName">住所3</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240"></span>
+											<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="16" data-validator="maxlen:16" id="ca_addr3"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 mrgr20 half flleft">
+										<p class="fieldName">電話番号</p>
+										<div class="fieldBox">
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid" data-validator="maxlen:5 numeric" id="ca_telno1"/>
+											<p class="txtInFieldUnit pdg flleft">‐</p>
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid" data-validator="maxlen:4 numeric" id="ca_telno2"/>
+											<p class="txtInFieldUnit pdg flleft">‐</p>
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid" data-validator="maxlen:4 numeric" id="ca_telno3"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 mrgr20 half flleft">
+										<p class="fieldName">ＦＡＸ番号</p>
+										<div class="fieldBox">
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid" data-validator="maxlen:5 numeric" id="ca_faxno1"/>
+											<p class="txtInFieldUnit pdg flleft">‐</p>
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid" data-validator="maxlen:4 numeric" id="ca_faxno2"/>
+											<p class="txtInFieldUnit pdg flleft">‐</p>
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid" data-validator="maxlen:4 numeric" id="ca_faxno3"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName">営業時間</p>
+										<div class="fieldBox">
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid cl_time" data-validator="maxlen:5 cl_time" id="ca_openingTime"/>
+											<p class="txtInFieldUnit pdg flleft">‐</p>
+											<!-- <span class="limit wt40 flright mrgl40"></span> -->
+											<input type="text" class="form-control wt80 flleft ime-disabled cl_valid cl_time" data-validator="maxlen:5 cl_time" id="ca_closingTime"/>
+											<!--<p class="txtInFieldUnit pdg flleft">‐</p>-->
+										</div>
+									</div>
+									<div class="fieldUnit mrgr20 flleft">
+										<p class="fieldName bl4">営業時間イレギュラー店舗<br />フラグ</p>
+										<div class="fieldBox ml110">
+											<label class="checkbox ib" for="ca_businessHoursIrregularFlag"><input type="checkbox" id="ca_businessHoursIrregularFlag" data-toggle="checkbox"/></label>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div id="ca_storeView">
+						<div class="fieldgroup">
+							<p class="gtitle">店舗設定</p>
+							<div class="clear ht10 mrgt-10 mrgb10">
+								<p class="expandFieldUnits mrgb20" id="expand_store"><span class="expand">店舗設定を開く</span><span class="unexpand dispn">閉じる</span></p>
+							</div>
+							<div class="fieldgroupInBox">
+								<div class="ca_store_field">
+									<div class="fieldgroup">
+										<p class="gtitle">日付設定</p>
+										<div class="fieldgroupInBox">
+											<div class="fieldUnit mrgb10 mrgr20 half flleft">
+												<p class="fieldName">開店日</p>
+												<div class="fieldBox">
+													<div class="datepicker_wrap"><input type="text" class="cl_date cl_valid" id="ca_openDate" data-validator="maxlen:10"/></div>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="fieldUnit mrgb10 half flleft">
+												<p class="fieldName">閉店日</p>
+												<div class="fieldBox">
+													<div class="datepicker_wrap"><input type="text" class="cl_date cl_valid" id="ca_closeDate" data-validator="maxlen:10"/></div>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+											<div class="fieldUnit mrgr20 mrgb10 half flleft">
+												<p class="fieldName">POS設置日</p>
+												<div class="fieldBox">
+													<div class="datepicker_wrap"><input type="text" class="cl_date cl_valid" id="ca_posSetupDate" data-validator="maxlen:10"/></div>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="fieldUnit half mrgb10 flleft">
+												<p class="fieldName bl2">POS<br />配信停止日</p>
+												<div class="fieldBox">
+													<div class="datepicker_wrap"><input type="text" class="cl_date cl_valid" id="ca_posStopDate" data-validator="maxlen:10"/></div>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+											<div class="fieldUnit mrgr20 half flleft">
+												<p class="fieldName">SMX開始日</p>
+												<div class="fieldBox">
+													<div class="datepicker_wrap"><input type="text" class="cl_date cl_valid" id="ca_smxStartDate" data-validator="maxlen:10"/></div>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+
+									<div class="fieldgroup">
+										<p class="gtitle">店舗属性</p>
+										<div class="fieldgroupInBox">
+											<div class="fieldUnit mrgb10 mrgr20 half flleft">
+												<p class="fieldName">競合店</p>
+												<div class="fieldBox">
+													<p class="txtInFieldUnit flright help" id="ca_tp_competitor" title="A：青山　K：ｺﾅｶ　H：はるやま</br>F：ﾌﾀﾀ　C：ｽｰﾂｶﾝﾊﾟﾆｰ</br>S：ｽｰﾂｾﾚｸﾄ　P：Ps.Fa</br>マ：ﾏｽｶｯﾄ　は：はるやまﾁｪｰﾝ</br>め：名紳　モ：ﾓﾘﾜﾝ　ま：満足屋</br>サ：ｻｶｾﾞﾝ　ゼ：ｾﾞﾝﾓｰﾙ</br>G：銀座山形屋　Y：山下"><span>?</span></p>
+													<span class="limit wt40 flright mrgl240"></span>
+													<input type="text" placeholder="" class="form-control wt280 ime-active cl_valid" data-tflimit="6" data-validator="maxlen:6" id="ca_competitor"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="fieldUnit mrgb10 half flleft mrgr20">
+												<p class="fieldName bl2">母店<br />フラグ</p>
+												<div class="fieldBox">
+													<label class="checkbox ib" for="ca_flagshipFlag"><input type="checkbox" id="ca_flagshipFlag" data-toggle="checkbox"></label>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+											<div class="fieldUnit mrgb10 mrgr20 half flleft">
+												<p class="fieldName">店舗タイプ</p>
+												<div class="fieldBox">
+													<select name="info" class="mbn wt280" id="ca_storeTypeID">
+													</select>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+											<div class="fieldUnit mrgb10 mrgr20 half flleft">
+												<p class="fieldName bl2">SMX<br />店舗タイプ</p>
+												<div class="fieldBox">
+													<select name="info" class="mbn wt280" id="ca_smxstoreTypeID">
+													</select>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<!--
+											<div class="fieldUnit mrgb10 half flleft mrgr20">
+												<p class="fieldName bl2">ＳＭＸ<br />フラグ</p>
+												<div class="fieldBox">
+													<label class="checkbox ib" for="ca_smxFlag"><input type="checkbox" id="ca_smxFlag" data-toggle="checkbox"></label>
+												</div>
+												<div class="clear"></div>
+											</div>
+											-->
+											<div class="clear"></div>
+											<div class="fieldUnit mrgb10 mrgr20 half flleft">
+												<p class="fieldName">フロア数</p>
+												<div class="fieldBox">
+													<span class="limit wt40 flright mrgl240"></span>
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="2" data-validator="maxlen:2 int min:0" id="ca_floorNum"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="fieldUnit mrgb10 half flleft mrgr20">
+												<p class="fieldName bl2">その他<br />建物情報</p>
+												<div class="fieldBox">
+													<span class="limit wt40 flright mrgl240"></span>
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="20" data-validator="maxlen:20 zenkaku" id="ca_buildingInfo"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+											<div class="fieldUnit mrgb10 mrgr20 half flleft">
+												<p class="fieldName">売場面積(坪)</p>
+												<div class="fieldBox">
+													<span class="limit wt40 flright mrgl240"></span>
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="4" data-validator="maxlen:4 int min:0" id="ca_floorArea"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="fieldUnit mrgb10 half flleft mrgr20">
+												<p class="fieldName bl2">バックヤード<br />面積(坪)</p>
+												<div class="fieldBox">
+													<span class="limit wt40 flright mrgl240"></span>
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="4" data-validator="maxlen:4 int min:0" id="ca_backArea"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+											<div class="fieldUnit mrgb10 mrgr20 half flleft">
+												<p class="fieldName bl2">SMX売場面積<br />(坪)</p>
+												<div class="fieldBox">
+													<span class="limit wt40 flright mrgl240"></span>
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="4" data-validator="maxlen:4 int min:0" id="ca_smxfloorArea"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+											<div class="fieldUnit mrgr20 half flleft">
+												<p class="fieldName">駐車場台数</p>
+												<div class="fieldBox">
+													<span class="limit wt40 flright mrgl240"></span>
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="4" data-validator="maxlen:4 int min:0" id="ca_parkingNum"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="fieldUnit wt140 flleft mrgr20">
+												<p class="fieldName bl2">特定店舗在庫<br />送信フラグ</p>
+												<div class="fieldBox">
+													<p class="txtInFieldUnit flright help" id="ca_tp_sendstockFlag" title="GVに日々の品種別在庫データを送信する店舗に対してチェックを入れます"><span>?</span></p>
+													<label class="checkbox ib" for="ca_sendstockFlag"><input type="checkbox" id="ca_sendstockFlag" data-toggle="checkbox"></label>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+
+									<div class="fieldgroup">
+										<p class="gtitle">補正業者設定</p>
+										<div class="fieldgroupInBox">
+											<div class="fieldUnit mrgr20 half flleft">
+												<p class="fieldName">補正業者1</p>
+												<div class="fieldBox">
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-validator="maxlen:25" id="ca_vendor1ID"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="fieldUnit half flleft">
+												<p class="fieldName">補正業者2</p>
+												<div class="fieldBox">
+													<input type="text" class="form-control wt280 ime-active cl_valid" data-validator="maxlen:25" id="ca_vendor2ID"/>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /#content -->
+
+				<div id="mainColumnFooter" class="noLeftColumn x2">
+				</div>
+				<!-- /#mainColumnFooter -->
+			</div>
+			<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+		</div><!-- / #container -->
+		<div class="clear"></div>
+	</div>
+</body>
+</html>

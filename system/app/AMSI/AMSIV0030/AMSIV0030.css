@@ -1,0 +1,235 @@
+@CHARSET "UTF-8";
+
+/*
+.boxLink {
+    cursor:pointer;
+    font-size: 82%;
+}
+
+.table thead > tr > th.sz002-feature,
+.table tbody > tr > th.sz002-feature,
+.table tfoot > tr > th.sz002-feature {
+  background: #868f9c;
+}
+
+.table thead > tr > td.sz002-feature,
+.table tbody > tr > td.sz002-feature,
+.table tfoot > tr > td.sz002-feature {
+  background: #bfe3f8;
+}
+
+.dialog-content {
+    padding: 20px;
+}
+*/
+
+#x_data_area {
+	position:relative;
+	width:100%;
+	height:500px;
+}
+
+table.fixTable {
+	table-layout:fixed;
+}
+
+.drilldownWrapper {
+  overflow-x: hidden;
+  overflow-y: hidden;
+white-space: nowrap;
+}
+
+
+#fix_header {
+	width:858px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+#h_fix_tbl {
+	//width:711px;
+}
+
+#header_h {
+   position: absolute;
+   left:859px;
+   top:0px;
+   width:880px;
+   overflow-x:hidden;overflow-y:hidden;
+}
+
+#header_v {
+   position: absolute;
+   left:0px;
+   top:51px;
+   width:858px;
+   height:340px;
+   overflow-x:hidden;
+   overflow-y:hidden;
+}
+
+#header_v td {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+#data {
+	position: absolute;
+	left:859px;
+	top:51px;
+	overflow-x:scroll;
+	overflow-y:scroll;
+	width:900px;
+	height:358px;
+}
+
+.th_term {
+	position:absolute;
+	left:0px;
+	width:30px;
+	min-height: 51px;
+}
+
+.th_weekNo {
+	position:absolute;
+	left:30px;
+	width:118px;
+	min-height: 51px;
+}
+
+.th_sub1Name {
+	position:absolute;
+	left:148px;
+	width:100px;
+	min-height: 51px;
+}
+
+.th_sub2Name {
+	position:absolute;
+	left:248px;
+	width:100px;
+	min-height: 51px;
+}
+
+.th_makerHinban {
+	position:absolute;
+	left:348px;
+	width:103px;
+	min-height: 51px;
+}
+
+.th_itemName {
+	position:absolute;
+	left:451px;
+	width:173px;
+	min-height: 51px;
+}
+
+.th_colorName {
+	position:absolute;
+	left:624px;
+	width:89px;
+	min-height: 51px;
+}
+
+.th_price {
+	position:absolute;
+	left:713px;
+	width: 65px;
+	height: 51px;
+}
+
+.th_total {
+	position:absolute;
+	left:778px;
+	width: 80px;
+	height: 51px;
+}
+
+.th_num {
+	width: 44px;
+}
+.td_term {
+	position:absolute;
+	left:0px;
+	width:30px;
+	height: 34px;
+}
+
+.td_weekNo {
+	position:absolute;
+	left:30px;
+	width:118px;
+	height: 34px;
+}
+
+.td_sub1Name {
+	position:absolute;
+	left:148px;
+	width:100px;
+	height: 34px;
+}
+
+.td_sub2Name {
+	position:absolute;
+	left:248px;
+	width:100px;
+	height: 34px;
+}
+
+.td_makerHinban {
+	position:absolute;
+	left:348px;
+	width:103px;
+	height: 34px;
+}
+.td_itemName {
+	position:absolute;
+	left:451px;
+	width:173px;
+	height: 34px;
+}
+
+.td_colorName {
+	position:absolute;
+	left:624px;
+	width:89px;
+	height: 34px;
+}
+
+.td_price {
+	position:absolute;
+	left:713px;
+	width: 65px;
+}
+
+.td_total {
+	position:absolute;
+	left:776px;
+	width: 80px;
+}
+
+.td_total2 {
+	position:absolute;
+	left:818px;
+}
+
+.td_num {
+//	width: 40px;
+}
+
+#v_fix_tbl tr {
+	height: 34px;
+}
+
+/*
+ * outer/inner CSS
+ */
+.table_outer {position:relative}
+.table_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  margin-left:688px;
+}

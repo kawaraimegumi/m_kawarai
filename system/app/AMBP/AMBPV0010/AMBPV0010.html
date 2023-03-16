@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>計画</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="AMBPV0010.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+
+<link href="/css/slickgrid.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+		<script src="AMBPV0010.js"></script>
+
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+					<div id="content">
+						<div class="fieldgroup">
+							<div id="ca_srchArea" class="fieldgroupInBox search">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required" id="div_ca_unit">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID" name="srchUnitID"></select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+									<p class="fieldName">計画</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 flleft cl_valid cl_required" id="ca_srchPlanType" name="srchPlanType"></select>
+									</div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName">対象期間</p>
+									<div class="fieldBox">
+										<select class="mbn wt380 cl_valid cl_required" id="ca_srchPeriod" name="srchPeriod"></select>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+									<p class="fieldName">ブランチ</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" title="調印計画が店舗展開となります。" id="ca_tp_srchBranch"><span>?</span></p>
+										<select class="mbn wt280 flleft cl_valid cl_required" id="ca_srchBranch" name="srchBranch"></select>
+									</div>
+
+								</div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">バージョン</p>
+									<div class="fieldBox" id="div_ca_srchVersion">
+										<select class="mbn wt380 flleft" id="ca_srchVersion" name="srchVersion"></select>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button id="ca_srch" class="btn btn-info wt280">検索</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<button id="searchAgain" class="dispn btn">検索条件を開く</button>
+						</div>
+
+						<div id="result" class="dispn">
+
+							<div class="fieldgroup">
+								<div class="fieldgroupInBox">
+									<div id="div_ca_csvinput">
+									<div class="fieldUnit mrgb10 flleft">
+										<div class="fieldBox noName flleft" id="ca_csvinput1">
+											<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<hr>
+									</div>
+
+									<div class="flleft wt280 updateEdit updateBasic" id="div_fUpdThis">
+										<label class="checkbox flleft mrgr30" for="">
+											<input type="checkbox" id="ca_fUpdThis" data-toggle="checkbox" />当月の日別荒利率計画も更新する
+										</label>
+									</div>
+									<div class="clear"></div>
+
+
+									<div class="flright">
+										<span>千円単位(税抜)</span>
+									</div>
+									<div class="clear"></div>
+
+									<div id="myGrid">
+										<div class="cl_datagrid_container" id="ca_datagrid" style="height: 750px;"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<!-- /#fieldgroupInBox -->
+							</div>
+							<!-- /#fieldgroup -->
+						</div>
+						<!-- /#result -->
+
+					</div>
+					<!-- /#content -->
+
+					<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+
+				</div>
+				<!-- /#mainColumninBox -->
+
+			</div>
+			<!-- /#mainColumn -->
+
+		</div>
+		<!-- / #container -->
+
+		<div class="clear"></div>
+	</div>
+
+<script id="HdrCell" type="text/template">
+	<div class="cell sizeHdr"<% if(it.spanSize>0){ %> style="width:<%- it.spanSize %>px"<% } %>>
+		<div class="grd-tbl">
+			<div style="display: table-row;">
+<% if(it.templateType==0){ %>
+				<div class="grd-cell" style="display:table-cell; vertical-align: middle; padding: 0 12px; ">
+					<%= it.label %>
+				</div>
+<% }else{ %>
+				<div class="deleteRow" style="display:table-cell;vertical-align:middle;padding: 0 12px; border-left: 1px solid #E4E6Eb; width:80px;">
+					<div style="float: left;"><%- it.value %></div>
+					<div class="viewAll">&nbsp;</div>
+				</div>
+<% } %>
+			</div>
+		</div>
+	</div>
+</script>
+
+
+</body>
+</html>

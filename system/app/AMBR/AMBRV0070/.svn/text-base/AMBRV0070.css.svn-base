@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+}
+.unit {
+	font-size: 82%;
+	color: #323a45;
+	margin-left: 8px;
+	margin-right: 4px;
+}
+
+#ca_datagrid{
+    height : 600px;
+}
+
+
+#ca_datagrid .cl-colhead >.bdrTpColor {
+	border-top-color: #a2a9b3;
+	border-left-color: #a2a9b3;
+}
+
+#ca_datagrid .grid-canvas-bottom >.odd .r0{
+   background: white;
+   border-top-color: white;
+}

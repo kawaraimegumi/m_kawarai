@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+<!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+    <meta charset="UTF-8">
+    <title>template1</title>
+
+    <link rel="stylesheet" href="../../../css/jquery-ui.css">
+    <link rel="stylesheet" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="pl_grid.css">
+
+    <script src="../../../js/jquery.js"></script>
+    <script src="../../../js/jquery-ui.js"></script>
+    <script src="../../../js/underscore.js"></script>
+    <script src="../../../js/backbone.js"></script>
+    <script src="../../../js/bootstrap.js"></script>
+    <script src="../../../js/jquery.tablefix_1.0.0.js"></script>
+    <script src="pl_grid_1.js"></script>
+    <style>
+      #table1.table,
+      #footer1.table {
+      table-layout:fixed;
+      }
+      #table1.table th:first-child,
+      #table1.table td:first-child,
+      #footer1.table th:first-child,
+      #footer1.table td:first-child {
+      width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cl_header"></div>
+
+    <div class="container">
+      <dl class="dl-horizontal">
+        <dt>期間条件</dt>
+        <dd>月指定 201303</dd>
+        <dt>店舗複数指定</dt>
+        <dd>一番カルビ五反田、一番カルビ大崎</dd>
+        <dt>表示条件</dt>
+        <dd>期間毎</dd>
+        <dt>対象</dt>
+        <dd>確定データ</dd>
+      </dl>
+      <div class="row-fluid">
+        <div class="span12">
+          <table id="table1" class="table table-bordered table-condensed x-table-striped">
+            <thead></thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+          <br/>
+          <table id="footer1" style="margin-bottom: 0px;" class="table table-bordered table-condensed x-table-striped">
+            <thead></thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

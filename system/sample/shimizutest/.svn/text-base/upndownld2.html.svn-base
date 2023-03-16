@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>upload and download テスト用画面</title>
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="../../../css/bootstrap.css"
+	media="screen">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<!-- <script type="text/javascript" src="../../../js/jquery.mobile-1.3.1.js"></script> -->
+<script type="text/javascript"
+	src="../../../js/jquery.easing-1.3.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../js/backbone.syphon.fix.js"></script>
+
+<script type="text/javascript" src="../../../js/bootstrap.js"></script>
+
+<!-- datepicker -->
+<script type="text/javascript" src="../../../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript"
+	src="../../../js/jquery.ui.datepicker_ja.js"></script>
+<script type="text/javascript" src="../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../js/jquery.form.js"></script>
+
+<script type="text/javascript"
+	src="../../../js/jquery.tablefix_1.0.0.js"></script>
+
+
+<!-- App -->
+<script type="text/javascript" src="../../js/clcom.js"></script>
+<script type="text/javascript" src="upndownld2.js"></script>
+
+</head>
+<body>
+	<div id="ca_main">
+		<div id="ca_search_form">
+			<select id="ca_st_yyyynn"></select> <select id="ca_ed_yyyynn"></select>
+		</div>
+
+		<div id="ca_downld">
+			<button id="ca_downld1" class="btn">CSV出力</button>
+		</div>
+
+		<span>取込</span>
+		<div id="ca_upld">
+			<input type="file" class="hide-input" multiple/> <span id="ca_label"
+				class="input-xlarge uneditable-input">&nbsp;</span>
+			<button class="btn btn-primary cl-file-attach">選択</button>
+		</div>
+
+		<!-- ここにエラーメッセージが表示される -->
+		<div class="notice_red_large cl_echoback"></div>
+				
+		<table class="table table-striped" id="ca_table">
+			<thead>
+			</thead>
+			<tbody id="ca_tbody_div">
+				<!--ここにテンプレート入る-->
+			</tbody>
+		</table>
+		<!--表テンプレート-->
+		<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+			<tr>
+				<td>${lineno}</td>
+				<td>${linestr}</td>
+				<td>${errmsg}</td>
+			</tr>
+		</script>
+		<!--表テンプレートここまで-->
+	</div>
+</body>
+</html>

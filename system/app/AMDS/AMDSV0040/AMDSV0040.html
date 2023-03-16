@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>振分</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMDSV0040.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script type="text/javascript" src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css' >
+
+	<link href="/css/slickgrid.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/slickgrid.js"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+
+<script src="AMDSV0040.js"></script>
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup" id="ca_base_form">
+				<div id="ssetaddr" class="fieldgroupInBox setaddr">
+					<input type="hidden" id="ca_ptnID">
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox" id="div_ca_unitID">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_unitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 cl_valid cl_required" data-validator="maxlen:24" id="ca_itgrpID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName bl2">店舗ランク<br />パターン</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt360 cl_valid cl_required" data-validator="maxlen:36" id="ca_rankPtnID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName bl3">基準在庫<br />パターン<br />コード</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_stockPtnCode" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName bl2">基準在庫<br />パターン名</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl320"></span>
+							<input type="text" class="form-control wt360 cl_valid cl_required ime-active" data-tflimit="20 zenkaku" data-validator="maxlen:20 zenkaku" id="ca_stockPtnName"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">サブクラス1</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_sub1ID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">サブクラス2</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_sub2ID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">ブランド</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_brandID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">スタイル</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_styleID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">色</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_colorID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">柄</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_designID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName bl2">プライス<br />ライン</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_priceLineID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName bl2">サイズ<br />パターン</p>
+						<div class="fieldBox" id="div_ca_sizePtnID">
+							<!-- <input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_sizePtnID"/> -->
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_sizePtnID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+				</div>
+			</div>
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="fieldUnit mrgb20 flright">
+						<div class="fieldBox noName flleft" id="ca_csvinput2">
+							<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_sample_download">Excelサンプルダウンロード</button>
+						</div>
+						<div class="fieldBox noName flleft">
+							<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half">
+						<p class="fieldName">体型</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_bodyShapeID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<hr>
+
+					<div class="cl_datagrid_container" id="ca_datagrid" style=""></div>
+
+				    <script id="HdrCell" type="text/template">
+				        <div class="cell sizeHdr">
+				            <div class="grd-tbl">
+				                <div style="display: table-row;">
+				                    <div class="grd-cell" style="display:table-cell;vertical-align:middle;padding: 0 12px;">
+				                        <%= it.label %>
+				                    </div>
+				                </div>
+				                <div style="display: table-row;">
+				                    <div class="deleteRow" style="display:table-cell;vertical-align:middle;padding: 0 12px; border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+				                        <div style="float: left;"><%- it.value %></div>
+				                        <div class="viewAll">&nbsp;</div>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="StoreFilterView" type="text/template">
+				        <div class="sfv <% !it.editMode && print('cell') %>" style="height: 100%;">
+				            <div class="grd-tbl">
+				                <div style="display: table-row;">
+				                    <div style="display:table-cell;vertical-align:middle;">
+				                            <div class="parentSelect editable" style="position:relative; height: 40px;">
+				                                <% if (!it.editMode){ %>
+				                                <%= it.parent %>
+				                                <% } %>
+				                            </div>
+				                    </div>
+				                </div>
+				                <div style="display: table-row;">
+				                    <div style="display:table-cell;vertical-align:middle;border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+									     <div class="childSelect" style="position:relative; height: 30px;">
+									          <% if (!it.editMode){ %>
+									          <%= it.child %>
+									          <% } %>
+									     </div>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="TotalColFormatter" type="text/template">
+				        <div class="cell">
+				            <div class="grd-tbl">
+				                <div class="grd-cell reference pdg0" style="width: 80px;">
+				                    <div class="txtar stockQy"><%- clutil.comma(it.stockQy) %></div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="SizeEditor" type="text/template">
+				        <div class="cell">
+				            <div class="grd-tbl">
+								<div class="grd-cell" style="padding: 0;">
+									<div class="txtar">
+		                        		<% if (it.editMode) { %>
+			                        		<input type="text" class="form-control txtar cl_valid" data-validator="uint:4">
+		                        		<% } else { %>
+			                        		<div class="form-control <% it.editable && print('form-control'); %>">
+			                            		<div class="txtar stockQy"><%- clutil.comma(it.stockQy) %></div>
+			                        		</div>
+		                        		<% } %>
+									</div>
+								</div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="StockQyFormatter" type="text/template">
+				        <div class="<%- !it.editable && 'noedit' %>">
+				            <div class="grd-tbl  <%- it.rowClass %>">
+				                <div class="grd-cell">
+				                    <div class="txtar"><%- it.col %></div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+					<!-- /#table -->
+
+
+					<div class="mrgb20"></div>
+
+				</div>
+
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		<!--
+			<p class="cancel"><a href="javascript:void(0)" id="cl_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a href="javascript:void(0)" id="cl_submit">登録</a></p>
+			<p class="flleft"><a href="javascript:void(0)" id="cl_prev">前へ</a></p>
+			<p class="flright"><a href="javascript:void(0)" id="cl_next">次へ</a></p>
+			<div class="clear"></div>
+		 -->
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+
+</body>
+</html>

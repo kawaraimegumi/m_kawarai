@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>営業帳票</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<link href="/css/slickgrid.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/slickgrid.js"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js"></script>
+	<link media="screen" rel="stylesheet" type="text/css" href="AMBRV0050.css">
+
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMBRV0050.js"></script>
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0010_2_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_2_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- タイトル部は MDBaseView によって置き換えるので、設置不要。-->
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required" id="ca_srchUnitID_div">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID" name="srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft cl_valid cl_store" type="text" id="ca_srchOrgID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_org_select" tabindex="-1">参照...</button>
+							<label class="checkbox ib mrgl10" for="check1"><input type="checkbox" value="" name="srchExistSw" id="ca_srchExistSw" data-toggle="checkbox">既存店のみ表示</label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_srchItgrpID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">シーズン</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt280" name="srchSeasons" id="ca_srchSeasonSw"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">商品属性1</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_srchItemAttr1Sw"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgl10">
+						<div class="fieldBox noName">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_srchItemAttr1Cont"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">商品属性2</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_srchItemAttr2Sw"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgl10">
+						<div class="fieldBox noName">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_srchItemAttr2Cont"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<hr>
+
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName">比較対象</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 flleft cl_valid cl_store" id="ca_srchCompOrgID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_compare_select" tabindex="-1">参照...</button>
+							<label class="checkbox ib mrgl10" for="check1"><input type="checkbox" value="" name="srchCompExistSw" id="ca_srchCompExistSw" data-toggle="checkbox">既存店のみ表示</label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 flleft">
+						<div class="fieldBox noName">
+							<!-- ツールチップでヘルプを表示 -->
+							<p class="txtInFieldUnit flleft help" id="ca_tp_compare" title="比較対象を入力すると、「順位」「在庫日数」の比較が可能です。"><span>?</span></p>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<p class="fieldName">分類項目</p>
+						<div class="fieldBox">
+							<ul>
+							<li><label class="radio"><input type="radio" name="ca_srchAbcSw" value="1" data-toggle="radio" checked>売上数</label></li>
+							<li><label class="radio"><input type="radio" name="ca_srchAbcSw" value="2" data-toggle="radio">売上高</label></li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<p class="fieldName">並び順</p>
+						<div class="fieldBox">
+							<ul>
+							<li><label class="radio"><input type="radio" name="ca_srchSortSw" value="1" data-toggle="radio">昇順　</label></li>
+							<li><label class="radio"><input type="radio" name="ca_srchSortSw" value="2" data-toggle="radio" checked>降順</label></li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<hr>
+
+					<div class="fieldUnit required">
+						<p class="fieldName">対象期間</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap ca_srchFromDate_div"><input class="cl_valid cl_date cl_required ime-disabled" type="text" id="ca_srchFromDate" /></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap ca_srchToDate_div"><input class="cl_valid cl_date cl_required ime-disabled" type="text" id="ca_srchToDate" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn btn-info wt280" id="ca_srch">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<!-- /#ca_srchArea -->
+				<button id="searchAgain" class="dispn btn" target="searchAgain">検索条件を再指定</button>
+			</div>
+
+			<div id="result" class="dispn">
+
+			<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<!-- <div class="pagination-wrapper"></div> -->
+
+			<div class="fieldgroupInBox">
+				<div class="fieldUnit mrgb20 mrgr20 flleft">
+					<p class="fieldName bl2">合計メーカー<br />品番数</p>
+					<div class="fieldBox flleft" id="ca_rankNum">
+						<p class="flleft">
+							<span class="abcnum_span">Aランク</span>
+							<span class="abcnum" id="rankANum">&nbsp;</span>
+						</p>
+						<p class="flleft">
+							<span class="abcnum_span">Bランク</span>
+							<span class="abcnum" id="rankBNum">&nbsp;</span>
+						</p>
+						<p class="flleft">
+							<span class="abcnum_span">Cランク</span>
+							<span class="abcnum" id="rankCNum">&nbsp;</span>
+						</p>
+						<p class="flleft">
+							<span class="abcnum_span">Dランク（売上0）</span>
+							<span class="abcnum" id="rankDNum">&nbsp;</span>
+						</p>
+						<p class="flleft txtInfo">
+							<span class="abcnum_span">合計</span>
+							<span class="abcnum" id="totalNum">&nbsp;</span>
+						</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<div class="clear"></div>
+
+			<div class="unit flright mrgb10">金額（千円）、比（％）</div>
+			<div class="clear"></div>
+
+			<div class="cl_datagrid_container" id="ca_datagrid" style=""></div>
+
+			<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<!-- <div class="pagination-wrapper"></div> -->
+
+			</div>
+			<!-- /#result -->
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<div id="mainColumnFooter" class="noLeftColumn"></div>
+
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</body>
+</html>

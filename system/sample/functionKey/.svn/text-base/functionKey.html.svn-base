@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>ファンクションキー</title>
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+
+<!-- pager -->
+<script type="text/javascript" src="../../js/simplePagination.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker_ja.js"></script>
+<script type="text/javascript" src="../../../js/jquery.dragtable.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+
+<!-- App -->
+<script type="text/javascript" src="../../js/clcom.js"></script>
+<script type="text/javascript" src="../../js/messages_ja.js"></script>
+<script type="text/javascript" src="../../app/cm330/cm330.js"></script>
+<script type="text/javascript" src="functionKey.js"></script>
+
+</head>
+<body>
+  <!-- 選択画面配置 -->
+  <div class="messageBox"></div>
+</body>
+</html>

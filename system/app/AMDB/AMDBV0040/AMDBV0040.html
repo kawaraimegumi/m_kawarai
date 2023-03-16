@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width">
+	<title>個人売上実績</title>
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../js/amgbd_defs.js"></script>
+	<script type="text/javascript" src="../js/mdb.js"></script>
+	<link rel="stylesheet" href="../css/mdb.css" type="text/css">
+	<script type="text/javascript" src="AMDBV0040Req.js"></script>
+	<script type="text/javascript" src="AMDBV0040.js"></script>
+	<link rel="stylesheet" href="AMDBV0040.css" type="text/css">
+</head>
+<body>
+	<div id="mdbMain">
+		<div id="mdbContainer">
+			<div class="mdbField">
+				<div class="flex">
+					<div class="mdbFieldText" style="padding-left: 12.5px; padding-right: 12.5px;">期間</div>
+					<div id="period"></div>
+					<div class="mdbFieldText">店舗</div>
+					<div id="orgTree"></div>
+					<button id="searchButton" class="mdbBtn btn btn-primary">表示</button>
+				</div>
+				<div class="flex">
+					<div class="mdbFieldText">従業員</div>
+					<div id="postgrp"></div>
+					<div class="mdbFieldText">店舗別/担当者別</div>
+					<div id="viewType"></div>
+				</div>
+			</div>
+			<div id="request" class="mdbRequest"></div>
+			<div id="result" class="mdbField dispn">
+				<div class="flex">
+					<div id="sortKey"></div>
+					<div id="sortOrder"></div>
+					<button id="sortButton" class="mdbBtn btn">並び替え</button>
+					<button id="hAxisFilterButton" class="mdbBtn btn">横軸フィルタ</button>
+					<div class="mdbFieldText">タップで移動 : 順位…個人の全社・ゾーンランキング詳細　項目名...項目ごとのランキング</div>
+				</div>
+				<div id="table"></div>
+				<div id="pager"></div>
+				<script id="tableTemplate" type="text/x-jquery-tmpl">
+					<table></table>
+				</script>
+				<script id="theadTemplate" type="text/x-jquery-tmpl">
+					<thead></thead>
+				</script>
+				<script id="tbodyTemplate" type="text/x-jquery-tmpl">
+					<tbody></tbody>
+				</script>
+				<script id="columnTemplate0" type="text/x-jquery-tmpl">
+					<th class="column0"></th>
+				</script>
+				<script id="columnTemplate" type="text/x-jquery-tmpl">
+					<th key=${key}>
+						<div class="sortKey">
+							<div class="center">
+								<div>
+									<div class="columnName1">${name1}</div>
+									<div class="columnName1">${name2}</div>
+								</div>
+								<div>
+									<div class="columnName2"></div>
+									<div class="columnName2">${unit}</div>
+								</div>
+							</div>
+						</div>
+					</th>
+				</script>
+				<script id="rowTemplate1" type="text/x-jquery-tmpl">
+					<tr class="row1"></tr>
+				</script>
+				<script id="rowTemplate2" type="text/x-jquery-tmpl">
+					<tr class="row2"></tr>
+				</script>
+				<script id="rowTemplate3" type="text/x-jquery-tmpl">
+					<tr class="row3"></tr>
+				</script>
+				<script id="dataTemplate01" type="text/x-jquery-tmpl">
+					<td>
+						<div class="staff">${staff.name}</div>
+						<div class="org">${org.name}</div>
+					</td>
+				</script>
+				<script id="dataTemplate1" type="text/x-jquery-tmpl">
+					<td key=${key} class="val">${val}</td>
+				</script>
+				<script id="dataTemplate02" type="text/x-jquery-tmpl">
+					<td>
+						<div class="flex">
+							<div class="rankName">${rankName}</div>
+							<div class="rank">${rank}位</div>	
+							<div class="avgName">${name}</div>
+						</div>
+					</td>
+				</script>
+				<script id="dataTemplate2" type="text/x-jquery-tmpl">
+					<td key=${key} class="avgVal">${val}</td>
+				</script>
+			</div>
+		</div>
+		<div id="modal">
+			<div id="closeButton"></div>
+			<div class="flex">
+				<div class="hAxisFilter webkitFillAvailable"></div>
+				<div class="hAxisFilter webkitFillAvailable"></div>
+			</div>
+			<div class="right" style="padding-top: 10px;">
+				<button id="allSelectButton" class="mdbBtn btn">全選択</button>
+				<button id="allClearButton" class="mdbBtn btn">全解除</button>
+				<button id="confirmButton" class="mdbBtn btn btn-primary">完了</button>	
+			</div>
+		</div>
+		<script id="hAxisFilterTemplate" type="text/x-jquery-tmpl">
+			<div class="key"></div>
+		</script>
+	</div>
+</body>
+</html>

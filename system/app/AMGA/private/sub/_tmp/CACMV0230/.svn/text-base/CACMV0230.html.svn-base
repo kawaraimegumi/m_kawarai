@@ -1,0 +1,188 @@
+<div id="ca_CACMV0230_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>購買抽出条件</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div class="fieldgroup" id="ca_CACMV0230_searchArea">
+				<div class="fieldgroupInBox" id="ca_CACMV0230_sale_am">
+					<div class="fieldUnit wt450 flleft mrgr20">
+						<p class="fieldName">購入金額</p>
+						<div class="fieldBox">
+							<input type="hidden" name="name" value="sale_am"/>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="from"/>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="to"/>
+							<p class="txtInFieldUnit pdg flleft">円</p>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit wt140 flleft">
+						<p class="fieldName">順位</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt60 flleft cl_valid ime-disabled txtar"
+								data-limit="len:1 digit" data-filter="comma" name="seqno"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				
+				<div class="fieldgroupInBox" id="ca_CACMV0230_sale_qy">
+					<div class="fieldUnit wt450 flleft mrgr20">
+						<p class="fieldName">購入点数</p>
+						<div class="fieldBox">
+							<input type="hidden" name="name" value="sale_qy"/>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="from"/>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="to"/>
+							<p class="txtInFieldUnit pdg flleft">点</p>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldUnit wt140 flleft">
+						<p class="fieldName">順位</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt60 flleft cl_valid ime-disabled txtar"
+								data-limit="len:1 digit" data-filter="comma" name="seqno"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="fieldgroupInBox" id="ca_CACMV0230_prof_am">
+					<div class="fieldUnit wt450 flleft mrgr20">
+						<p class="fieldName">経準高</p>
+						<div class="fieldBox">
+							<input type="hidden" name="name" value="prof_am"/>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="from"/>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="to"/>
+							<p class="txtInFieldUnit pdg flleft">円</p>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldUnit wt140 flleft">
+						<p class="fieldName">順位</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt60 flleft cl_valid ime-disabled txtar"
+								data-limit="len:1 digit" data-filter="comma" name="seqno"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="fieldgroupInBox"  id="ca_CACMV0230_prof_rt">
+					<div class="fieldUnit wt450 flleft mrgr20">
+						<p class="fieldName">経準率</p>
+						<div class="fieldBox">
+							<input type="hidden" name="name" value="prof_rt"/>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="from"/>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="to"/>
+							<p class="txtInFieldUnit pdg flleft">％</p>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldUnit wt140 flleft">
+						<p class="fieldName">順位</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt60 flleft cl_valid ime-disabled txtar"
+								data-limit="len:1 digit" data-filter="comma" name="seqno"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="fieldgroupInBox" id="ca_CACMV0230_coming_count">
+					<div class="fieldUnit wt450 flleft mrgr20">
+						<p class="fieldName">来店回数</p>
+						<div class="fieldBox">
+							<input type="hidden" name="name" value="coming_count"/>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="from"/>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="to"/>
+							<p class="txtInFieldUnit pdg flleft">回</p>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldUnit wt140 flleft">
+						<p class="fieldName">順位</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt60 flleft cl_valid ime-disabled txtar"
+								data-limit="len:1 digit" data-filter="comma" name="seqno"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="fieldgroupInBox" id="ca_CACMV0230_coming_days">
+					<div class="fieldUnit wt450 flleft mrgr20">
+						<p class="fieldName">来店日数</p>
+						<div class="fieldBox">
+							<input type="hidden" name="name" value="coming_days"/>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="from"/>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_valid ime-disabled txtar"
+								data-limit="len:9 digit" data-filter="comma" name="to"/>
+							<p class="txtInFieldUnit pdg flleft">日</p>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldUnit wt140 flleft">
+						<p class="fieldName">順位</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt60 flleft cl_valid ime-disabled txtar"
+								data-limit="len:1 digit" data-filter="comma" name="seqno"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="fieldgroupInBox" id="ca_CACMV0230_num">
+					<div class="fieldUnit wt450 flleft mrgr20">
+						<p class="fieldName bl2">抽出人数<br />（上位）</p>
+						<div class="fieldBox">
+							<input type="hidden" name="name" value="num"/>
+							<input type="text" placeholder="" class="form-control wt140 flleft cl_required ime-disabled txtar"
+								data-limit="len:9 digit" name="num"/>
+							<p class="txtInFieldUnit pdg flleft">人</p>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACMV0230_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0230_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div>

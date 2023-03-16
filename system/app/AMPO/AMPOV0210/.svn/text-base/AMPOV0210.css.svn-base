@@ -1,0 +1,90 @@
+@CHARSET "UTF-8";
+p.fieldName.nameLong {
+    width:140px;
+}
+
+.fieldgroup .fieldUnit.wid120{
+    width:120px;
+}
+.fieldgroup .fieldUnit.{
+    width:140px;
+}
+.fieldgroup .fieldUnit.wid160{
+    width:160px;
+}
+.fieldgroup .fieldUnit.wid180{
+    width:160px;
+}
+.wt60 {
+    width : 60px;
+}
+.wt50 {
+    width : 50px;
+}
+.wt70 {
+    width : 70px;
+}
+.wt100 {
+    width : 100px;
+}
+.wt100 {
+    width : 110px;
+}
+.wt120 {
+    width : 120px;
+}
+.wt150 {
+    width : 150px;
+}
+.wt160 {
+    width : 160px;
+}
+.wt170 {
+    width : 170px;
+}
+.wt180 {
+    width : 180px;
+}
+.wt140 {
+    width : 140px;
+}
+.wt480 {
+    width : 480px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.mrgl140 {
+    margin-left: 140px;
+}
+.mrgl480 {
+    margin-left: 480px;
+}
+.mrgl80 {
+    margin-left: 80px;
+}
+.termBox{
+    padding : 10px;
+}
+.three_quarters {
+  width: 60%;
+}
+.wt580 {
+    width : 580px;
+}
+.wt520 {
+    width : 520px;
+}
+.pdgt10{
+    padding-top:10px;
+}
+.tableHeasName {
+  position: absolute;
+  color: #667180;
+  font-size: 82%;
+  padding-top: 14px;
+  line-height: 1.3;
+  width: 200px;
+  text-align: left;
+  padding-right: 20px;
+}

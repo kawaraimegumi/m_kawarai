@@ -1,0 +1,258 @@
+@CHARSET "UTF-8";
+
+.mrgl320 {
+  margin-left: 320px;
+}
+
+.wt360 {
+  width: 360px;
+}
+
+.wt140 {
+  width: 140px;
+}
+
+.frwkComment {
+  color: #667180;
+  font-size: 88%;
+  padding-top: 12px;
+  line-height: 1.3;
+}
+
+.frwkComment2 {
+  color: #667180;
+  font-size: 82%;
+  padding-top: 12px;
+  line-height: 1.3;
+}
+
+.mrgr100 {
+  margin-right: 120px;
+}
+
+td.hoge > div {
+  width: 200px;
+}
+
+#container{
+    min-width : 1366px;
+}
+
+#content{
+  padding-bottom: 20px;
+}
+
+.table input {
+  font-size: 100%;
+  font: inherit;
+  min-width: 45px;
+}
+
+.periodComment {
+  color: #667180;
+  font-size: 88%;
+  padding-top: 12px;
+  line-height: 1.3;
+}
+
+.boxLink {
+    cursor:pointer;
+    font-size: 82%;
+    padding:20px 0px 0px 0px;
+}
+
+#ca_rank_datagrid {
+    height: 380px;
+}
+
+#ca_store_datagrid {
+    height: 400px;
+}
+
+.grid-canvas div.input {
+    ./*padding: 8px 12px;*/
+    padding: 0px;
+}
+
+.slick-cell .noedit,
+.slick-cell .cell {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.slick-cell .noedit table td {
+    font-size: 12px;
+    padding: 8px 12px;
+}
+
+.slick-cell .grd-tbl {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.slick-cell .grd-tbl .grd-row {
+    display: table-row;
+}
+
+.slick-cell.input.active.editable {
+    padding: 0;
+    border-left: 1px solid #E4E6EB;
+    border-top: 1px solid #E4E6EB;
+
+}
+
+.slick-cell .grd-tbl .grd-cell {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 8px 12px;
+}
+
+.slick-cell .grd-tbl .grd-cell.edit {
+    background: url("/system/images/bg_tdinput.png");
+}
+
+.slick-cell .grd-tbl .grd-cell.editable {
+    padding: 0;
+}
+
+.slick-cell .grd-tbl .grd-cell.half {
+    width: 50%;
+}
+
+.slick-cell .grd-tbl .grd-cell:not(:first-child) {
+    border-left: 1px solid #E4E6EB;
+}
+
+.slick-cell .grd-cell {
+    padding: 8px 12px;
+}
+
+.slick-cell .grd-cell .baseStockQy input[type=text]{
+    font-size: 14px;
+}
+
+.cl_datagrid .slick-cell.input {
+    background: transparent;
+}
+
+.cl_datagrid .slick-cell.input.fntss {
+    background: url("/system/images/bg_tdinput.png");
+}
+
+.cl_datagrid .slick-cell.input .baseStockQy .form-control {
+    background: url("/system/images/bg_tdinput.png");
+}
+
+.cl_datagrid .slick-cell .pdg0 {
+    padding: 0;
+}
+
+.cl_datagrid .slick-cell .sales {
+    border-bottom: 1px solid #FFF;
+    padding: 5px 5px;
+    height: 27px;
+}
+
+.cl_datagrid .slick-cell .ref {
+    padding: 5px 5px;
+    height: 54px;
+}
+
+.slick-row {
+    font-family: Lato, メイリオ, 'ＭＳ Ｐゴシック', sans-serif;
+    font-size: 12px;
+    color: #212226;
+}
+
+/*.slick-cell .reference {
+    background: rgba(15, 184, 170, 0.1);
+    color: #A2A9B3;
+}
+
+.slick-row.reference {
+    background: rgba(15, 184, 170, 0.1);
+    color: #A2A9B3;
+}*/
+
+.cl_datagrid .grid-canvas-top .slick-cell {
+    border-left: 0;
+}
+.cl_datagrid .grid-canvas-top .slick-cell.l0,
+.cl_datagrid .grid-canvas-top .slick-cell.l1,
+.cl_datagrid .grid-canvas-top .slick-cell.l2 {
+    border-left: 1px solid #E4E6EB;
+}
+
+.viewAll {
+    margin-top: 0;
+}
+
+.deleteRow:hover div:after {
+    width: 12px;
+    height: 12px;
+    background: url("/system/images/icn_delete_active.svg") no-repeat right top;
+    background: url("/system/images/icn_delete_active.png") no-repeat right top\9;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 8px;
+    top: 11px;
+}
+
+/*.cl_datagrid .slick-cell .clgrid-editor-select .edit {
+    margin-top : 10px;
+}
+.cl_datagrid .slick-cell .clgrid-editor-select .edit > .form-control{
+    margin-top : 0px;
+}*/
+
+.cl_datagrid .slick-cell.input.cl_error_field {
+  border-width: 0;
+}
+.cl_datagrid .slick-cell.input.cl_error_field .baseStockQy{
+  border: 2px solid #F2555F;
+  height: 40px;
+}
+
+.cl_datagrid .slick-cell  .sfv  .btn-group.bootstrap-select,
+.cl_datagrid .slick-cell  .sfv  .clgrspfe .btn-group.bootstrap-select,
+.cl_datagrid .slick-cell  .sfv  .btn.selectpicker,
+.cl_datagrid .slick-cell  .sfv .clgrspfe .btn.selectpicker {
+  height: 30px;
+}
+
+.mrgbshort {
+  margin-bottom: 7px;
+}
+.mrgr40{
+  margin-right:40px;
+}
+.mrgr60{
+  margin-right:60px;
+}
+.mrgr88{
+  margin-right:88px;
+}
+.fbwtlong{
+  width: 310px;
+}
+
+.slick-cell.fnt {
+  white-space: normal;
+}
+.slick-cell.fntss {
+  /*font-size:10px;*/
+  white-space: normal;
+}
+.slick-cell.editable.fntss {
+  font-size:12px;
+}
+div.slick-pane.slick-pane-top.slick-pane-left div.slick-cell.fntss{
+  font-size:12px;
+}

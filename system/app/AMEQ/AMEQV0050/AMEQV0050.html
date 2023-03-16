@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+	<title>備品管理</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMEQV0050.css">
+	<link href="../../../css/multiple-select.css" rel="stylesheet">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+	<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+</head>
+
+<body class="cl_body_hidden">
+
+<div id="ca_main">
+
+<script src="AMEQV0050.js"></script>
+
+<div id="container">
+
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+
+					<!-- 事業ユニット -->
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required" id="div_ca_srchUnitID">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" name="srchUnitID" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 店舗 -->
+					<div class="fieldUnit mrgb10 required" id="div_ca_store">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox" id="div_ca_store">
+							<input type="text" placeholder="" class="form-control wt280 flleft cl_valid cl_required" name="srchStoreID" id="ca_srchStoreID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 備品区分 -->
+					<div class="fieldUnit mrgb10 half flleft mrgr20" id="ca_srchEquipTypeIDArea">
+						<p class="fieldName">備品区分</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt280" name="srchEquipTypeID" id="ca_srchEquipTypeID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 備品区分 -->
+					<div class="fieldUnit mrgb10 half flleft mrgr20" id="ca_srchEquipTypeIDArea_ori">
+						<p class="fieldName">備品区分</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt280" name="srchEquipTypeID_ori" id="ca_srchEquipTypeID_ori"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 備品名称 -->
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">備品名称</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280" data-validator="maxlen:60 zenkaku" name="srchEquipName" id="ca_srchEquipName" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 発注方法 -->
+					<div class="fieldUnit mrgb10 half flleft mrgr20" id="ca_srchOrderFuncTypeIDArea">
+						<p class="fieldName">発注方法</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt280" name="srchOrderFuncTypeID" id="ca_srchOrderFuncTypeID""></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 発注方法(for ORIHICA) -->
+					<div class="fieldUnit mrgb10 half flleft mrgr20" id="ca_srchOrderFuncTypeIDArea_ori">
+						<p class="fieldName">発注方法</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt280" name="srchOrderFuncTypeID_ori" id="ca_srchOrderFuncTypeID_ori""></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 発注サイクル -->
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">発注サイクル</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt280" name="srchOrderCycleID" id="ca_srchOrderCycleID""></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 flleft mrgr10">
+						<p class="fieldName bl2">発注締め　<br/>タイミング</p>
+						<div class="fieldBox">
+							<select multiple class="mbn wt280" name="srchOrderCountTimingID" id="ca_srchOrderCountTimingID""></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 検索ボタン -->
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn btn-info wt280" id="ca_srch">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div><!-- /#ca_srchArea -->
+
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+
+			</div>
+
+			<div id="result" class="dispn">
+
+				<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+				<div class="pagination-wrapper"></div>
+
+				<div id="innerScroll">
+
+					<div class="table" style="width: 2120px;">
+						<table class="hilightRow selectable" id="ca_table">
+						<thead>
+							<tr>
+								<th width="40px" class="cl_checkbox_selectall">☑全選択</th>
+								<th width="180px">備品区分</th>
+								<th width="340px">備品名称</th>
+								<th width="60px">箱入数</th>
+								<th width="60px">単価</th>
+								<th width="120px">発注方法</th>
+								<th width="80px">発注サイクル</th>
+								<th width="80px">発注締め<br />タイミング</th>
+								<th class="cl_department" width="120px">担当部署</th>
+								<th>店舗通達メモ</th><!-- 2行で1120pxぐらい -->
+							</tr>
+						</thead>
+
+						<tbody id="ca_table_tbody">
+						</tbody>
+
+						</table>
+
+						<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+						<script id="ca_rec_template" type="text/template">
+							<tr equipid="<%- equipID %>">
+								<td class="cl_checkbox_selectrec">☑行選択</td>
+								<!-- 備品区分 -->
+								<td class="ca_c_link"><%- equipTypeDispName %></td>
+								<!-- 備品名称 -->
+								<td class="ca_c_link"><%- equipName %></td>
+								<!-- 箱入数 -->
+								<td class="ca_c_link txtar"><%- clutil.comma(numOfLot) %></td>
+								<!-- 単価 -->
+								<!-- <td class="ca_c_link txtar">&yen;<%- clutil.comma(orderUnitPrice) %></td> -->
+								<td class="ca_c_link txtar">&yen;<%- clutil.comma(orderUnitPriceDisp) %></td>
+								<!-- 発注方法 -->
+								<td class="ca_c_link" data-typeid="<%- orderFuncTypeID %>">
+									<% if (link===0){ %>
+										<%- orderFuncDispName %>
+									<% } else {%>
+										<a href="<%- url %>"  target="_blank"><%- orderFuncDispName %></a>
+									<% } %>
+								</td>
+								<!-- 発注サイクル -->
+								<td class="ca_c_link"><%- orderCycleDispName %></td>
+								<!-- 発注締めタイミング -->
+								<td class="ca_c_link"><%- orderCountTimingDispName %></td>
+								<!-- 担当部署 -->
+								<td class="cl_department ca_c_link"><%- departmentDispName %></td>
+								<!-- 店舗通達メモ -->
+								<td class="ca_c_link"><%- storeNoticeMemo %></td>
+							</tr>
+						</script>
+					</div><!-- /#table -->
+
+				</div><!-- /#innerScroll -->
+
+				<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+				<div class="pagination-wrapper"></div>
+
+				<div class="fieldUnit">
+					<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMEQV0050">
+						<button class="btn btn-primary wt280 flleft mrgr10" id="cl_edit">発注登録へ</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+			</div><!-- /#result -->
+
+		</div><!-- /#content -->
+
+		</div><!-- /#mainColumnFooter -->
+
+	</div><!-- /#mainColumninBox -->
+
+	</div><!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</body>
+</html>

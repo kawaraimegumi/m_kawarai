@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+}
+
+.reference {
+  background: rgba(15, 184, 170, 0.1);
+  color: #a2a9b3;
+}
+
+#myGrid .replaceTarget {
+	padding-top: 8px;
+	padding-bottom: 2px;
+	line-height: 12px;
+}

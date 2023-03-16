@@ -1,0 +1,24 @@
+.clgr-link {
+	/* display: block; */
+}
+
+.slick-cell.errorCell {
+  background-color: #fde3e5;
+}
+.slick-cell.errorCell .clgr-link {
+  color: #f2555f !important;
+}
+
+.slick-row.row0 .slick-cell {
+	height: 70px;
+	line-height: 20px;
+	padding-top: 10px;
+}
+
+.slick-row.row1 .slick-cell {
+	border-top-color: transparent;
+}
+
+.dataGrid {
+	max-width: 1150px;
+}

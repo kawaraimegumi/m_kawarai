@@ -1,0 +1,118 @@
+@CHARSET "UTF-8";
+
+.fieldName.bl3 {
+  margin-top: -16px;
+}
+
+#ca_table {
+	width: 70%;
+}
+
+.th_checkbox {
+	position:absolute;
+	left:0px;
+	width:40px;
+}
+.td_checkbox {
+	position:absolute;
+	left:0px;
+	width:40px;
+}
+
+.th_div {
+	position:absolute;
+	left:40px;
+	width:100px;
+}
+.td_div {
+	position:absolute;
+	left:40px;
+	width:100px;
+}
+
+.th_itgrp {
+	position:absolute;
+	left:140px;
+	width:120px;
+}
+.td_itgrp {
+	position:absolute;
+	left:140px;
+	width:120px;
+}
+
+.th_code {
+	position:absolute;
+	left:260px;
+	width:100px;
+}
+.td_code {
+	position:absolute;
+	left:260px;
+	width:100px;
+}
+
+.th_name {
+	position:absolute;
+	left:360px;
+	width:220px;
+}
+.td_name {
+	position:absolute;
+	left:360px;
+	width:220px;
+}
+
+.th_sub {
+	table-layout: fixed;
+	min-width:100px;
+}
+.th_brand {
+	table-layout: fixed;
+	min-width:140px;
+}
+.th_style {
+	table-layout: fixed;
+	min-width:120px;
+}
+.th_color {
+	table-layout: fixed;
+	min-width:80px;
+}
+.th_design {
+	table-layout: fixed;
+	min-width:140px;
+}
+.th_priceLine {
+	table-layout: fixed;
+	min-width:110px;
+}
+.th_date {
+	table-layout: fixed;
+	min-width:120px;
+}
+.th_user {
+	table-layout: fixed;
+	min-width:280px;
+}
+
+.ruler {
+	table-layout: fixed;
+	position: absolute;
+	width: 0px;
+	left: 580px;
+	margin: 0;
+	padding: 0;
+	background: #dddddd;
+}
+
+/*
+ * outer/inner CSS
+ */
+.table_outer {position:relative}
+.table_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  width:58%;
+  margin-left:580px;
+}

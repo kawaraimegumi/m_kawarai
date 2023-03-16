@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>移動サジェスチョン</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMTSV0030.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.form.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+
+	<script type="text/javascript" src="/js/slickgrid.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../../css/slickgrid.css">
+
+<script>
+</script>
+
+</head>
+
+<body>
+
+<script src="AMTSV0030.js"></script>
+
+<div id="ca_main">
+
+<div class="AlWrntemplate" style="display: none;">
+	<div class="error-row pt4 clearfix">
+		<div class="error-title"></div>
+		<div class="show-error"></div>
+	</div>
+</div>
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+	<!-- 移動依頼ファミリーへのリンク -->
+	<div>
+		<a class="flleft mrgt10 mrgl20 mrgr20" href="javascript:void(0)" id="ca_AMTRV0010">移動依頼一覧(一括)</a>
+		<p class="flleft mrgt10 mrgr20">移動依頼一覧(サイズアソート)</p>
+		<a class="flleft mrgt10" href="javascript:void(0)" id="ca_AMTSV0050">移動依頼一覧(セットアップ)</a>
+	</div>
+
+	<div id="content">
+
+		<!-- 移動指示情報 -->
+		<div class="fieldgroup mrgt20" id="ca_srchArea">
+
+			<!-- ==============事業ユニット/品種/指示番号/指示名称============================= -->
+			<div class="fieldgroupInBox mrgb20" id="ca_instructArea">
+
+				<!-- 事業ユニット -->
+				<div class="fieldUnit mrgb10 half flleft required">
+					<p class="fieldName">事業ユニット</p>
+					<div class="fieldBox">
+						<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_unitID">
+						</select>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="clear"></div>
+
+				<!-- 品種 -->
+				<div class="fieldUnit mrgb10 flleft mrgr20 required">
+					<p class="fieldName">品種</p>
+					<div class="fieldBox">
+						<input type="text" class="form-control wt280 cl_valid cl_required flleft" id="ca_itgrpID" />
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="clear"></div>
+
+				<!-- 依頼番号 -->
+				<div class="fieldUnit mrgb10 flleft mrgr20">
+					<p class="fieldName">依頼番号</p>
+					<div class="fieldBox">
+						<input type="text" class="form-control wt280 flleft" id="ca_instructNo" readonly/>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="clear"></div>
+
+				<!-- 依頼名称 -->
+				<div class="fieldUnit mrgb20 required">
+					<p class="fieldName">依頼名称</p>
+					<div class="fieldBox">
+						<span class="limit wt40 flright mrgl620"></span>
+						<!--
+						<input type="text" class="cl_valid cl_required form-control wt660"
+						id="ca_instructName" data-limit="len:40" data-validator="maxlen:40"/>
+						-->
+						<input type="text" class="cl_valid cl_required form-control wt660"
+						id="ca_instructName" data-tflimit="40" data-validator="maxlen:40"/>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+
+				<!-- 店舗出力日 -->
+				<div class="fieldUnit mrgr20 mrgb10 flleft required">
+					<p class="fieldName">店舗出力日</p>
+					<div class="fieldBox">
+						<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_releaseDate" /></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<!-- 移動出荷期限 -->
+				<div class="fieldUnit mrgr20 mrgb10 flleft required">
+					<p class="fieldName">移動出荷期限</p>
+					<div class="fieldBox" id="ca_limitDateArea">
+						<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_limitDate" /></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<!-- アラーム表示期限 -->
+				<div class="fieldUnit mrgr20 mrgb10 flleft required">
+					<p class="fieldName bl2">アラーム<br>表示期限</p>
+					<div class="fieldBox" id="ca_alarmDateArea">
+						<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_alarmDate" /></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="clear"></div>
+
+				<!-- 移動理由 -->
+				<div class="fieldUnit flleft mrgb10 hta wt100pct required">
+					<p class="fieldName">移動理由</p>
+					<div class="fieldBox">
+						<span class="limit wt40 mrgr_5 pa_storeComment"></span>
+						<textarea rows="3" class="form-control wt100pct cl_valid cl_required cl_textarea" id="ca_reason"
+						data-tflimit="50" data-validator="maxlen:50 zenkaku_cr"/></textarea>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="clear"></div>
+
+				<!-- 店舗通知事項 -->
+				<div class="fieldUnit flleft mrgb10 hta wt100pct required ">
+					<p class="fieldName">店舗通知事項</p>
+					<div class="fieldBox">
+						<span class="limit wt40 mrgr_5 flright pa_storeComment"></span>
+						<textarea rows="3" class="form-control wt100pct cl_valid cl_required cl_textarea" id="ca_comment"
+						data-tflimit="60" data-validator="maxlen:60 zenkaku_cr"/></textarea>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="clear"></div>
+
+				<!-- 添付ファイル -->
+				<div class="fieldUnit mrgb10 flleft wt1200">
+					<p class="fieldName">添付ファイル</p>
+					<div class="fieldBox fleft ca_torikomi_div">
+						<span id="ca_label" class="choose form-control wt280 flleft"></span>
+						<input type="hidden" id="ca_fileID"/>
+						<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileUp_btn">添付ファイルを選択</button>
+						<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileDel_btn">添付ファイルを削除</button>
+					</div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div><!-- /#ca_instructArea -->
+
+			<!-- ==============移動依頼対象エリア================================== -->
+			<div class="fieldgroup mrgb10" id="ca_itemStoreInfo">
+
+				<div class="fieldgroupInBox">
+
+					<!-- 移動依頼対象エリア  -->
+					<div id="ca_itemStore_container">
+					</div>
+
+					<!-- 品番を追加ボタン -->
+					<div class="addFieldUnits dispn"  id="ca_itemCodeBtn">
+						<span id="span_addItemCode">品番を追加</span>
+					</div>
+
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<!-- /カラー・サイズ展開 -->
+
+			<!-- 移動後の品番別サイズバランスボタン・移動後の商品属性別サイズバランスボタン -->
+			<div class="fieldUnit">
+				<div class="fieldBox mrgt20 noName btnCenter " data-cl_groupid="AMTSV0030">
+					<button class="btn btn-info wt320" id="ca_csv_itemCode">移動後の品番別サイズバランスを参照</button>
+					<button class="btn btn-info wt320" id="ca_csv_itemAttr">移動後の商品属性別サイズバランスを参照</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+		</div><!-- /#ca_srchArea -->
+
+	</div><!-- /#content -->
+
+	<div id="mainColumnFooter" class="noLeftColumn x2">
+	</div><!-- /#mainColumnFooter -->
+
+	</div><!-- /#mainColumninBox -->
+
+	</div><!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<!-- 移動依頼対象テンプレート: underscore.js テンプレートを使用 -->
+<script id="ca_rec_template_itemStore" type="text/template">
+
+	<!-- 品番削除ボタン -->
+	<div class="delFieldUnits" style="display: <%= btn_del ? 'block' : 'none' %>;">
+		<span></span>
+	</div>
+
+	<div id="ca_mkitcol">
+		<!-- メーカー -->
+		<div class="fieldUnit mrgb10 flleft mrgr20 required">
+			<p class="fieldName">メーカー</p>
+			<div class="fieldBox">
+				<input type="text" class="form-control wt280 cl_valid cl_required flleft" id="ca_maker" />
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<!-- 品番 -->
+		<div class="fieldUnit mrgb10 flleft mrgr20 required">
+			<p class="fieldName">品番</p>
+			<div class="fieldBox">
+				<span class="limit wt40 flright mrgl240"></span>
+				<input type="text" class="ca_makerItemCode form-control wt280 cl_valid cl_required flleft"
+				id="ca_itemCode" data-tflimit="10" data-validator="maxlen:10 hankaku"/>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<!-- カラー -->
+		<!-- <div class="fieldUnit mrgb10 flleft mrgr20 required">
+			<p class="fieldName">カラー</p>
+			<div class="fieldBox">
+				<input type="text" class="ca_colorCode form-control wt280 cl_valid cl_required flleft" id="ca_color"/>
+			</div>
+			<div class="clear"></div>
+		</div> -->
+
+		<div class="fieldUnit mrgb10 half flleft required">
+			<p class="fieldName">カラー</p>
+			<div class="fieldBox">
+				<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_color">
+				</select>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+
+	<!-- 移動依頼対象データグリッド -->
+	<div class="cl_datagrid_container" id="ca_datagrid" style="height:300px; padding-bottom:30px">
+	</div>
+
+	<div class="clear"></div>
+
+	<hr/>
+
+	<div class="clear"></div>
+
+</script>
+
+</div>
+</body>
+</html>

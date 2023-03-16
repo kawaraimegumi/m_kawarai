@@ -1,0 +1,143 @@
+<div id="ca_MDCMV0090_MDCMV1370_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV0090_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>軸設定</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<div id="content">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox search">
+					<div class="fieldUnit">
+						<div class="fieldBox noName">
+							<select name="info" class="mbn wt280 flleft" id="MDCMV0090_cond_grp"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="table fieldUnit mrgr10 wt240 flleft hta">
+						<div class="ht380 wt240 yScroll">
+							<table class="hilightRow drilldown selectable" id="MDCMV0090_axis_table">
+								<tbody id="MDCMV0090_axis_tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<script id="MDCMV0090_axis_tbody_template" type="text/x-jquery-tmpl">
+						<tr>
+							<td name="MDCMV0090_name" value=${MDCMV0090_name}></td>
+						</tr>
+					</script>
+					<div class="fieldUnit mrgr10 flleft hta wt120">
+						<div class="fieldBox noName ht95 wt120 btnListbuilder"></div>
+						<div class="clear"></div>
+						<div class="fieldBox noName ht95 wt120 btnListbuilder">
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10" id="MDCMV0090_v_axis_button">縦軸</button>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldBox noName ht95 wt120 btnListbuilder">
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10" id="MDCMV0090_h_axis_button">横軸</button>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldBox noName ht95 wt120 btnListbuilder"></div>
+						<div class="clear"></div>
+					</div>
+					<div class="table fieldUnit mrgr10 wt320 flleft hta listbuilder">
+						<span class="inlineText">縦軸(最大<span id="MDCMV0090_v_axis_num"></span>)</span>
+						<div class="control mrgb10">
+							<p class="sortUp mrgr10" id="MDCMV0090_v_up_button">上へ</p>
+							<p class="sortDown mrgr10" id="MDCMV0090_v_down_button">下へ</p>
+							<p class="delete" id="MDCMV0090_v_axis_remove_all_button">すべて削除</p>
+							<div class="clear"></div>
+						</div>
+						<div class="ht320 wt320 yScroll">
+							<table class="hilightRow drilldown selectable" id="MDCMV0090_v_axis_table">
+								<tbody id="MDCMV0090_v_axis_tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<script id="MDCMV0090_v_axis_tbody_template" type="text/x-jquery-tmpl">
+						<tr class="deletable order">
+							<td>
+								<span class="data" name="MDCMV0090_name" value=${MDCMV0090_name}></span>
+								<span class="btn-delete2 flright MDCMV0090_v_axis_remove_button"></span>
+							</td>
+						</tr>
+					</script>
+					<div class="table fieldUnit mrgr10 wt320 flleft hta listbuilder">
+						<span class="inlineText">横軸(最大<span id="MDCMV0090_h_axis_num"></span>)</span>
+						<div class="control mrgb10">
+							<p class="sortUp mrgr10" id="MDCMV0090_h_up_button">上へ</p>
+							<p class="sortDown mrgr10" id="MDCMV0090_h_down_button">下へ</p>
+							<p class="delete" id="MDCMV0090_h_axis_remove_all_button">すべて削除</p>
+							<div class="clear"></div>
+						</div>
+						<div class="ht320 wt320 yScroll">
+							<table class="hilightRow drilldown selectable" id="MDCMV0090_h_axis_table">
+								<tbody id="MDCMV0090_h_axis_tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<script id="MDCMV0090_h_axis_tbody_template" type="text/x-jquery-tmpl">
+						<tr class="deletable order">
+							<td>
+								<span class="data" name="MDCMV0090_name" value=${MDCMV0090_name}></span>
+								<span class="btn-delete2 flright MDCMV0090_h_axis_remove_button"></span>
+							</td>
+						</tr>
+					</script>
+					<div id="MDCMV0090_mstitemlist" class="table fieldUnit mrgr10 wt175 flleft hta listbuilder">
+						<span class="inlineText">表示属性</span>
+						<div class="control mrgb10">
+							<p class="info" id="MDCMV0090_mstitemlist_set_button">表示属性設定</p>
+							<div class="clear"></div>
+						</div>
+						<div class="ht320 wt175 yScroll">
+							<table class="hilightRow drilldown selectable" id="MDCMV0090_mstitemlist_table">
+								<tbody id="MDCMV0090_mstitemlist_tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<script id="MDCMV0090_mstitemlist_tbody_template" type="text/x-jquery-tmpl">
+						<tr class="deletable order">
+							<td>
+								<span class="data" name="MDCMV0090_name" value=${MDCMV0090_name}></span>
+							</td>
+						</tr>
+					</script>
+					<div id="MDCMV0090_laststore" class="flleft" style="display: contents;">
+						<span class="inlineText" style="margin-top: 30px;">期間最終来店店舗期間</span>
+						<div class="datepicker_wrap">
+							<input class="cl_date cl_valid ime-disabled" id="MDCMV0090_laststore_from" type="text" data-limit="len:10">
+						</div>
+						<p class="txtInFieldUnit pdg flleft">〜</p>
+						<div class="datepicker_wrap">
+							<input class="cl_date cl_valid ime-disabled" id="MDCMV0090_laststore_to" type="text" data-limit="len:10">
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<div class="fieldBox nowrap" style="padding-left: 380px;">
+							<label class="checkbox ib">
+								<input type="checkbox" value="" id="MDCMV0090_vfzerosuppress" data-toggle="checkbox">すべての項目が0の場合、明細列を表示しない
+							</label>
+							<label class="checkbox ib" style=" right: 10px;">
+								<input type="checkbox" value="" id="MDCMV0090_hfzerosuppress" data-toggle="checkbox" style="margin-top: 10px;">すべての項目が0の場合、明細列を表示しない
+							</label>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="MDCMV0090_cancel_button">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="MDCMV0090_commit_button">確定</a></p>
+		</div>
+	</div>
+</div>
+</div>

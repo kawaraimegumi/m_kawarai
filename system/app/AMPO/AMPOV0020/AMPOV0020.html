@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0020.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+<style>
+#ca_tp_code+.tooltip .tooltip-inner {
+	text-align: left;
+	/*   width: 300px;*/
+}
+</style>
+
+
+</head>
+
+<body class="cl_body_hidden">
+
+	<div id="ca_main">
+		<script src="AMPOV0020.js"></script>
+
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup" id="ca_base_form">
+							<div id="ssetaddr" class="fieldgroupInBox setaddr">
+								<input type="hidden" id="ca_recno"> <input type="hidden"
+									id="ca_state"> <input type="hidden" id="ca_id">
+								<!--<input type="hidden" id="ca_id">-->
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox ca_unitID_div">
+										<select class="mbn wt280 cl_valid cl_required" name="unitID"
+											id="ca_unitID">
+										</select> <input type="hidden" id="ca_unitCode" name="unitCode">
+										<input type="hidden" id="ca_unitName" name="unitName">
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- ＰＯ種別 -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox ca_poTypeID_div">
+										<select class="mbn wt280 cl_valid cl_required" name="poTypeID"
+											id="ca_poTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- 生地ID -->
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+									<p class="fieldName">生地ID</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240" length="13"></span> <input
+											type="text" placeholder=""
+											class="form-control wt280 cl_valid cl_required cl_regex" name="code"
+											id="ca_code" data-tflimit="13 " data-validator="maxlen:13 "  data-pattern="^[A-Za-z0-9-]*$"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<!-- 生地ID名称名称 -->
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName">生地ID名称</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl360" length="30"></span> <input
+											type="text" placeholder=""
+											class="form-control wt400  cl_valid cl_required" name="name"
+											id="ca_name" data-tflimit="30" data-validator="maxlen:30"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- プライスライン -->
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName bl2">
+										プライス<br />ライン
+									</p>
+									<div class="fieldBox ca_priceLine_div">
+										<input type="text" placeholder=""
+											class="form-control wt280 txtar" name="priceLine"
+											id="ca_priceLine" data-validator="int:9"
+											data-filter="comma" />
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<!-- シーズン -->
+								<div class="fieldUnit mrgb10 half required flleft">
+									<p class="fieldName">シーズン</p>
+									<div class="fieldBox ca_seasonTypeID_div">
+										<select class="mbn wt280 cl_valid cl_required"
+											name="seasonTypeID" id="ca_seasonTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+						</div>
+
+						<div class="fieldgroup" id="ca_table_form">
+							<p class="gtitle">生地品番</p>
+							<div class="fieldgroupInBox">
+								<div class="fieldUnit mrgb20 flright ">
+									<div class="fieldBox noName flleft" id="ca_csvinput1">
+										<input type="file" class="hide-input btn-default"
+											id="file_csv_uptake" />
+										<button
+											class="btn btn-default  mrgl10 cl-file-attach wt280 "
+											id="ca_csv_uptake">Excelデータアップロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb20 flright ">
+									<div class="fieldBox noName flleft" id="ca_csvinput2">
+										<button
+											class="btn btn-default  mrgl10  wt280 "
+											id="ca_sample_download">Excelサンプルダウンロード</button>
+
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="table mrgb0 fieldUnit  hta">
+									<!-- セルを直接編集可能に -->
+									<table class="hilight drilldown" id="ca_table">
+										<thead>
+											<tr>
+												<th width="180px">生地品番</th>
+												<th width="300px">生地品番名称</th>
+												<!-- ウォッシャブルフラグ追加 2015/10/28 早川 -->
+												<th width="100px"><p class="flleft">ウォッシャブル</p>
+													<p class="txtInFieldUnit flleft help ca_help_in_line"
+														id="ca_tp_washable"
+														title="事業ユニットがAOKI<br>PO種別がメンズの場合のみ指定できます。"><span>?</span></p>
+												</th>
+												<th width="180px">適用開始日</th>
+												<th width="180px">適用終了日</th>
+												<th width="180px"><p class="flleft">発注停止日</p>
+													<p class="txtInFieldUnit flleft help ca_help_in_line"
+														id="ca_tp_code"
+														title="発注停止日：この日付以降店舗ではそのマスタを参照不可になります。<br>適用終了日：店舗だけでなく本部でもそのマスタを参照不可になります。"><span>?</span></p>
+												</th>
+												<th width="60px"></th>
+											</tr>
+										</thead>
+										<tbody id="ca_table_tbody">
+										</tbody>
+										<tfoot>
+											<tr class="addRow">
+												<td colspan="6"><span class="btn-add"></span></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2">
+						<!-- <p class="cancel"><a href="javascript:void(0)" id="ca_cancel">戻る</a></p>
+			<p class="apply mrgCancel" id="p_entry"><a href="javascript:void(0)" id="ca_entry">登録</a></p>
+			<p class="flleft"><a href="javascript:void(0)" id="ca_previous">前へ</a></p>
+			<p class="flright"><a href="javascript:void(0)" id="ca_next">次へ</a></p>
+			<div class="clear"></div> -->
+					</div>
+					<!-- /#mainColumnFooter -->
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+		</div>
+		<!-- / #container -->
+		<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+			<tr class="deletable addRow" name="ca_table_tr" >
+				<td class="editable pdg0">
+						<input name="clothCodeCode"  class="form-control cl_valid cl_required cl_regex" type="text" cs_id="${clothCodeCode}"  data-validator="maxlen:13"  data-pattern="^[A-Za-z0-9-]*$" value="${clothCodeCode}">
+						<input type="hidden" name="seq" value="${seq}" cs_id="${seq}">
+						<input type="hidden" name="clothCodeID" value="${clothCodeID}" cs_id="${clothCodeID}">
+				</td>
+
+				<td class="editable pdg0">
+						<input name="clothCodeName" class="form-control cl_valid cl_required" type="text" cs_id="${clothCodeName}"  data-validator="maxlen:30" value="${clothCodeName}">
+				</td>
+
+				<!-- ウォッシャブルフラグ追加 2015/10/28 早川 -->
+				<td class="ca_fWashable_div cl_checkbox_selectrec">
+					<label class="checkbox ca_fWashable">
+						<input class="ca_editableArea ca_fWashable" type="checkbox" name="ca_fWashable" data-toggle="checkbox">
+					</label>
+				</td>
+
+
+				<td class="editable pdg0">
+					<div class="datepicker_wrap">
+						<input name="fromDate" class="cl_date ime-disabled  cl_valid cl_required" type="text"  cs_id="${fromDate}" value="${fromDate}">
+					</div>
+				</td>
+
+				<td class="editable pdg0">
+					<div class="datepicker_wrap">
+						<input name="toDate" class="cl_date ime-disabled  cl_valid cl_required" type="text"  cs_id="${toDate}" value="${toDate}">
+					</div>
+				</td>
+
+				<td class="editable pdg0">
+					<div class="datepicker_wrap">
+						<input name="ordStopDate" class="cl_date ime-disabled  cl_valid" type="text"  cs_id="${ordStopDate}" value="${ordStopDate}">
+					</div>
+				</td>
+				<td><span class="btn-delete flright"></span></td>
+
+
+			</tr>
+		</script>
+		<div class="clear"></div>
+	</div>
+</body>
+</html>

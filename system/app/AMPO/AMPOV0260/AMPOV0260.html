@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0260.css">
+
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+<script>
+
+</script>
+<style>
+#ca_tp_code+.tooltip .tooltip-inner {
+	/*text-align: left;*/
+	/*   width: 300px;*/
+}
+</style>
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+		<script src="AMPOV0260.js"></script>
+
+		<!-- /#header -->
+
+		<div id="container">
+
+			<!-- 組織選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+					<div id="content">
+
+						<div class="fieldgroup">
+							<div id="ca_srchArea" class="fieldgroupInBox search">
+
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox" id="ca_srchUnitID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+
+								<div class="fieldUnit mrgb10 flleft mrgr20" id="ca_srchStoreID_div_div">
+									<p class="fieldName" id="ca_srchStoreID_name">店舗</p>
+									<div class="fieldBox" id="ca_srchStoreID_div">
+										<p class="txtInFieldUnit flright help"  id="tp_store"
+											title="自ゾーンの店舗、または全店で検索できます。&#x0A;全店を検索する場合は、店舗を空欄にして検索して下さい。">
+											<span>?</span>
+										</p>
+										<input type="text"
+											class="form-control wt280 flleft  cl_valid cl_store"
+											name="srchStoreID" id="ca_srchStoreID" />
+										<button class="btn btn-default wt140 flleft mrgl10"
+											tabindex="-1" id="ca_btn_store_select">参照...</button>
+									</div>
+
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox">
+										<select name="info"
+											class="mbn wt280 flleft cl_valid cl_required"
+											name="srchPOTypeID" id="ca_srchPOTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">管理番号</p>
+									<div class="fieldBox">
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:13 alnum" id="ca_srchNo" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit  mrgb10 mrgr20">
+									<p class="fieldName">商品発注日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled" type="text"
+												id="ca_srchStOrderDate" />
+										</div>
+										<p class="txtInFieldUnit pdg flleft">〜</p>
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled" type="text"
+												id="ca_srchEdOrderDate" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit  mrgb10 mrgr20">
+									<p class="fieldName">店舗着日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled" type="text"
+												id="ca_srchStArrivalDate" />
+										</div>
+										<p class="txtInFieldUnit pdg flleft">〜</p>
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled" type="text"
+												id="ca_srchEdArrivalDate" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit  mrgb10 mrgr20">
+									<p class="fieldName">お渡し日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled" type="text"
+												id="ca_srchStSaleDate" />
+										</div>
+										<p class="txtInFieldUnit pdg flleft">〜</p>
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled" type="text"
+												id="ca_srchEdSaleDate" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName bl2">お客様<br>カナ氏名</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_name"
+											title="漢字または半角ｶﾅで入力して下さい。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-active cl_valid"
+											data-validator="maxlen:20" id="ca_srchCustName" />
+
+											<div class="clear"></div>
+									</div>
+
+
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">電話番号</p>
+									<div class="fieldBox flleft">
+										<p class="txtInFieldUnit flright help" id="tp_tel"
+											title="電話番号はハイフン（-）なしで入力して下さい。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:13 digit" id="ca_srchTelNo" />
+											<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">担当社員</p>
+									<div class="fieldBox">
+										<input type="text" placeholder=""
+											class="form-control wt280 cl_valid" name="srchUserID"
+											id="ca_srchUserID" data-validator="maxlen:6 digit" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button id="ca_srch" class="btn btn-info wt280">検索</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+						</div>
+
+						<div id="result" class="dispn">
+
+							<div class="pagination-wrapper"></div>
+
+							<div class="table">
+								<table class="hilightRow" id="ca_table">
+									<thead>
+										<tr>
+											<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+											<th width="120px">管理番号</th>
+											<th width="120px">PO種別</th>
+											<th width="120px">商品発注日</th>
+											<th width="120px">店舗着日</th>
+											<th width="120px">お渡し日</th>
+											<th width="120px">お客様氏名</th>
+											<th width="120px">担当社員</th>
+											<th width="120px">登録店舗</th>
+											<th width="50px">発注書出力</th>
+										</tr>
+									</thead>
+									<tbody id="ca_table_tbody"></tbody>
+								</table>
+							</div>
+
+							<div class="pagination-wrapper"></div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- /#content -->
+
+				<!--				<div id="mainColumnFooter" class="noLeftColumn">
+				</div>
+-->
+
+			</div>
+			<!-- /#mainColumninBox -->
+
+		</div>
+		<!-- /#mainColumn -->
+
+	</div>
+	<!-- / #container -->
+	<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+	<script id="ca_rec_template" type="text/template">
+		<tr class="contextmenu" name="ca_table_tr" id="<%- poOrderID %>" firstID ="<%- poOrderID %>" >
+			<td class="ca_c_link"><%- no %></td>
+			<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_PO_CLASS, poTypeID, 1) %></td>
+			<td class="ca_c_link"><%- clutil.dateFormat(orderDate, 'yyyy/mm/dd(w)') %></td>
+			<td class="ca_c_link"><%- clutil.dateFormat(arrivalDate, 'yyyy/mm/dd(w)') %></td>
+			<td class="ca_c_link"><%- clutil.dateFormat(saleDate, 'yyyy/mm/dd(w)') %></td>
+			<td class="ca_c_link"><%- custName %></td>
+			<td class="ca_c_link"><%- userName %></td>
+			<td class="ca_c_link"><%- storeCode %>:<%- storeName %></td>
+			<td class="ca_c_link xxx"><span class="link_color" style="cursor:pointer" id="ca_btn_PDF_DL">発注書出力</span></td>
+		</tr>
+	</script>
+
+	<div class="clear"></div>
+
+</body>
+</html>

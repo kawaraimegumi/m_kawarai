@@ -1,0 +1,63 @@
+@CHARSET "UTF-8";
+
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+}
+
+.alertTip span {
+  font-size: 75%;
+  background: #fcae3f;
+  margin-right: 0;
+  color: white;
+  height: 14px;
+  width: 14px;
+  padding: 0;
+  text-align: center;
+  line-height: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+  border-radius: 16px;
+}
+
+#myGrid .reference_org {
+	background: rgba(15, 184, 170, 0.1);
+	color: #A2A9B3;
+}
+
+#myGrid .reference {
+	background: #E6F7F6;
+}
+
+#myGrid .align-left {
+	text-align: left;
+}
+
+#myGrid .bdrTpColor {
+	border-top-color: #a2a9b3;
+}
+
+#myGrid .lgFnt {
+  font-size: 125%;
+}
+
+#myGrid .tightSpace {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+#myGrid .tightSpace.editable{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.tooltip {
+	font-size:12px;
+}
+
+#myGrid .replaceTarget {
+	padding-top: 8px;
+	padding-bottom: 2px;
+	line-height: 12px;
+}

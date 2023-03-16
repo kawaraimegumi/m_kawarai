@@ -1,0 +1,42 @@
+extends ../../src/jade/layout/sample
+include ../../src/jade/mixins/mixins
+
+append scripts
+  script#jsCode
+    $(function () {
+      $('#excelDl1').click(function () {
+        var request = {
+          // ... リクエスト APごとに異なる
+        };
+        // レスポンスにアクセス対象のURLを入れてもらう(data.urlは例です)。
+        clutil.postJSON('dummy', request, function (data, dataType) {
+          // clutil.download()を呼びだす。
+          clutil.download(data.url);
+        });
+      });
+    });
+
+block pageHeader
+  h1 CSV/Excel帳票出力のやりかた
+  .well
+    p サーバーにPOSTでリクエストを送信し、そのレスポンスにアクセス対象のURLを含める場合の例。
+    p
+      a(href='http://monopole.suri.co.jp/documents/4') ※ FILE操作インターフェイスを参照のこと
+
+block pageContent
+  h3 サンプル
+  #sample
+    button.btn#excelDl1 エクセル出力
+
+  hr
+  h3 サンプルソースコード
+  h4 HTML
+  pre
+    code#sampleHtml
+  script
+    $('#sampleHtml').text($('#sample').html());
+  h4 JavaScript
+  pre
+    code#sampleJs
+  script
+    $('#sampleJs').text($('#jsCode').text());

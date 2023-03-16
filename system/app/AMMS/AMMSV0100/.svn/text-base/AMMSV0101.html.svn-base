@@ -1,0 +1,122 @@
+<div id="ca_AMMSV0101_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>商品マスタ<span class="divider">|</span>画像</h2>
+			<div class="titleInBoxRight"></div>
+		</div>
+		<!-- /#title -->
+
+		<div id="itemPic_content">
+			<div class="fieldgroup" id="photoFieldGroup">
+				<!-- 画像追加パート -->
+				<div class="picContainer add flleft" id="div_photo_add">
+					<input type="file" class="hide-input" id="ca_img_up" name="file"/>
+					<div class="fieldUnit mrgb10 mrgt20 hta">
+						<div class="fieldBox noName">
+							<div class="picPreview">
+								<img src="" style="display: none;" class="cl-file-attach" alt=""></img>
+							</div>
+							<button class="btn btn-default wt140 flleft btn_img_up" id="btn_photo_select" >画像を選択...</button>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 hta">
+						<p class="fieldName">タグ</p>
+						<div class="fieldBox noName">
+							<span class="limit wt40 mrgr_5"></span>
+							<input type="text" placeholder="カンマ(,)で区切って複数入力" class="form-control cl_valid" id="ca_photoTag" data-tflimit="64" data-validator="maxlen:64"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 hta">
+						<p class="fieldName">コメント</p>
+						<div class="fieldBox noName">
+							<span class="limit wt40 mrgr_5"></span>
+							<textarea name="" id="ca_photoComment" rows="3" class="form-control wt100pct cl_valid" data-tflimit="30" data-validator="maxlen:30"></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb20 hta">
+						<div class="fieldBox noName">
+							<label class="checkbox ib wt100" for=""><input type="checkbox" value="" id="ca_mainFlag" data-toggle="checkbox">メイン写真</label>
+							<label class="checkbox ib wt100" for=""><input type="checkbox" value="" id="ca_clothFlag" data-toggle="checkbox">生地</label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="add" id="div_add">追加</div>
+				</div>
+
+				<!-- ここに画像が表示される -->
+
+				<script id="ca_template_photo_view" type="text/template">
+					<div class="picContainer view main">
+						<div class="hover dispn">編集</div>
+						<div class="picBox">
+							<img src="" style="display:block;" class="cl-file-attach imgCenter" alt="" height="260px">
+							<div class="noimg" style="cursor: not-allowed; display:none;"><span></span></div>
+						</div>
+						<div class="infoBox">
+							<ul class="tag">
+								<!-- ここは更にtemplate -->
+							</ul>
+							<div class="comment"><%- photoComment %></div>
+						</div>
+						<input type="hidden" name="ca_photoFileID" value="<%- photoFileID %>" />
+						<input type="hidden" name="ca_photoSeq" value="<%- photoSeq %>" />
+						<input type="hidden" name="ca_photoID" value="<%- photoID %>" />
+						<input type="hidden" name="ca_photoURL" value="<%- photoURL %>" />
+					</div>
+
+					<div class="picContainer edit dispn">
+						<div class="fieldUnit mrgb10 mrgt20 hta">
+							<input type="file" class="hide-input" name="file"/>
+							<div class="fieldBox noName">
+								<div class="picPreview" style="background: url() no-repeat center center; background-size: 50px;"></div>
+								<button class="btn btn-default wt140 flleft mrgt20 btn_img_up" >画像を選択...</button>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+							<div class="fieldUnit mrgb10 hta">
+								<p class="fieldName">タグ</p>
+								<div class="fieldBox noName">
+									<input type="text" placeholder="" name="ca_photoTag" class="form-control wt280" value="<%- photoTag %>" />
+								</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 hta">
+							<p class="fieldName">コメント</p>
+							<div class="fieldBox noName">
+								<textarea name="ca_photoComment" id="" rows="3" class="form-control wt100pct"><%- photoComment %></textarea>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb20 hta">
+							<div class="fieldBox noName">
+								<label class="checkbox ib wt100" for=""><input type="checkbox" value="" name="ca_mainFlag" data-toggle="checkbox">メイン写真</label>
+								<label class="checkbox ib wt100" for=""><input type="checkbox" value="" name="ca_clothFlag" data-toggle="checkbox">生地</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="save">保存</div>
+						<div class="delete">削除</div>
+					</div>
+				</script>
+			</div>
+		</div>
+		<!-- /#itemPic_content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn">
+			<p class="cancel"><a id="ca_AMMSV0101_commit">戻る</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+</div>
+</div>

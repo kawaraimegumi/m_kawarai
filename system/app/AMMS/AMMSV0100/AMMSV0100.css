@@ -1,0 +1,123 @@
+@CHARSET "UTF-8";
+
+.mrgr_5 {
+  position: absolute;
+  right: 5px;
+  bottom: 0px;
+
+}
+
+.mrgr40 {
+	margin-right: 40px;
+}
+
+td.reference {
+  background: rgba(15, 184, 170, 0.1);
+  color: #a2a9b3;
+}
+
+/*
+ * 発注テーブル用CSS
+ */
+table.ca_table_order {
+	width: 100%;
+}
+
+table.ca_table_order .th_fixed1 {
+	position:absolute;
+	left:0px;
+	width:115px;
+}
+
+table.ca_table_order .th_fixed2 {
+	position:absolute;
+	left:115px;
+	width:100px;
+}
+
+table.ca_table_order .th_size {
+	table-layout: fixed;
+	min-width:90px;
+}
+
+table.ca_table_order .td_fixed1 {
+	position:absolute;
+	left:0px;
+	width:115px;
+}
+
+table.ca_table_order .td_fixed2 {
+	position:absolute;
+	left:115px;
+	width:100px;
+}
+
+table.ca_table_order .ruler {
+	table-layout: fixed;
+	position: absolute;
+	width: 0px;
+	left: 215px;
+	margin: 0;
+	padding: 0;
+	background: #dddddd;
+}
+
+/*
+ * JANテーブル用CSS
+ */
+div.div_jan {
+	width: 100%;
+}
+table.ca_table_jan .th_fixed1 {
+	position:absolute;
+	left:0px;
+	width:115px;
+}
+
+table.ca_table_jan .ruler {
+	table-layout: fixed;
+	position: absolute;
+	width: 0px;
+	left: 115px;
+	margin: 0;
+	padding: 0;
+	background: #dddddd;
+}
+
+table.ca_table_jan .td_fixed1 {
+	position:absolute;
+	left:0px;
+	width:115px;
+}
+
+table.ca_table_jan .th_jan {
+	table-layout: fixed;
+	min-width:140px;
+}
+
+/*
+ * outer/inner CSS
+ */
+.table_outer {position:relative}
+.table_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  width:80%;
+  margin-left:215px;
+}
+.table_jan_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  width:90%;
+  margin-left:115px;
+}
+
+/*
+ * タグ増産率CSS
+ */
+ div.tagrate_cmt {
+   float: left;
+   height: 36px;
+   padding: 5px;
+   font-size: 75%;
+ }

@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+p.fieldName.nameLong {
+    width:120px;
+}
+
+.fieldgroup .fieldUnit.wid120{
+    width:120px;
+}
+
+.pdgt10{
+    padding-top:10px;
+}
+
+.mrgr50{
+    margin-right:50px;
+}
+
+.wt920{
+    width:920px;
+}
+.wt980{
+    width:980px;
+}

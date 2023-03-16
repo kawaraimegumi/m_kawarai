@@ -1,0 +1,1041 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0230.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css'
+	href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+<script src="../lib/ObjTree.js"></script>
+<style>
+#tp_washable+.tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+#tp_jkSleeveButton+.tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+#ca_brandID_div .btn .caret{
+	display: none;
+}
+</style>
+
+</head>
+
+<body class="cl_body_hidden">
+
+	<div id="ca_main">
+		<script src="AMPOV0230.js"></script>
+
+		<div id="container"    style="min-width: 1200px;">
+			<!-- 店舗選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup" id="ca_base_form">
+							<p class="gtitle">基本情報</p>
+							<div id="ssetaddr" class="fieldgroupInBox setaddr">
+								<input type="hidden" id="ca_recno"> <input type="hidden"
+									id="ca_state"> <input type="hidden" id="ca_poOrderID"><input
+									type="hidden" id="ca_firstID">
+								<div class="fieldUnit mrgb10  mrgr20  flleft">
+									<div class="fieldBox noName flleft">
+										<p class="fieldName"></p>
+										<div class="fieldBox" id="ca_InsOldDate_div">
+											<label class="checkbox ib"> 過去分を登録する <input
+												type="checkbox" value="1" id="ca_InsOldDate"
+												data-toggle="checkbox">
+											</label>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20 required " id="ca_InsOldDateInput_div_div">
+									<p class="fieldName" style="width: 120px;">過去商品発注日</p>
+									<div class="fieldBox"  style="padding-left: 120px;">
+										<p class="txtInFieldUnit flright help" id="tp_InsOldDateInput"
+											title="入力された日付は「商品発注日」に表示されます。日付を変更すると、設定済のブランド、生地、スタイル、サイズ、オプション、店舗着日は一旦クリアされ、ブランド設定部ではその日付で有効なブランドが選択可能になります。">
+										<span>?</span>
+										</p>
+										<div class="datepicker_wrap" id="ca_InsOldDateInput_div" readonly>
+											<input type="text" id="ca_InsOldDateInput" name="InsOldDateInput"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-validator="maxlen:13 "/>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft mrgr20 required">
+									<p class="fieldName">店舗</p>
+									<div class="fieldBox" id="ca_storeID_div">
+										<input type="text" placeholder=""
+											class="form-control wt280 flleft cl_valid cl_required"
+											name="storeID" id="ca_storeID"  />
+										<button class="btn btn-default wt140 flleft mrgl10"
+											tabindex="-1" id="ca_btn_store_select">参照...</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName">担当者ID</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240" length="6"></span> <input
+											type="text" placeholder=""
+											class="form-control wt280 cl_valid cl_required" name="userID"
+											id="ca_userID" data-validator="maxlen:6 digit"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft ">
+									<p class="fieldName">管理番号</p>
+									<div class="fieldBox" id="ca_no_div">
+										<input type="text" placeholder=""
+											class="form-control wt280 cl_valid " name="no" id="ca_no"
+											readonly />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								
+								
+								<!--  
+								<div class="fieldUnit mrgb10 half flleft">
+									<div class="fieldBox noName flleft">
+										<p class="fieldName"></p>
+										<div class="fieldBox flleft" id="ca_washable_div">
+											<p class="txtInFieldUnit flright help" id="tp_washable"
+												title="ウォッシャブルを指定すると、各スタイルには「ウォッシャブル」指定されたもののみ選択可になります。<br>AOKI店舗のみ選択可。">
+												<span>?</span>
+											</p>
+											<label class="checkbox ib"> ウォッシャブル <input
+												type="checkbox" value="1" id="ca_washable"
+												data-toggle="checkbox">
+											</label>
+
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								-->
+
+								<div class="fieldUnit mrgb10  flleft  required mrgr20">
+									<p class="fieldName">ブランド</p>
+									<div class="fieldBox" id="ca_brandID_div" style="width: 490px;">
+										<span class="autofill" id="ca_brandID_autofill"></span>
+										<select name="info"
+											class="mbn wt390 cl_valid cl_required flleft" name="brandID"
+											id="ca_brandID">
+										</select>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="fieldBox flleft " id="ca_orderType_div" style="padding-left: 0px;">
+									<ul>
+										<li><label class="radio"><input type="radio"
+												name="ca_orderType" value="1" data-toggle="radio" checked>スーツ</label></li>
+										<li><label class="radio"><input type="radio"
+												name="ca_orderType" value="2" data-toggle="radio">ジャケット</label></li>
+										<li><label class="radio"><input type="radio"
+												name="ca_orderType" value="3" data-toggle="radio">スラックス</label></li>
+										<li><label class="radio"><input type="radio"
+												name="ca_orderType" value="4" data-toggle="radio">ベスト</label></li>
+										<label class="checkbox ib" >
+											ベスト追加<input type="checkbox" value="1" id="ca_chkVest"
+											data-toggle="checkbox">
+										</label>
+									</ul>
+								</div>
+
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft required mrgr20">
+									<p class="fieldName">生地番号</p>
+									<div class="fieldBox" id="ca_clothIDID_div">
+										<span class="autofill" id="ca_clothNo_autofill"></span>
+										<select name="info"
+											class="mbn wt280 cl_valid cl_required flleft"
+											name="clothIDID" id="ca_clothIDID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft ">
+									<p class="fieldName ">生地プライス</p>
+									<div class="fieldBox" id="ca_price_div">
+										<input type="text" placeholder=""
+											class="form-control wt140 txtar" name="price" id="ca_price"
+											data-filter="comma" readonly />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">商品発注日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap" id="ca_orderDate_div">
+											<input type="text" id="ca_orderDate" name="orderDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-validator="maxlen:13"/>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">店舗着日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap" id="ca_arrivalDate_div" readonly>
+											<input type="text" id="ca_arrivalDate" name="arrivalDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-validator="maxlen:13" readonly />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<p class="detailtext3">※17時を過ぎると、実際の発注日は翌日になります。</p>
+								<div class="clear"></div>
+								
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">お渡し日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap " id="ca_saleDate_div">
+											<input type="text" id="ca_saleDate" name="saleDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-validator="maxlen:13"/>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+
+						<div id="ca_result">
+
+							<div class="fieldgroup" id="ca_guest_form">
+								<p class="gtitle">お客様情報</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 required flleft mrgr20">
+										<p class="fieldName ">電話番号</p>
+
+										<div class="fieldBox flleft">
+											<span class="limit wt40 flright mrgl40" length="5"></span> <input
+												type="text" placeholder=""
+												class="form-control wt80 flleft cl_valid cl_required"
+												name="telNo1" id="ca_telNo1" data-validator="maxlen:5 digit"/>
+											<p class="txtInFieldUnit pdg flleft">―</p>
+											<span class="limit wt40 flright mrgl40" length="4"></span> <input
+												type="text" placeholder=""
+												class="form-control wt80 flleft cl_valid cl_required"
+												name="telNo2" id="ca_telNo2" data-validator="maxlen:4 digit"/>
+											<p class="txtInFieldUnit pdg flleft">―</p>
+											<span class="limit wt40 flright mrgl40" length="4"></span> <input
+												type="text" placeholder=""
+												class="form-control wt80 flleft cl_valid cl_required"
+												name="telNo3" id="ca_telNo3" data-validator="maxlen:4 digit"/>
+
+											<button class="btn btn-default wt140 flleft mrgl10"
+												tabindex="-1" id="ca_btn_guest_select">お客様情報取得</button>
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help" id="tp_tel"
+												title="電話番号を入力してボタンを押すと、顧客システムにあるお客様情報を表示します。（注：過去にパーソナルオーダーの購入があったお客様でも、”顧客システム”への登録がなければ表示されません）">
+												<span>?</span>
+											</p>
+										</div>
+
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10  flleft mrgr20 required">
+										<p class="fieldName">氏名</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240" length="20"></span>
+											<input type="text" placeholder="" id="ca_custName"
+												name="custName"
+												class="form-control wt280 cl_valid cl_required "
+												data-tflimit="20" data-validator="maxlen:20"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10  flleft mrgr20 required">
+										<p class="fieldName">フリガナ</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240" length="20"></span>
+											<input type="text" placeholder="" id="ca_custNameKana"
+												name="custNameKana"
+												class="form-control wt280 cl_valid cl_required "
+												data-tflimit="20" data-validator="maxlen:20"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10  flleft mrgr20 ">
+										<p class="fieldName">会員番号</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240" length="10"></span>
+											<input type="text" placeholder="" id="ca_membNo"
+												name="membNo" class="form-control wt280 cl_valid  "
+												data-tflimit="13 " data-validator="maxlen:13 digit"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+
+
+							<div class="fieldgroup" id="ca_jacket_form">
+								<p class="gtitle">ジャケット</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 half flleft required mrgr20">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox" id="ca_jkStyle_div">
+											<span class="autofill" id="ca_jkStyle_autofill"></span>
+											<select name="info" class="mbn wt280 cl_valid cl_required "
+												name="jkStyle" id="ca_jkStyle">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft required">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox" id="ca_jkSize_div">
+											<span class="autofill" id="ca_jkSize_autofill"></span>
+											<select name="info" class="mbn wt280 cl_valid cl_required "
+												name="jkSize" id="ca_jkSize">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+										<p class="fieldName">ベント</p>
+										<div class="fieldBox" id="ca_jkVentTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid flleft cl_required"
+												name="jkVentTypeID" id="ca_jkVentTypeID">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft required">
+										<p class="fieldName">裏地</p>
+										<div class="fieldBox" id="ca_jkLiningTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid flleft cl_required"
+												name="jkLiningTypeID" id="ca_jkLiningTypeID">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<p class="detailtext3">※背抜き観音仕様は、ブランドが限られます。</p>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+										<p class="fieldName">AMF(無料)</p>
+										<div class="fieldBox" id="ca_jkAmfTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid flleft cl_required"
+												name="jkAmfTypeID" id="ca_jkAmfTypeID">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft required">
+										<p class="fieldName">重ねボタン</p>
+										<div class="fieldBox" id="ca_jkButtonTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid flleft cl_required"
+												name="jkButtonTypeID" id="ca_jkButtonTypeID">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 half flleft required">
+										<p class="fieldName bl2">
+											スラント<br />ポケット
+										</p>
+										<div class="fieldBox" id="ca_jkSlantPocketTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid flleft cl_required"
+												name="jkSlantPocketTypeID" id="ca_jkSlantPocketTypeID">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<hr>
+									<div class="fieldUnit mrgb10  half flleft mrgr10 required">
+										<p class="fieldName">ネーム</p>
+										<div class="fieldBox " id="ca_jkNameTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid cl_required"
+												name="jkNameTypeID" id="ca_jkNameTypeID">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10  flleft mrgr10"
+										style="width: 280px;">
+										<div class="fieldBox" id="ca_jkName_div">
+											<span class="limit wt40 flright mrgl140" length="20"></span>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid flright" name="jkName"
+												id="ca_jkName" data-tflimit="20" data-validator="maxlen:20" ></input>
+
+										</div>
+										<div class="clear"></div>
+									</div>
+
+
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">左袖丈補正</p>
+										<div class="fieldBox" id="ca_jkLSleeveAdjLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="jkLSleeveAdjLen" id="ca_jkLSleeveAdjLen"
+												data-validator="decimal:1,1" data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft" style="width: 285px;">
+										<div class="" id="ca_jkLSleeveAdjTypeID_div">
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help"
+												id="tp_jkLSleeveAdjTypeID" title="5cm迄 / 0.5cm刻みで入力">
+												<span>?</span>
+											</p>
+											<select name="info" class="mbn wt280 cl_valid  "
+												name="jkLSleeveAdjTypeID" id="ca_jkLSleeveAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">右袖丈補正</p>
+										<div class="fieldBox" id="ca_jkRSleeveAdjLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="jkRSleeveAdjLen" id="ca_jkRSleeveAdjLen"
+												data-validator="decimal:1,1" data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft" style="width: 285px;">
+										<div class="" id="ca_jkRSleeveAdjTypeID_div">
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help"
+												id="tp_jkRSleeveAdjTypeID" title="5cm迄 / 0.5cm刻みで入力">
+												<span>?</span>
+											</p>
+											<select name="info" class="mbn wt280 cl_valid  "
+												name="jkRSleeveAdjTypeID" id="ca_jkRSleeveAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">着丈補正</p>
+										<div class="fieldBox" id="ca_jkAdjLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="jkAdjLen" id="ca_jkAdjLen" data-validator="decimal:1,1"
+												data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft" style="width: 285px;">
+										<div class="" id="ca_jkAdjTypeID_div">
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help" id="tp_jkAdjTypeID"
+												title="5cm迄 / 0.5cm刻みで入力">
+												<span>?</span>
+											</p>
+											<select name="info" class="mbn wt280 cl_valid  "
+												name="jkAdjTypeID" id="ca_jkAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									
+									<p class="detailtext2">※スタンダードでは中胴補正は出来ません。</p>
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">中胴補正</p>
+										<div class="fieldBox" id="ca_jkTrunkAdjLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="jkTrunkAdjLen" id="ca_jkTrunkAdjLen"
+												data-validator="decimal:1,1" data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft" style="width: 285px;">
+										<div class="" id="ca_jkTrunkAdjTypeID_div">
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help"
+												id="tp_jkTrunkAdjTypeID" title="4cm迄 / 0.5cm刻みで入力">
+												<span>?</span>
+											</p>
+											<select name="info" class="mbn wt280 cl_valid  "
+												name="jkTrunkAdjTypeID" id="ca_jkTrunkAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<hr>
+									<div class="fieldUnit mrgb10 flleft mrgr20">
+										<p class="fieldName">袖ボタン4つ</p>
+										<div class="fieldBox" id="ca_jkSleeveButton_div">
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help" id="tp_jkSleeveButton"
+												title="ロイヤルブランドベルモーレのみ。<br>AOKI店舗のみ選択可。">
+												<span>?</span>
+											</p>
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkSleeveButton" id="ca_jkSleeveButton">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 flleft">
+										<p class="fieldName bl2">
+											チェンジ<br />ポケット
+										</p>
+										<div class="fieldBox" id="ca_jkChangePocket_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkChangePocket" id="ca_jkChangePocket">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10  flleft mrgr20">
+										<p class="fieldName">本切羽</p>
+										<div class="fieldBox" id="ca_jkCuffs_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkCuffs" id="ca_jkCuffs">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10  flleft ">
+										<p class="fieldName bl2">
+											AMF<br />ステッチ
+										</p>
+										<div class="fieldBox" id="ca_jkAmfStitch_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkAmfStitch" id="ca_jkAmfStitch">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10  flleft mrgr20">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox" id="ca_jkChangeButton_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkChangeButton" id="ca_jkChangeButton">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10  flleft">
+										<p class="fieldName">お台場</p>
+										<div class="fieldBox" id="ca_jkOdaiba_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkOdaiba" id="ca_jkOdaiba">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10  flleft mrgr20">
+										<p class="fieldName">裏地変更</p>
+										<div class="fieldBox" id="ca_jkChangeLining_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkChangeLining" id="ca_jkChangeLining">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10  flleft">
+										<p class="fieldName">サマー仕様</p>
+										<div class="fieldBox" id="ca_jkSummerType_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="jkSummerType" id="ca_jkSummerType">
+											</select>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+
+							<div class="fieldgroup" id="ca_slacs_form">
+								<p class="gtitle">スラックス</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 half flleft required mrgr20">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox" id="ca_slStyle_div">
+											<span class="autofill" id="ca_slStyle_autofill"></span>
+											<select name="info" class="mbn wt280 cl_valid cl_required "
+												name="slStyle" id="ca_slStyle">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft required">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox" id="ca_slSize_div">
+											<span class="autofill" id="ca_slSize_autofill"></span>
+											<select name="info" class="mbn wt280 cl_valid cl_required "
+												name="slSize" id="ca_slSize">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 half flleft mrgr20">
+										<p class="fieldName">スペア</p>
+										<div class="fieldBox" id="ca_slSpareTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid"
+												name="slSpareTypeID" id="ca_slSpareTypeID">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">左股下</p>
+										<div class="fieldBox" id="ca_slLLegLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="slLLegLen" id="ca_slLLegLen" data-validator="decimal:3,1"
+												data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">右股下</p>
+										<div class="fieldBox" id="ca_slRLegLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="slRLegLen" id="ca_slRLegLen" data-validator="decimal:3,1"
+												data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 flleft mrgr10">
+										<p class="fieldName">裾仕上</p>
+										<div class="fieldBox" id="ca_slBtmTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid"
+												name="slBtmTypeID" id="ca_slBtmTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 wt80  flleft" id="ca_slBtmLen_div">
+										<p class="txtInFieldUnit inner cm">cm</p>
+										<input type="text" placeholder=""
+											class="form-control wt80 cl_valid txtar cm_input"
+											name="slBtmLen" id="ca_slBtmLen" data-validator="decimal:1,1"
+											data-filter="fixed:1" readonly></input>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 flleft mrgr10">
+										<p class="fieldName">スペア裾仕上</p>
+										<div class="fieldBox" id="ca_slSpareBtmTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid"
+												name="slSpareBtmTypeID" id="ca_slSpareBtmTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 wt80  flleft"
+										id="ca_slSpareBtmLen_div">
+
+										<p class="txtInFieldUnit inner cm">cm</p>
+										<input type="text" placeholder=""
+											class="form-control wt80 cl_valid txtar cm_input"
+											name="slSpareBtmLen" id="ca_slSpareBtmLen"
+											data-validator="decimal:1,1" data-filter="fixed:1" readonly></input>
+										<div class="clear"></div>
+
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">ウエスト</p>
+										<div class="fieldBox" id="ca_slWaistAdjLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="slWaistAdjLen" id="ca_slWaistAdjLen"
+												data-validator="decimal:1,1" data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft" style="width: 285px;">
+										<div class="" id="ca_slWaistAdjTypeID_div">
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help"
+												id="tp_slWaistAdjTypeID" title="3cm迄 / 0.5cm刻みで入力">
+												<span>?</span>
+											</p>
+											<select name="info" class="mbn wt280 cl_valid"
+												name="slWaistAdjTypeID" id="ca_slWaistAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<hr>
+									<div class="fieldUnit mrgb10 flleft mrgr20">
+										<p class="fieldName">アジャスター</p>
+										<div class="fieldBox" id="ca_slAdjuster_div">
+											<select name="info" class="mbn wt430 cl_valid"
+												name="slAdjuster" id="ca_slAdjuster">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 flleft">
+										<p class="fieldName bl2">
+											スペア<br />アジャスター
+										</p>
+										<div class="fieldBox" id="ca_slSpareAdjuster_div">
+											<select name="info" class="mbn wt430 cl_valid"
+												name="slSpareAdjuster" id="ca_slSpareAdjuster">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb20  flleft mrgr20">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox" id="ca_slChangeButton_div">
+											<select name="info" class="mbn wt430 cl_valid"
+												name="slChangeButton" id="ca_slChangeButton">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+
+							<div class="fieldgroup" id="ca_vest_form">
+								<p class="gtitle">ベスト</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 half flleft required mrgr20">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox" id="ca_veStyle_div">
+											<span class="autofill" id="ca_veStyle_autofill"></span>
+											<select name="info" class="mbn wt280 cl_valid cl_required "
+												name="veStyle" id="ca_veStyle">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft required">
+										<p class="fieldName">サイズ</p>
+										<div class="fieldBox" id="ca_veSize_div">
+											<span class="autofill" id="ca_veSize_autofill"></span>
+											<select name="info" class="mbn wt280 cl_valid cl_required "
+												name="veSize" id="ca_veSize">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+									<div class="clear"></div>
+									<p class="detailtext2">※スタンダードでは中胴補正は出来ません。</p>
+									<div class="fieldUnit mrgb10 half flleft mrgr10">
+										<p class="fieldName">中胴補正</p>
+										<div class="fieldBox" id="ca_veTrunkAdjLen_div">
+											<p class="txtInFieldUnit inner cm">cm</p>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid txtar cm_input"
+												name="veTrunkAdjLen" id="ca_veTrunkAdjLen"
+												data-validator="decimal:1,1" data-filter="fixed:1"></input>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half flleft" style="width: 285px;">
+										<div class="">
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help"
+												id="tp_veTrunkAdjTypeID" title="4cm迄 / 0.5cm刻みで入力">
+												<span>?</span>
+											</p>
+											<select name="info" class="mbn wt280 cl_valid  "
+												name="veTrunkAdjTypeID" id="ca_veTrunkAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+									<div class="fieldUnit mrgb20  flleft mrgr20">
+										<p class="fieldName">ボタン変更</p>
+										<div class="fieldBox" id="ca_veChangeButton_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="veChangeButton" id="ca_veChangeButton">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb20  flleft mrgr20">
+										<p class="fieldName">裏地変更</p>
+										<div class="fieldBox" id="ca_veChangeLining_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="veChangeLining" id="ca_veChangeLining">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb20  flleft mrgr20">
+										<p class="fieldName bl2">
+											AMF<br>ステッチ
+										</p>
+										<div class="fieldBox" id="ca_veOptAmfStitch_div">
+											<select name="info" class="mbn wt430 cl_valid  "
+												name="veOptAmfStitch" id="ca_veOptAmfStitch">
+											</select>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+								</div>
+							</div>
+
+							<div class="fieldgroup" id="ca_other_form">
+								<p class="gtitle ">その他</p>
+								<div class="fieldgroupInBox" style="padding-bottom: 35px;">
+									<div class="fieldUnit mrgb10 half mrgr20">
+										<p class="fieldName">店舗補正</p>
+										<div class="fieldBox" id="ca_otStoreAdjTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid  "
+												name="otStoreAdjTypeID" id="ca_otStoreAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half required">
+										<p class="fieldName">レシート番号</p>
+										<div class="fieldBox" id="ca_otRcptNo_div">
+											<span class="limit wt40 flright mrgl240" length="10"></span>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid cl_required"
+												name="otRcptNo" id="ca_otRcptNo" data-tflimit="10 " data-validator="maxlen:10 alnum"></input>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta wt100pct">
+										<p class="fieldName bl2">
+											店舗用<br />備考欄
+										</p>
+										<div class="fieldBox" id="ca_otStoreMemo_div">
+											<span class="limit wt40 cl_counter" length="170"></span>
+											<textarea name="otStoreMemo" id="ca_otStoreMemo" rows="4"
+												class="form-control wt100pct cl_valid  cl_valid_auto_off cl_textarea" data-tflimit="170" data-validator="maxlen:170"></textarea>
+										</div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft mrgr20">
+										<p class="detailtext">※店舗専用欄なのでメーカー様には一切通知されません</p>
+										<p class="detailtext">※4行まで入力可能です</p>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+		</div>
+		<!-- / #container -->
+
+		<div class="clear"></div>
+
+
+	</div>
+	<script id="GuestEditView" type="text/template">
+<div class="dialog-content">
+<div id="innerScroll">
+    <div class=" table drilldownWrapper">
+		<table class="hilightRow flleft" >
+			<thead>
+				<tr>
+					<th width="40px"></th>
+					<th width="120px">漢字氏名</th>
+                    <th width="120px">カナ氏名</th>
+                    <th width="120px">会員番号</th>
+                    <th width="120px">有効期限</th>
+				</tr>
+			</thead>
+			<tbody id="ca_table_tbody"></tbody>
+		</table>
+		<div class="clear"></div>
+	</div>
+</div>
+</div>
+</script>
+	<script id="ca_rec_template" type=text/x-jquery-tmpl">
+				<tr>
+					<td>
+					<label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_chk"></label></td>
+					</td>
+					<td name="name" class="txtal">${name}</td>
+					<td name="kana" class="txtal">${kana}</td>
+					<td name="memberNo" class="txtal">${memberNo}</td>
+					<td name="term" class="txtal">${term}</td>
+				</tr>
+	</script>
+	<!--
+
+ -->
+</body>
+</html>
+

@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>商品マスタ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<script src="AMMSV0510.js"></script>
+
+<script>
+
+</script>
+
+
+</head>
+
+<body>
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+			<div id="content">
+
+				<div class="fieldgroup">
+					<div id="ca_srchArea" class="fieldgroupInBox search">
+						<div class="">
+							<a class="flleft mrgb20 mrgr20" href="javascript:void(0)" id="ca_AMMSV0130">商品マスタ・発注承認</a>
+							<p class="flleft">商品マスタ承認状況確認</p>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft required">
+							<p class="fieldName">事業ユニット</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft required">
+							<p class="fieldName">発注書区分</p>
+							<div class="fieldBox flleft mrgr10">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchFunc"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">発注書番号</p>
+							<div class="fieldBox flleft mrgr10">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-validator="maxlen:7 digit" id="ca_srchOrderNo"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20 ">
+							<p class="fieldName">品種</p>
+							<div class="fieldBox ">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_srchItgrpID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">メーカー</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_srchMakerID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName">メーカー品番</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-validator="maxlen:10 hankaku" id="ca_srchCode"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName">承認期限</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchLimitDateFrom" /></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchLimitDateTo" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName">承認日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchApproveDateFrom" /></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchApproveDateTo" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">申請者</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_srchApplyUserID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">1次承認者</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_srchApprove1UserID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">2次承認者</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_srchApprove2UserID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit flleft mrgb10">
+							<p class="fieldName">承認状態</p>
+							<div class="fieldBox flleft">
+								<div class="flleft mrgr10">
+									<label class="checkbox flleft mrgr10" for=""><input type="checkbox" id="ca_srchApplyFlag" data-toggle="checkbox" />申請</label>
+								</div>
+								<div class="flleft mrgr10">
+									<label class="checkbox flleft mrgr10" for=""><input type="checkbox" id="ca_srchReturnFlag" data-toggle="checkbox" />差戻し</label>
+								</div>
+								<div class="flleft mrgr10">
+									<label class="checkbox flleft mrgr10" for=""><input type="checkbox" id="ca_srchApprove1Flag" data-toggle="checkbox" />1次承認済</label>
+								</div>
+								<div class="flleft mrgr10">
+									<label class="checkbox flleft mrgr10" for=""><input type="checkbox" id="ca_srchApprove2Flag" data-toggle="checkbox" />2次承認済</label>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_srch" class="btn btn-info wt280">検索</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+
+				</div>
+
+
+				<div id="result" class="dispn">
+
+					<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+					<div class="pagination-wrapper"></div>
+
+					<div class="table">
+						<table class="hilightRow " id="ca_table">
+						<thead id="ca_table_thead">
+							<tr>
+								<th>承認状態</th>
+								<th>承認期限日</th>
+								<th>承認日</th>
+								<th>品種</th>
+								<th>メーカー</th>
+								<th>メーカー品番／登録番号</th>
+								<th>商品名</th>
+								<th>申請者</th>
+								<th>1次承認者</th>
+								<th>2次承認者</th>
+								<th>承認対象</th>
+								<th>発注書番号</th>
+								<th>発注数</th>
+								<th>発注金額</th>
+								<th class="th_pdfoutput1"></th>
+								<th class="th_pdfoutput2 dispn"></th>
+								<th class="th_pdfoutput2 dispn"></th>
+							</tr>
+						</thead>
+						<tbody id="ca_table_tbody">
+							<!-- ca_table_tbody_template -->
+						</tbody>
+						</table>
+						<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+						<script id="ca_rec_template" type="text/template">
+							<tr class="csptr" id="<%- itemID %>" itemEntryID="<%- itemEntryID %>">
+								<td class="ca_c_link" name="ca_approveTypeID" approveTypeID="<%- approveTypeID %>"><%- clutil.gettypename(amcm_type.AMCM_TYPE_APPROVE, approveTypeID, 1) %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(limitDate, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(approveDate, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- itgrpCode %>:<%- itgrpName %></td>
+								<td class="ca_c_link"><%- makerCode %>:<%- makerName %></td>
+								<td class="ca_c_link"><%- code %></td>
+								<td class="ca_c_link"><%- name %></td>
+								<td class="ca_c_link"><%- applyUserName %></td>
+								<td class="ca_c_link"><%- approve1UserName %></td>
+								<td class="ca_c_link"><%- approve2UserName %></td>
+								<td class="ca_c_link" name="ca_approveTgtTypeID" approveTgtTypeID="<%- approveTgtTypeID %>"><%- clutil.gettypename(amcm_type.AMCM_TYPE_APPROVE_TARGET, approveTgtTypeID, 1) %></td>
+								<td class="ca_c_link"><%- orderNo %></td>
+								<td class="ca_c_link txtar"><%- clutil.comma(orderQy) %></td>
+								<td class="ca_c_link txtar"><%- clutil.comma(orderAm) %></td>
+                                <% if(window.__srchFunc == amcm_type.AMCM_VAL_ORDER_FUNC_ITEM){ %>
+								<td class="a4" name="td_pdf_output"><a href="javascript:void(0)" name="pdf_output" class="txt-closed-on">発注書表示(A4)</a></td>
+								<td class="b4" name="td_pdf_output"><a href="javascript:void(0)" name="pdf_output" class="txt-closed-on">発注書表示(B4)</a></td>
+                                <% } else { %>
+								<td name="td_pdf_output"><a href="javascript:void(0)" name="pdf_output" class="txt-closed-on">発注書表示</a></td>
+                                <% } %>
+							</tr>
+						</script>
+						<!--
+								<td class="dispn"><input type="hidden" name="ca_srchReapproveTypeID" value="<%- reapproveTypeID %>" /></td>
+								<td class="dispn"><input type="hidden" name="ca_srchApproveTypeID" value="<%- approveTypeID %>" /></td>
+						-->
+					</div>
+
+					<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+					<div class="pagination-wrapper"></div>
+
+				</div>
+
+			</div>
+			<!-- /#content -->
+
+			<!-- /#mainColumnFooter -->
+
+
+		</div>
+		<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+
+</body>
+</html>

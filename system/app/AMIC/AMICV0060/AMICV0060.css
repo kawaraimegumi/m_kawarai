@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+/*
+ * グリッドヘッダの（？）アイコン
+ */
+#ca_datagrid .clgridhd-icon-help {
+	position: relative;
+}
+#ca_datagrid .clgridhd-icon-help > p.txtInFieldUnit.help {
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin: 0;
+}
+
+/**
+ * 指ポインタ
+ */
+ .slick-row.csptr .slick-cell {
+	cursor: pointer;
+}

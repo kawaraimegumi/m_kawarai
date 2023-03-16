@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>補正</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+<script>
+
+</script>
+
+
+</head>
+
+<body>
+<div id="ca_main">
+
+<script src="AMRSV0070.js"></script>
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft mrgr20 required">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox required">
+							<input type="text" placeholder="" class="form-control wt280 flleft cl_valid cl_store cl_required" id="ca_storeID" />
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit required flleft mrgr10">
+						<p class="fieldName">適用期間</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_targetYm"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button id="ca_srch" class="btn btn-info wt280">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+			<div id="result" class="dispn">
+				<div class="fieldgroup">
+					<p class="gtitle">店舗別設定</p>
+					<div class="fieldgroupInBox" id="div_vendorList">
+						<div class="flleft mrgr20" id="div_table1">
+							<p id="ymd1"></p>
+							<div class="table mrgb10 mrgr20">
+								<table class="hilightRow flleft" id="ca_table1">
+								<thead id="ca_table1_thead">
+									<tr >
+										<th colspan="3" class="ca_c_link txtac" id="th_head1"></th>
+									</tr>
+									<tr>
+										<th class="bdrt" width="120px">日付</th>
+										<th class="bdrt" width="120px">件数</th>
+										<th class="bdrt" width="120px">金額（税抜）</th>
+									</tr>
+								</thead>
+								<tbody id="ca_table1_tbody">
+									<!-- #ca_tbody_template1が入る -->
+								</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="flleft mrgr20" id="div_table2">
+							<p id="ymd2"><!-- clutil.dateFormat(fromDate2, 'yyyy/mm/dd(w)') %>～<%- clutil.dateFormat(toDate2, 'yyyy/mm/dd(w)') --></p>
+							<div class="table mrgb10">
+								<table class="hilightRow flleft" id="ca_table2">
+								<thead id="ca_table2_thead">
+									<tr >
+										<th colspan="3" class="ca_c_link txtac" id="th_head2"></th>
+									</tr>
+									<tr>
+										<th class="bdrt" width="120px">日付</th>
+										<th class="bdrt" width="120px">件数</th>
+										<th class="bdrt" width="120px">金額（税抜）</th>
+									</tr>
+								</thead>
+								<tbody id="ca_table2_tbody">
+									<!-- #ca_tbody_template1が入る -->
+								</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="flleft mrgr20" id="div_table3">
+							<p>　</p>
+							<div class="table mrgb10">
+								<table class="hilightRow flleft" id="ca_table3">
+								<thead id="ca_table3_thead">
+									<tr >
+										<th colspan="2" class="ca_c_link txtac" id="th_head3"><!-- vendorCode:vendorName（館内） --></th>
+									</tr>
+									<tr>
+										<th class="bdrt" width="120px">月度</th>
+										<th class="bdrt" width="120px">金額（税込）</th>
+									</tr>
+								</thead>
+								<tbody id="ca_table3_tbody">
+									<!-- #ca_table3_tbody_templateが入る -->
+								</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<script id="ca_tbody_template1" type="text/template">
+						<tr class="csptr" id="<%- targetDate %>">
+							<td class="ca_c_link"><%- clutil.dateFormat(targetDate, 'yyyy/mm/dd(w)') %></td>
+							<td class="ca_c_link txtar"><%- clutil.comma(nAdjust) %></td>
+							<td class="ca_c_link txtar"><%- clutil.comma(adjustAm) %></td>
+						</tr>
+					</script>
+					<script id="ca_tbody_template3" type="text/template">
+						<tr class="csptr" id="<%- month %>">
+							<td class="ca_c_link"><%- monthstr %></td>
+							<td class="ca_c_link txtar"><%- clutil.comma(adjustAm) %></td>
+						</tr>
+					</script>
+				</div>
+				<!-- /.fieldgroup -->
+			</div>
+			<!-- /#result -->
+
+		</div>
+		<!-- /#content -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+.wt30 {
+    width : 30px;
+}
+.wt500 {
+    width : 500px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.mrgl50 {
+    margin-left: 50px;
+}
+.mrgl70 {
+    margin-left: 70px;
+}
+.termBox{
+    padding : 10px;
+}
+.fieldName.bl3 {
+  margin-top: -16px;
+}
+.mrgl340 {
+  margin-left: 340px;
+}
+.mrgl410 {
+  margin-left: 410px;
+}
+/*
+ * エクスパンダー非活性スタイル定義
+ */
+p.expandFieldUnits[disabled] {
+	cursor: default;
+}
+p.expandFieldUnits[disabled] > span.expand {
+	color: #323a45;
+	opacity: 0.4000000059604645
+}
+p.expandFieldUnits[disabled] > span.expand:after {
+	border-left-color: #323a45;
+	opacity: 0.4000000059604645
+}

@@ -1,0 +1,77 @@
+@CHARSET "UTF-8";
+#mainColumnFooter>p.three_center {
+  font-size: 88%;
+  padding: 0 20px;
+  line-height: 60px;
+  color: #667180;
+  display: block;
+  height: 60px;
+  cursor: pointer;
+}
+
+#mainColumnFooter>p.three_center:hover {
+  color: #1e9ce6;
+}
+
+#mainColumnFooter p.three_cancel a {
+  background: #a2a9b3;
+  color: white;
+}
+
+#mainColumnFooter p.three_cancel a:hover {
+  background: #ccd0d5;
+}
+
+.wt50 {
+    width : 50px;
+}
+
+.wt900 {
+    width : 900px;
+}
+
+.mrgl860 {
+    margin-left: 860px;
+}
+
+.mrgl_60 {
+	margin-left: 60%;
+}
+
+.placeStyle {
+ 	position: absolute;
+	bottom: 0px;
+	right: 10px;
+}
+
+.txtInFieldUnit.dateHelp {
+	width: 24px;
+	height: 24px;
+	padding: 5px;
+	cursor: pointer;
+    margin-left: 180px;
+	padding-top: 13px;
+}
+
+.txtInFieldUnit.dateHelp span {
+  display: block;
+  font-size: 75%;
+  background: #0fb8aa;
+  color: white;
+  height: 14px;
+  width: 14px;
+  padding: 0;
+  text-align: center;
+  line-height: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+  border-radius: 16px;
+}
+
+.cl_textarea
+{
+	resize: vertical;
+}
+

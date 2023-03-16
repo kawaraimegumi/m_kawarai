@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>不良品</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="./AMIGV0010.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+<script>
+
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMIGV0010.js"></script>
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox" id="ca_srchUnitID_div">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft cl_valid cl_store cl_required" type="text" id="ca_srchStoreID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">状態</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchStatus"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10" id="ca_date_div">
+						<p class="fieldName">登録日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap ca_srchFromDate_div"><input class="cl_valid cl_date ime-disabled" type="text" id="ca_srchFromDate" /></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap ca_srchToDate_div"><input class="cl_valid cl_date ime-disabled" type="text" id="ca_srchToDate" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn btn-info wt280" id="ca_srch">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<p id="searchAgain" class="dispn btn">検索条件を再指定</p>
+
+			</div>
+
+
+		<div id="result" class="dispn">
+
+				<div class="fieldUnit mrgb20 flright ca_csv_uptake_div">
+					<div class="fieldBox noName flleft" id="ca_csvinput2">
+						<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_sample_download">Excelサンプルダウンロード</button>
+					</div>
+					<div class="fieldBox noName flleft">
+						<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+
+				<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<div class="pagination-wrapper">
+				<div class="count" id="ca_pager_displaypanel1"></div>
+				<div class="pagination">
+					<ul id="ca_pager1">
+					</ul>
+				</div>
+			</div>
+
+			<div class="mrgb10"></div>
+			<div class="unit flright mrgb10">金額（円）</div>
+
+			<div class="table">
+				<table class="hilightRow" id="ca_table">
+				<thead id="ca_table_thead">
+					<tr>
+						<th width="40px" class="cl_checkbox_selectall"></th>
+						<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+						<th class="dispn">処理ID</th>
+						<th>登録日</th>
+						<th>処理番号</th>
+						<th width="70px">状態</th>
+						<th>部門</th>
+						<th>品種</th>
+						<th>メーカー</th>
+						<th>メーカー品番</th>
+						<th>カラー</th>
+						<th>サイズ</th>
+						<th>作業担当者</th>
+						<th>タグコード</th>
+						<th>不良理由分類</th>
+						<th>下代(税抜)</th>
+						<th>数量</th>
+						<th>損失金額</th>
+					</tr>
+				</thead>
+				<tbody id="ca_table_tbody">
+				</tbody>
+				</table>
+				<script id="ca_table_tbody_template" type="text/template">
+					<tr class="contextmenu csptr" id="<%- id%>">
+						<td class="cl_checkbox_selectrec"></td>
+						<td class="ca_c_link"><%- clutil.dateFormat(date, 'yyyy/mm/dd(w)') %></td>
+						<td class="ca_c_link"><%- no %></td>
+ 						<td class="ca_c_link">
+							<p style="margin-top:5px;" class="flleft"><%- clutil.gettypename(amcm_type.AMCM_TYPE_DEFECTIVE_STATE_TYPE, status, 1) %></p>
+							<% if(status==amcm_type.AMCM_VAL_DEFECTIVE_STATE_TYPE_REGISTRIED && posSendStatus==amcm_type.AMCM_VAL_SEND_STATE_SENT){ %>
+								<p class="txtInFieldUnit flleft help" title="19時にPOS送信後は、編集と削除はできません。"><span>?</span></p>
+		                	<% } %>
+						</td>
+						<td class="ca_c_link"><%- divCode + ":" + divName %></td>
+						<td class="ca_c_link"><%- itgrp %></td>
+						<td class="ca_c_link"><%- maker %></td>
+						<td class="ca_c_link"><%- makerItemNum %></td>
+						<td class="ca_c_link"><%- color %></td>
+						<td class="ca_c_link"><%- size %></td>
+						<td class="ca_c_link"><%- staff %></td>
+						<td class="ca_c_link"><%- tagCode %></td>
+						<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_DEFECT_REASON, reasonTypeID) %></td>
+						<td class="ca_c_link txtar"><%- clutil.comma(cost) %></td>
+						<td class="ca_c_link txtar"><%- clutil.comma(qy) %></td>
+						<td class="ca_c_link txtar"><%- clutil.comma(am) %></td>
+					</tr>
+				</script>
+			</div>
+
+				<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+			<div class="pagination-wrapper">
+				<div class="count" id="ca_pager_displaypanel2"></div>
+				<div class="pagination">
+					<ul id="ca_pager2">
+					</ul>
+				</div>
+			</div>
+
+			<div class="fieldUnit">
+				<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMIGV0010">
+					<button class="btn btn-primary wt280 flleft mrgr10" id="cl_edit">編集</button>
+					<button class="btn btn-default wt140 flright mrgl20 delete" id="cl_delete">削除</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+		</div>
+
+
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<div id="mainColumnFooter" class="noLeftColumn">
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

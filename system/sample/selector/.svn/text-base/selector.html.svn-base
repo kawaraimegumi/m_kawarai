@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>選択画面テスト用画面</title>
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+
+<!-- pager -->
+<script type="text/javascript" src="../../js/simplePagination.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker_ja.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../js/jquery.dragtable.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+
+<!-- App -->
+<script type="text/javascript" src="../../js/clcom.js"></script>
+<script type="text/javascript" src="../../js/messages_ja.js"></script>
+<script type="text/javascript" src="../../def/gs_cm_codesearch_if.js"></script>
+<script type="text/javascript" src="../../app/cm330/cm330.js"></script>
+<script type="text/javascript" src="../../app/cm340/cm340.js"></script>
+<script type="text/javascript" src="../../app/cm350/cm350.js"></script>
+<script type="text/javascript" src="../../app/cm360/cm360.js"></script>
+<script type="text/javascript" src="../../app/cm370/cm370.js"></script>
+<script type="text/javascript" src="../../app/cm380/cm380.js"></script>
+<script type="text/javascript" src="../../app/cm390/cm390.js"></script>
+<script type="text/javascript" src="../../app/cm400/cm400.js"></script>
+<script type="text/javascript" src="../../app/cm410/cm410.js"></script>
+<script type="text/javascript" src="../../app/cm420/cm420.js"></script>
+<script type="text/javascript" src="../../app/cm430/cm430.js"></script>
+<script type="text/javascript" src="../../app/cm440/cm440.js"></script>
+<script type="text/javascript" src="../../app/cm450/cm450.js"></script>
+<script type="text/javascript" src="../../app/cm460/cm460.js"></script>
+<script type="text/javascript" src="../../app/cm470/cm470.js"></script>
+<script type="text/javascript" src="../../app/cm480/cm480.js"></script>
+<script type="text/javascript" src="../../app/cm490/cm490.js"></script>
+<script type="text/javascript" src="../../app/cm500/cm500.js"></script>
+<script type="text/javascript" src="../../app/KA241/KA241.js"></script>
+<script type="text/javascript" src="selector.js"></script>
+
+</head>
+<body>
+	<div id="cl_header"></div>
+	
+	<!-- 選択画面配置 -->
+	<div id="ca_cm330selectorarea"></div>
+	<div id="ca_cm340selectorarea"></div>
+	<div id="ca_cm350selectorarea"></div>
+	<div id="ca_cm360selectorarea"></div>
+	<div id="ca_cm370selectorarea"></div>
+	<div id="ca_cm380selectorarea"></div>
+	<div id="ca_cm390selectorarea"></div>
+	<div id="ca_cm400selectorarea"></div>
+	<div id="ca_cm410selectorarea"></div>
+	<div id="ca_cm420selectorarea"></div>
+	<div id="ca_cm430selectorarea"></div>
+	<div id="ca_cm440selectorarea"></div>
+	<div id="ca_cm450selectorarea"></div>
+	<div id="ca_cm460selectorarea"></div>
+	<div id="ca_cm470selectorarea"></div>
+	<div id="ca_cm480selectorarea"></div>
+	<div id="ca_cm490selectorarea"></div>
+	<div id="ca_KA241selectorarea"></div>
+	
+	<div id="ca_main">
+
+	<div class="container-fluid">
+	<div class="row-fluid">
+
+	<div class="span12">
+		<button class="btn btn-mini" type="button">HOMEへ戻る</button>
+		<div class="pull-right">
+			<button class="btn btn-mini" type="button">全クリア</button>　<button class="btn btn-mini" type="button">CSV保存</button>　<button class="btn btn-mini" type="button">登録</button>
+		</div>
+	</div>
+	<h3 class="pageTitle">選択画面テスト用画面</h3>
+	
+	<!-- ここにエラーメッセージが表示される -->
+	<div class="notice_red_large cl_echoback" ></div>
+
+	<div class="searchArea">
+		<div class="form-inline" id="ca_search_form">
+			<table class="search">
+				<tr>
+					<th>法人</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm330_code">
+						<button class="btn btn-mini" id="ca_cm330_select">?</button>
+						<input type="text" id="ca_cm330_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>店舗</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm340_code">
+						<button class="btn btn-mini" id="ca_cm340_select">?</button>
+						<input type="text" id="ca_cm340_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>部署</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm350_code">
+						<button class="btn btn-mini" id="ca_cm350_select">?</button>
+						<input type="text" id="ca_cm350_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>FC店舗契約</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm360_code">
+						<button class="btn btn-mini" id="ca_cm360_select">?</button>
+						<input type="text" id="ca_cm360_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>メニュー</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm370_code">
+						<button class="btn btn-mini" id="ca_cm370_select">?</button>
+						<input type="text" id="ca_cm370_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>レシピ</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm380_code">
+						<button class="btn btn-mini" id="ca_cm380_select">?</button>
+						<input type="text" id="ca_cm380_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>食材</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm390_code">
+						<button class="btn btn-mini" id="ca_cm390_select">?</button>
+						<input type="text" id="ca_cm390_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>品目</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm400_code">
+						<button class="btn btn-mini" id="ca_cm400_select">?</button>
+						<input type="text" id="ca_cm400_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>社員</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm410_code">
+						<button class="btn btn-mini" id="ca_cm410_select">?</button>
+						<input type="text" id="ca_cm410_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>企画</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm420_code">
+						<button class="btn btn-mini" id="ca_cm420_select">?</button>
+						<input type="text" id="ca_cm420_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>業務アプリ</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm430_code">
+						<button class="btn btn-mini" id="ca_cm430_select">?</button>
+						<input type="text" id="ca_cm430_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>銀行</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm440_code">
+						<button class="btn btn-mini" id="ca_cm440_select">?</button>
+						<input type="text" id="ca_cm440_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>メーカー</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm450_code">
+						<button class="btn btn-mini" id="ca_cm450_select">?</button>
+						<input type="text" id="ca_cm450_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>棚</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm460_code">
+						<button class="btn btn-mini" id="ca_cm460_select">?</button>
+						<input type="text" id="ca_cm460_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>工場</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm470_code">
+						<button class="btn btn-mini" id="ca_cm470_select">?</button>
+						<input type="text" id="ca_cm470_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>経理用分類</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm480_code">
+						<button class="btn btn-mini" id="ca_cm480_select">?</button>
+						<input type="text" id="ca_cm480_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>科目選択</th>
+					<td colspan="3">
+						<input type="text" id="ca_cm490_code">
+						<button class="btn btn-mini" id="ca_cm490_select">?</button>
+						<input type="text" id="ca_cm490_name" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>材料選択</th>
+					<td colspan="3">
+						<input type="text" id="ca_KA241_code">
+						<button class="btn btn-mini" id="ca_KA241_select">?</button>
+						<input type="text" id="ca_KA241_name" readonly="readonly">
+					</td>
+				</tr>
+				
+			</table>
+		</div>  
+	</div>
+</div>
+</div>
+</div><!-- ca_main -->
+<div id="cl_footer"></div>
+</body>
+</html>

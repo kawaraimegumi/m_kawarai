@@ -1,0 +1,636 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>商品マスタ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.form.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<link rel="stylesheet" href="../AMMSV0100/AMMSV0101.css" type="text/css">
+
+<script>
+</script>
+
+
+</head>
+
+<body>
+
+<script src="../AMMSV0100/AMMSV0101.js"></script>
+<script src="AMMSV0140.js"></script>
+
+<div id="masterHeaditem" class="dispn">
+<ul>
+	<li class="mrgb10"><span>事業ユニット:</span><span id="mhi_unitID"></span></li>
+	<li class="mrgb10"><span>品種:</span><span id="mhi_itgrpID"></span></li>
+	<li class="mrgb10"><span>メーカー:</span><span id="mhi_makerID"></span></li>
+	<li><span>メーカー品番:</span><span id="mhi_makerItemCode"></span></li>
+	<li><span>商品名:</span><span id="mhi_name"></span></li>
+</ul>
+</div>
+
+<div id="ca_main">
+
+<div id="container">
+
+<!-- 画像選択 -->
+<div id="ca_AMMSV0101_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+
+			<div id="content">
+
+				<!-- 基本情報 -->
+				<div class="fieldgroup" id="ca_form">
+					<div class="fieldgroupInBox mrgb10" id="ca_item">
+						<input type="hidden" id="ca_id" />
+						<div class="fieldUnit flleft mrgr20 hta wt100pct mrgb10">
+							<p class="fieldName ">店舗通知欄</p>
+							<div class="fieldBox ">
+								<textarea name="" id="ca_memoForStore" rows="3" class="form-control wt100pct" ></textarea>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit flleft mrgr20 hta wt100pct mrgb10">
+							<p class="fieldName bl2">セールス<br />ポイント</p>
+							<div class="fieldBox ">
+								<textarea name="" id="ca_salesPoint" rows="3" class="form-control wt100pct" ></textarea>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 mrgr20 half flleft ">
+							<p class="fieldName">事業ユニット</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 " id="ca_unitID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit half flleft mrgb10 mrgr20" id="div_ca_itgrpID">
+							<p class="fieldName"><span></span>品種</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 " id="ca_itgrpID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 half flleft   mrgr20" id="div_ca_makerID">
+							<p class="fieldName"><span></span>メーカー</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_makerID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft  " id="div_ca_makerItemCode">
+							<p class="fieldName bl2"><span></span>メーカー<br />品番</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" data-limit="len:10 hankaku" id="ca_makerItemCode"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- 商品名 -->
+						<div class="fieldUnit half flleft mrgb10 mrgr20 " id="div_ca_name">
+							<p class="fieldName"><span></span>商品名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" data-limit="len:25 zenkaku" id="ca_name"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!-- 商品区分 -->
+						<div class="fieldUnit mrgb10 half flleft" id="div_ca_itemTypeID">
+							<p class="fieldName"><span></span>商品区分</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_itemTypeID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- シーズン -->
+						<div class="fieldUnit mrgb10 mrgr20 half flleft" id="div_ca_seasonID">
+							<p class="fieldName"><span></span>シーズン</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_seasonID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!-- サブシーズン -->
+						<div class="fieldUnit mrgb10 half flleft ">
+							<p class="fieldName">サブシーズン</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_subSeasonID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- サブクラス1 -->
+						<div class="fieldUnit mrgb10 mrgr20 half flleft ">
+							<p class="fieldName">サブクラス1</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_subcls1ID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!-- サブクラス2 -->
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName bl2"><span></span>サブクラス<br />2</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_subcls2ID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnitContainer flleft ">
+							<!-- 属性ブランド -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft ">
+								<p class="fieldName">属性ブランド</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280" id="ca_brandID"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- スタイル -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft">
+								<p class="fieldName">スタイル</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280" id="ca_styleID"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- 素材 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft ">
+								<p class="fieldName">素材</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280" id="ca_materialID"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- 素材手入力欄 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft ">
+								<p class="fieldName"></p>
+								<div class="fieldBox">
+									<input type="text" placeholder="（素材手入力欄）" class="form-control wt280" data-limit="len:20 zenkaku" id="ca_materialText"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- 柄 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft">
+								<p class="fieldName">柄</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280" id="ca_designID"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- サブ柄 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft">
+								<p class="fieldName">サブ柄</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280" id="ca_subDesignID"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- ベース色 -->
+							<!--
+							<div class="fieldUnit mrgb10 mrgr20 half flleft">
+								<p class="fieldName">ベース色</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280" id="ca_designColorID"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							 -->
+
+							<!-- 用途区分 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft">
+								<p class="fieldName">用途区分</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280" id="ca_usetypeID"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<!-- 画像表示 TODO -->
+						<div class="fieldUnitContainer flleft updateEdit updateBasic">
+							<div class="fieldUnit mrgb30 flleft hta">
+								<p class="fieldName Pic">画像</p>
+								<div class="fieldBox mainPic">
+									<div class="hover dispn" id="mainPicHover"><p>画像を閲覧</p></div>
+									<div class="flleft">
+										<div class="mainPicBox flleft mrgr10">
+											<img src="" alt="" id="img_mainPhoto">
+										</div>
+									</div>
+									<div class="flleft">
+										<div class="texturePicBox mrgb10">
+											<img src="" alt="" id="img_clothPhoto">
+										</div>
+										<ul class="otherThumbs" id="ul_otherThumbs">
+										</ul>
+										<div class="clear"></div>
+										<div class="countPicNum flleft">
+											<span class="num" id="span_photo_count"></span><span>点</span>
+										</div>
+										<script id="ca_rec_template_photo" type="text/template">
+											<li><img src="<%- photoURL %>" width="20px" alt="<%- photoComment %>"></li>
+										</script>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<hr />
+
+						<!-- 商品仕様 -->
+						<p class="expandFieldUnits mrgb20" id="expand_spec"><span class="expand">商品仕様を表示</span><span class="unexpand dispn">閉じる</span></p>
+
+						<div class="fieldUnitsHidden dispn " id="spec_info">
+
+							<div class="fieldUnit hta mrgb10 updateEdit updateBasic">
+								<p class="fieldName">商品仕様</p>
+								<div class="fieldBox table mrgb20">
+									<table class="hilightRow list" style="width:75%" id="ca_table_spec">
+									<thead id="ca_table_spec_thead">
+										<tr>
+											<th>項目</th>
+											<th width="200px">仕様</th>
+											<th width="280px">フリー入力</th>
+										</tr>
+									</thead>
+									<tbody id="ca_table_spec_tbody">
+										<!-- ca_table_tbody_template -->
+									</tbody>
+									</table>
+
+									<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+									<script id="ca_rec_template_spec" type="text/template">
+										<tr name="<%- specSeq %>" class="deletable">
+											<td class="ca_c_link">
+												<%- specItemName %>
+											</td>
+											<td class="ca_c_link">
+												<%- specView %>
+											</td>
+											<td class="ca_c_link">
+												<%- specText %>
+											</td>
+										</tr>
+									</script>
+									<script id="ca_rec_template_spec2" type="text/template">
+										<tr name="<%- specSeq %>" class="deletable">
+											<td class="ca_c_link">
+												<%- specItemName %>
+											</td>
+											<td class="ca_c_link" colspan="2">
+												<%- specText %>
+											</td>
+										</tr>
+									</script>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit hta mrgb20 updateEdit updateBasic">
+								<p class="fieldName bl2">商品仕様<br />追加メモ</p>
+								<div class="fieldBox ">
+									<textarea id="ca_specComment" rows="3" class="form-control wt100pct" ></textarea>
+									<input type="hidden" id="ca_specCommentID" />
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit flleft mrgb10 hta  updateBasic">
+								<p class="fieldName"><span></span>素材</p>
+								<div class="fieldBox table mrgb0">
+									<table class="hilight list" id="ca_table_material">
+									<thead id="ca_table_material_thead">
+										<tr>
+											<th width="200px">部位</th>
+											<th width="200px">素材</th>
+											<th width="200px">％</th>
+										</tr>
+									</thead>
+									<tbody id="ca_table_material_tbody">
+										<!-- ca_table_tbody_template -->
+									</tbody>
+									</table>
+
+									<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+									<script id="ca_rec_template_material" type="text/template">
+										<tr name="<%- tagSeq %>" >
+											<td class="ca_c_link">
+												<%- placeView %>
+											</td>
+											<td class="ca_c_link">
+												<%- tagMaterialView %>
+											</td>
+											<td class="ca_c_link txtar" name="ca_materialText">
+												<%- materialText %>
+											</td>
+										</tr>
+									</script>
+								</div>
+								<div class="clear"></div>
+
+								</div>
+								<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<hr />
+					</div>
+
+					<!-- カラー・サイズ展開 -->
+					<div class="fieldgroup mrgb10" id="ca_colorSizeInfo">
+						<p class="gtitle">カラー・サイズ展開</p>
+
+						<div class="fieldgroupInBox  ">
+							<div class="fieldUnit flleft mrgb10 half hta">
+								<div class="fieldUnit mrgb10 half ">
+									<p class="fieldName bl2" >サイズ<br />パターン</p>
+									<div class="fieldBox" >
+										<input type="text" placeholder="" class="form-control wt280" id="ca_sizePtnID"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<hr>
+
+							<div name="div_colorsize">
+								<!-- カラーサイズテンプレート: underscore.js テンプレートを使用 -->
+								<script id="ca_rec_template_colorsize" type="text/template">
+									<div name="div_colorsize_list">
+									<div class="fieldUnit flleft mrgb10 hta  updateBasic" name="div_color" groupno="<%- groupNo %>">
+										<p class="fieldName"><span></span>カラー</p>
+										<div class="fieldBox table mrgb20">
+											<table class="hilightRow list " name="ca_table_color">
+											<thead name="ca_table_color_thead">
+												<tr>
+													<th width="120px">カラー</th>
+													<th width="120px">サブカラー</th>
+													<th width="120px">色番</th>
+												</tr>
+											</thead>
+											<tbody name="ca_table_color_tbody">
+												<!-- ca_rec_template_color -->
+											</tbody>
+											</table>
+
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit flleft mrgb10 hta  updateBasic" name="div_size">
+										<p class="fieldName" ><span></span>サイズ</p>
+										<div class="fieldBox table mrgb10" >
+											<table class="hilightRow list" name="ca_table_size">
+												<thead name="ca_table_size_thead">
+													<tr>
+														<th></th>
+														<th>選択</th>
+													</tr>
+													<!-- JS内で生成する(templateは使用しない) -->
+												</thead>
+												<tbody id="ca_table_size_tbody" name="ca_table_size_tbody">
+													<tr>
+														<td>選択</td>
+														<td><input type="checkbox" name="select_head_all" value="all" data-toggle="checkbox"></td>
+													</tr>
+													<!-- JS内で生成する(templateは使用しない) -->
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<hr />
+									</div>
+								</script>
+
+								<!-- カラーテーブル行テンプレート: underscore.js テンプレートを使用 -->
+								<script id="ca_rec_template_color" type="text/template">
+									<tr class="deletable" >
+										<td class="ca_c_link">
+											<%- tgtColorCode %>:<%- tgtColorName %>
+										</td>
+										<td class="ca_c_link">
+											<% if (designColorID) { %><%- tgtColorCode %>:<%- tgtColorName %><% } %>
+										</td>
+										<td class="ca_c_link">
+											<%- makerColor %>
+										</td>
+									</tr>
+								</script>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<!-- /カラー・サイズ展開 -->
+
+					<!-- 販売情報 -->
+					<div class="fieldgroup mrgb10" id="ca_saleInfo">
+						<p class="gtitle">販売情報</p>
+						<div class="fieldgroupInBox">
+							<div class="fieldUnit mrgb10 flleft mrgr20 " id="">
+								<p class="fieldName"><span></span>指定上代</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280 txtar" data-limit="number:7,0" data-filter="comma" id="ca_priceIntax" />
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="fieldUnit mrgb10 flleft half">
+								<p class="fieldName bl2">指定上代<br />（税抜）</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280 txtar" data-limit="number:7,0" data-filter="comma" disabled id="ca_price" disable/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<!-- 下代（税抜） -->
+							<div class="fieldUnit mrgb10 flleft half mrgr20  updateBasic">
+								<p class="fieldName">下代（税抜）</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280 txtar" data-limit="number:7,0" data-filter="comma" id="ca_cost"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<!-- 経準率 -->
+							<div class="fieldUnit mrgb10 flleft half mrgr20">
+								<p class="fieldName">経準率</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280 txtar" id="ca_profitRate" data-limit="number:4,1" disabled/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="">
+								<div class="fieldUnit mrgb10 flleft mrgr20   updateBasic" id="div_ca_year">
+									<p class="fieldName"><span></span>商品展開年</p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt140 txtar" disabled id="ca_year" disable/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 flleft mrgr20  updateBasic">
+									<p class="fieldName">販売開始日</p>
+									<div class="fieldBox">
+										<input type="text" class="form-control wt200" id="ca_salesStartDate" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 flleft mrgr20  updateBasic">
+									<p class="fieldName">販売終了日</p>
+									<div class="fieldBox">
+										<input type="text" class="form-control wt200" id="ca_salesEndDate"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft mrgr20   updateBasic" id="div_ca_selloutYear">
+									<p class="fieldName"><span></span>売り切り年</p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt140" id="ca_selloutYear"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 flleft mrgr20   updateBasic">
+									<p class="fieldName bl2"><span></span>売り切り<br />シーズン</p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt280" id="ca_selloutSeasonID"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+							</div>
+							<div class="clear"></div>
+
+						</div>
+					</div>
+					<div class="clear"></div>
+					<!-- /販売情報 -->
+
+					<!-- 任意属性 -->
+					<div class="fieldgroup mrgb10" id="ca_anyAttrInfo">
+						<p class="gtitle">任意属性</p>
+
+						<div class="fieldgroupInBox ">
+
+							<div class="fieldUnitsHidden mrgt10 updateEdit updateBasic" id="any_info">
+								<!-- テンプレートで -->
+							</div>
+							<div class="clear"></div>
+							<script id="ca_rec_template_any" type="text/template">
+								<div class="fieldUnit mrgb10 flleft mrgr20" name="div_any">
+									<p class="fieldName"><%- iagfuncName %></p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt280" value="<%- iagView %>"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</script>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<!-- /任意属性 -->
+
+				</div>
+				<!-- /#ca_form -->
+			</div>
+			<!-- /#content -->
+
+			<div id="mainColumnFooter" class="noLeftColumn x2">
+				<p class="apply three"><a href="#">一時保存</a></p>
+				<p class="apply three"><a href="#">タグ発行申請</a></p>
+				<p class="apply three last"><a href="#">最終承認申請</a></p>
+				<p class="three"><a href="#">前へ</a></p>
+				<p class="three three_center" id="print_daicho">商品発注台帳出力</p>
+				<p class="three last"><a href="">次へ</a></p>
+				<div class="clear"></div>
+			</div>
+			<!-- /#mainColumnFooter -->
+		</div>
+		<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

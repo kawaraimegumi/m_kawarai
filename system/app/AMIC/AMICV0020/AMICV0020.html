@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>棚卸</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../../../js/slickgrid.js"></script>
+	<script src="../../../js/clgrid.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../../css/slickgrid.css">
+
+	<style>
+		#ca_tp_code1 + .tooltip .tooltip-inner {
+			text-align: left;
+			width: 300px;
+		}
+		#ca_tp_code2 + .tooltip .tooltip-inner {
+			text-align: left;
+			width: 300px;
+		}
+		#ca_tp_code3 + .tooltip .tooltip-inner {
+			text-align: left;
+			width: 300px;
+		}
+		#ca_tp_code4 + .tooltip .tooltip-inner {
+			text-align: left;
+			width: 300px;
+		}
+		.fieldgroup .fieldgroupInBox {
+			min-width: 1280px;
+		}
+	</style>
+
+</head>
+
+<body class="cl_body_hidden">
+
+<script src="AMICV0020.js"></script>
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+
+				<div id="ca_srchArea" >
+
+					<div id="ca_headInfo">
+
+						<!-- ==============事業ユニットと対象期============================= -->
+						<div id=ca_targetInfo class="fieldgroupInBox mrgb20">
+
+							<!-- 事業ユニット -->
+							<div class="fieldUnit mrgb10 half flleft required">
+								<p class="fieldName">事業ユニット</p>
+								<div class="fieldBox">
+									<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_unitID" >
+									</select>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+							<div class="clear"></div>
+
+							<!-- 対象期 年・月-->
+							<div class="fieldUnit flleft mrgr10 mrgb10 required">
+
+								<p class="fieldName">対象期</p>
+
+								<div class="fieldBox">
+
+									<!-- 対象期 年-->
+									<select name="info" class="mbn wt280 flleft mrgr10 cl_valid cl_required" id="ca_year">
+									</select>
+
+									<!-- 対象期 月-->
+									<select name="info" class="mbn wt280 flleft cl_valid cl_required" id="ca_month">
+										<option value="0">&nbsp;</option>
+										<option value="1" >1月期</option>
+										<option value="2">2月期</option>
+										<option value="3">3月期</option>
+										<option value="4">4月期</option>
+										<option value="5">5月期</option>
+										<option value="6" >6月期</option>
+										<option value="7">7月期</option>
+										<option value="8">8月期</option>
+										<option value="9">9月期</option>
+										<option value="10">10月期</option>
+										<option value="11">11月期</option>
+										<option value="12">12月期</option>
+									</select>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<!-- ==============日付シリーズ======================================= -->
+						<div id="ca_dateInfo" class="fieldgroupInBox">
+
+							<!-- 店舗通知日  -->
+							<div class="fieldUnit flleft mrgr20 required">
+								<p class="fieldName">店舗通知日</p>
+								<div class="fieldBox">
+
+									<!-- ツールチップでヘルプを表示 -->
+									<p class="txtInFieldUnit flright help" id="ca_tp_code1"
+										title="ポータルに棚卸を通知する日付<br />です。店舗通知日以降に棚卸<br />データが登録可能になります。"><span>?</span></p>
+									<div class="datepicker_wrap">
+										<input type="text" class="cl_date cl_valid cl_required ime-disabled" name="noticeDate" id="ca_noticeDate" />
+									</div>
+
+								</div>
+								<div class="clear"></div>
+							</div>
+
+							<!-- 棚卸日  -->
+							<div class="fieldUnit flleft mrgr20 required">
+								<p class="fieldName">棚卸日</p>
+								<div class="fieldBox">
+
+									<!-- ツールチップでヘルプを表示 -->
+									<p class="txtInFieldUnit flright help" id="ca_tp_code2" title="店舗が棚卸報告する期限です。"><span>?</span></p>
+
+									<div class="datepicker_wrap">
+										<input type="text" class="cl_date cl_valid cl_required ime-disabled" name="countDate" id="ca_countDate" />
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+							<!-- 店舗確定期限日  -->
+							<div class="fieldUnit flleft mrgr20 required">
+								<p class="fieldName bl2">店舗確定<br/>期限日</p>
+								<div class="fieldBox">
+
+									<!-- ツールチップでヘルプを表示 -->
+									<p class="txtInFieldUnit flright help" id="ca_tp_code3" title="店舗がロス追求を完了する期限<br />です。"><span>?</span></p>
+
+									<div class="datepicker_wrap">
+										<input type="text" class="cl_date cl_valid cl_required ime-disabled" name="limitDateStore" id="ca_limitDateStore" />
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+							<!-- 本部確定期限日  -->
+							<div style="position: absolute; left:940px">
+							<div class="fieldUnit flleft mrgr20 required">
+								<p class="fieldName bl2">本部確定<br/>期限日</p>
+								<div class="fieldBox">
+
+									<!-- ツールチップでヘルプを表示 -->
+									<p class="txtInFieldUnit flright help" id="ca_tp_code4"
+									title="本部で在庫を確定する期限です。"><span>?</span></p>
+
+									<div class="datepicker_wrap">
+										<input type="text" class="cl_date cl_valid cl_required ime-disabled" name="limitDateSc" id="ca_limitDateSc" />
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							</div>
+
+							<div class="clear"></div>
+
+						</div>
+
+					</div>
+
+					<!-- ==============店舗別設定エリア================================== -->
+					<div class="fieldgroup">
+
+						<p class="gtitle mrgt10">特例店舗別設定</p>
+
+						<div class="fieldgroupInBox">
+
+							<!-- データグリッド領域 -->
+							<div class="cl_datagrid_container" id="ca_datagrid" style="height:270px; padding-bottom:30px"></div>
+						</div>
+
+					</div>
+
+				</div><!-- /#ca_srchArea -->
+
+			</div><!-- /#fieldgroup -->
+
+		</div><!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		</div><!-- /#mainColumnFooter -->
+
+	</div><!-- /#mainColumninBox -->
+
+	</div><!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+</div>
+
+</body>
+</html>

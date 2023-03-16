@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>棚卸</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<!--
+	<link media="screen" rel="stylesheet" type="text/css" href="AMICV0050.css">
+	-->
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../../../js/slickgrid.js"></script>
+	<script src="../../../js/clgrid.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../../css/slickgrid.css">
+
+	<link media="screen" rel="stylesheet" type="text/css" href="AMICV0050.css">
+
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+	<style>
+		#ca_tp_code1 + .tooltip .tooltip-inner {
+			text-align: left;
+			width: 300px;
+		}
+	</style>
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMICV0050.js"></script>
+
+<div id="container">
+
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+
+					<p class="gtitle2">棚卸読込作業分の修正は[棚卸数確定前修正]で実施します<br />
+						この画面[棚卸売上修正]で修正することは禁止です</p>
+					<p class="gtitle2">「棚卸売上修正」登録後は、「棚番削除」機能は利用できなくなります。</p>
+
+					<p class="gtitle">通知日から棚卸日でなければ操作できません</p>
+
+					<!-- 店舗 -->
+					<div class="fieldUnit mrgt10 mrgb10 flleft mrgr20 required">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 flleft cl_valid cl_required cl_store" id="ca_srchStoreID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 対象期 -->
+					<div class="fieldUnit flleft mrgr20 mrgb10 required">
+						<p class="fieldName">対象期</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 flleft cl_valid cl_required" id="ca_srchYearMonth"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+					<!-- 検索ボタン -->
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button id="ca_srch" class="btn btn-info wt280">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<!-- 検索条件を再指定ボタン -->
+				<button id="searchAgain" class="dispn btn" tabindex="-1">検索条件を再指定</button>
+
+			</div>
+
+			<div id="result" class="dispn">
+
+				<div class="fieldgroup">
+					<div class="fieldgroupInBox view" id="ca_AMICV0050TagInfo">
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+
+							<p class="fieldName">タグコード</p>
+
+							<div class="fieldBox">
+
+								<!-- ツールチップでヘルプを表示 -->
+								<p class="txtInFieldUnit flright help" id="ca_tp_code1"
+									title="手入力する場合はEnterキーを押下してください。"><span>?</span></p>
+
+								<!-- フィールドカウンタを表示 -->
+								<span class="limit wt180 flright mrgl20"></span>
+								<input type="text" class="form-control wt200 flleft cl_valid" id="ca_tagCode"
+								data-tflimit="15" data-validator="maxlen:15 digit"/>
+
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<p class="fieldName">品種</p>
+							<div class="fieldBox">
+								<p class="txtbox wt120" id="ca_stditgrpDispName"></p>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<p class="fieldName">メーカー品番</p>
+							<div class="fieldBox">
+								<p class="txtbox wt100" id="ca_makerCode"></p>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<p class="fieldName">商品</p>
+							<div class="fieldBox">
+								<p class="txtbox wt320" id="ca_itemName"></p>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<p class="fieldName">棚卸数</p>
+							<div class="fieldBox">
+								<p class="txtbox wt100 txtar" id="ca_invQy"></p>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<p class="fieldName bl2">HT読取後<br />売上数</p>
+							<div class="fieldBox">
+								<!-- HT読取後売上数－ボタン -->
+								<button class="btn btn-info wt40 ht40" id="ca_btn_salesQy_Down"  tabindex="-1">－</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<div class="fieldBox noName">
+								<!-- HT読取後売上数 -->
+								<p class="txtbox wt100 txtar" id="ca_salesQy"></p>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<div class="fieldBox noName">
+								<!-- HT読取後売上数＋ボタン -->
+								<button class="btn btn-info wt40 ht40" id="ca_btn_salesQy_Up"  tabindex="-1">＋</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit mrgb10 flleft mrgr10">
+							<p class="fieldName bl2">修正後<br />棚卸数</p>
+							<div class="fieldBox">
+								<p class="txtbox wt100 txtar" id="ca_fixInvQy"></p>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<!-- データグリッド領域 -->
+				<!-- <div class="cl_datagrid_container" id="ca_datagrid" style="height: 350px;padding-bottom:30px;"> -->
+				<div class="cl_datagrid_container" id="ca_datagrid" style="height: 350px;">
+				<!-- <div class="cl_datagrid_container" id="ca_datagrid"> -->
+				</div>
+
+			</div>
+			<button class="btn btn-info dispn" id="btn_inventcount">棚卸数取得</button>
+		</div><!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn">
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div><!-- /#mainColumninBox -->
+
+	</div><!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+</div>
+</body>
+</html>

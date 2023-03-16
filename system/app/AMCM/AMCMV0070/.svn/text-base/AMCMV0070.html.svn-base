@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>共通</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMCMV0070.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+</head>
+
+<body>
+
+<script src="AMCMV0070.js"></script>
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+
+				<div id="ca_roleinfoArea" class="">
+
+					<input type="hidden" id="ca_recno">
+					<input type="hidden" id="ca_state">
+					<input type="hidden" id="ca_roleID"/>
+
+					<div class="fieldUnit mrgb10 mrgr20 flleft required">
+						<p class="fieldName">権限コード</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_roleCode" data-tflimit="4 digit" data-validator="maxlen:4 digit"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 flleft mrgr20 required">
+						<p class="fieldName">権限名称</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl280"></span>
+							<input type="text" placeholder="" class="form-control wt320 cl_valid cl_required ime-active" data-tflimit="20" data-validator="maxlen:20" id="ca_roleName"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit half flleft mrgb10 mrgr20 required" id="div_ca_permOrgID">
+						<p class="fieldName">参照可能組織</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 flleft cl_valid cl_required" id="ca_permOrgID"></select>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit half flleft mrgb10 mrgr20 required" id="div_ca_mdbPermOrgID">
+						<p class="fieldName">MDB参照可能組織</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 flleft cl_valid cl_required" id="ca_mdbPermOrgID"></select>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required ca_menu_field">
+						<p class="fieldName">メニュー</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_menuID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+
+			<!-- ==============メニュー別権限設定エリア================================== -->
+			<div class="fieldgroup">
+
+				<p class="gtitle">メニュー別権限設定</p>
+
+				<div class="fieldgroupInBox">
+
+					<div class="table mrgb0">
+
+						<table class="hilightRow" id="ca_table">
+						<thead>
+							<tr>
+								<th width="">分類</th>
+								<th>画面名</th>
+								<th width="50px">参照</th>
+								<th width="50px">更新</th>
+								<th width="50px">削除</th>
+								<th width="50px">緊急</th>
+							</tr>
+						</thead>
+						<tbody id="ca_table_tbody">
+						</tbody>
+						</table>
+
+						<script id="ca_rec_template" type="text/template">
+							<tr class="contextmenu">
+								<td class="ca_c_link dispn"><input type="hidden" name="ca_menuID" value="<%- menuID %>"></td>
+								<td class="ca_c_link dispn"><input type="hidden" name="ca_menuName" value="<%- menuName %>"></td>
+								<td class="ca_c_link"><span name="ca_menuNodeName"><%- menuNodeName %><span></td>
+								<td class="ca_c_link dispn"><input type="hidden" name="ca_menuNodeID" value="<%- menuNodeID %>"></td>
+								<td class="ca_c_link dispn"><input type="hidden" name="ca_menuNodeCode" value="<%- menuNodeCode %>"></td>
+								<td class="ca_c_link"><span name="ca_viewName"><%- viewName %><span></td>
+								<td class="ca_c_link dispn"><input type="hidden" name="ca_viewID" value="<%- viewID %>"></td>
+								<td class="ca_c_link dispn"><input type="hidden" name="ca_viewCode" value="<%- viewCode %>"></td>
+								<td class="ca_c_link read_check">
+									<label class="checkbox ib <% if(readFlag){ %>checked<% } %>"><input type="checkbox" data-toggle="checkbox" name="ca_readFlag" <% if(readFlag){ %>checked<% } %>></label>
+								</td>
+								<td class="ca_c_link write_check">
+									<label class="checkbox ib <% if(writeFlag){ %>checked<% } %>"><input type="checkbox" data-toggle="checkbox" name="ca_writeFlag" <% if(writeFlag){ %>checked<% } %>></label>
+								</td>
+								<td class="ca_c_link del_check">
+									<label class="checkbox ib <% if(delFlag){ %>checked<% } %>"><input type="checkbox" data-toggle="checkbox" name="ca_delFlag" <% if(delFlag){ %>checked<% } %>></label>
+								</td>
+								<td class="ca_c_link em_check">
+									<label class="checkbox ib <% if(emFlag){ %>checked<% } %>"><input type="checkbox" data-toggle="checkbox" name="ca_emFlag" <% if(emFlag){ %>checked<% } %>></label>
+								</td>
+							</tr>
+						</script>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<!-- ================================================================ -->
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

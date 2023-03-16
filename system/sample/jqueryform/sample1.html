@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+<!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+    <meta charset="UTF-8">
+    <title>template1</title>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="../../../js/jquery.blockUI.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="../../../js/jquery.form.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"></script>
+    <script src="../../js/clcom.js"></script>
+    <script src="sample1.js"></script>
+  </head>
+  <body>
+    <form id="form1" class="form">
+      <label>text1</label>
+      <input class="" type="text" name="text1">
+      <label>file1</label>
+
+      <div id="fileinput1" class="cl-fileupload" data-cl-target="#cl-filelist">
+        <input class="hide-input" type="file" name="file1">
+        <button class="btn btn-primary cl-filebtn" type="button">添付</button>
+      </div>
+      <table id="cl-filelist" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <td>さく</td>
+            <td>No</td>
+            <td>なまえ</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+      <label>select</label>
+      <select name="select">
+        <option value="option1">option1</option>
+        <option value="option2">option2</option>
+      </select>
+      <label class="checkbox">
+        <input type="checkbox" name="check1" checked>check1
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="check2" >check2
+      </label>
+      <label class="radio">
+        <input type="radio" name="radio" value="radio1" checked>radio1
+      </label>
+      <label class="radio">
+        <input type="radio" name="radio" value="radio2">radio2
+      </label>
+      <label class="radio">
+        <input type="radio" name="radio" value="radio3">radio3
+      </label>
+      <input id="submit" class="btn" type="submit" value="submit">
+    </form>
+  </body>
+</html>

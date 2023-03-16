@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>共通</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMCMV0170.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script src="../../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="AMCMV0170.js"></script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+<div id="container">
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_basicView" class="fieldgroupInBox">
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">取り込み時刻</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_timestamp_disp"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">データ種別</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_impDataType_disp"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">IF-ID</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_ifId_disp"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">相手先</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_destType_disp"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">結果</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_resultType_disp"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">成功データ数</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 cl_valid txtar" id="ca_okCount_disp" data-filter="comma"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">失敗データ数</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 cl_valid txtar" id="ca_ngCount_disp" data-filter="comma"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName">メッセージ</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt960" id="ca_message"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName bl2">エラー<br/>ファイル</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt960" id="ca_errorFile"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName">エラー内容</p>
+						<div class="fieldBox">
+							<textarea type="text" class="form-control wt960" id="ca_error"></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn">
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+<div class="clear"></div>
+
+
+</div>
+</body>
+</html>

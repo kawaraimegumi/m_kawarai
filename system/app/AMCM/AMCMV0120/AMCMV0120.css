@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+.txtInFieldUnit.help {
+    margin-top: 2px;
+}
+/* ?マークの折り返し対応 */
+.ca_detail_td .txtInFieldUnit{
+	display: inline;
+	float: none;
+}
+.ca_detail_td .txtInFieldUnit > span {
+	display: inline-block;
+	float: none;
+}

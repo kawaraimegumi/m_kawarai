@@ -1,0 +1,891 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>StoCS推奨値算出</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="AMSDV0010.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<link rel="stylesheet" href="AMSDV0010.css" type="text/css">
+
+<script>
+</script>
+
+
+</head>
+
+<body >
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+			<div id="content">
+
+				<div class="fieldgroup">
+					<div id="ca_srchArea" class="fieldgroupInBox search">
+						<div id="div_srchUnitID" class="fieldUnit mrgb10 half flleft required">
+							<p class="fieldName">事業ユニット</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+							<p class="fieldName">品種</p>
+							<div class="fieldBox required">
+								<select multiple name="info" class="mbn wt280 cl cl_valid cl_required" id="ca_srchItgrpID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName">対象商品</p>
+							<div class="fieldBox">
+								<div class="flleft">
+								<label class="checkbox ib flleft" for="ca_tgtItemFlag" style="width:155px;">
+									<input type="checkbox" value="" id="ca_tgtItemFlag" data-toggle="checkbox" ckecked>通常商品
+								</label>
+								</div>
+								<div class="flleft">
+								<label class="checkbox ib flleft" for="ca_tgtPackItemFlag" style="width:155px;">
+									<input type="checkbox" value="" id="ca_tgtPackItemFlag" data-toggle="checkbox" ckecked>集約商品
+								</label>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">メーカー</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_srchMakerID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">品番</p>
+							<div class="fieldBox">
+								<!-- <input type="text" placeholder="" class="form-control wt280 cl_valid" data-validator="maxlen:10 hankaku" id="ca_srchItemCode" /> -->
+								<textarea id="ca_srchItemCode" rows="3" data-validator="maxlen:1000 hankaku_cr" class="ta_noresize form-control wt280 cl_valid" ></textarea>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">商品名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-validator="maxlen:25 zenhan" id="ca_srchName"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">商品展開年</p>
+							<div class="fieldBox flleft">
+								<select name="info" class="mbn wt120 cl_valid" id="ca_srchYearFrom"></select>
+							</div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="flleft">
+								<select name="info" class="mbn wt120 cl_valid" id="ca_srchYearTo"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">シーズン</p>
+							<div class="fieldBox">
+								<select multiple name="info" class="mbn wt280 cl_valid" id="ca_srchSeasonID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">サブクラス1</p>
+							<div class="fieldBox">
+								<select multiple name="info" class="mbn wt280 cl_valid" id="ca_srchSub1ID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">サブクラス2</p>
+							<div class="fieldBox">
+								<select multiple name="info" class="mbn wt280 cl_valid" id="ca_srchSub2ID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">カラー</p>
+							<div class="fieldBox">
+								<select multiple name="info" class="mbn wt280 cl_valid" id="ca_srchColorID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">スタイル</p>
+							<div class="fieldBox">
+								<select multiple name="info" class="mbn wt280 cl_valid" id="ca_srchStyleID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName bl2">セットアップ<br>コード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_srchSetupID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName"></p>
+							<div class="fieldBox">
+								<label class="checkbox ib flleft" for="ca_onlySetupFlag">
+									<input type="checkbox" value="" id="ca_onlySetupFlag" data-toggle="checkbox">セットアップ商品のみ表示
+								</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName bl2 wt120">基準在庫推奨値<br />最終算出日</p>
+							<div class="fieldBox pl120">
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchStStLastFrom" /></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchStStLastTo" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName bl2 wt120">振分推奨値<br />最終算出日</p>
+							<div class="fieldBox pl120">
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchSortLastFrom" /></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchSortLastTo" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName bl2 wt120">移動推奨値<br />最終算出日</p>
+							<div class="fieldBox pl120">
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchMoveLastFrom" /></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchMoveLastTo" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName wt120">更新者</p>
+							<div class="fieldBox pl120">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_srchUpdUserID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName">更新日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchUpdFrom" /></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap flleft"><input type="text" class="cl_date cl_valid" id="ca_srchUpdTo" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_srch" class="btn btn-info wt280">検索</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+				</div>
+
+
+				<div id="result" class="dispn">
+
+					<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+					<div class="pagination-wrapper"></div>
+
+					<div class="table">
+						<div class="table_outer">
+							<div class="table_inner">
+								<table class="hilightRow" id="ca_table">
+								<thead id="ca_table_thead">
+									<tr>
+										<th class="cl_checkbox_selectall th_checkbox">☑全選択</th>
+										<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+										<th class="th_itgrp">品種</th>
+										<th class="th_maker">メーカー</th>
+										<th class="th_itemCode">品番</th>
+										<th class="th_name">商品名</th>
+										<th class="th_color">カラー</th>
+										<th class="th_year">商品展開年</th>
+										<th class="th_season">シーズン</th>
+										<th class="th_subcls">サブクラス1</th>
+										<th class="th_subcls">サブクラス2</th>
+										<th class="th_style">スタイル</th>
+										<th class="th_setup">セットアップコード</th>
+										<th class="th_followdate">フォロー開始日</th>
+										<th class="th_followdate">フォロー終了日</th>
+										<th class="th_uplimit">集約品番の1品目あたりの<br />上限在庫数</th>
+										<th class="th_autotype">基準在庫_振分可能数を<br />超えた際の動作</th>
+										<th class="th_batchflag">基準在庫推奨値<br />自動出力対象フラグ</th>
+										<th class="th_distlimit">同一JAN振分上限数</th>
+										<th class="th_datelong">基準在庫推奨値<br />最終算出日</th>
+										<th class="th_datelong">振分推奨値<br />最終算出日</th>
+										<th class="th_datelong">移動推奨値<br />最終算出日</th>
+										<th class="th_user">更新者</th>
+										<th class="th_date">更新日</th>
+									</tr>
+								</thead>
+								<tbody id="ca_table_tbody">
+									<!-- ca_table_tbody_template -->
+								</tbody>
+								</table>
+							</div> <!-- /.table_inner -->
+						</div> <!-- /.table_outer -->
+						<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+						<script id="ca_rec_template" type="text/template">
+							<tr class="csptr" id="<%- id %>">
+								<td class="cl_checkbox_selectrec td_checkbox">☑行選択</td>
+								<td class="ca_c_link td_itgrp"><%- mainView.codeNameStr(itgrpCode, itgrpName) %></td>
+								<td class="ca_c_link td_maker "><%- mainView.codeNameStr(makerCode,makerName) %></td>
+								<td class="ca_c_link td_itemCode"><%- itemCode %></td>
+								<td class="ca_c_link td_name ellipsis"><%- name %></td>
+								<td class="ca_c_link td_color"><%- colorName %></td>
+								<td class="ca_c_link"><%if(year==0){%> <%}else{%><%- year %><% } %></td>
+								<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_SEASON, seasonTypeID, 1) %></td>
+								<td class="ca_c_link ellipsis"><%- subcls1Name %></td>
+								<td class="ca_c_link ellipsis"><%- subcls2Name %></td>
+								<td class="ca_c_link td_style"><%- styleName %></td>
+								<td class="ca_c_link td_setup"><%- setupID %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(followStart, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(followEnd, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link td_other txtar"><%- upLimitNum %></td>
+								<td class="ca_c_link td_other txtar"><%- autoType %></td>
+								<td class="ca_c_link td_other txtar"><%- batchFlag %></td>
+								<td class="ca_c_link td_other txtar"><%- distLimit %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(stStLastDate, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(sortLastDate, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(moveSortLastDate, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- updUserName %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(updDate, 'yyyy/mm/dd(w)') %></td>
+							</tr>
+						</script>
+					</div>
+
+					<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+					<div class="pagination-wrapper"></div>
+
+					<div class="fieldUnit ">
+						<div class="fieldBox mrgt30  noName cl_opebtngroup">
+							<button class="btn btn-primary wt220 flright" id="cl_AMSDC0150">最低在庫・サイズ構成比確認</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div>
+					<div class="fieldgroup" id="div_typeselect">
+						<div class="fieldUnit flleft">
+							<label class="radio mrgb10 mrgr20">
+								<input type="radio" name="ca_typeselect" value="1" data-toggle="radio">基準在庫
+							</label>
+						</div>
+						<div class="fieldUnit flleft">
+							<label class="radio mrgb10 mrgr20">
+								<input type="radio" name="ca_typeselect" value="2" data-toggle="radio">振分
+							</label>
+						</div>
+						<div class="fieldUnit flleft">
+							<label class="radio mrgb10 mrgr20">
+								<input type="radio" name="ca_typeselect" value="3" data-toggle="radio">移動
+							</label>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldgroup mrgbshort" id="div_basestock">
+						<p class="gtitle">基準在庫</p>
+						<div class="fieldgroupInBox mrgb10">
+							<div class="fieldUnit">
+								<p class="pll">①基準在庫推奨値算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<!-- <a class="flleft" href="javascript:void(0)" id="ca_AMSDV0060">基準在庫推奨値算出</a> -->
+								<button class="btn btn-primary wt200 flleft pdtb4" id="ca_AMSDV0060">基準在庫推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit">
+								<p class="pll">②基準在庫一括取込</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit">
+									<p>①で出力したファイルに意志入れしたものを以下のリンクから取り込ませて下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt200 flleft pdtb4" id="ca_AMDSV0150">基準在庫一括取込</button>
+							</div>
+						</div>
+
+					</div>
+					<div class="clear"></div>
+					<div class="fieldgroup mrgbshort" id="div_dist">
+						<p class="gtitle">振分</p>
+						<div class="fieldgroupInBox mrgb10">
+							<div class="fieldUnit">
+								<p class="pll">①振分数入力ファイルを出力</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit ht20">
+									<p>理想在庫としてどちらの値を使用するか以下から選択して下さい。（理想在庫と店舗在庫の差を求め、不足している店舗に優先して振り分けていきます）</p>
+								</div>
+								<div class="clear"></div>
+								<div class="flleft mrgb10 mrgr20 mrgl20">
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_stockSaleFlag" value="3" data-toggle="radio">現設定基準在庫（現在MDに設定されている基準在庫を使用します）
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_stockSaleFlag" value="2" data-toggle="radio">基準在庫推奨値（StoCSの基準在庫推奨値算出機能で算出した値を使用します）
+									</label>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0170">振分数入力ファイル出力</button>
+							</div>
+							<hr>
+							<div class="fieldUnit">
+								<p class="pll">②振分推奨値算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit">
+									<p>①で出力したファイルに必要事項を入力したものを取り込ませて下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDV0070">振分推奨値算出</button>
+							</div>
+							<hr>
+							<div class="fieldUnit">
+								<p class="pll">③振分一括取込</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit">
+									<p>②で出力したファイルに意志入れしたものを以下のリンクから取り込ませて下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt200 flleft pdtb4" id="ca_AMDSV0151">振分一括取込</button>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldgroup mrgbshort" id="div_move">
+						<p class="gtitle">移動</p>
+						<div class="fieldgroup" id="div_typeselect2">
+							<div class="fieldUnit flleft">
+								<label class="radio mrgb10 mrgr20">
+									<input type="radio" name="ca_typeselect2" value="1" data-toggle="radio">入出荷指定ロジック
+								</label>
+							</div>
+							<div class="fieldUnit flleft">
+								<label class="radio mrgb10 mrgr20">
+									<input type="radio" name="ca_typeselect2" value="2" data-toggle="radio">全店ロジック
+								</label>
+							</div>
+							<div class="fieldUnit flleft">
+								<label class="radio mrgb10 mrgr20">
+									<input type="radio" name="ca_typeselect2" value="3" data-toggle="radio">セットアップロジック
+								</label>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldgroupInBox mrgb10 dispn" id="div_inout">
+							<div class="fieldUnit">
+								<p>・入出荷指定ロジック</p>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit ht24">
+								<p class="pll">①入出荷指定ロジックファイルの出力</p>
+							</div>
+							<div class="clear"></div>
+							<div class="pl40 ">
+								<div class="fieldUnit mrgb20 ht20">
+									<p>評価と移動エリアとして使用する値を以下から選択して下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="pl40 ">
+								<div class="fieldUnit mrgb10 ht20">
+									<p>評価（評価の高い店舗を入荷店舗に、低い店舗を出荷店舗にします）</p>
+								</div>
+								<div class="clear"></div>
+								<div class="flleft mrgb10 mrgr20 mrgl20">
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_inoutArg1" value="1" data-toggle="radio">売上金額
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_inoutArg1" value="2" data-toggle="radio">売上数
+									</label>
+								</div>
+								<div class="flleft mrgb10 ">
+									<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+										<p class="fieldName">対象期間開始</p>
+										<div class="fieldBox required" id="p_inout_st_week">
+											<input type="text" class="form-control  cl_valid cl_required flleft" id="ca_inout_st_week" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+										<p class="fieldName">対象期間終了</p>
+										<div class="fieldBox required" id="p_input_ed_week">
+											<input type="text" class="form-control  cl_valid cl_required flleft" id="ca_inout_ed_week" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="pl40">
+								<div class="fieldUnit ht20">
+									<p>移動エリア（店舗ごとに以下の項目の値を移動エリアに設定し、同じエリア内の店舗にのみ移動を行います）</p>
+								</div>
+								<div class="clear"></div>
+								<div class="flleft mrgb10 mrgr20 mrgl20">
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_inoutArg2" value="1" data-toggle="radio">ゾーン
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_inoutArg2" value="2" data-toggle="radio">地区
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_inoutArg2" value="3" data-toggle="radio">全国
+									</label>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0210_1">入出荷指定ロジックファイル出力</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">②入出荷店舗推奨値の算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">①で出力したファイルに必要事項を入力したものを取り込ませて下さい。<br />
+									評価を元に各店舗に入荷店舗候補、出荷店舗候補を決定したファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0210_2">入出荷店舗推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">③移動後在庫推奨値の算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">②で出力されたファイルに意志入れしたものを取り込ませて下さい。<br />
+									移動後在庫推奨値を記載したファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0210_3">移動後在庫推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">④移動推奨値算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">③で出力されたファイルに意志入れしたものを取り込ませて下さい。<br />
+									移動推奨値ファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0210_4">移動推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">⑤移動依頼一括取込</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit">
+									<p>④で出力したファイルに意志入れしたものを以下のリンクから取り込ませて下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMTRV0080_1">移動依頼一括取込</button>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldgroupInBox mrgb10 dispn" id="div_allstore">
+							<div class="fieldUnit">
+								<p>・全店ロジック</p>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit ht24">
+								<p class="pll">①全店ロジックファイルの出力</p>
+							</div>
+							<div class="clear"></div>
+							<div class="pl40 ">
+								<div class="fieldUnit mrgb20 ht20">
+									<p>評価と移動エリアとして使用する値を以下から選択して下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit mrgb10 ht20">
+									<p>評価（移動後在庫推奨値を算出する際に、評価の割合に応じた数量を設定します）</p>
+								</div>
+								<div class="clear"></div>
+								<div class="flleft mrgb10 mrgr20 mrgl20">
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_allstoreArg1" value="1" data-toggle="radio">売上金額
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_allstoreArg1" value="2" data-toggle="radio">売上数
+									</label>
+								</div>
+								<div class="flleft mrgb10 ">
+									<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+										<p class="fieldName">対象期間開始</p>
+										<div class="fieldBox requied" id="p_allstore_st_week">
+											<input type="text" class="form-control  cl_valid cl_required flleft" id="ca_allstore_st_week" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+										<p class="fieldName">対象期間終了</p>
+										<div class="fieldBox required" id="p_allstore_ed_week">
+											<input type="text" class="form-control  cl_valid cl_required flleft" id="ca_allstore_ed_week" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40">
+								<div class="fieldUnit ht20">
+									<p>移動エリア（店舗ごとに以下の項目の値を移動エリアに設定し、同じエリア内の店舗にのみ移動を行います）</p>
+								</div>
+								<div class="clear"></div>
+								<div class="flleft mrgb10 mrgr20 mrgl20">
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_allstoreArg2" value="1" data-toggle="radio">ゾーン
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_allstoreArg2" value="2" data-toggle="radio">地区
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_allstoreArg2" value="3" data-toggle="radio">全国
+									</label>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0230_1">全店ロジックファイル出力</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">②移動後在庫推奨値の算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">①で出力したファイルに必要事項を入力したものを取り込ませて下さい。<br />
+									移動後在庫推奨値を記載したファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0230_2">移動後在庫推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">③移動推奨値算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">②で出力されたファイルに意志入れしたものを取り込ませて下さい。<br />
+									移動推奨値ファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMSDC0230_3">移動推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">④移動依頼一括取込</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit">
+									<p>③で出力したファイルに意志入れしたものを以下のリンクから取り込ませて下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt240 flleft pdtb4" id="ca_AMTRV0080_2">移動依頼一括取込</button>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldgroupInBox mrgb10 dispn" id="div_setup">
+							<div class="fieldUnit">
+								<p>・セットアップロジック</p>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit ht24">
+								<p class="pll">①入出荷指定ロジックファイルの出力</p>
+							</div>
+							<div class="clear"></div>
+							<div class="pl40 ">
+								<div class="fieldUnit mrgb20 ht20">
+									<p>評価と移動エリアとして使用する値を以下から選択して下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="pl40 ">
+								<div class="fieldUnit mrgb10 ht20">
+									<p>評価（評価の高い店舗を入荷店舗に、低い店舗を出荷店舗にします）</p>
+								</div>
+								<div class="clear"></div>
+								<div class="flleft mrgb10 mrgr20 mrgl20">
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_setupArg1" value="1" data-toggle="radio">売上金額
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_setupArg1" value="2" data-toggle="radio">売上数
+									</label>
+								</div>
+								<div class="flleft mrgb10 ">
+									<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+										<p class="fieldName">対象期間開始</p>
+										<div class="fieldBox required" id="p_setup_st_week">
+											<input type="text" class="form-control  cl_valid cl_required flleft" id="ca_setup_st_week" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+										<p class="fieldName">対象期間終了</p>
+										<div class="fieldBox required" id="p_setup_ed_week">
+											<input type="text" class="form-control  cl_valid cl_required flleft" id="ca_setup_ed_week" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="pl40">
+								<div class="fieldUnit ht20">
+									<p>移動エリア（店舗ごとに以下の項目の値を移動エリアに設定し、同じエリア内の店舗にのみ移動を行います）</p>
+								</div>
+								<div class="clear"></div>
+								<div class="flleft mrgb10 mrgr20 mrgl20">
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_setupArg2" value="1" data-toggle="radio">ゾーン
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_setupArg2" value="2" data-toggle="radio">地区
+									</label>
+									<div class="clear"></div>
+									<label class="radio mrgb0">
+										<input type="radio" name="ca_setupArg2" value="3" data-toggle="radio">全国
+									</label>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt260 flleft pdtb4" id="ca_AMSDC0250_1">セットアップロジックファイル出力</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">②入出荷店舗推奨値の算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">①で出力したファイルに必要事項を入力したものを取り込ませて下さい。<br />
+									評価を元に各店舗に入荷店舗候補、出荷店舗候補を決定したファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt260 flleft pdtb4" id="ca_AMSDC0250_2">入出荷店舗推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">③移動後在庫推奨値の算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">②で出力されたファイルに意志入れしたものを取り込ませて下さい。<br />
+									移動後在庫推奨値を記載したファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt260 flleft pdtb4" id="ca_AMSDC0250_3">移動後在庫推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">④移動推奨値算出</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 mrgb10">
+								<div class="fieldUnit htauto">
+									<p class="lh20">③で出力されたファイルに意志入れしたものを取り込ませて下さい。<br />
+									移動推奨値ファイルを出力します。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt260 flleft pdtb4" id="ca_AMSDC0250_4">移動推奨値算出</button>
+							</div>
+							<div class="clear"></div>
+							<hr>
+							<div class="fieldUnit ht24">
+								<p class="pll">⑤移動依頼一括取込</p>
+							</div>
+							<div class="clear"></div>
+							<div class="flleft pl40 ">
+								<div class="fieldUnit">
+									<p>④で出力したファイルに意志入れしたものを以下のリンクから取り込ませて下さい。</p>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgl20">
+								<button class="btn btn-primary wt260 flleft pdtb4" id="ca_AMTRV0080_3">移動依頼一括取込</button>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<!-- /#content -->
+
+			<div id="mainColumnFooter" class="noLeftColumn">
+			</div>
+			<!-- /#mainColumnFooter -->
+
+		</div>
+		<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

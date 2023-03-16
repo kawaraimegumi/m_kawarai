@@ -1,0 +1,27 @@
+.table tr.opened td, .table tr.closed td {
+cursor: pointer;
+}
+tr.l2 i.icon-minus,
+tr.l2 i.icon-plus {
+display: none;
+}
+.table tr.closed td > i.icon-minus,
+.table tr.opened td > i.icon-plus {
+display: none;
+}
+
+.table tr.closed td > i.icon-plus,
+.table tr.opened td > i.icon-minus {
+display: show;
+}
+
+.table tr.l2 td:first-child {
+padding-left: 30px;
+}
+.table tr.l3 td:first-child {
+padding-left: 60px;
+}
+
+.table td.align-right {
+text-align: right;
+}

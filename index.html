@@ -1,0 +1,961 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>AOKI-MD</title>
+	<style type="text/css">
+		li {
+			margin-bottom: 2px;
+		}
+		.flleft {
+			float: left;
+		}
+		.flright {
+			float: right;
+		}
+		a.mock {
+			color: lightseagreen;
+		}
+	</style>
+
+	<script src="/js/jquery-min.js"></script>
+	<script>
+	$(function(){
+		var refPoot = 8989;
+		var refRoot = location.protocol + '//' + location.hostname + ':' + refPoot;
+		$('a.mock').each(function(){
+			var $a = $(this);
+			var fixHref = refRoot + '/' + $a.attr('href');
+			$a.attr('href', fixHref);
+		});
+	})
+	</script>
+
+</head>
+<body>
+
+<div>
+	<h3 style="margin-bottom: 0;">開発資料</h3>
+	<div class="flleft">
+		<ul>
+			<li><a href="system/app/KA015_sample/mdKaikei-In-errorList.html">部品サンプル</a></li>
+			<li><a href="system/sample/slickgrid/index.html">グリッド部品サンプル</a></li>
+		</ul>
+	</div>
+	<div class="flright">
+		<p>
+			<a class="mock" href="design/index.html">デザイン</a> <span class="wall">|</span>
+			<a class="mock" href="design/_components.html">Components</a> <span class="wall">|</span>
+			<!--
+			<a class="mock" href="docs/index.html">APIドキュメント</a>
+			-->
+			<a href="docs/index.html" target="aokmd_api_docs">APIドキュメント</a>
+		</p>
+	</div>
+	<div style="clear: both;"></div>
+</div>
+
+<hr>
+
+<div class="flleft">
+	<div>
+		<h4>商品計画(SC) 10:00</h4>
+		<ul>
+			<li><a class="mock" href="system/app/KE008/mdKikk-KindPlan.html">品種別計画策定</a></li>
+			<li><a class="mock" href="system/app/KE009/mdKikk-ItemAttr.html">商品属性計画策定</a></li>
+			<li><a class="mock" href="system/app/KE010/mdKikk-ItemNo.html">品番別計画策定</a></li>
+			<li><a class="mock" href="system/app/KE011/mdKikk-ItemDist.html">商品投入振分計画策定</a></li>
+			<li><a class="mock" href="system/app/KE012/mdKikk-ItemApproval.html">品番別支持率計画策定</a></li>
+			<li><a class="mock" href="system/app/KE013/mdKikk-Progress.html">品種別計画進捗確認</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>商品マスタ(SC) 10:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/SM019/mdShms-Catsys.html">商品分類体系マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/SM001/mdShms-Catsys-View.html">商品分類体系マスタ参照</a></li>
+			<li><a class="mock" href="system/app/SM002/mdShms-Catsys-Edit.html">商品分類体系マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM003/mdShms-Category.html">商品分類マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/SM004/mdShms-Category-Edit.html">商品分類マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM020/mdShms-Attr.html">商品属性マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/SM021/mdShms-Attr-Edit.html">商品属性マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM007/mdShms-Plan.html">商品企画マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/SM008/mdShms-Plan-Edit.html">商品企画マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM009/mdShms-Item.html">商品マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html">商品マスタ登録</a></li>
+			<li><a class="mock" href="system/app/SM016/mdShms-OrdrDist.html">商品発注兼振分一覧</a></li>
+			<li><a class="mock" href="system/app/SM017/mdShms-OrdrDist-Edit.html">商品発注兼振分登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM015/mdShms-ItemCfm.html">商品マスタ・発注承認</a></li>
+			<li><a class="mock" href="system/app/SM910/mdShms-Item-Edit.html">商品マスタ参照</a></li>
+			<li><a class="mock" href="system/app/SM011/mdShms-Combi.html">組合せ販売マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/SM012/mdShms-Combi-Edit.html">組合せ販売マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM013/mdShms-Collect.html">集約商品マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/SM014/mdShms-Collect-Edit.html">集約商品マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM022/mdShms-Setup.html">セットアップ一覧</a></li>
+			<li><a class="mock" href="system/app/SM023/mdShms-Setup-Edit.html">セットアップ登録・修正</a></li>
+			<li><a class="mock" href="system/app/SM024/mdShms-RelItem.html">関連商品一覧</a></li>
+			<li><a class="mock" href="system/app/SM025/mdShms-RelItem-Edit.html">関連商品登録・修正</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>取引先マスタ(SC) 10:50</h4>
+		<ul>
+			<li><a href="system/app/AMMS/AMMSV0310/AMMSV0310.html">取引先マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/TM002/mdTrms-Item-Edit.html">取引先マスタ登録・修正</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>振分(SC) 11:00</h4>
+		<ul>
+			<li><a class="mock" href="system/app/FW001/mdFrwk-Rankptrn.html">店舗ランクパターン一覧</a></li>
+			<li><a class="mock" href="system/app/FW002/mdFrwk-Rankptrn-Edit.html">店舗ランクパターン登録・修正</a></li>
+			<li><a class="mock" href="system/app/FW003/mdFrwk-Stockptrn.html">基準在庫パターン一覧</a></li>
+			<li><a class="mock" href="system/app/FW004/mdFrwk-Stockptrn-Edit.html">基準在庫パターン登録・修正</a></li>
+			<li><a class="mock" href="system/app/FW005/mdFrwk-Stockptrn-View.html">基準在庫パターン閲覧</a></li>
+			<li><a class="mock" href="system/app/FW006/mdFrwk-Stock.html">基準在庫一覧</a></li>
+			<li><a class="mock" href="system/app/FW007/mdFrwk-Stock-Edit.html">基準在庫登録・修正</a></li>
+			<li><a class="mock" href="system/app/FW008/mdFrwk-Stockcount.html">基準在庫集計</a></li>
+			<li><a class="mock" href="system/app/FW009/mdFrwk-Allocate.html">振分一覧</a></li>
+			<li><a class="mock" href="system/app/FW010/mdFrwk-Allocate-Edit.html">振分登録・修正</a></li>
+			<li><a class="mock" href="system/app/FW011/mdFrwk-Allocatecount.html">振分集計</a></li>
+			<li><a class="mock" href="system/app/FW012/mdFrwk-stop-period.html">自動振分停止期間一覧</a></li>
+			<li><a class="mock" href="system/app/FW013/mdFrwk-stop-period-edit.html">自動振分停止期間登録・修正</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>分析(経戦)(SC) 11:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/AN000/caMenu.html">分析メニュー</a></li>
+			<li><a class="mock" href="system/app/AN001/caaResult.html">成績表(品種)</a></li>
+			<li><a class="mock" href="system/app/AN002_01/AN00201_caaResult.html">販売速報(日報)</a></li>
+			<li><a class="mock" href="system/app/AN002_02/AN00202_caaResult.html">品種別販売速報（AOKI）</a></li>
+			<li><a class="mock" href="system/app/AN003_01/AN00301_caaResult.html">構成分析（サブ１）</a></li>
+			<li><a class="mock" href="system/app/AN003_02/AN00302_caaResult.html">店舗別商品構成分析</a></li>
+			<li><a class="mock" href="system/app/AN005/AN005_caaResult.html">週別時系列分析</a></li>
+			<li><a class="mock" href="system/app/AN006/AN006_caaResult.html">ABC分析</a></li>
+			<li><a class="mock" href="system/app/AN008/AN008_caaResult.html">年代分析（サブ１）</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>営業計画(SC) 11:40</h4>
+		<ul>
+			<li><a href="system/app/AMBP/AMBPV0010/AMBPV0010.html">営業計画策定</a> <a class="mock" href="system/app/KE001/mdKikk-Management.html">_</a></li>
+			<li><a class="mock" href="system/app/KE006/mdKikk-StoreCfm.html">店舗計画進捗確認</a></li>
+			<li><a class="mock" href="system/app/KE007/mdKikk-StoreDailyCfm.html">店舗日別計画確認</a></li>
+			<li><a href="system/app/AMBP/AMBPV0060/AMBPV0060.html">店舗日別計画通知入力</a> <a class="mock" href="system/app/KE014/mdKikk-StoreDaily-Notice.html">_</a></li>
+			<li><a class="mock" href="system/app/KE016/mdKikk-ExpBudget.html">経費予算データ出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>営業計画(店舗) 11:40</h4>
+		<ul>
+			<li><a href="system/app/AMBP/AMBPV0020/AMBPV0020.html">店舗月別計画</a> / <a class="mock" href="system/app/KE003/mdKikk-StoreMonthly.html">*</a></li>
+			<li><a href="system/app/AMBP/AMBPV0030/AMBPV0030.html">店舗日別計画</a> <a class="mock" href="system/app/KE004/mdKikk-StoreDaily.html">_</a></li>
+			<li><a href="system/app/AMBP/AMBPV0040/AMBPV0040.html">店舗計画進捗確認</a> <a class="mock" href="system/app/KE006/mdKikk-StoreCfm.html">_</a></li>
+			<li><a href="system/app/AMBP/AMBPV0050/AMBPV0050.html">店舗日別計画確認</a> <a class="mock" href="system/app/KE007/mdKikk-StoreDailyCfm.html">_</a></li>
+			<li><a class="mock" href="system/app/KE015/mdKikk-StoreBudget.html">店舗別予算調整</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>組織マスタ(SC) 12:15</h4>
+		<ul>
+			<li><a class="mock" href="system/app/MS006/mdOrgms-System-List.html">組織体系マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/MS007/mdOrgms-System-Edit.html">組織体系マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/MS002/mdOrgms-List.html">組織マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/MS003/mdOrgms-Edit.html">組織マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/MS005/mdMast-StoreKindDisp.html">店舗品種別陳列可能数登録</a></li>
+			<li><a class="mock" href="system/app/MS004/mdOrgTransms.html">組織移動メンテ</a></li>
+			<li><a class="mock" href="system/app/KT001/mdKyts-List.html">客注停止一覧</a></li>
+			<li><a class="mock" href="system/app/KT002/mdkyts-Edit.html">客注停止登録・修正</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>営業帳票(レベルアップシート)(店舗) 13:30</h4>
+		<ul>
+			<li><a class="mock" href="system/app/EI001/mdEgch-Levelup.html">担当者別販売力レベルアップシート出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>備品発注(SC) 14:00</h4>
+		<ul>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0010/AMEQV0010.html">備品取引先マスタ一覧</a>
+				<a class="mock" href="system/app/BO001/mdBiod-Cust-Item.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0020/AMEQV0020.html">備品取引先マスタ登録・修正</a>
+				<a class="mock" href="system/app/BO002/mdBiod-Cust-Item-Edit.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0030/AMEQV0030.html">備品・プレミアム商品マスタ一覧</a>
+				<a class="mock" href="system/app/BO003/mdBiod-Item.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0040/AMEQV0040.html">備品・プレミアム商品マスタ登録・修正</a>
+				<a class="mock" href="system/app/BO004/mdBiod-Item-Edit.html">_</a>
+			</li>
+
+			<li>
+				<a href="system/app/AMEQ/AMEQV0080/AMEQV0080.html">本部一括備品発注一覧</a>
+				<a class="mock" href="system/app/BO009/mdBiod-Hq-Order.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0090/AMEQV0090.html">本部一括備品発注登録・修正</a>
+				<a class="mock" href="system/app/BO010/mdBiod-Hq-Order-Edit.html">_</a>
+			</li>
+
+			<li>
+				<a href="system/app/AMEQ/AMEQV0100/AMEQV0100.html">備品・プレミアム商品発注随時締め</a>
+				<a class="mock" href="system/app/BM001/mdBimn-Fix-Order.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0110/AMEQV0110.html">備品・プレミアム商品確定一覧</a>
+				<a class="mock" href="system/app/BO011/mdBiod-Fix-Order.html">_</a>
+				<a class="mock" href="system/app/BM003/mdBimn-data.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0120/AMEQV0120.html">備品・プレミアム商品発注状況確認</a>
+				<a class="mock" href="system/app/BM002/mdBimn-progress.html">_</a>
+			</li>
+			<li>
+				<a class="mock" href="system/app/BM003/mdBimn-data.html">備品発注データ取得</a>
+			</li>
+			<li>
+				<a class="mock" href="system/app/BO008/mdBiod-St-Order-Conf.html">備品発注承認</a>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h4>備品発注(店舗) 14:00</h4>
+		<ul>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0050/AMEQV0050.html">備品一覧（発注登録）</a>
+				<a class="mock" href="system/app/BO005/mdBiod-List.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0060/AMEQV0060.html">備品発注登録・修正</a>
+				<a class="mock" href="system/app/BO007/mdBiod-St-Order-Edit.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0070/AMEQV0070.html">備品発注履歴</a>
+				<a class="mock" href="system/app/BO006/mdBiod-St-Order.html">_</a>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h4>補正(SC) 14:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/HS001/mdHose-Item.html">補正項目マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/HS002/mdHose-Item-Edit.html">補正項目マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/HS005/mdHose-Sosatu.html">補正相殺項目マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/HS006/mdHose-Sosatu-Edit.html">補正相殺項目マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/HS007/mdHose-Partner.html">補正業者マスタ一覧</a></li>
+			<li><a class="mock" href="system/app/HS008/mdHose-Partner-Edit.html">補正業者マスタ登録・修正</a></li>
+			<li><a class="mock" href="system/app/HS009/mdHose-Count.html">補正件数入力</a></li>
+			<li><a class="mock" href="system/app/HS010/mdHose-Kakunin.html">補正件数確認</a></li>
+			<li><a class="mock" href="system/app/HS011/mdHose-Kotin.html">支払外注工賃一覧出力</a></li>
+			<li><a class="mock" href="system/app/HS012/mdHose-SHiwake.html">仕訳（補正）振替伝票出力</a></li>
+
+			<li><a class="mock" href="system/app/HS014/mdHose-Count.html">補正件数入力（館内補正業者）</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>補正(店舗) 14:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/HS009/mdHose-Count.html">補正件数入力</a></li>
+			<li><a class="mock" href="system/app/HS014/mdHose-Count.html">補正件数入力（館内補正業者の場合の入力イメージ）</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>プレミアム棚卸(SC) 14:35</h4>
+		<ul>
+			<li><a class="mock" href="system/app/BM004/mdBimn-schedule.html">貯蔵品棚卸スケジュール一覧</a></li>
+			<li><a class="mock" href="system/app/PT004/mdPrmm-Schedule-Edit.html">貯蔵品棚卸スケジュール登録・修正</a></li>
+			<li><a class="mock" href="system/app/BM005/mdBimn-store.html">貯蔵品棚卸進捗確認</a></li>
+
+		</ul>
+	</div>
+	<div>
+		<h4>プレミアム棚卸(店舗) 14:35</h4>
+		<ul>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0130/AMEQV0130.html">プレミアム棚卸（発注）一覧</a>
+				<a class="mock" href="system/app/PT005/mdPrmm-EquipmentCount.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0140/AMEQV0140.html">プレミアム発注登録・修正</a>
+				<a class="mock" href="system/app/PT006/mdPrmm-EquipmentCount-Edit.html">_</a>
+			</li>
+			<li>
+				<a href="system/app/AMEQ/AMEQV0150/AMEQV0150.html">プレミアム棚卸（発注）履歴</a>
+				<a class="mock" href="system/app/PT008/mdPrmm-St-Order.html">_</a>
+			</li>
+			<li><a class="mock" href="system/app/BM018/mdBimn-StrageInventory.html">貯蔵品棚卸一覧</a></li>
+			<li><a class="mock" href="system/app/BM019/mdBimn-StrageInventory-Edit.html">貯蔵品棚卸入力</a></li>
+
+		</ul>
+	</div>
+	<div>
+		<h4>不良品(SC) 14:45</h4>
+		<ul>
+			<li><a class="mock" href="system/app/FH001/mdFryh-List.html">不良品処理一覧</a></li>
+			<li><a class="mock" href="system/app/FH002/mdFryh-List-Edit.html">不良品処理登録・修正</a></li>
+			<li><a class="mock" href="system/app/FH004/mdFryh-Conf.html">店舗・週別不良品処理実績金額出力</a></li>
+			<li><a class="mock" href="system/app/FH005/mdFryh-Comp.html">店舗別不良品処理実績出力</a></li>
+			<li><a class="mock" href="system/app/FH006/mdFryh-Summary.html">不良品処理集計出力</a></li>
+			<li><a class="mock" href="system/app/FH007/mdFryh-Total.html">品種・理由別不良品処理実績出力</a></li>
+			<li><a class="mock" href="system/app/FH008/mdFryh-Kind-Desc.html">品番別不良品処理明細出力</a></li>
+			<li><a class="mock" href="system/app/FH009/mdFryh-Cost-Desc.html">原価割販売結果出力</a></li>
+
+		</ul>
+	</div>
+	<div>
+		<h4>不良品(店舗) 14:45</h4>
+		<ul>
+			<li><a class="mock" href="system/app/FH001/mdFryh-List.html">不良品処理一覧</a></li>
+			<li><a class="mock" href="system/app/FH002/mdFryh-List-Edit.html">不良品処理登録・修正</a></li>
+			<li><a class="mock" href="system/app/FH003/mdFryh-Report.html">不良品処理報告</a></li>
+
+		</ul>
+	</div>
+	<div>
+		<h4>営業帳票(店舗) 15:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/EI002/mdEgch-Pricesales.html">プライス別売上分析</a></li>
+			<li><a class="mock" href="system/app/EI003/mdEgch-Itemsales.html">商品構成別売上分析</a></li>
+			<li><a class="mock" href="system/app/PL001/mdSnek-storemng.html">店舗別損益管理照会</a></li>
+			<li><a class="mock" href="system/app/EI004/mdEgch-Abc.html">ABC分析</a></li>
+			<li><a class="mock" href="system/app/EI005/mdEgch-Reverse-Loss.html">逆ロス追求リスト出力</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>プライス別棚卸(店舗) 15:40</h4>
+		<ul>
+			<li><a href="system/app/AMCP/AMCPV0010/AMCPV0010.html">プライス別棚卸報告一覧</a> <a class="mock" href="system/app/PR003/mdPtnr-Ir-List.html">_</a></li>
+			<li><a href="system/app/AMCP/AMCPV0020/AMCPV0020.html">プライス別棚卸データ入力</a> <a class="mock" href="system/app/PR004/mdPtnr-Ir-Edit.html">_</a></li>
+			<li><a href="system/app/AMCP/AMCPV0040/AMCPV0040.html">プライス別棚卸報告作成</a> <a class="mock" href="system/app/PR005/mdPtnr-Ir-Report.html">_</a></li>
+			<li><a class="mock" href="system/app/PR001/mdPtnr-Item.html">プライス別棚卸確認(個別)</a></li>
+			<li><a class="mock" href="system/app/PR002/mdPtnr-Report.html">プライス別棚卸報告(個別)</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>商品・在庫照会(店舗) 16:00</h4>
+		<ul>
+			<li><a class="mock" href="system/app/SZ002/mdShzk_Stock.html">商品在庫照会</a></li>
+			<li><a class="mock" href="system/app/SZ003/mdShzk_Stock_Plural.html">商品在庫照会(複数タグ)</a></li>
+			<li><a class="mock" href="system/app/NH020/mdNshp-Arrival-Detail.html">入荷予定明細</a></li>
+			<li><a class="mock" href="system/app/SZ001/mdShzk_Track.html">商品管理履歴照会</a></li>
+			<li><a class="mock" href="system/app/SM910/mdShms-Item-Edit.html">商品マスタ参照</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>入荷・出荷・返品(SC) 16:20</h4>
+		<ul>
+		<li><a class="mock" href="system/app/NH007/mdNshp-Return.html">返品依頼一覧</a></li>
+		<li><a class="mock" href="system/app/NH008/mdNshp-Return-Edit.html">返品依頼登録</a></li>
+		<!--<li><a class="mock" href="system/app/NH009/mdNshp-Return-Confirm.html">本部指示確認</a></li>
+		<li><a class="mock" href="system/app/NH005/mdNshp-HandyLog.html">HTデータ取込ログ</a></li>
+		  <li><a class="mock" href="system/app/NH013/mdNshp-Slip.html">手書き伝票一覧</a></li>
+		<li><a class="mock" href="system/app/NH012/mdNshp-Slip-Edit.html">手書き伝票入力</a></li>
+
+
+		<li><a class="mock" href="system/app/KA001/mdKaikei-SCM.html">SCM入荷データ一覧・削除</a></li>-->
+
+		</ul>
+	</div>
+	<div>
+		<h4>入荷・出荷・返品(店舗) 16:20</h4>
+		<ul>
+		<li><a class="mock" href="system/app/NH014/mdNshp-Slip.html">仕入／移動検収一覧</a></li>
+		<li><a class="mock" href="system/app/NH015/mdNshp-Slip-Edit.html">仕入／移動検収登録・修正</a></li>
+		<li><a class="mock" href="system/app/NH018/mdNshp-Slip.html">SCM入荷データ一覧</a></li>
+		<li><a class="mock" href="system/app/NH019/mdNshp-Slip-Edit.html">SCM入荷データ登録・修正</a></li>
+		<li><a class="mock" href="system/app/NH011/mdNshp-ArrivalList.html">入荷予定リスト</a></li>
+		<li><a class="mock" href="system/app/NH009/mdNshp-Return-Confirm.html">本部指示確認</a></li>
+		<li><a class="mock" href="system/app/NH016/mdNshp-Slip.html">出荷返品／移動削除一覧</a></li>
+		<li><a class="mock" href="system/app/NH017/mdNshp-Slip-Edit.html">出荷返品／移動削除登録・修正</a></li>
+		<!-- <li><a class="mock" href="system/app/NH005/mdNshp-HandyLog.html">HTデータ取込ログ</a></li>
+		<li><a class="mock" href="system/app/NH013/mdNshp-Slip.html">手書き伝票一覧</a></li>
+		<li><a class="mock" href="system/app/NH012/mdNshp-Slip-Edit.html">手書き伝票入力</a></li>
+
+
+		<li><a class="mock" href="system/app/KA001/mdKaikei-SCM.html">SCM入荷データ一覧・削除</a></li> -->
+
+		</ul>
+	</div>
+	<div>
+		<h4>パーソナルオーダー(SC) 16:40</h4>
+		<ul>
+			<li><a href="system/app/AMPO/AMPOV0010/AMPOV0010.html">生地ID一覧(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0030/AMPOV0030.html">親ブランド一覧（本）</a></li>
+			<li><a href="system/app/AMPO/AMPOV0050/AMPOV0050.html">ブランド一覧（本）</a></li>
+			<li><a href="system/app/AMPO/AMPOV0080/AMPOV0080.html">モデル一覧（本）</a></li>
+			<li><a href="system/app/AMPO/AMPOV0100/AMPOV0100.html">PO発注先一覧(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0120/AMPOV0120.html">メーカー品番一覧(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0131/AMPOV0131.html">メーカー品番取込(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0140/AMPOV0140.html">店舗グループ一覧(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0160/AMPOV0160.html">ＰＯメーカー一覧(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0200/AMPOV0200.html">ＰＯオプショングループ一覧(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0180/AMPOV0180.html">ＰＯカレンダー(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0190/AMPOV0190.html">ＰＯカレンダー取込(本)</a></li>
+			<li><a class="mock" href="system/app/PO017/mdPtod-ClothID.html">生地ID一覧</a></li>
+			<li><a class="mock" href="system/app/PO018/mdPtod-ClothID-Edit.html">生地ID登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO019/mdPtod-Pbrand.html">親ブランド一覧</a></li>
+			<li><a class="mock" href="system/app/PO020/mdPtod-Pbrand-Edit.html">親ブランド登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO005/mdPtod-Brand.html">ブランド一覧</a></li>
+			<li><a class="mock" href="system/app/PO006/mdPtod-Brand-Edit.html">ブランド登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO023/mdPtod-Brand-Edit.html">ブランド別スタイル・オプション登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO021/mdPtod-Model.html">モデル一覧</a></li>
+			<li><a class="mock" href="system/app/PO022/mdPtod-Model-Edit.html">モデル登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO013/mdPtod-Pnum.html">生地品番一覧</a></li>
+			<li><a class="mock" href="system/app/PO014/mdPtod-Pnum-Edit.html">生地品番登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO015/mdPtod-Mnum.html">メーカー品番一覧</a></li>
+			<li><a class="mock" href="system/app/PO016/mdPtod-Mnum-Edit.html">メーカー品番登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO009/mdPtod-Group.html">店舗グループ一覧</a></li>
+			<li><a class="mock" href="system/app/PO010/mdPtod-Group-Edit.html">店舗グループ登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO007/mdPtod-Maker.html">ＰＯメーカー一覧</a></li>
+			<li><a class="mock" href="system/app/PO008/mdPtod-Maker-Edit.html">ＰＯメーカー登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO011/mdPtod-Calender.html">ＰＯカレンダー一覧</a></li>
+			<li><a class="mock" href="system/app/PO012/mdPtod-Calender-Edit.html">ＰＯカレンダー登録・修正</a></li>
+
+		</ul>
+	</div>
+	<div>
+		<h4>パーソナルオーダー(店舗) 16:40</h4>
+		<ul>
+			<li><a href="system/app/AMPO/AMPOV0220/AMPOV0220.html">ＰＯ発注一覧(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0230/AMPOV0230.html">ＰＯメンズ発注登録・修正(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0240/AMPOV0240.html">ＰＯレディス発注登録・修正(本)</a></li>
+			<li><a href="system/app/AMPO/AMPOV0250/AMPOV0250.html">ＰＯシャツ発注登録・修正(本)</a></li>
+			<li><a class="mock" href="system/app/PO001/mdPtod-List.html">ＰＯ発注一覧</a></li>
+			<li><a class="mock" href="system/app/PO002/mdPtod-Mens.html">ＰＯメンズ発注登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO003/mdPtod-Ladys.html">ＰＯレディス発注登録・修正</a></li>
+			<li><a class="mock" href="system/app/PO004/mdPtod-Shirts.html">ＰＯシャツ発注登録・修正</a></li>
+
+		</ul>
+	</div>
+	<div>
+		<h4>移動(SC) 17:00</h4>
+		<ul>
+			<li><a class="mock" href="system/app/ID003/mdIdo-Order.html">移動指示一覧</a></li>
+			<li><a class="mock" href="system/app/ID005/mdIdo-Order-Edit.html">移動指示登録</a></li>
+			<li><a class="mock" href="system/app/ID004/mdIdo-Order-Conf.html">移動指示対応状況確認</a></li>
+			<li><a class="mock" href="system/app/ID001/mdIdo-Slip.html">移動伝票一覧</a></li>
+			<li><a class="mock" href="system/app/ID002/mdIdo-Slip-Edit.html">移動伝票登録・修正</a></li>
+			<li><a class="mock" href="system/app/ID006/mdIdo-Alarm.html">移動アラーム出力</a></li>
+			<li><a class="mock" href="system/app/ID007/mdIdo-Result.html">移動実績出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>マークダウン(SC) 17:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/MD001/mdMrkd-list.html">マークダウン依頼一覧</a></li>
+			<li><a class="mock" href="system/app/MD002/mdMrkd-edit.html">マークダウン依頼登録</a></li>
+			<li><a class="mock" href="system/app/MD003/mdMrkd-status.html">マークダウン依頼状況確認</a></li>
+			<li><a class="mock" href="system/app/KN001/mdKkns-list.html">期間値下一覧</a></li>
+			<li><a class="mock" href="system/app/KN002/mdKkns-edit.html">期間値下登録・修正</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>ファンド(SC) 18:00</h4>
+		<ul>
+			<li><a class="mock" href="system/app/FU001/mdFund-List.html">ファンド一覧</a></li>
+			<li><a class="mock" href="system/app/FU002/mdFund-Edit.html">ファンド登録・修正</a></li>
+			<li><a class="mock" href="system/app/FU003/mdFund-Person-Pay.html">個人月別ファンド金額出力</a></li>
+			<li><a class="mock" href="system/app/FU004/mdFund-Person-Detail.html">ファンド商品販売実績出力</a></li>
+			<li><a class="mock" href="system/app/FU004-a/mdFund-Item-Count.html">ファンド商品販売点数出力</a></li>
+			<li><a class="mock" href="system/app/FU005/mdFund-Amnt-Detail.html">品番カラー別ファンド実績出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>評価減(SC) 18:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/HG001/mdWrdn-List.html">評価減一覧</a></li>
+			<li><a class="mock" href="system/app/HG002/mdWrdn-Edit.html">評価減登録・修正</a></li>
+			<li><a class="mock" href="system/app/HG003/mdHkgn-Age-Stock.html">年令別在庫一覧</a></li>
+			<li><a class="mock" href="system/app/HG006/mdHhgn-Result-Check.html">評価減実施結果確認</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>評価減(店舗) 18:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/HG004/mdHkgn-Age-Stock-Check.html">年令別在庫確認</a></li>
+			<li><a class="mock" href="system/app/HG005/mdHkgn-Age-itemno.html">品番別年令別在庫一覧</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>棚卸(SC) 18:40</h4>
+		<ul>
+			<li><a class="mock" href="system/app/TO007/mdTnor-ScheduleList.html">棚卸スケジュール一覧</a></li>
+			<li><a class="mock" href="system/app/TO001/mdTnor-Schedule.html">棚卸スケジュール登録・修正</a></li>
+			<li><a class="mock" href="system/app/TO005/mdTnor-Category.html">棚卸作業確認</a></li>
+			<li><a class="mock" href="system/app/TO006/mdTnor-Item.html">ロス追求</a></li>
+			<li><a class="mock" href="system/app/TO004/mdTnor-Store.html">棚卸進捗確認</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>棚卸(店舗) 18:40</h4>
+		<ul>
+			<li><a class="mock" href="system/app/TO002/mdTnor-Stockcount.html">品種別在庫総数確認</a></li>
+			<li><a class="mock" href="system/app/TO008/mdTnor-InventoryEdit.html">棚卸登録・修正</a></li>
+			<li><a class="mock" href="system/app/TO003/mdTnor-SalesEdit.html">棚卸確定前修正</a></li>
+			<li><a class="mock" href="system/app/TO005/mdTnor-Category.html">棚卸作業確認</a></li>
+			<li><a class="mock" href="system/app/TO006/mdTnor-Item.html">ロス追求</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>分析(商品)(SC) 19:00</h4>
+		<ul>
+			<li><a class="mock" href="system/app/AN000/caMenu.html">分析メニュー</a>｜<a href="system/app/AMGA/AMGAV0110/AMGAV0110.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN001/caaResult.html">成績表(品種)</a>｜<a href="system/app/AMGA/AMGAV0010/AMGAV0010.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN002_01/AN00201_caaResult.html">販売速報(日報)</a>｜<a href="system/app/AMGA/AMGAV0020/AMGAV0020.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN002_02/AN00202_caaResult.html">品種別販売速報（AOKI）</a>｜<a href="system/app/AMGA/AMGAV0030/AMGAV0030.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN003_01/AN00301_caaResult.html">構成分析（サブ１）</a>｜<a href="system/app/AMGA/AMGAV0040/AMGAV0040.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN003_02/AN00302_caaResult.html">店舗別商品構成分析</a>｜<a href="system/app/AMGA/AMGAV0050/AMGAV0050.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN005/AN005_caaResult.html">週別時系列分析</a>｜<a href="system/app/AMGA/AMGAV0050/AMGAV0050.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN006/AN006_caaResult.html">ABC分析</a>｜<a href="system/app/AMGA/AMGAV0070/AMGAV0070.html">[current]</a></li>
+			<li><a class="mock" href="system/app/AN008/AN008_caaResult.html">年代分析（サブ１）</a>｜<a href="system/app/AMGA/AMGAV0080/AMGAV0080.html">[current]</a></li>
+			<li><a class="mock" href="javascript:void(0)">バスケット分析</a>｜<a href="system/app/AMGA/AMGAV0090/AMGAV0090.html">[current]</a></li>
+			<li><a class="mock" href="javascript:void(0)">自由分析</a>｜<a href="system/app/AMGA/AMGAV0100/AMGAV0100.html">[current]</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>在庫(SC) 19:20</h4>
+		<ul>
+			<li><a class="mock" href="system/app/KA002/mdKaikei-Ukebarai.html">商品受払集計表出力</a></li>
+			<li><a class="mock" href="system/app/ZA001/mdZaiko-StockChange.html">店舗別在庫変動内訳一覧出力</a></li>
+			<li><a class="mock" href="system/app/ZA002/mdZaiko-DepositStock.html">メーカー別品番別寄託在庫明細出力</a></li>
+			<li><a class="mock" href="system/app/KA003/mdKaikei-Sekisouhin.html">店舗別積送品金額一覧出力</a></li>
+			<li><a class="mock" href="system/app/KA004/mdKaikei-Jutakuryou.html">センター業務料在庫反映リスト出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>会計・経理(SC) 19:40</h4>
+		<ul>
+		<li><a class="mock" href="system/app/KA013/mdKaikei-Kensyutuuchi.html">検収通知書出力</a></li>
+		<li><a class="mock" href="system/app/KA009/mdKaikei-Tagudaikin.html">メーカー別タグ代金出力</a></li>
+		<li><a class="mock" href="system/app/KA010/mdKaikei-Denpyoudai.html">メーカー別伝票代出力</a></li>
+		<li><a class="mock" href="system/app/KA011/mdKaikei-Kihonryoukin.html">伝票オンライン代・基本料金・在庫照会メーカー一覧出力</a></li>
+		<li><a class="mock" href="system/app/KA006/mdKaikei-Makeronline.html">メーカーオンライン件数出力</a></li>
+		<li><a class="mock" href="system/app/KA005/mdKaikei-Urikake.html">売掛実績一覧出力</a></li>
+		<li><a class="mock" href="system/app/KA012/mdKaikei-Itakuunsoryo.html">センター業務料一覧出力</a></li>
+		<li><a class="mock" href="system/app/KA014/mdKaikei-Keirinippou.html">経理日報出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>入荷・出荷・返品 事務管理向け機能(SC) 16:20</h4>
+		<ul>
+		<li><a class="mock" href="system/app/NH001/mdNshp-Slip.html">仕入・返品・値引伝票一覧</a></li>
+		<li><a class="mock" href="system/app/NH002/mdNshp-Slip-Edit.html">仕入・返品・値引伝票登録・修正</a></li>
+		<li><a class="mock" href="system/app/KA015/mdKaikei-In-errorList.html">入荷エラーリスト出力</a></li>
+		<li><a class="mock" href="system/app/KA007/mdKaikei-Denpyou-Bangou.html">伝票番号ダブリリスト出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>移動サジェスチョン(SC)</h4>
+		<ul>
+		<li><a class="mock" href="system/app/IDS001/mdIdos-StoreSrch.html">移動候補店舗検索</a></li>
+		<li><a class="mock" href="system/app/IDS005/mdIdos-IdoSuggestion.html">移動指示一覧</a></li>
+		<li><a class="mock" href="system/app/IDS002/mdIdos-IdoSuggestion-Edit.html">移動指示作成</a></li>
+		<li><a class="mock" href="system/app/IDS003/mdIdos-SetUp-Search.html">移動候補店舗検索（セットアップ）</a></li>
+		<li><a class="mock" href="system/app/IDS006/mdIdos-SetUp-List.html">移動指示一覧（セットアップ）</a></li>
+		<li><a class="mock" href="system/app/IDS004/mdIdos-SetUp-Edit.html">移動指示作成（セットアップ）</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="flleft">
+	<div>
+		<h4>商品マスタ(品種別画面イメージ)</h4>
+		<ul>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=001&csv=select.csv&gedai=SM010_gedai_001.csv&spec=SM010_spec_001.csv">商品マスタ登録・修正(スーツ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=002&csv=select.csv&gedai=SM010_gedai_002.csv&spec=SM010_spec_002.csv">商品マスタ登録・修正(Ｌジャケット用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=003&csv=select.csv&gedai=SM010_gedai_003.csv&spec=SM010_spec_003.csv">商品マスタ登録・修正(Ｌスカート用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=004&csv=select.csv&gedai=SM010_gedai_004.csv&spec=SM010_spec_004.csv">商品マスタ登録・修正(フォーマル用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=005&csv=select.csv&gedai=SM010_gedai_005.csv&spec=SM010_spec_005.csv">商品マスタ登録・修正(ジャケット用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=007&csv=select.csv&gedai=SM010_gedai_007.csv&spec=SM010_spec_007.csv">商品マスタ登録・修正(スラックス用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=009&csv=select.csv&gedai=SM010_gedai_009.csv&spec=SM010_spec_009.csv">商品マスタ登録・修正(シャツ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=010&csv=select.csv&gedai=SM010_gedai_010.csv&spec=SM010_spec_010.csv">商品マスタ登録・修正(ネクタイ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=011&csv=select.csv&gedai=SM010_gedai_011.csv&spec=SM010_spec_011.csv">商品マスタ登録・修正(雑貨ベルト用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=012&csv=select.csv&gedai=SM010_gedai_012_1.csv&spec=SM010_spec_012.csv">商品マスタ登録・修正(フォーマル小物（シャツ）用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=012&csv=select.csv&gedai=SM010_gedai_012_2.csv&spec=SM010_spec_012.csv">商品マスタ登録・修正(フォーマル小物（その他）用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=015&csv=select.csv&gedai=SM010_gedai_015.csv&spec=SM010_spec_015.csv">商品マスタ登録・修正(Ｌパンツ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=018&csv=select.csv&gedai=SM010_gedai_018.csv&spec=SM010_spec_018.csv">商品マスタ登録・修正(Ｌフォーマル用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=019&csv=select.csv&gedai=SM010_gedai_019.csv&spec=SM010_spec_019.csv">商品マスタ登録・修正(Ｌフォーマル小物用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=024&csv=select.csv&gedai=SM010_gedai_024.csv&spec=SM010_spec_024.csv">商品マスタ登録・修正(布帛シャツ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=026&csv=select.csv&gedai=SM010_gedai_026.csv&spec=SM010_spec_026.csv">商品マスタ登録・修正(セーター用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=027&csv=select.csv&gedai=SM010_gedai_027.csv&spec=SM010_spec_027.csv">商品マスタ登録・修正(ＣＹスラックス用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=029&csv=select.csv&gedai=SM010_gedai_029_1.csv&spec=SM010_spec_029.csv">商品マスタ登録・修正(雑貨肌着靴下物（ソックス）用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=029&csv=select.csv&gedai=SM010_gedai_029_2.csv&spec=SM010_spec_029.csv">商品マスタ登録・修正(雑貨肌着靴下物（マフラー）用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=029&csv=select.csv&gedai=SM010_gedai_029_3.csv&spec=SM010_spec_029.csv">商品マスタ登録・修正(雑貨肌着靴下物（肌着）用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=029&csv=select.csv&gedai=SM010_gedai_029_4.csv&spec=SM010_spec_029.csv">商品マスタ登録・修正(雑貨肌着靴下物（手袋）用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=029&csv=select.csv&gedai=SM010_gedai_029_5.csv&spec=SM010_spec_029.csv">商品マスタ登録・修正(雑貨肌着靴下物（ハンカチ）用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=030&csv=select.csv&gedai=SM010_gedai_030.csv&spec=SM010_spec_030.csv">商品マスタ登録・修正(Ｌコート用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=031&csv=select.csv&gedai=SM010_gedai_031.csv&spec=SM010_spec_031.csv">商品マスタ登録・修正(シューズ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=033&csv=select.csv&gedai=SM010_gedai_033.csv&spec=SM010_spec_033.csv">商品マスタ登録・修正(バック・雑貨用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=034&csv=select.csv&gedai=SM010_gedai_034.csv&spec=SM010_spec_034.csv">商品マスタ登録・修正(Ｌブラウス用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=035&csv=select.csv&gedai=SM010_gedai_035.csv&spec=SM010_spec_035.csv">商品マスタ登録・修正(Ｌシューズ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=036&csv=select.csv&gedai=SM010_gedai_036.csv&spec=SM010_spec_036.csv">商品マスタ登録・修正(Ｌバッグ用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=037&csv=select.csv&gedai=SM010_gedai_037.csv&spec=SM010_spec_037.csv">商品マスタ登録・修正(Ｌカット＆ソー用)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=041&csv=select.csv&gedai=SM010_gedai_041.csv&spec=SM010_spec_041.csv">商品マスタ登録・修正(スーツ用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=044&csv=select.csv&gedai=SM010_gedai_044.csv&spec=SM010_spec_044.csv">商品マスタ登録・修正(フォーマル用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=045&csv=select.csv&gedai=SM010_gedai_045.csv&spec=SM010_spec_045.csv">商品マスタ登録・修正(ジャケット用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=047&csv=select.csv&gedai=SM010_gedai_047.csv&spec=SM010_spec_047.csv">商品マスタ登録・修正(スラックス用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=048&csv=select.csv&gedai=SM010_gedai_048.csv&spec=SM010_spec_048.csv">商品マスタ登録・修正(コート用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=049&csv=select.csv&gedai=SM010_gedai_049.csv&spec=SM010_spec_049.csv">商品マスタ登録・修正(シャツ用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=050&csv=select.csv&gedai=SM010_gedai_050.csv&spec=SM010_spec_050.csv">商品マスタ登録・修正(ネクタイ用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=051&csv=select.csv&gedai=SM010_gedai_051.csv&spec=SM010_spec_051.csv">商品マスタ登録・修正(雑貨ベルト用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=057&csv=select.csv&gedai=SM010_gedai_057.csv&spec=SM010_spec_057.csv">商品マスタ登録・修正(Ｌオーダー用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=058&csv=select.csv&gedai=SM010_gedai_058.csv&spec=SM010_spec_058.csv">商品マスタ登録・修正(Ｌフォーマル用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=059&csv=select.csv&gedai=SM010_gedai_059.csv&spec=SM010_spec_059.csv">商品マスタ登録・修正(Ｌフォーマル小物用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=062&csv=select.csv&gedai=SM010_gedai_062.csv&spec=SM010_spec_062.csv">商品マスタ登録・修正(ＣＹコート用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=063&csv=select.csv&gedai=SM010_gedai_063.csv&spec=SM010_spec_063.csv">商品マスタ登録・修正(ジャンバー用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=064&csv=select.csv&gedai=SM010_gedai_064.csv&spec=SM010_spec_064.csv">商品マスタ登録・修正(布帛シャツ用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=066&csv=select.csv&gedai=SM010_gedai_066.csv&spec=SM010_spec_066.csv">商品マスタ登録・修正(セーター用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=067&csv=select.csv&gedai=SM010_gedai_067.csv&spec=SM010_spec_067.csv">商品マスタ登録・修正(ＣＹスラックス用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=068&csv=select.csv&gedai=SM010_gedai_068.csv&spec=SM010_spec_068.csv">商品マスタ登録・修正(カット＆ソー用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_1.csv&spec=SM010_spec_069_1.csv">商品マスタ登録・修正(雑貨肌着靴下物（ソックス）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_2.csv&spec=SM010_spec_069_2.csv">商品マスタ登録・修正(雑貨肌着靴下物（ハンカチ）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_3.csv&spec=SM010_spec_069_3.csv">商品マスタ登録・修正(雑貨肌着靴下物（Ｔシャツ）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_4.csv&spec=SM010_spec_069_4.csv">商品マスタ登録・修正(雑貨肌着靴下物（パンツ）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_5.csv&spec=SM010_spec_069_5.csv">商品マスタ登録・修正(雑貨肌着靴下物（マフラー）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_6.csv&spec=SM010_spec_069_6.csv">商品マスタ登録・修正(雑貨肌着靴下物（グローブ）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_7.csv&spec=SM010_spec_069_7.csv">商品マスタ登録・修正(雑貨肌着靴下物（タイピン）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=069&csv=select.csv&gedai=SM010_gedai_069_8.csv&spec=SM010_spec_069_8.csv">商品マスタ登録・修正(雑貨肌着靴下物（カフス）用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=070&csv=select.csv&gedai=SM010_gedai_070.csv&spec=SM010_spec_070.csv">商品マスタ登録・修正(Ｌコート用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=071&csv=select.csv&gedai=SM010_gedai_071.csv&spec=SM010_spec_071.csv">商品マスタ登録・修正(シューズ用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=073&csv=select.csv&gedai=SM010_gedai_073.csv&spec=SM010_spec_073.csv">商品マスタ登録・修正(バック・雑貨用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=074&csv=select.csv&gedai=SM010_gedai_074.csv&spec=SM010_spec_074.csv">商品マスタ登録・修正(Ｌブラウス用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=077&csv=select.csv&gedai=SM010_gedai_077.csv&spec=SM010_spec_077.csv">商品マスタ登録・修正(Ｌカット＆ソー用（ORIHICA）)</a></li>
+			<li><a class="mock" href="system/app/SM010/mdShms-Item-Edit.html?kind=079&csv=select.csv&gedai=SM010_gedai_079.csv&spec=SM010_spec_079.csv">商品マスタ登録・修正(Ｌニット用（ORIHICA）)</a></li>
+		</ul>
+	</div>
+
+<!--
+<div>
+	<h4>その他マスタ</h4>
+	<ul>
+		<li><a class="mock" href="system/app/MS001/mdMast-Calendar.html">カレンダーマスタ取込</a></li>
+		<li><a class="mock" href="system/app/MS008/mdMast-Cust-List.html">客層一覧</a></li>
+		<li><a class="mock" href="system/app/MS009/mdMast-Cust-Edit.html">客層登録・修正</a></li>
+		<li><a class="mock" href="system/app/MS010/mdMast-Agekbn-List.html">年代区分一覧</a></li>
+		<li><a class="mock" href="system/app/MS011/mdMast-Agekbn-Edit.html">年代区分登録・修正</a></li>
+		<li><a class="mock" href="system/app/MS012/mdMast-Priceline-List.html">プライスライン一覧</a></li>
+		<li><a class="mock" href="system/app/MS013/mdMast-Priceline-Edit.html">プライスライン登録・修正</a></li>
+		<li><a class="mock" href="system/app/MS014/mdMast-SizePattern.html">サイズパターン一覧</a></li>
+		<li><a class="mock" href="system/app/MS015/mdMast-Size-Edit.html">サイズマスタ登録・修正</a></li>
+		<li><a class="mock" href="system/app/MS016/mdMast-SizeGroup-Edit.html">サイズグループ編集</a></li>
+	</ul>
+</div>
+
+<div>
+	<h4>売上</h4>
+	<ul>
+		<li><a class="mock" href="system/app/UR001/mdUrag-PReport.html">売上速報出力</a></li>
+		<li><a class="mock" href="system/app/UR002/mdUrag-BusPerformance.html">品種別営業実績一覧出力</a></li>
+		<li><a class="mock" href="system/app/UR003/mdUrag-QuasiStock.html">品種別売上・経準・在庫成績表出力</a></li>
+		<li><a class="mock" href="system/app/UR004/mdUrag-SupportCenter.html">サポートセンター販売実績出力</a></li>
+		<li><a class="mock" href="system/app/UR009/mdUrag-CashList.html">店舗別現金過不足一覧出力</a></li>
+		<li><a class="mock" href="system/app/UR006/mdUrag-CashDefic.html">月別店別日別現金過不足一覧出力</a></li>
+		<li><a class="mock" href="system/app/UR007/mdUrag-ReturnCancel.html">店別返品件数及びレシート取消件数一覧出力</a></li>
+		<li><a class="mock" href="system/app/UR010/mdUrag-ReturnDetail.html">店舗別返品明細出力</a></li>
+		<li><a class="mock" href="system/app/UR011/mdUrag-UseCnt.html">割引キー使用回数一覧出力</a></li>
+		<li><a class="mock" href="system/app/UR012/mdUrag-LogErrChk.html">売上ログ誤差チェック表出力</a></li>
+		<li><a class="mock" href="system/app/UR013/mdUrag-CustList.html">店舗別客数客単価一覧出力</a></li>
+		<li><a class="mock" href="system/app/UR014/mdUrag-CustTrans.html">客数客単価推移出力</a></li>
+		<li><a class="mock" href="system/app/UR015/mdUrag-AgeCust.html">年代別客数客単価出力</a></li>
+		<li><a class="mock" href="system/app/UR008/mdUrag-CostSales.html">原価割販売集計表</a></li>
+		<li><a class="mock" href="system/app/UR005/mdUrag-GroupSales.html">グループ販売速報</a></li>
+	</ul>
+</div>
+-->
+	<div>
+		<h4>補正</h4>
+		<ul>
+			<li><a href="system/app/AMRS/AMRSV0010/AMRSV0010.html">補正項目一覧</a></li>
+			<li><a href="system/app/AMRS/AMRSV0030/AMRSV0030.html">補正相殺一覧</a></li>
+			<li><a href="system/app/AMRS/AMRSV0050/AMRSV0050.html">補正業者一覧</a></li>
+			<li><a href="system/app/AMRS/AMRSV0070/AMRSV0070.html">補正件数一覧</a></li>
+			<li><a href="system/app/AMRS/AMRSV0090/AMRSV0090.html">補正件数確認</a></li>
+			<li><a href="system/app/AMRS/AMRSV0100/AMRSV0100.html">支払外注工賃一覧出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>ファンド</h4>
+		<ul>
+			<li><a href="system/app/AMFU/AMFUV0010/AMFUV0010.html">ファンド一覧</a></li>
+			<li><a href="system/app/AMFU/AMFUV0030/AMFUV0030.html">個人月別ファンド金額出力</a></li>
+			<li><a href="system/app/AMFU/AMFUV0040/AMFUV0040.html">ファンド商品販売実績出力</a></li>
+			<li><a href="system/app/AMFU/AMFUV0050/AMFUV0050.html">ファンド商品販売点数出力</a></li>
+			<li><a href="system/app/AMFU/AMFUV0060/AMFUV0060.html">品番カラー別ファンド実績出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>不良品</h4>
+		<ul>
+			<li><a href="system/app/AMIG/AMIGV0010/AMIGV0010.html">不良品処理一覧</a></li>
+			<li><a href="system/app/AMIG/AMIGV0030/AMIGV0030.html">不良品処理報告</a></li>
+			<li><a href="system/app/AMIG/AMIGV0040/AMIGV0040.html">店舗別週別不良品金額推移出力</a></li>
+			<li><a href="system/app/AMIG/AMIGV0050/AMIGV0050.html">店舗別不良品件数・金額出力</a></li>
+			<li><a href="system/app/AMIG/AMIGV0060/AMIGV0060.html">月別不良品件数・金額出力</a></li>
+			<li><a href="system/app/AMIG/AMIGV0070/AMIGV0070.html">品種別年度別理由別不良品出力</a></li>
+			<li><a href="system/app/AMIG/AMIGV0080/AMIGV0080.html">品番別月別不良品金額出力</a></li>
+			<li><a href="system/app/AMIG/AMIGV0090/AMIGV0090.html">原価割販売結果出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>組織マスタ</h4>
+		<ul>
+			<li><a href="system/app/AMMS/AMMSV0230/AMMSV0230.html">組織体系マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0250/AMMSV0250.html">組織マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0270/AMMSV0270.html">店舗別品種別陳列可能数登録</a></li>
+			<li><a href="system/app/AMMS/AMMSV0280/AMMSV0280.html">組織移動登録</a></li>
+			<li><a href="system/app/AMMS/AMMSV0490/AMMSV0490.html">店舗一覧</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>入荷・出荷・返品</h4>
+		<ul>
+			<li><a href="system/app/AMDL/AMDLV0010/AMDLV0010.html">仕入・返品・値引伝票一覧</a></li>
+			<li><a href="system/app/AMDL/AMDLV0020/AMDLV0020.html">仕入・返品・値引伝票登録・修正</a></li>
+			<li><a href="system/app/AMDL/AMDLV0030/AMDLV0030.html">仕入／移動検収一覧</a></li>
+			<li><a href="system/app/AMDL/AMDLV0040/AMDLV0040.html">仕入／移動検収登録・修正</a></li>
+			<li><a href="system/app/AMDL/AMDLV0050/AMDLV0050.html">SCM入荷データ一覧</a></li>
+			<li><a href="system/app/AMDL/AMDLV0060/AMDLV0060.html">SCM入荷データ登録・修正</a></li>
+			<li><a href="system/app/AMDL/AMDLV0070/AMDLV0070.html">入荷エラーリスト出力</a></li>
+			<li><a href="system/app/AMDL/AMDLV0080/AMDLV0080.html">入荷予定リスト</a></li>
+			<li><a href="system/app/AMDL/AMDLV0090/AMDLV0090.html">伝票番号ダブリリスト出力</a></li>
+			<li><a href="system/app/AMDL/AMDLV0100/AMDLV0100.html">メーカー貢献度評価表出力</a></li>
+			<li><a href="system/app/AMDL/AMDLV0110/AMDLV0110.html">返品依頼一覧</a></li>
+			<li><a href="system/app/AMDL/AMDLV0120/AMDLV0120.html">返品依頼登録</a></li>
+			<li><a href="system/app/AMDL/AMDLV0130/AMDLV0130.html">返品依頼状況確認</a></li>
+			<li><a href="system/app/AMDL/AMDLV0140/AMDLV0140.html">出荷返品／移動削除一覧</a></li>
+			<li><a href="system/app/AMDL/AMDLV0150/AMDLV0150.html">出荷返品／移動削除登録・修正</a></li>
+			<li><a href="system/app/AMDL/AMDLV0160/AMDLV0160.html">出荷返品／移動出荷取込</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>振分</h4>
+		<ul>
+			<li><a href="system/app/AMDS/AMDSV0010/AMDSV0010.html">店舗ランクパターン一覧</a></li>
+			<li><a href="system/app/AMDS/AMDSV0030/AMDSV0030.html">基準在庫パターン一覧</a></li>
+			<li><a href="system/app/AMDS/AMDSV0050/AMDSV0050.html">品番別基準在庫一覧</a></li>
+			<li><a href="system/app/AMDS/AMDSV0051/AMDSV0051.html">店舗別基準在庫一覧</a></li>
+			<li><a href="system/app/AMDS/AMDSV0070/AMDSV0070.html">基準在庫集計</a></li>
+			<li><a href="system/app/AMDS/AMDSV0080/AMDSV0080.html">自動振分停止期間一覧</a></li>
+			<li><a href="system/app/AMDS/AMDSV0100/AMDSV0100.html">品番別振分一覧</a></li>
+			<li><a href="system/app/AMDS/AMDSV0101/AMDSV0101.html">店舗別振分一覧</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>売上</h4>
+		<ul>
+			<li><a href="system/app/AMAS/AMASV0010/AMASV0010.html">売上速報出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0020/AMASV0020.html">品種別営業実績一覧出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0030/AMASV0030.html">品種別売上・経準・在庫成績表出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0040/AMASV0040.html">サポートセンター販売実績出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0050/AMASV0050.html">月別店別日別現金過不足一覧出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0060/AMASV0060.html">返品・取消・ポイント任意加算件数一覧出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0070/AMASV0070.html">返品・取消・ポイント任意加算明細出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0080/AMASV0080.html">売上ログ誤差チェック表出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0090/AMASV0090.html">店舗別客数客単価一覧出力</a></li>
+			<li><a href="system/app/AMAS/AMASV0120/AMASV0120.html">客数客単価推移出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>商品マスタ</h4>
+		<ul>
+			<li><a href="system/app/AMMS/AMMSV0010/AMMSV0010.html">商品分類体系マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0030/AMMSV0030.html">商品分類マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0050/AMMSV0050.html">商品属性マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0070/AMMSV0070.html">商品企画マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0090/AMMSV0090.html">商品マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0110/AMMSV0110.html">商品発注兼振分一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0120/AMMSV0120.html">商品発注兼振分登録・修正</a></li>
+			<li><a href="system/app/AMMS/AMMSV0130/AMMSV0130.html">商品マスタ・発注承認</a></li>
+			<li><a href="system/app/AMMS/AMMSV0150/AMMSV0150.html">組合せ販売マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0170/AMMSV0170.html">集約商品マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0190/AMMSV0190.html">セットアップ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0210/AMMSV0210.html">関連商品一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0460/AMMSV0460.html">商品台帳取込</a></li>
+			<li><a href="system/app/AMMS/AMMSV0470/AMMSV0470.html">決徳・核商品一覧</a></li>
+		</ul>
+	</div>
+
+
+	<div>
+		<h4>評価減</h4>
+		<ul>
+			<li><a href="system/app/AMWD/AMWDV0010/AMWDV0010.html">評価減一覧</a></li>
+			<li><a href="system/app/AMWD/AMWDV0020/AMWDV0020.html">評価減登録・修正</a></li>
+			<li><a href="system/app/AMWD/AMWDV0030/AMWDV0030.html">年令別在庫残一覧出力</a></li>
+			<li><a href="system/app/AMWD/AMWDV0040/AMWDV0040.html">組織別年令別在庫残一覧出力</a></li>
+			<li><a href="system/app/AMWD/AMWDV0050/AMWDV0050.html">年令別在庫残一覧出力(経理用)</a></li>
+			<li><a href="system/app/AMWD/AMWDV0060/AMWDV0060.html">年令別在庫確認</a></li>
+			<li><a href="system/app/AMWD/AMWDV0070/AMWDV0070.html">品番別年令別在庫確認</a></li>
+			<li><a href="system/app/AMWD/AMWDV0080/AMWDV0080.html">評価減実施結果出力</a></li>
+			<li><a href="system/app/AMWD/AMWDV0090/AMWDV0090.html">評価減在庫残一覧出力</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>移動</h4>
+		<ul>
+			<li><a href="system/app/AMTR/AMTRV0010/AMTRV0010.html">移動指示一覧</a></li>
+			<li><a href="system/app/AMTR/AMTRV0020/AMTRV0020.html">移動指示登録</a></li>
+			<li><a href="system/app/AMTR/AMTRV0030/AMTRV0030.html">移動指示対応状況確認</a></li>
+			<li><a href="system/app/AMTR/AMTRV0040/AMTRV0040.html">移動伝票一覧</a></li>
+			<li><a href="system/app/AMTR/AMTRV0050/AMTRV0050.html">移動伝票登録・修正</a></li>
+			<li><a href="system/app/AMTR/AMTRV0060/AMTRV0060.html">移動エラーリスト出力</a></li>
+			<li><a href="system/app/AMTR/AMTRV0070/AMTRV0070.html">移動実績出力</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>マークダウン</h4>
+		<ul>
+			<li><a href="system/app/AMMD/AMMDV0010/AMMDV0010.html">マークダウン依頼一覧</a></li>
+			<li><a href="system/app/AMMD/AMMDV0020/AMMDV0020.html">マークダウン依頼登録</a></li>
+			<li><a href="system/app/AMMD/AMMDV0030/AMMDV0030.html">マークダウン依頼状況確認</a></li>
+			<li><a href="system/app/AMMD/AMMDV0040/AMMDV0040.html">期間値下一覧</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>棚卸</h4>
+		<ul>
+			<li><a href="system/app/AMIC/AMICV0010/AMICV0010.html">棚卸スケジュール一覧</a></li>
+			<li><a href="system/app/AMIC/AMICV0020/AMICV0020.html">棚卸スケジュール登録・修正</a></li>
+			<li><a href="system/app/AMIC/AMICV0030/AMICV0030.html">品種別在庫総数確認</a></li>
+			<li><a href="system/app/AMIC/AMICV0040/AMICV0040.html">棚卸数確定前修正</a></li>
+			<li><a href="system/app/AMIC/AMICV0050/AMICV0050.html">棚卸売上修正</a></li>
+			<li><a href="system/app/AMIC/AMICV0060/AMICV0060.html">棚卸作業確認</a></li>
+			<li><a href="system/app/AMIC/AMICV0070/AMICV0070.html">ロス追求</a></li>
+			<li><a href="system/app/AMIC/AMICV0080/AMICV0080.html">棚卸進捗確認</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>営業帳票</h4>
+		<ul>
+			<li><a href="system/app/AMBR/AMBRV0010/AMBRV0010.html">担当者別販売力レベルアップシート出力</a></li>
+			<li><a href="system/app/AMBR/AMBRV0020/AMBRV0020.html">プライス別売上分析</a></li>
+			<li><a href="system/app/AMBR/AMBRV0030/AMBRV0030.html">商品構成別売上分析</a></li>
+			<li><a href="system/app/AMBR/AMBRV0040/AMBRV0040.html">店舗別損益管理照会</a></li>
+			<li><a href="system/app/AMBR/AMBRV0050/AMBRV0050.html">ABC分析</a></li>
+			<li><a href="system/app/AMBR/AMBRV0060/AMBRV0060.html">逆ロス追求リスト出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>その他マスタ</h4>
+		<ul>
+			<li><a href="system/app/AMMS/AMMSV0330/AMMSV0330.html">客層一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0350/AMMSV0350.html">年代区分一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0370/AMMSV0370.html">サイズグループ編集</a></li>
+			<li><a href="system/app/AMMS/AMMSV0390/AMMSV0390.html">サイズマスタ登録・修正</a></li>
+			<li><a href="system/app/AMMS/AMMSV0400/AMMSV0400.html">プライスライン一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0420/AMMSV0420.html">カレンダーマスタ取込</a></li>
+			<li><a href="system/app/AMMS/AMMSV0440/AMMSV0440.html">昨対日付カレンダー取込</a></li>
+			<li><a href="system/app/AMMS/AMMSV0450/AMMSV0450.html">クールマスタ取込</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>商品計画</h4>
+		<ul>
+			<li><a href="system/app/AMMP/AMMPV0010/AMMPV0010.html">品種別計画策定</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>客注禁止</h4>
+		<ul>
+			<li><a href="system/app/AMMS/AMMSV0290/AMMSV0290.html">客注禁止一覧</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>会計・経理</h4>
+		<ul>
+			<li><a href="system/app/AMAC/AMACV0010/AMACV0010.html">検収通知書出力</a></li>
+			<li><a href="system/app/AMAC/AMACV0020/AMACV0020.html">メーカー別タグ代金出力</a></li>
+			<li><a href="system/app/AMAC/AMACV0030/AMACV0030.html">メーカー別伝票代金出力</a></li>
+			<li><a href="system/app/AMAC/AMACV0040/AMACV0040.html">伝票オンライン代・基本料金・在庫照会メーカー一覧出力</a></li>
+			<li><a href="system/app/AMAC/AMACV0050/AMACV0050.html">センター業務料一覧出力</a></li>
+			<li><a href="system/app/AMAC/AMACV0060/AMACV0060.html">メーカーオンライン件数出力</a></li>
+			<li><a href="system/app/AMAC/AMACV0070/AMACV0070.html">売掛実績一覧出力</a></li>
+			<li><a href="system/app/AMAC/AMACV0080/AMACV0080.html">経理日報出力</a></li>
+		</ul>
+	</div>
+
+	<div>
+		<h4>在庫</h4>
+		<ul>
+			<li><a href="system/app/AMST/AMSTV0010/AMSTV0010.html">店舗別在庫変動内訳一覧</a></li>
+			<li><a href="system/app/AMST/AMSTV0020/AMSTV0020.html">商品受払集計表出力</a></li>
+			<li><a href="system/app/AMST/AMSTV0030/AMSTV0030.html">店舗別積送品金額一覧出力</a></li>
+			<li><a href="system/app/AMST/AMSTV0040/AMSTV0040.html">センター業務料在庫反映リスト出力</a></li>
+			<li><a href="system/app/AMST/AMSTV0050/AMSTV0050.html">メーカー別品番別寄託在庫明細出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>取引先マスタ</h4>
+		<ul>
+			<li><a href="system/app/AMMS/AMMSV0310/AMMSV0310.html">取引先マスタ一覧</a></li>
+			<li><a href="system/app/AMMS/AMMSV0320/AMMSV0320.html">取引先マスタ登録・修正</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>商品・在庫照会(店舗)</h4>
+		<ul>
+			<li><a href="system/app/AMSI/AMSIV0010/AMSIV0010.html">商品在庫照会</a></li>
+			<li><a href="system/app/AMSI/AMSIV0020/AMSIV0020.html">商品在庫照会(複数タグ)</a></li>
+			<li><a href="system/app/AMSI/AMSIV0030/AMSIV0030.html">入荷予定明細</a></li>
+			<li><a href="system/app/AMSI/AMSIV0040/AMSIV0040.html">商品管理履歴照会</a></li>
+			<!-- <li><a class="mock" href="system/app/SM910/mdShms-Item-Edit.html">商品マスタ参照</a></li> -->
+		</ul>
+	</div>
+	<div>
+		<h4>経費計画</h4>
+		<ul>
+			<li><a href="system/app/AMEP/AMEPV0010/AMEPV0010.html">予算調整一覧</a></li>
+			<li><a href="system/app/AMEP/AMEPV0020/AMEPV0020.html">予算調整登録・修正</a></li>
+			<li><a href="system/app/AMEP/AMEPV0030/AMEPV0030.html">販促情報取込</a></li>
+			<li><a href="system/app/AMEP/AMEPV0040/AMEPV0040.html">科目マスタ取込</a></li>
+			<li><a href="system/app/AMEP/AMEPV0050/AMEPV0050.html">予算データ出力</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>共通</h4>
+		<ul>
+			<li><a href="login.html">ログイン</a></li>
+			<li><a href="system/app/AMCM/AMCMV0020/AMCMV0020.html">パスワード変更</a></li>
+			<li><a href="system/app/AMCM/AMCMV0030/AMCMV0030.html">ポータル</a></li>
+			<li><a href="system/app/AMCM/AMCMV0040/AMCMV0040.html">ユーザ一覧</a></li>
+			<li><a href="system/app/AMCM/AMCMV0060/AMCMV0060.html">権限一覧</a></li>
+			<li><a href="system/app/AMCM/AMCMV0080/AMCMV0080.html">メニュー一覧</a></li>
+			<li><a href="system/app/AMCM/AMCMV0100/AMCMV0100.html">承認設定</a></li>
+			<li><a href="system/app/AMCM/AMCMV0110/AMCMV0110.html">アラーム一覧(検索表示まで)</a></li>
+			<li><a href="system/app/AMCM/AMCMV0120/AMCMV0120.html">通知一覧</a></li>
+			<li><a href="system/app/AMCM/AMCMV0140/AMCMV0140.html">HTデータ取込ログ一覧</a></li>
+			<li><a href="system/app/AMCM/AMCMV0160/AMCMV0160.html">外部IF取り込みログ一覧</a></li>
+			<li><a href="system/app/AMCM/AMCMV0180/AMCMV0180.html">SC依頼一覧(本部依頼一覧)</a></li>
+		</ul>
+	</div>
+	<div>
+		<h4>移動サジェスチョン</h4>
+		<ul>
+			<li><a href="system/app/AMTS/AMTSV0010/AMTSV0010.html">移動候補店舗検索</a></li>
+			<li><a href="system/app/AMTS/AMTSV0020/AMTSV0020.html">移動依頼作成一覧</a></li>
+			<li><a href="system/app/AMTS/AMTSV0030/AMTSV0030.html">移動依頼作成</a></li>
+			<li><a href="system/app/AMTS/AMTSV0040/AMTSV0040.html">移動候補店舗検索（セットアップ）</a></li>
+			<li><a href="system/app/AMTS/AMTSV0050/AMTSV0050.html">移動依頼作成一覧（セットアップ）</a></li>
+			<li><a href="system/app/AMTS/AMTSV0060/AMTSV0060.html">移動依頼作成（セットアップ）</a></li>
+		</ul>
+	</div>
+
+</div>
+
+</body>
+</html>

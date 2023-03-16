@@ -1,0 +1,99 @@
+@CHARSET "UTF-8";
+
+/*
+.table input {
+  border: solid 1px;
+  padding: 0px 4px 0px;
+
+}
+*/
+.th_period {
+  width:180px;
+}
+
+/*#ca_table .input_datepicker {
+  width: 85%;
+}
+#ca_table .ui-datepicker-trigger {
+  position: absolute;
+  top: 10px;
+  right: 4px;
+}*/
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
+}
+.ui-menu {
+	list-style:none;
+	padding: 2px;
+	margin: 0;
+	display:block;
+	float: left;
+}
+.ui-menu .ui-menu {
+	margin-top: -3px;
+}
+.ui-menu .ui-menu-item {
+	margin:0;
+	padding: 0;
+	zoom: 1;
+	float: left;
+	clear: left;
+	width: 180px;
+}
+.ui-menu .ui-menu-item a {
+	text-decoration:none;
+	display:block;
+	padding:.2em .4em;
+	line-height:1.5;
+	zoom:1;
+}
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active {
+	font-weight: normal;
+	margin: 	1px;
+}
+
+.AMFUV0020_posrel{
+    position :relative;
+    width:180px;
+    font-size:16px;
+}
+.wt500 {
+    width : 500px;
+}
+.mrgl240 {
+    margin-left:240px;
+}
+
+.termBox{
+    padding : 10px;
+}
+
+#ca_table_tbody .datepicker_wrap:after{
+    margin-top:10px;
+}
+
+.wt160 {
+    width:160px;
+}
+.wt170 {
+    width:170px;
+}
+
+#ca_datagrid{
+    height : 400px;
+}
+
+/*#container{
+    min-width : 1770px;
+}
+#ca_headInfoArea{
+    min-width : 1770px;
+}*/
+
+.fntss {
+    font-size:11px;
+}

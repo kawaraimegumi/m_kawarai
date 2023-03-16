@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.fieldgroup p.gtitle2 {
+  font-size: 82%;
+  font-weight: bold;
+  padding-left: 5px;
+  margin-bottom: 8px;
+  color: #f2555f;
+}

@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+.picContainer.add .addnothover {
+  color: white;
+  background: #a2a9b3;
+  cursor: default;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  font-size: 88%;
+}

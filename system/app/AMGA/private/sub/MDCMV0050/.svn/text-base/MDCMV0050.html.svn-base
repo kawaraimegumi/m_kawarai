@@ -1,0 +1,99 @@
+<div id="ca_MDCMV0050_MDCMV0060_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV0050_MDCMV0070_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV0050_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>表示項目</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<div id="content">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox search">
+					<div class="fieldUnit">
+						<div class="fieldBox noName">
+							<select name="info" class="mbn wt280 flleft" id="MDCMV0050_dispgroup">
+							<option value="0">売上</option>
+							<option value="1">項目2</option>
+							<option value="2">項目3</option>
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="table fieldUnit mrgb20 mrgr20 wt240 flleft hta">
+						<div class="ht440 wt240 yScroll">
+							<table class="hilightRow drilldown selectable" id="MDCMV0050_disp_item_table">
+								<tbody id="MDCMV0050_disp_item_tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<script id="MDCMV0050_disp_item_tbody_template" type="text/x-jquery-tmpl">
+						<tr>
+							<td name="MDCMV0050_name" value=${MDCMV0050_name}></td>
+						</tr>
+					</script>
+					<div class="fieldUnit mrgb20 flleft hta wt280">
+						<div class="fieldBox noName ht340 wt280 btnListbuilder">
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_VAL" amgbp-AnaDispItemDefs="AMGBA_DI_S_VAL">実績</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LYVAL" amgbp-AnaDispItemDefs="AMGBA_DI_S_LYVAL">前年実績</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LYRT" amgbp-AnaDispItemDefs="AMGBA_DI_S_LYRT">前年比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LYDF" amgbp-AnaDispItemDefs="AMGBA_DI_S_LYDF">前年差</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LY2VAL" amgbp-AnaDispItemDefs="AMGBA_DI_S_LY2VAL">前々年実績</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LY2RT" amgbp-AnaDispItemDefs="AMGBA_DI_S_LY2RT">前々年比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LY2DF" amgbp-AnaDispItemDefs="AMGBA_DI_S_LY2DF">前々年差</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LY3VAL" amgbp-AnaDispItemDefs="AMGBA_DI_S_LY3VAL">3年前実績</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LY3RT" amgbp-AnaDispItemDefs="AMGBA_DI_S_LY3RT">3年前比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_LY3DF" amgbp-AnaDispItemDefs="AMGBA_DI_S_LY3DF">3年前差</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_VSUMRT" amgbp-AnaDispItemDefs="AMGBA_DI_S_VSUMRT">縦軸構成比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_VACMRT" amgbp-AnaDispItemDefs="AMGBA_DI_S_VACMRT">縦軸累計比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_HSUMRT" amgbp-AnaDispItemDefs="AMGBA_DI_S_HSUMRT">横軸構成比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_HACMRT" amgbp-AnaDispItemDefs="AMGBA_DI_S_HACMRT">横軸累計比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_SUMRT" amgbp-AnaDispItemDefs="AMGBA_DI_S_SUMRT">全体構成比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_PLANRT" amgbp-AnaDispItemDefs="AMGBA_DI_S_PLANRT">計画比</button>
+							<button class="btn btn-primary wt120 flleft mrgb10 mrgr10 MDCMV0050_add_button" amgbp-AnaDefs="AMGBA_DEFS_SUMBIT_PLANDF" amgbp-AnaDispItemDefs="AMGBA_DI_S_PLANDF">計画差</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="table fieldUnit mrgb20 wt330 flleft hta listbuilder">
+						<div class="control mrgb10">
+							<p class="sortUp mrgr10" id="MDCMV0050_up_button">上へ</p>
+							<p class="sortDown mrgr10" id="MDCMV0050_down_button">下へ</p>
+							<p class="btn-add2" id="MDCMV0050_plus_button"></p>
+							<p class="delete" id="MDCMV0050_remove_all_button">すべて削除</p>
+							<div class="clear"></div>
+						</div>
+						<div class="ht420 wt330 yScroll">
+							<table class="hilightRow drilldown selectable" id="MDCMV0050_cond_table">
+								<tbody id="MDCMV0050_cond_tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<script id="MDCMV0050_cond_tbody_template" type="text/x-jquery-tmpl">
+						<tr class="deletable order">
+							<td>
+								<span class="MDCMV0050_sort_button asc"></span>
+								<span class="MDCMV0050_sort_button dsc"></span>
+								<span class="data" name="MDCMV0050_name" value=${MDCMV0050_name}></span>
+								<span class="flright">
+									<span class="fui-gear MDCMV0050_gear_button"></span>
+									<span class="btn-delete2 MDCMV0050_remove_button"></span>
+								</span>
+							</td>
+						</tr>
+					</script>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="MDCMV0050_cancel_button">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="MDCMV0050_commit_button">確定</a></p>
+		</div>
+	</div>
+</div>
+</div>

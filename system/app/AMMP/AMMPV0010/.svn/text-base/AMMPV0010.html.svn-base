@@ -1,0 +1,584 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>計画</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script src="../../../../js/jquery.js"></script>
+	<script src="../../../../js/jquery-ui.custom.js"></script>
+	<script src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../../css/slickgrid.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../../../js/slickgrid.js"></script>
+	<script src="../../../js/clgrid.js"></script>
+    <link rel="stylesheet" href="AMMPV0010.css">
+    <link rel="stylesheet" href="AMMPV0010lib.css">
+    <script src="AMMPV0010lib.js"></script>
+    <script src="AMMPV0010.js"></script>
+
+<script>
+
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMMPV0010Req.js"></script>
+
+<!-- ================================================================ -->
+<!-- ここからテンプレート -->
+
+<script id="MainView" type="text/template">
+	<div class="fieldgroup">
+		<div id="ca_srchArea" class="fieldgroupInBox search">
+			<div class="fieldUnit mrgb10 half flleft requiredSelect">
+				<p class="fieldName">事業ユニット</p>
+				<div class="fieldBox">
+					<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="fieldUnit mrgb10 half flleft requiredSelect">
+				<p class="fieldName">年度</p>
+				<div class="fieldBox">
+						<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchYear"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit">
+				<div class="fieldBox mrgt20 noName btnCenter">
+					<button id="ca_srch" class="btn btn-info wt280">検索</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+
+	</div>
+
+	<div id="resultView"></div>
+</script>
+
+<script id="ParamRecordView" type="text/template">
+    <div class="fieldUnits" id="comp_add_info">
+		<hr>
+		<div class="fieldUnit mrgb20">
+			<div class="fieldUnit mrgb20 flright ">
+				<div class="fieldBox noName flleft " id="ca_csvinput2">
+					<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_download">Excelサンプルダウンロード</button>
+				</div>
+				<div class="fieldBox noName flleft" id="ca_csvinput1">
+					<input type="file" class="hide-input" id="file_csv_uptake"/>
+					<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+        <div class="clear"></div>
+		<div class="mrgb20"></div>
+		<div class="unit flright mrgb20">金額（円）、比（％）</div>
+        <div class="clear"></div>
+        <div class="dataGrid"></div>
+        <div class="clear"></div>
+	</div>
+	<div class="mrgt20"><p> </p></div>
+	<hr>
+</script>
+
+<script id="ResultView" type="text/template">
+    <div class="fieldgroup">
+        <div class="fieldgroupInBox">
+            <div class="tab">
+				<ul class="tabNavi">
+					<li style="width:190px;" target="s01" data-message="品種別構成を<br>登録・修正します" class="on">品種別構成</li>
+					<li style="width:190px;" target="s02" data-message="品種別年商計画を<br>参照します" class="">品種別年商計画</li>
+					<li style="width:190px;" target="s03" data-message="品種別月別計画を<br>参照します" class="">品種別月別計画</li>
+					<li style="width:190px;" target="s04" data-message="品種別週別計画を<br>参照します" class="">品種別週別計画</li>
+					<div class="clear"></div>
+				</ul>
+            </div>
+
+            <div id="paramRecordView" class="sht s01"></div>
+
+            <div class="sht s02 dispn">
+                <hr/>
+                <div class="table dlUpView1">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col1">&nbsp;</th>
+                                <th class="col2">バージョン</th>
+                                <th class="col3">更新日時</th>
+                                <th class="col4">&nbsp;</th>
+                                <th class="col5">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (it.planAutoYear.version) { %>
+                            <tr>
+                                <td class="col1">自動按分計画</td>
+                                <td class="col2"><%- it.planAutoYear.version %></td>
+                                <td class="col3"><%- clutil.dateFormat(it.planAutoYear.updDate, 'yyyy/mm/dd') %>　<%- clutil.timeFormat(it.planAutoYear.updTime, 'hh:mm') %></td>
+                                <td class="col4">
+                                    <a href="javascript:void(0);" class="planAutoYearLink">ダウンロード</a>
+                                </td>
+                                <td class="col5">
+                                    <a href="javascript:void(0);" class="planAutoYearMore">他バージョンを参照する</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <% if (it.planInputYear.version) { %>
+                            <tr>
+                                <td class="col1">取込計画</td>
+                                <td class="col2"><%- it.planInputYear.version %></td>
+                                <td class="col3"><%- clutil.dateFormat(it.planInputYear.updDate, 'yyyy/mm/dd') %>　<%- clutil.timeFormat(it.planInputYear.updTime, 'hh:mm') %></td>
+                                <td class="col4">
+                                    <a href="javascript:void(0);" class="planInputYearLink">ダウンロード</a>
+                                </td>
+                                <td class="col5">
+                                    <a href="javascript:void(0);" class="planInputYearMore">他バージョンを参照する</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear"></div>
+		        <div class="fieldUnits" id="s02_add_info">
+			        <div class="fieldUnit mrgb20 ">
+				        <div class="fieldBox noName flright">
+					        <input type="file" class="hide-input" id="file_ul_s02_plan"/>
+					        <button class="btn btn-default  mrgl10 cl-file-attach wt320" id="ca_ul_s02_plan">計画をアップロード</button>
+				        </div>
+			            <div class="fieldBox noName flright">
+				            <button class="btn btn-default mrgl10 wt280" id="ca_csv_download2">Excelサンプルダウンロード</button>
+			            </div>
+			            <div class="clear"></div>
+			        </div>
+			        <div class="clear"></div>
+		        </div>
+		        <div class="mrgt20"><p> </p></div>
+            </div>
+
+            <div class="sht s03 dispn">
+                <hr/>
+                <div class="table dlUpView1">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col1">&nbsp;</th>
+                                <th class="col2">バージョン</th>
+                                <th class="col3">更新日時</th>
+                                <th class="col4">&nbsp;</th>
+                                <th class="col5">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (it.planAutoMonth.version) { %>
+                            <tr>
+                                <td class="col1">自動按分計画</td>
+                                <td class="col2"><%- it.planAutoMonth.version %></td>
+                                <td class="col3"><%- clutil.dateFormat(it.planAutoMonth.updDate, 'yyyy/mm/dd') %>　<%- clutil.timeFormat(it.planAutoMonth.updTime, 'hh:mm') %></td>
+                                <td class="col4">
+                                    <a href="javascript:void(0);" class="planAutoMonthLink">ダウンロード</a>
+                                </td>
+                                <td class="col5">
+                                    <a href="javascript:void(0);" class="planAutoMonthMore">他バージョンを参照する</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <% if (it.planInputMonth.version) { %>
+                            <tr>
+                                <td class="col1">取込計画</td>2
+                                <td class="col2"><%- it.planInputMonth.version %></td>
+                                <td class="col3"><%- clutil.dateFormat(it.planInputMonth.updDate, 'yyyy/mm/dd') %>　<%- clutil.timeFormat(it.planInputMonth.updTime, 'hh:mm') %></td>
+                                <td class="col4">
+                                    <a href="javascript:void(0);" class="planInputMonthLink">ダウンロード</a>
+                                </td>
+                                <td class="col5">
+                                    <a href="javascript:void(0);" class="planInputMonthMore">他バージョンを参照する</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear"></div>
+		        <div class="fieldUnits" id="s03_add_info">
+			        <div class="fieldUnit mrgb20 ">
+				        <div class="fieldBox noName flright">
+					        <input type="file" class="hide-input" id="file_ul_s03_plan"/>
+					        <button class="btn btn-default  mrgl10 cl-file-attach wt320" id="ca_ul_s03_plan">計画をアップロード</button>
+				        </div>
+			            <div class="fieldBox noName flright">
+				            <button class="btn btn-default mrgl10 wt280" id="ca_csv_download3">Excelサンプルダウンロード</button>
+			            </div>
+			            <div class="clear"></div>
+			        </div>
+			        <div class="clear"></div>
+		        </div>
+		        <div class="mrgt20"><p> </p></div>
+            </div>
+
+            <div class="sht s04 dispn">
+                <hr/>
+                <div class="table dlUpView1">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col1">&nbsp;</th>
+                                <th class="col2">バージョン</th>
+                                <th class="col3">更新日時</th>
+                                <th class="col4">&nbsp;</th>
+                                <th class="col5">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (it.planAutoWeek.version) { %>
+                            <tr>
+                                <td class="col1">自動按分計画</td>
+                                <td class="col2"><%- it.planAutoWeek.version %></td>
+                                <td class="col3"><%- clutil.dateFormat(it.planAutoWeek.updDate, 'yyyy/mm/dd') %>　<%- clutil.timeFormat(it.planAutoWeek.updTime, 'hh:mm') %></td>
+                                <td class="col4">
+                                    <a href="javascript:void(0);" class="planAutoWeekLink">ダウンロード</a>
+                                </td>
+                                <td class="col5">
+                                    <a href="javascript:void(0);" class="planAutoWeekMore">他バージョンを参照する</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <% if (it.planInputWeek.version) { %>
+                            <tr>
+                                <td class="col1">取込計画</td>2
+                                <td class="col2"><%- it.planInputWeek.version %></td>
+                                <td class="col3"><%- clutil.dateFormat(it.planInputWeek.updDate, 'yyyy/mm/dd') %>　<%- clutil.timeFormat(it.planInputWeek.updTime, 'hh:mm') %></td>
+                                <td class="col4">
+                                    <a href="javascript:void(0);" class="planInputWeekLink">ダウンロード</a>
+                                </td>
+                                <td class="col5">
+                                    <a href="javascript:void(0);" class="planInputWeekMore">他バージョンを参照する</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear"></div>
+		        <div class="fieldUnits" id="s04_add_info">
+			        <div class="fieldUnit mrgb20 ">
+				        <div class="fieldBox noName flright">
+					        <input type="file" class="hide-input" id="file_ul_s04_plan"/>
+					        <button class="btn btn-default  mrgl10 cl-file-attach wt320" id="ca_ul_s04_plan">計画をアップロード</button>
+				        </div>
+			            <div class="fieldBox noName flright">
+				            <button class="btn btn-default mrgl10 wt280" id="ca_csv_download4">Excelサンプルダウンロード</button>
+			            </div>
+			            <div class="clear"></div>
+			        </div>
+			        <div class="clear"></div>
+		        </div>
+		        <div class="mrgt20"><p> </p></div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="VersionView" type="text/template">
+    <div class="modal-header">
+        <h4 class="modal-title"><%- it.title %></h4>
+    </div>
+    <div class="clear"></div>
+    <div class="table versionTable">
+        <div class="table-header">
+	        <table class="table mrgt10 hilightRow">
+                <thead>
+                    <th class="col1">バージョン</th>
+                    <th class="col2">更新日時</th>
+                    <th class="col3">&nbsp;</th>
+                </thead>
+            </table>
+        </div>
+        <div class="table-body">
+            <table class="table">
+                <tbody>
+                    <% it.collection.each(function(model){ %>
+	                <tr id="<%- model.cid %>">
+                        <% var data = model.attributes; %>
+                        <td class="col1"><%- data.version %></td>
+                        <td class="col2"><%- clutil.dateFormat(data.updDate, 'yyyy/mm/dd') %>　<%- clutil.timeFormat(data.updTime, 'hh:mm') %></td>
+                        <td class="col3">
+                            <a href="javascript:void(0);" class="planLink">ダウンロード</a>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+
+
+			<div id="content"></div>
+	        <div id="mainColumnFooter" class="noLeftColumn"></div>
+	    </div>
+	</div>
+	<!-- /#mainColumninBox -->
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+
+
+				<div id="result" class="dispn">
+
+					<div class="fieldgroup">
+							<!-- 品種別構成比 -->
+							<p class="expandFieldUnits mrgb20" id="expand_comp_rt"><span class="expand">品種別構成比を登録・参照する</span><span class="unexpand dispn">閉じる(品種別構成比を登録・参照する)</span></p>
+
+							<div class="fieldUnitsHidden dispn" id="comp_rt_info">
+								<hr>
+								<div class="fieldUnit mrgb20 flright ">
+									<div class="fieldBox noName flleft " id="ca_csvinput2">
+										<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_download">Excelサンプルダウンロード</button>
+									</div>
+									<div class="fieldBox noName flleft" id="ca_csvinput1">
+										<input type="file" class="hide-input" id="file_csv_uptake"/>
+										<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="mrgb20"></div>
+								<div class="unit flright mrgb20">金額（円）、比（％）</div>
+								<div class="table">
+									<table class="hilightRow " id="ca_table">
+									<thead id="ca_table_thead">
+										<tr>
+											<th rowspan="2">部門</th>
+											<th rowspan="2">品種</th>
+											<th colspan="10">既存店</th>
+											<th colspan="10">2年目店</th>
+											<th colspan="10">新店</th>
+										</tr>
+										<tr>
+											<!-- 既存店 -->
+											<th>前年構成比</th>
+											<th>構成比</th>
+											<th>前年回転率</th>
+											<th>回転率</th>
+											<th>前年平均売価</th>
+											<th>平均売価</th>
+											<th>前年経準率</th>
+											<th>経準率</th>
+											<th>前年平均コスト</th>
+											<th>平均コスト</th>
+
+											<!-- 2年目店 -->
+											<th>前年構成比</th>
+											<th>構成比</th>
+											<th>前年回転率</th>
+											<th>回転率</th>
+											<th>前年平均売価</th>
+											<th>平均売価</th>
+											<th>前年経準率</th>
+											<th>経準率</th>
+											<th>前年平均コスト</th>
+											<th>平均コスト</th>
+
+											<!-- 新店 -->
+											<th>前年構成比</th>
+											<th>構成比</th>
+											<th>前年回転率</th>
+											<th>回転率</th>
+											<th>前年平均売価</th>
+											<th>平均売価</th>
+											<th>前年経準率</th>
+											<th>経準率</th>
+											<th>前年平均コスト</th>
+											<th>平均コスト</th>
+
+										</tr>
+									</thead>
+									<tbody id="ca_table_tbody">
+										<!-- ca_table_tbody_template -->
+									</tbody>
+									</table>
+									<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+									<script id="ca_rec_template" type="text/template">
+										<tr>
+											<td class="ca_c_link"><%- divCode %>:<%- divName %></td>
+											<td class="ca_c_link"><%- itgrpCode %>:<%- itgrpName %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exCompoRatePrev.toFixed(6)) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exCompoRate.toFixed(6)) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exTurnOverPrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exTurnOver) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exAvePricePrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exAvePrice) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exMrgnRatePrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exMrgnRate) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exAveCostPrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(exAveCost) %></td>
+
+											<td class="ca_c_link txtar"><%- clutil.comma(sndCompoRatePrev.toFixed(6)) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndCompoRate.toFixed(6)) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndTurnOverPrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndTurnOver) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndAvePricePrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndAvePrice) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndMrgnRatePrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndMrgnRate) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndAveCostPrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(sndAveCost) %></td>
+
+											<td class="ca_c_link txtar"><%- clutil.comma(newCompoRatePrev.toFixed(6)) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newCompoRate.toFixed(6)) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newTurnOverPrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newTurnOver) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newAvePricePrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newAvePrice) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newMrgnRatePrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newMrgnRate) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newAveCostPrev) %></td>
+											<td class="ca_c_link txtar"><%- clutil.comma(newAveCost) %></td>
+										</tr>
+									</script>
+								</div>
+							</div>
+							<div class="mrgt20"><p> </p></div>
+							<hr>
+
+							<!-- 品種別年商計画を参照する -->
+							<p class="expandFieldUnits mrgb20" id="expand_year"><span class="expand">品種別年商計画を参照する</span><span class="unexpand dispn">閉じる(品種別年商計画を参照する)</span></p>
+
+							<div class="fieldUnitsHidden dispn" id="year_info">
+								<hr class="mrgt20">
+								<div class="fieldUnit mrgb10 flleft ">
+									<div class="fieldBox noName flleft">
+										<button class="btn btn-default  mrgl10 cl-file-attach wt280" id="ca_dlBasicPlanYear">基準計画をダウンロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb20 flleft ">
+									<div class="fieldBox noName flleft">
+										<button class="btn btn-default  mrgl10 cl-file-attach wt280" id="ca_dlNewPlanYear">最新計画をダウンロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="mrgt20"><p> </p></div>
+							<hr>
+
+							<!-- 品種別月別計画を参照する -->
+							<p class="expandFieldUnits mrgb20" id="expand_month"><span class="expand">品種別月別計画を参照する</span><span class="unexpand dispn">閉じる(品種別月別計画を参照する)</span></p>
+							<div class="clear"></div>
+
+							<div class="fieldUnitsHidden dispn" id="month_info">
+								<hr>
+								<div class="fieldUnit mrgb10 flleft ">
+									<div class="fieldBox noName flleft">
+										<button class="btn btn-default  mrgl10 cl-file-attach wt280" id="ca_dlBasicPlanMonth">基準計画をダウンロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb20 flleft ">
+									<div class="fieldBox noName flleft">
+										<button class="btn btn-default  mrgl10 cl-file-attach wt280" id="ca_dlNewPlanMonth">最新計画をダウンロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="mrgt20"><p> </p></div>
+							<hr>
+
+							<!-- 品種別週別計画を参照する -->
+							<p class="expandFieldUnits mrgb20" id="expand_week"><span class="expand">品種別週別計画を参照する</span><span class="unexpand dispn">閉じる(品種別週別計画を参照する)</span></p>
+							<div class="clear"></div>
+
+							<div class="fieldUnitsHidden dispn" id="week_info">
+								<hr>
+								<div class="fieldUnit mrgb10 flleft ">
+									<div class="fieldBox noName flleft">
+										<button class="btn btn-default  mrgl10 cl-file-attach wt280" id="ca_dlBasicPlanWeek">基準計画をダウンロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb20 flleft ">
+									<div class="fieldBox noName flleft">
+										<button class="btn btn-default  mrgl10 cl-file-attach wt280" id="ca_dlNewPlanWeek">最新計画をダウンロード</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="mrgt20"><p> </p></div>
+							<hr>
+						</div>
+				</div>
+
+			</div>
+
+</body>
+</html>

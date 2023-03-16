@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="../../../css/jquery-ui.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../../js/json2.js"></script>
+    <script src="../../../js/jquery.js"></script>
+    <script src="../../../js/jquery.blockUI.js"></script>
+    <script src="../../../js/underscore.js"></script>
+    <script src="../../../js/backbone.js"></script>
+    <script src="../../../js/jquery.tmpl.min.js"></script>
+    <script src="../../../js/jquery-ui.js"></script>
+    <script src="../../../js/jquery.ui.core.js"></script>
+    <script src="../../../js/jquery-ui.custom.js"></script>
+    <script src="../../../js/jquery.ui.datepicker.js"></script>
+    <script src="../../../js/jquery.ui.datepicker_ja.js"></script>
+    <script src="../../../js/jquery.tablefix_1.0.0.js"></script>
+    <script src="../../../js/jquery.dragtable.js"></script>
+    <script src="../../../js/bootstrap.js"></script>
+    <script src="../../../js/backbone.syphon.js"></script>
+    <script src="../../../js/backbone.syphon.fix.js"></script>
+    <script src="../../js/clcom.js"></script>
+    <script id="jsCode">
+      $(function () {
+        $('#excelDl1').click(function () {
+          var request = {
+
+            head : {
+               dummy : 2,
+            },
+            cond : {
+                st_yyyynn : 201101,
+                ed_yyyynn : 201201,
+              },
+              value: 3,
+              
+          };
+          // レスポンスにアクセス対象のURLを入れてもらう(data.urlは例です)。
+          clutil.postJSON('gsdo_bluetag', request, function (data, dataType) {
+            // clutil.download()を呼びだす。
+            clutil.download(data.url);
+          });
+        });
+      });
+      
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h1>CSV/Excel帳票出力のやりかた</h1>
+        <div class="well">
+          <p>サーバーにPOSTでリクエストを送信し、そのレスポンスにアクセス対象のURLを含める場合の例。</p>
+          <p><a href="http://monopole.suri.co.jp/documents/4">※ FILE操作インターフェイスを参照のこと</a></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span12 page-content">
+          <h3>サンプル</h3>
+          <div id="sample">
+            <button id="excelDl1" class="btn">エクセル出力</button>
+          </div>
+          <hr>
+          <h3>サンプルソースコード</h3>
+          <h4>HTML</h4>
+          <pre><code id="sampleHtml"></code></pre>
+          <script>$('#sampleHtml').text($('#sample').html());</script>
+          <h4>JavaScript</h4>
+          <pre><code id="sampleJs"></code></pre>
+          <script>$('#sampleJs').text($('#jsCode').text());</script>
+        </div>
+      </div>
+      <div class="page-footer">
+      </div>
+    </div>
+  </body>
+</html>

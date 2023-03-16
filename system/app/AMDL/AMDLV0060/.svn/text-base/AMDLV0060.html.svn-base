@@ -1,0 +1,440 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>入出荷・返品</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css"
+		href="AMDLV0060.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+
+
+<!-- 動作疑似再現用 -->
+<script>
+
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+
+<div id="ca_main">
+
+<script src="AMDLV0060.js"></script>
+
+<!-- 共通ヘッダは MDBaseView によって置き換えるので、設置不要。
+<div id="header">
+	<p class="back"></p>
+	<h1 class="contextmenu">入出荷・返品</h1>
+	<div class="rightBox">
+		<span class="logo"></span>
+		<span class="logout"><a href="javascript:void(0);">ログアウト</a></span>
+		<span class="user">Username</span>
+
+	</div>
+</div><!-- /#header -->
+
+<!-- エコーバックエリアは MDBaseView によって置き換えるので、設置不要。
+<div class="cl_echoback msgBox error"></div>
+<!--  -->
+
+<!-- ダイアログ設定 -->
+<!--
+<div id="cl_dialog_area" class="cl_dialog"></div>
+<!--  -->
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0010_dialog1" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- タイトル部は MDBaseView によって置き換えるので、設置不要。
+		<div id="title">
+			<h2>SCM入荷データ<span class="divider">|</span>登録・修正</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+
+		<div id="content">
+
+
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox setaddr">
+						<input type="hidden" id="ca_recno">
+						<input type="hidden" id="ca_state">
+						<input type="hidden" id="ca_dlvwapTypeID">
+						<input type="hidden" id="ca_scmno">
+					<div class="fieldUnit mrgb10 flleft required">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox flleft required" id="div_store">
+							<input class="form-control wt280 flleft cl_valid cl_required cl_store" type="text" placeholder="" id="ca_store" />
+							<button class="btn btn-default wt140 flleft mrgl10 ca_upd_mode" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr10 required">
+						<p class="fieldName">出荷元</p>
+						<div class="fieldBox" id="div_dlvwapDispTypeID">
+							<select name="dlvwapDispTypeID" class="mbn wt280 flleft cl_valid cl_required" id="ca_dlvwapDispTypeID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<!--div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName">出荷元</p>
+					</div>
+					<div class="clear"></div-->
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName bl2">出荷元<br/>メーカー</p>
+						<div class="fieldBox required" id="div_vendor" >
+							<input id="ca_vendor" type="text" placeholder="" class="form-control flleft wt280 cl_valid cl_required" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName bl2">出荷元<br/>倉庫</p>
+						<div class="fieldBox ca_readOnly flleft mrgr10"  id="div_center" >
+                            <select class="wt280 flleft cl_valid cl_required" type="text" id="ca_centerID"></select>
+							<!--button class="btn btn-default wt140 flleft mrgl10 ca_btn_store" id="ca_btn_center" tabindex="-1">参照...</button-->
+						</div>
+						<p class="detailtext3 flleft">ORIHICA店舗宛のSCMで出荷元が9991 ハマキョウの場合は、9953: ORIHICA藤沢を選択して登録してください。</p>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">荷番</p>
+						<div class="fieldBox required" id="div_shipNo">
+							<span class="limit wt40 flright mrgl240" id="pa_shipNo"></span>
+							<input id="ca_shipNo" type="text" placeholder="" class="form-control wt280 cl_valid cl_required" data-tflimit="6" data-validator="maxlen:6 digit" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr10">
+						<p class="fieldName">入荷状態区分</p>
+						<div class="fieldBox">
+							<input class="form-control wt280" type="text" id="ca_dlvState" disabled />
+							<input class="form-control wt280" type="hidden" id="ca_dlvStateID" disabled />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">検収日</p>
+						<div class="fieldBox">
+							<!--div class="datepicker_wrap"><input class="cl_date cl_valid" type="text" id="ca_recInspectDate" disabled /></div-->
+							<input class="cl_date form-control" type="text" id="ca_recInspectDate" disabled />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+
+
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter" id="div_srch">
+							<button id="ca_srch" class="btn btn-info wt280">明細表示</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<p id="searchAgain" class="dispn">検索条件を再指定</p>
+			</div>
+
+			<div id="ca_srchArea2" class="fieldgroupInBox setstaff dispn">
+				<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+					<p class="fieldName">担当者</p>
+					<div class="fieldBox required">
+						<input id="ca_staff" type="text" placeholder="" class="form-control wt280 cl_valid cl_required" data-validator="maxlen:6,6 digit" />
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="clear"></div>
+		<div id="result" class="dispn" style="padding-bottom:60px;">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="table">
+						<table class="hilight drilldown" id="ca_table">
+						<thead>
+							<tr>
+								<th width="40px">行番号</th>
+								<th width="160px">JANコード</th>
+								<th width="160px">品種</th>
+								<th width="100px">メーカー品番</th>
+								<th width="200px">品名</th>
+								<th width="100px">カラー</th>
+								<th width="100px">サイズ</th>
+								<th width="100px">伝票番号</th>
+								<th width="100px">点数</th>
+								<!--th rowspan="2" width="40px"></th-->
+							</tr>
+						</thead>
+						<!--tbody>
+							<tr class="deletable">
+								<td class="txtar">1</td>
+								<td class="editable pdg0"><input type="text" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">2</td>
+								<td class="editable pdg0"><input type="text" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">3</td>
+								<td class="editable pdg0"><input type="text" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">4</td>
+								<td class="editable pdg0"><input type="text" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">5</td>
+								<td class="editable pdg0"><input type="text" id="ca_td_item_code" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">6</td>
+								<td class="editable pdg0"><input type="text" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">7</td>
+								<td class="editable pdg0"><input type="text" id="ca_td_item_code" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">8</td>
+								<td class="editable pdg0"><input type="text" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+							<tr class="deletable">
+								<td class="txtar">9</td>
+								<td class="editable pdg0"><input type="text" class="form-control" /></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="editable pdg0"><input type="text" class="form-control txtar" /></td>
+								<td><span class="btn-delete flright"></span></td>
+							</tr>
+						</tbody-->
+						<tbody id="ca_table_tbody">
+						</tbody>
+						<tfoot id="ca_table_sum">
+							<!--tr class="addRow">
+								<td colspan="9"><span class="btn-add"></span></td>
+							</tr-->
+							<tr class="reference">
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<!--td class="txtar"><div name="sumQy" id="ca_sumQy"><%- clutil.comma(sumQy) %></div></td-->
+								<td class="txtar"><div name="sumQy" id="ca_sumQy"><%- sumQy %></div></td>
+								<!--td></td-->
+							</tr>
+						</tfoot>
+		<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+			<tr class="deletable addRow" name="ca_table_tr" id="${rowId}">
+				<td class="editable pdg0">
+                    <input type="hidden" name="rowId" value="${rowId}">
+                    <input type="hidden" name="no" value="${no}">
+                    <input type="text" class="form-control txtar" name="noDisp" value="${noDisp}" readonly>
+                    <input type="hidden" name="line" value="${line}"/>
+                </td>
+				<td class="editable pdg0"><input type="text" name="janCode" id="ca_janCode" class="form-control" value="${janCode}" readonly /></td>
+				<td class="editable pdg0"><input type="text" name="stditgrpName" id="ca_stdItgrpName" class="form-control" value="${stditgrpName}" readonly /></td>
+				<td class="editable pdg0"><input type="text" name="makerCode" id="ca_makerCode" class="form-control" value="${makerCode}" readonly /></td>
+				<td class="editable pdg0"><input type="text" name="itemName" id="ca_itemName" class="form-control" value="${itemName}" readonly /></td>
+				<td class="editable pdg0"><input type="text" name="colorName" id="ca_colorName" class="form-control" value="${colorName}" readonly /></td>
+				<td class="editable pdg0"><input type="text" name="sizeName" id="ca_sizeName" class="form-control" value="${sizeName}" readonly /></td>
+				<!--td class="editable pdg0"><input type="text" name="dlvNo" id="ca_dlvNo" class="form-control" value="${dlvNo}" readonly /></td-->
+				<td class="editable pdg0"><input type="text" name="dlvNo2" id="ca_dlvNo2" class="form-control" value="{{if transID == 0 && firstTransID == 0 && tranOutID == 0}}${dlvNo}{{/if}}" readonly /></td>
+				<td class="editable pdg0">
+                    <input type="hidden" id="ca_origQy" name="origQy" value="${qy}">
+					<input type="hidden" id="ca_out_qy" name="out_qy" value="${out_qy}">
+                    <input type="text" id="ca_qy" name="qy" value="${qy}" class="form-control txtar cl_valid cl_required" data-filter="comma" data-validator="uint:7" />
+                </td>
+				<!--td><span class="btn-delete flright"></span></td-->
+				<input type="hidden" id="ca_recno" name="recno" value="${recno}">
+				<input type="hidden" id="ca_state" name="state" value="${state}">
+				<input type="hidden" id="ca_itemID" name="itemID" value="${itemID}">
+				<input type="hidden" id="ca_deliverID" name="deliverID" value="${deliverID}">
+				<input type="hidden" id="ca_firstDeliverID" name="firstDeliverID" value="${firstDeliverID}">
+				<input type="hidden" id="ca_transID" name="transID" value="${transID}">
+				<input type="hidden" id="ca_firstTransID" name="firstTransID" value="${firstTransID}">
+				<input type="hidden" id="ca_vendorOutID" name="vendorOutID" value="${vendorOutID}">
+				<input type="hidden" id="ca_tranOutID" name="tranOutID" value="${tranOutID}">
+				<input type="hidden" id="ca_dlvNo" name="dlvNo" value="${dlvNo}">
+			</tr>
+		</script>
+						</table>
+					</div>
+
+					<!--div class="fieldUnit mrgb10">
+						<p class="fieldName">摘要</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt100pct" id="ca_comment" data-limit="len:255" />
+						</div>
+						<div class="clear"></div>
+					</div-->
+					<div class="clear"></div>
+				</div>
+
+			</div>
+		</div>
+
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+			<p class="cancel"><a href="javascript:void(0)" id="cl_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a href="javascript:void(0)" id="cl_submit">登録</a></p>
+			<p class="flleft"><a href="javascript:void(0)" id="cl_prev">前へ</a></p>
+			<p class="flright"><a href="javascript:void(0)" id="cl_next">次へ</a></p>
+			<div class="clear"></div>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+
+</div>
+</body>
+</html>

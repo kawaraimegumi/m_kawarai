@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0060.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css'
+	href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+<link href="/css/slickgrid.css" rel="stylesheet">
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+</head>
+
+<body class="cl_body_hidden">
+
+	<div id="ca_main">
+		<script src="AMPOV0060.js"></script>
+
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup" id="ca_base_form">
+							<div class="fieldgroupInBox">
+								<input type="hidden" id="ca_recno"> <input type="hidden"
+									id="ca_state"> <input type="hidden" id="ca_id">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox ca_unitID_div">
+										<select class="mbn wt280 cl_valid cl_required" name="unitID"
+											id="ca_unitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- ＰＯ種別 -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox ca_poTypeID_div">
+										<select class="mbn wt280 cl_valid cl_required" name="poTypeID"
+											id="ca_poTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- ブランド -->
+								<div class="fieldUnit mrgb10 half flleft  mrgr20 required">
+									<p class="fieldName bl2">
+										ブランド<br />コード
+									</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240" length="4"></span> <input
+											type="text" placeholder=""
+											class="form-control wt280 cl_valid cl_required" name="code"
+											id="ca_code" data-tflimit="4" data-validator="maxlen:4 alnum"/>
+									</div>
+								</div>
+
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName">ブランド名称</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl380" length="30"></span> <input
+											type="text" placeholder=""
+											class="form-control wt420  cl_valid cl_required" name="name"
+											id="ca_name" data-tflimit="30" data-validator="maxlen:30"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<!-- 親ブランド -->
+								<div class="fieldUnit mrgb10 half  flleft mrgr20  required" id="ca_parentBrandID_div">
+									<p class="fieldName">親ブランド</p>
+									<div class="fieldBox ">
+										<select class="mbn wt280 cl_valid cl_required" name="parentBrandID"
+											id="ca_parentBrandID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<!-- モデル -->
+								<div class="fieldUnit mrgb10 half flleft required" id="ca_modelID_div">
+									<p class="fieldName">モデル</p>
+									<div class="fieldBox ">
+										<select class="mbn wt280 cl_valid cl_required" name="modelID"
+											id="ca_modelID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">適用開始日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_stDate_div">
+											<input type="text" id="ca_stDate" name="stDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												 data-validator="maxlen:13"/>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">適用終了日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_edDate_div">
+											<input type="text" id="ca_edDate" name="edDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												 data-validator="maxlen:13"/>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20">
+									<p class="fieldName">発注停止日</p>
+									<div class="fieldBox">
+										<!-- ツールチップでヘルプを表示 -->
+										<p class="txtInFieldUnit flright help" id="ca_tp_code"
+											title="発注停止日：この日付以降店舗ではそのマスタを参照不可になります。<br />適用終了日：店舗だけでなく本部でもそのマスタを参照不可になります。"><span>?</span></p>
+										<div class="datepicker_wrap ca_ordStopDate_div">
+											<input type="text" id="ca_ordStopDate" name="ordStopDate"
+												class="cl_date cl_valid  ime-disabled"  data-validator="maxlen:13"/>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						
+						
+						<!-- 2015/10/26 PO改善追加項目 藤岡 -->
+						<div class="fieldgroup" id="ca_baseoptArea">
+							<p class="gtitle">基本オプション</p>
+							
+							<div class="fieldgroupInBox">
+								
+								<div id="ca_AOKI_M_Field">
+									<p class="fieldName"></p>
+									<div class="fieldBox flleft ca_optArea ca_AOKI_M_Area">
+										<ul>
+											<li>
+												<label class="checkbox ib flleft" for="ca_AOKI_M_fAmf">無料AMFステッチ
+													<input type="checkbox" value="" id="ca_AOKI_M_fAmf" data-toggle="checkbox">
+												</label>
+											</li>
+											<!-- 2015/11/11 MT-949対応
+											<li>
+												<label class="checkbox ib flleft" for="ca_AOKI_M_fLining">裏仕様
+													<input type="checkbox" value="" id="ca_AOKI_M_fLining" data-toggle="checkbox">
+												</label>
+											</li>
+											-->
+											<li>
+												<label class="checkbox ib flleft" for="ca_AOKI_M_fPocket">腰ポケット
+													<input type="checkbox" value="" id="ca_AOKI_M_fPocket" data-toggle="checkbox">
+												</label>
+											</li>
+											<li>
+												<label class="checkbox ib flleft" for="ca_AOKI_M_fButton">重ねボタン
+													<input type="checkbox" value="" id="ca_AOKI_M_fButton" data-toggle="checkbox">
+												</label>
+											</li>
+											<li>
+												<label class="checkbox ib flleft" for="ca_AOKI_M_fTrunkAdj">ジャケット中胴補正
+													<input type="checkbox" value="" id="ca_AOKI_M_fTrunkAdj" data-toggle="checkbox">
+												</label>
+											</li>
+											<li>
+												<label class="checkbox ib flleft" for="ca_AOKI_M_fVestTrunkAdj">ベスト中胴補正
+													<input type="checkbox" value="" id="ca_AOKI_M_fVestTrunkAdj" data-toggle="checkbox">
+												</label>
+											</li>
+										</ul>
+									</div>
+									<div class="clear"></div>
+									<!-- 2015/11/11 MT-949対応 -->
+									<p class="fieldName ca_optArea ca_AOKI_M_Area"></p>
+									<div class="fieldBox flleft ca_optArea ca_AOKI_M_Area">
+										<ul>
+											<li class="mrgr20 mrgt12 liningLabel"><span class="">裏仕様</span></li>
+											<li><label class="radio">
+												<input type="radio" name="ca_AOKI_M_fLining" value="1" data-toggle="radio"checked>総裏・背抜き・背抜き観音
+											</label></li>
+											<li><label class="radio">
+												<input type="radio" name="ca_AOKI_M_fLining" value="2" data-toggle="radio">総裏・背抜き
+											</label></li>
+										</ul>
+									</div>
+									<div class="clear"></div>
+									<!-- 2015/11/11 MT-949対応 ここまで-->
+								</div>
+								<div class="clear"></div>
+								<div class="fieldBox flleft ca_optArea" id="ca_ORIHICA_M_Area">
+									<ul>
+										<li>
+											<label class="checkbox ib flleft" for="ca_ORIHICA_M_fLining">裏仕様
+												<input type="checkbox" value="" id="ca_ORIHICA_M_fLining" data-toggle="checkbox">
+											</label>
+										</li>
+										<li>
+											<label class="checkbox ib flleft" for="ca_ORIHICA_M_fPocket">腰ポケット
+												<input type="checkbox" value="" id="ca_ORIHICA_M_fPocket" data-toggle="checkbox">
+											</label>
+										</li>
+										<li>
+											<label class="checkbox ib flleft" for="ca_ORIHICA_M_fButton">重ねボタン
+												<input type="checkbox" value="" id="ca_ORIHICA_M_fButton" data-toggle="checkbox">
+											</label>
+										</li>
+									</ul>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!-- 2015/10/26 PO改善追加項目 ここまで -->
+
+						<div class="fieldgroup" id="ca_table_form">
+							<p class="gtitle">展開サイズ</p>
+							<div class="fieldgroupInBox">
+
+								<!-- データグリッド領域 -->
+								<div class="cl_datagrid_container" id="ca_datagrid1"></div>
+								<div class="cl_datagrid_container" id="ca_datagrid2"></div>
+								<div class="clear"></div>
+								<div class="cl_datagrid_container" id="ca_datagrid3"></div>
+
+								<div class="clear"></div>
+							</div>
+						</div>
+
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+				</div>
+				<!-- /#mainColumnFooter -->
+			</div>
+			<!-- /#mainColumninBox -->
+		</div>
+		<!-- /#mainColumn -->
+	</div>
+	<!-- / #container -->
+
+	<div class="clear"></div>
+
+	</div>
+</body>
+</html>

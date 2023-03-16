@@ -1,0 +1,23 @@
+extends ../../src/jade/layout/sample
+include ../../src/jade/mixins/mixins
+
+block pageHeader
+  h1 ファイルダウンロードサンプル
+  .well
+    p サーバーからダウンロードするURIを受けとりaタグのdata-cl-dlに属性にセットしてください。
+    p
+      a(href='http://monopole.suri.co.jp/documents/4') ※ FILE操作インターフェイスを参照のこと
+
+block pageContent
+  h3 サンプル
+  #sample
+    // aタグのhref属性に'#'、 data-cl-dlにサーバーAPから1.で返されたURIを指定する。
+    a(href='#', data-cl-dl='../../js/clcom.js')ダウンロード
+  hr
+  h3 サンプルソースコード
+  h4 HTML
+  pre
+    code#sampleHtml
+  script
+    $('#sampleHtml').text($('#sample').html());
+  h4 JavaScript clcom.jsをincludeする

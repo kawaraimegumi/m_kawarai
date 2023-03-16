@@ -1,0 +1,65 @@
+.conditionFooter p.applySpecial {
+  width: 420px;
+}
+.conditionFooter p.applySpecial a {
+  background: #0fb8aa;
+  color: white;
+}
+.conditionFooter p.applySpecial a:hover {
+  background: #32d9d0;
+}
+
+#mainColumnFooter p.applySpecial {
+  text-align: center;
+}
+#mainColumnFooter p.applySpecial a {
+  background: #0fb8aa;
+  color: white;
+}
+#mainColumnFooter p.applySpecial a:hover {
+  background: #32d9d0;
+}
+
+#mainColumnFooter p.applySpecial.mrgCancel,
+
+#mainColumnFooter button.applySpecial {
+  text-align: center;
+  height: 40px;
+  width: 100%;
+  border-style: none;
+  background: #0fb8aa;
+  color: white;
+}
+#mainColumnFooter button.applySpecial:hover {
+  background: #32d9d0;
+}
+
+#store_mainColumnFooter p.applySpecial {
+  text-align: center;
+}
+#store_mainColumnFooter p.applySpecial a {
+  background: #0fb8aa;
+  color: white;
+}
+#store_mainColumnFooter p.applySpecial a:hover {
+  background: #32d9d0;
+}
+
+#store_mainColumnFooter p.applySpecial.mrgCancel {
+  margin-left: 160px;
+}
+
+#itemPic_mainColumnFooter p.applySpecial {
+  text-align: center;
+}
+#itemPic_mainColumnFooter p.applySpecial a {
+  background: #0fb8aa;
+  color: white;
+}
+#itemPic_mainColumnFooter p.applySpecial a:hover {
+  background: #32d9d0;
+}
+
+#itemPic_mainColumnFooter p.applySpecial.mrgCancel {
+  margin-left: 160px;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>jquerymobileテスト用画面</title>
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link rel="stylesheet" href="../../../css/bootstrap.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="../../../css/jquery.mobile-1.3.1.css">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../js/jquery.mobile-1.3.1.js"></script>
+<script type="text/javascript" src="../../../js/jquery.easing-1.3.min.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+
+<!-- datepicker -->
+<script type="text/javascript" src="../../../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker_ja.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../js/jquery.dragtable.js"></script>
+
+<!-- App -->
+<!-- <script type="text/javascript" src="../../js/clcom.js"></script> -->
+<script type="text/javascript" src="jquerymobile.js"></script>
+
+</head>
+<body>
+	<div id="ca_main">
+	<div id="page1" data-role="page">
+		<div data-role="header"><h3>header</h3></div>
+		
+			<p>jQuery Mobileのページ</p>
+			<p>1ページ目</p>
+			<button id="opendialog">ダイアログを開く</button>
+			<button id="openpopup">ポップアップを表示</button>
+			<a href="#dialog">ダイアログを開く</a>
+			<button id="openpage2">2ページ目へ</button>
+			<button id="showbox">ボックス表示</button>
+			<button id="showbox2">ボックス表示2</button>
+			<div class="box"></div>
+			<div id="box2"></div>
+			<p class="showmore"><br />もっと見る<br /></p>
+			<div>
+				<p>ここになにかが入って<br />もっと見るをクリックすると<br />表示される</p>
+				<p class="showmore"><br />もっと見る<br /></p>
+					<div>
+						<p>ここになにかが入って<br />もっと見るをクリックすると<br />表示される</p>
+						<p class="showmore"><br />もっと見る<br /></p>
+					</div>
+			</div>
+		<div data-role="footer"><h3>footer</h3></div>
+	</div>
+	<div id="page2" data-role="page">
+		<div data-role="header"><h3>header</h3></div>
+		<article data-role="content">
+			<p>jQuery Mobileのページ</p>
+			<p>2ページ目</p>
+			<!-- <a href="#page1" id="openpage1" data-transition="slide" data-direction="reverse">戻る</a> -->
+			<button id="openpage1">1ページ目へ</button>
+		</article>
+		<div data-role="footer"><h3>footer</h3></div>
+	</div>
+	
+	<div id="dialog" data-role="dialog" data-close-btn-text="close">
+		<div data-role="header"><h3>header</h3></div>
+		<article data-role="content">
+			<p>jQuery Mobileのダイアログ</p>
+		</article>
+	</div>
+	
+	<div id="popup" data-role="popup">
+		<a href="#" class="ui-btn-right" data-role="button" data-rel="back"
+		data-icon="delete" data-iconpos="notext">close</a>
+		<p>jQuery Mobileのポップアップ</p>
+	</div>
+	</div>
+</body>
+</html>

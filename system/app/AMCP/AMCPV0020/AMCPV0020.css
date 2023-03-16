@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+span.mrgl440 {
+  margin-left: 440px;
+}
+
+.mrgl830 {
+  margin-left: 120px;
+}
+
+.wt480 {
+  width: 480px;
+}
+.select.wt480 .btn {
+  width: 480px;
+}
+.bootstrap-select.wt480 .btn {
+  width: 480px;
+}
+.bootstrap-select.wt480 {
+  width: 480px;
+}
+

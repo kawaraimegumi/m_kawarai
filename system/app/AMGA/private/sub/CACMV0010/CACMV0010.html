@@ -1,0 +1,158 @@
+<div id="ca_CACMV0010_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>期間</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<p class="gtitle">対象期間</p>
+				<div class="fieldgroupInBox">
+					<div class="fieldBox noName">
+						<select name="info" class="mbn wt280 flleft" id="ca_CACMV0010_ymd">
+							<optgroup label="">
+								<option class="ca_CACMV0010_month" q-type="1" value="1">当月</option>
+								<option class="ca_CACMV0010_week" q-type="2" value="2">当週</option>
+								<option class="ca_CACMV0010_day" q-type="3" value="3">当日</option>
+							</optgroup>
+							<optgroup label="">
+								<option class="ca_CACMV0010_month" q-type="4" value="4">前月</option>
+								<option class="ca_CACMV0010_week" q-type="5" value="5">前週</option>
+								<option class="ca_CACMV0010_day" q-type="6" value="6">前日</option>
+							</optgroup>
+							<optgroup label="">
+								<option class="ca_CACMV0010_month" q-type="0" type="2" value="20">月単位で指定</option>
+								<option class="ca_CACMV0010_week" q-type="0" type="9" value="90">週単位で指定</option>
+								<option class="ca_CACMV0010_day" q-type="0" type="3" value="30">日単位で指定</option>
+							</optgroup>
+						</select>
+						<div id="ca_CACMV0010_opt_div">
+						
+							<div id="ca_CACMV0010_month_temp" class="ca_CACMV0010_temp dispn">
+								<select class="flleft ca_CACMV0010_opt wt140 mrgl10 cl_valid cl_required"
+										id="ca_CACMV0010_month_y_p_from"></select>
+								<select class="flleft ca_CACMV0010_opt wt140 mrgl10 cl_valid cl_required"
+										id="ca_CACMV0010_month_m_p_from"></select>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<select class="flleft ca_CACMV0010_opt wt140 cl_valid cl_required"
+										id="ca_CACMV0010_month_y_p_to"></select>
+								<select class="flleft ca_CACMV0010_opt wt140 mrgl10 cl_valid cl_required"
+										id="ca_CACMV0010_month_m_p_to"></select>
+							</div>
+							<div id="ca_CACMV0010_week_temp" class="ca_CACMV0010_temp dispn">
+								<select class="flleft ca_CACMV0010_opt wt140 mrgl10 cl_valid cl_required"
+										id="ca_CACMV0010_week_y_p_from"></select>
+								<div id="ca_CACMV0010_week_w_p_from_div"></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<select class="flleft ca_CACMV0010_opt wt140 cl_valid cl_required"
+										id="ca_CACMV0010_week_y_p_to"></select>
+								<div id="ca_CACMV0010_week_w_p_to_div"></div>
+							</div>
+							<div id="ca_CACMV0010_day_temp" class="ca_CACMV0010_temp dispn">
+								<div class="datepicker_wrap">
+									<input type="text" class="ca_CACMV0010_opt mrgl10 cl_date cl_valid cl_required ime-disabled flleft"
+										data-required2="group1" data-limit="len:10"
+										id="ca_CACMV0010_day_p_from">
+								</div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap">
+									<input type="text" placeholder="" class="ca_CACMV0010_opt cl_date cl_valid cl_required ime-disabled flleft"
+										data-required2="group1" data-limit="len:10"
+										id="ca_CACMV0010_day_p_to">
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			
+			<div class="fieldgroup ca_CACMV0010_comp">
+				<p class="gtitle">
+					<label class="checkbox" for="checkbox1">
+					<input type="checkbox" value="" id="ca_CACMV0010_comp_chk" data-toggle="checkbox">
+					比較期間</label>
+				</p>
+				<div class="fieldgroupInBox" id="ca_CACMV0010_comp_div">
+					<div class="fieldBox noName">
+						<select name="info" class="mbn wt280 flleft" id="ca_CACMV0010_c_ymd">
+							<optgroup label="">
+								<option class="ca_CACMV0010_c_month" q-type="1" value="1">当月</option>
+								<option class="ca_CACMV0010_c_week" q-type="2" value="2">当週</option>
+								<option class="ca_CACMV0010_c_day" q-type="3" value="3">当日</option>
+							</optgroup>
+							<optgroup label="">
+								<option class="ca_CACMV0010_c_month" q-type="4" value="4">前月</option>
+								<option class="ca_CACMV0010_c_week" q-type="5" value="5">前週</option>
+								<option class="ca_CACMV0010_c_day" q-type="6" value="6">前日</option>
+							</optgroup>
+							<optgroup label="">
+								<option class="ca_CACMV0010_c_month" q-type="0" type="2" value="20">月単位で指定</option>
+								<option class="ca_CACMV0010_c_week" q-type="0" type="9" value="90">週単位で指定</option>
+								<option class="ca_CACMV0010_c_day" q-type="0" type="3" value="30">日単位で指定</option>
+							</optgroup>
+						</select>
+						<div id="ca_CACMV0010_c_opt_div">
+						
+						<div id="ca_CACMV0010_c_month_temp" class="ca_CACMV0010_c_temp dispn">
+							<select class="flleft ca_CACMV0010_c_opt wt140 mrgl10 cl_valid cl_required "
+									id="ca_CACMV0010_c_month_y_p_from"></select>
+							<select class="flleft ca_CACMV0010_c_opt wt140 mrgl10 cl_valid cl_required"
+									id="ca_CACMV0010_c_month_m_p_from"></select>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<select class="flleft ca_CACMV0010_c_opt wt140 cl_valid cl_required"
+									id="ca_CACMV0010_c_month_y_p_to"></select>
+							<select class="flleft ca_CACMV0010_c_opt wt140 mrgl10 cl_valid cl_required"
+									id="ca_CACMV0010_c_month_m_p_to"></select>
+						</div>
+						<div id="ca_CACMV0010_c_week_temp" class="ca_CACMV0010_c_temp dispn">
+							<select class="flleft ca_CACMV0010_c_opt wt140 mrgl10 cl_valid cl_required"
+									id="ca_CACMV0010_c_week_y_p_from"></select>
+							<div id="ca_CACMV0010_c_week_w_p_from_div"></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<select class="flleft ca_CACMV0010_c_opt wt140 cl_valid cl_required"
+									id="ca_CACMV0010_c_week_y_p_to"></select>
+							<div id="ca_CACMV0010_c_week_w_p_to_div"></div>
+						</div>
+						<div id="ca_CACMV0010_c_day_temp" class="ca_CACMV0010_c_temp dispn">
+							<div class="datepicker_wrap">
+								<input type="text" class="ca_CACMV0010_c_opt mrgl10 cl_date cl_valid cl_required ime-disabled flleft"
+									data-limit="len:10"
+									id="ca_CACMV0010_c_day_p_from">
+							</div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap">
+								<input type="text" placeholder="" class="ca_CACMV0010_c_opt cl_date cl_valid cl_required ime-disabled flleft"
+									data-limit="len:10"
+									id="ca_CACMV0010_c_day_p_to">
+							</div>
+						</div>
+						
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACMV0010_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0010_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+</div>
+<!-- /#mainColumn -->
+</div>

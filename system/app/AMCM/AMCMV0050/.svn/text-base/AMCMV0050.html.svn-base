@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>共通</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMCMV0050.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script src="../../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+	<script src="AMCMV0050.js"></script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+<div id="container">
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_term_form" class="fieldgroupInBox setaddr mrgb10 termBox">
+					<input type="hidden" id="ca_userID">
+					<div class="fieldUnit flleft required mrgb10">
+						<p class="fieldName">適用期間</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap ca_fromDate_div"><input type="text" id="ca_fromDate" class="cl_date cl_valid cl_required"/></div>
+							<p class="txtInFieldUnit pdg flleft deldspn">〜</p>
+							<div class="datepicker_wrap ca_toDate_div deldspn"><input type="text" id="ca_toDate" class="cl_date cl_valid cl_required" readonly/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div id="ca_basicView" class="fieldgroupInBox">
+					<div class="fieldUnit mrgb10 mrgr20 half flleft required ca_user_field">
+						<p class="fieldName">ユーザコード</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 ime-disabled cl_valid cl_required" id="ca_userCode" data-tflimit="7 alnum" data-validator="maxlen:7,7 alnum"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr10 half flleft required ca_user_field">
+						<p class="fieldName">ユーザ名</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 ime-active cl_valid cl_required" id="ca_userName" data-tflimit="20 zenkaku" data-validator="maxlen:20 zenkaku"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgb10 half flleft ca_user_field">
+						<div class="fieldBox noName">
+							<span class="limit wt40 flright mrgl240" length="10"></span>
+							<input type="text" placeholder="カナ" class="form-control wt280 cl_valid" data-tflimit="30" data-validator="maxlen:30 hankaku" id="ca_userNameKana"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+					<div id="ca_userTypeIDArea" class="fieldUnit mrgb10 flleft half mrgr20 required ca_user_field">
+						<p class="fieldName">ユーザ区分</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 selectpicker cl_valid cl_required" id="ca_userTypeID" disabled>
+							</select>
+							<!--
+							<input type="hidden" id="ca_storeID"/>
+							-->
+							<input type="hidden" id="ca_staffID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required ca_passwd_field">
+						<p class="fieldName bl2">初期<br />パスワード</p>
+						<div class="fieldBox">
+							<!-- ツールチップでヘルプを表示 -->
+							<p class="txtInFieldUnit flright help" id="ca_tp_code1"
+								title="英数字混在、８文字以上が<br/>必要です"><span>?</span></p>
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 ime-disabled cl_valid cl_required" data-tflimit="20 alnum" data-validator="len:8,20 passwd" id="ca_passwd"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div id="pwf_next_clear" class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft ca_user_field">
+						<p class="fieldName bl2">メール<br />アドレス</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 ime-active cl_valid cl_email" data-tflimit="30 hankaku" data-validator="maxlen:30 hankaku" id="ca_userMailAddr"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="clear mrgb10"></div>
+
+					<div class="fieldUnit mrgb10 mrgr20 flleft required ca_store_select_field">
+						<p class="fieldName">担当組織</p>
+						<div class="fieldBox ca_store_div">
+							<!-- ツールチップでヘルプを表示 -->
+							<p class="txtInFieldUnit flright help" id="ca_tp_code2"
+										title="社員コードを持たないユーザを<br/>登録する場合、およびユーザ<br/>区分に「3:店長ユーザ」を指定<br/>する場合、本項目の設定は<br/>必須です"><span>?</span></p>
+							<input type="text" class="form-control wt280 flleft" id="ca_storeID" readonly/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+							<button class="btn btn-default wt140 flleft mrgl10" name="ca_btn_store_delete" id="ca_btn_store_delete">削除</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 mrgl10 half flleft"><p class="detailtext">担当する地区・ゾーン・店舗などの組織があれば設定します</p></div>
+					<div class="clear"></div>
+
+					<div class="clear mrgb10"></div>
+
+					<div class="fieldUnit mrgb10 mrgr20 half flleft ca_staff_field">
+						<p class="fieldName">所属組織</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 flleft cl_valid cl_store" id="ca_staffOrgID" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft"><p class="detailtext">人事情報に設定されている所属組織です</p></div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 flleft ca_org_select_field">
+						<p class="fieldName"></p>
+						<div class="fieldBox ca_org_div">
+							<input type="text" class="form-control wt280 flleft" id="ca_orgID" readonly/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_org_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft ca_org_select_comment"><p class="detailtext">追加の所属組織が必要な場合に設定します</p></div>
+					<div class="clear ca_org_select_spacer"></div>
+					<div class="fieldUnit mrgb10 flleft required">
+						<p class="fieldName">権限</p>
+						<div class="fieldBox">
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 hta half flleft required">
+						<div class="table">
+							<table class="hilightRow list flleft" id="ca_table_role">
+								<col width="120px">
+								<col width="40px">
+								<!-- <thead class="ht0">
+									<tr>
+										<th class="wt120 pdg0"></th>
+										<th class="wt40 pdg0"></th>
+									</tr>
+								</thead> -->
+								<tbody id="ca_tbody_role">
+								</tbody>
+								<tfoot>
+									<tr class="addRow">
+										<td colspan="2"><span class="btn-add"></span></td>
+									</tr>
+								</tfoot>
+							</table>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn">
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+<script id="ca_org_template" type="text/x-jquery-tmpl">
+	<div class="ca_org_selected_div mrgb10">
+		<div class="fieldUnit mrgb10 mrgr20 flleft ca_org_field">
+			<p class="fieldName"></p>
+			<div class="fieldBox">
+				<input type="text" class="form-control wt280 flleft cl_valid cl_store" name="ca_orgDataInput" readonly/>
+				<button class="btn btn-default wt140 flleft mrgl10" name="ca_btn_org_delete">削除</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</script>
+<script id="ca_role_template" type="text/x-jquery-tmpl">
+	<tr class="deletable addRow" name="ca_table_tr">
+		<td class="editable pdg0">
+			<input type="text" class="form-control cl_valid" name="roleID">
+		</td>
+		<td><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+<div class="clear"></div>
+
+
+</div>
+</body>
+</html>

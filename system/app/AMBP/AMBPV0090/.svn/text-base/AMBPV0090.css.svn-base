@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+
+.ht40 {
+    height: 40px;
+}
+.mrgl400 {
+    margin-left:400px;
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>商品在庫照会</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<!-- Loading Flat UI -->
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<script src="../../../js/lib.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+ 	<script src="../../AMPA/AMPAV0030/AMPAV0030.js"></script>
+	<script src="../../AMPA/AMPAV0040/AMPAV0040.js"></script>
+
+    <script src="test_sel.js"></script>
+</head>
+<body>
+<div class="container">
+<div id="mainColumn">
+<div id="mainColumninBox" class="noLeftColumn">
+	<div class="fieldGroup">
+		<div class="fieldgroupInBox">
+			<div class="fieldUnit mrgb10 mrgr20 half flleft">
+				<p class="fieldName">日付け</p>
+				<div class="fieldBox">
+					<div class="datepicker_wrap">
+						<input type="text" class="cl_date" id="ca_Date">
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">busunit</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_busunitID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">組織体系</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_orgfuncID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">組織階層</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_orglevelID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit">
+				<p class="fieldName">組織コード</p>
+				<div class="fieldBox"><input id="ca_orgID" type="text" class="form-control wt280 flleft"/></div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="clear"></div>
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">slip</p>
+				<div class="fieldBox">
+					<select multiple="multiple" name="info" id="ca_slip" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">サイズグループ選択</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_sizegrpID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">サイズパターン選択</p>
+				<div class="fieldBox">
+					<input type="text" id="ca_sizeptnID" class="form-control mbn wt280">
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">サイズパターン選択(サイズグループ指定)</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_sel_sizeptnID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">サイズパターン選択(品種)</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_sizeptnIdByItgrp" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">カラー選択</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_colorID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">typesel2</p>
+				<div class="fieldBox">
+					<select type="text" id="typesel2" name="info"></select>
+
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">棚卸選択</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_inventcntschID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">サイズロウ</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_sizerowID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+				<p class="fieldName">補正相殺項目</p>
+				<div class="fieldBox">
+					<select name="info" id="ca_offsetitemID" class="mbn wt280"></select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>

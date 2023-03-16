@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>共通</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<style>
+	td.hoge > div {
+	width: 280px;
+	}
+	</style>
+
+</head>
+
+<body>
+
+<script src="AMCMV0090.js"></script>
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+
+				<div id="ca_base_form" class="">
+
+					<input type="hidden" id="ca_recno">
+					<input type="hidden" id="ca_state">
+					<input type="hidden" id="ca_menuID"/>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required ca_menu_field">
+						<p class="fieldName">メニュー名</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 cl_valid cl_required" data-tflimit="20" data-validator="maxlen:20" id="ca_menuName"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+
+			<!-- ==============メニューノード設定エリア================================== -->
+			<div class="fieldgroup" style="min-width: 1100px;">
+
+				<div class="fieldgroupInBox">
+
+					<div class="table mrgb0">
+
+					</div>
+					<div class="fieldUnitContainer flleft mrgl40">
+						<div class="table mrgl20 mrgb10 half flleft">
+							<div class="" id="">
+							<table class="hilightRow drilldown flleft wt320" id="ca_table_large">
+							<thead>
+								<tr>
+									<th class="wt280">大分類</th>
+									<th style=""></th>
+								</tr>
+							</thead>
+							<tbody id="ca_table_tbody_large">
+							</tbody>
+							<tfoot id="ca_table_tfoot_large">
+								<tr class="addRow">
+									<td colspan="2"><span class="btn-add"></span></td>
+								</tr>
+							</tfoot>
+							</table>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn wt40 mrgr10" id="ca_large_up">▲</button>
+							<button class="btn wt40 mrgl10" id="ca_large_down">▼</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnitContainer flleft mrgl40">
+						<div class="table mrgl20 mrgb10 half flleft">
+							<div id="">
+							<table class="hilightRow drilldown flleft wt320" id="ca_table_middle">
+							<thead>
+								<tr>
+									<th class="wt280">中分類</th>
+									<th style=""></th>
+								</tr>
+							</thead>
+							<tbody id="ca_table_tbody_middle">
+							</tbody>
+							<tfoot id="ca_table_tfoot_middle">
+								<tr class="addRow">
+									<td colspan="2"><span class="btn-add"></span></td>
+								</tr>
+							</tfoot>
+							</table>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn wt40 mrgr10" id="ca_middle_up">▲</button>
+							<button class="btn wt40 mrgl10" id="ca_middle_down">▼</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnitContainer flleft mrgl40">
+						<div class="table mrgl20 mrgb10 half flleft">
+							<div id="">
+							<table class="hilightRow drilldown flleft wt320" name="table_order" id="ca_table_view">
+							<thead>
+								<tr>
+									<th class="wt280">画面名</th>
+									<th class="wt40"style=""></th>
+								</tr>
+							</thead>
+							<tbody id="ca_table_tbody_view">
+							</tbody>
+							<tfoot id="ca_table_tfoot_view">
+								<tr class="addRow">
+									<td colspan="2"><span class="btn-add"></span></td>
+								</tr>
+							</tfoot>
+							</table>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn wt40 mrgr10" id="ca_view_up">▲</button>
+							<button class="btn wt40 mrgl10" id="ca_view_down">▼</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<!-- ================================================================ -->
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+<script id="ca_large_template" type="text/template">
+	<tr name="" class="deletable">
+		<td class="ca_c_link dispn"><span name="ca_menuID"><%- menuID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_menuNodeID"><%- menuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_parentMenuNodeID"><%- parentMenuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_seqNo"><%- seqNo %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_inMenuNodeID"><%- inMenuNodeID %></span></td>
+		<td class="ca_c_link editable pdg0">
+			<input type="text" class="form-control cl_valid cl_required" name="ca_menuNodeName" value="<%- menuNodeName %>" data-validator="maxlen:20"/>
+		</td>
+		<td class="ca_c_link"><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+<script id="ca_middle_template" type="text/template">
+	<tr name="" class="deletable">
+		<td class="ca_c_link dispn"><span name="ca_menuID"><%- menuID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_menuNodeID"><%- menuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_parentMenuNodeID"><%- parentMenuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_seqNo"><%- seqNo %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_inMenuNodeID"><%- inMenuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_inParentMenuNodeID"><%- inParentMenuNodeID %></span></td>
+		<td class="ca_c_link editable pdg0">
+			<input type="text" class="form-control cl_valid cl_required" name="ca_menuNodeName" value="<%- menuNodeName %>" data-validator="maxlen:20"/>
+		</td>
+		<td class="ca_c_link"><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+<script id="ca_view_template" type="text/template">
+	<tr name="" class="deletable">
+		<td class="ca_c_link dispn"><span name="ca_seqNo"><%- seqNo %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_menuNodeID"><%- menuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_parentMenuNodeID"><%- parentMenuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_inMenuNodeID"><%- inMenuNodeID %></span></td>
+		<td class="ca_c_link dispn"><span name="ca_inParentMenuNodeID"><%- inParentMenuNodeID %></span></td>
+		<td class="ca_c_link editable pdg0 hoge">
+			<input type="text" class="form-control cl_valid cl_required" name="ca_viewID"/>
+		</td>
+		<td class="ca_c_link"><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+
+</div>
+</body>
+</html>

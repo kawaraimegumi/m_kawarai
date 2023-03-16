@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+.wt480 {
+    width : 480px;
+}
+.wt50 {
+    width : 50px;
+}
+.wt60 {
+    width : 60px;
+}
+.wt220 {
+    width : 220px;
+}
+.wt300 {
+    width : 300px;
+}
+.wt400 {
+    width : 400px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.termBox{
+    padding : 10px;
+}
+button.selectpicker[data-id="ca_calenIDList"] {
+	width: 100%;
+}
+
+/* SAT */
+#ca_table > tbody .wday6 {
+	color: #1e9ce6;
+}
+/* SUN */
+#ca_table > tbody .wday7 {
+	color: red;
+}
+.wt920{
+    width:920px;
+}
+.mrgl260 {
+	margin-left: 260px;
+}

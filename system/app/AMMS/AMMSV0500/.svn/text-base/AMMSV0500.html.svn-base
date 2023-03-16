@@ -1,0 +1,359 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>組織マスタ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMMSV0500.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="AMMSV0500.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+<script>
+
+</script>
+
+
+</head>
+
+<body>
+<div id="ca_main">
+
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_storeInfo" class="fieldgroupInBox">
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">組織コード</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_code" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">組織名称</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_name" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear mrgb10"></div>
+
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">都道府県</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_prefName" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">郵便番号</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_postalno" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">住所１</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_addr1" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">住所２</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_addr2" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">住所３</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_addr3" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear mrgb10"></div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">電話番号</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_telno" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">ＦＡＸ</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280" id="ca_faxno" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear mrgb10"></div>
+
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName">営業時間</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control cl_valid cl_time openingTime" id="ca_openingTime" readonly/>
+							<span>-</span>
+							<input type="text" class="form-control cl_valid cl_time" id="ca_closingTime" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName bl4">営業時間イレギュラー店舗<br />フラグ</p>
+						<div class="fieldBox ml150">
+							<label class="checkbox ib disabled" for="ca_businessHoursIrregularFlag"><input type="checkbox" id="ca_businessHoursIrregularFlag" data-toggle="checkbox" disabled></label>
+							<span class="fieldName mrgt8">チェックがついている場合は時期により<br>営業時間が異なります。</span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear mrgb10"></div>
+
+
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">開店日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap flleft">
+								<input type="text" id="ca_openDate" class="cl_valid cl_date" readonly/>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">閉店日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap flleft">
+								<input type="text" id="ca_closeDate" class="cl_valid cl_date" readonly/>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName bl2">ＰＯＳ<br/>設置日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap flleft">
+								<input type="text" id="ca_posSetupDate" class="cl_valid cl_date" readonly/>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName bl2">ＰＯＳ<br/>配信停止日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap flleft">
+								<input type="text" id="ca_posStopDate" class="cl_valid cl_date" readonly/>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear mrgb10"></div>
+
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">競合店</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_competitor" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName bl2">母店<br />フラグ</p>
+						<div class="fieldBox">
+							<label class="checkbox ib disabled" for="ca_flagshipFlag"><input type="checkbox" id="ca_flagshipFlag" data-toggle="checkbox" disabled></label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">店舗タイプ</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280" id="ca_storeTypeID" disabled>
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName bl2">ＳＭＸ<br />フラグ</p>
+						<div class="fieldBox">
+							<label class="checkbox ib disabled" for="ca_smxFlag"><input type="checkbox" id="ca_smxFlag" data-toggle="checkbox" disabled></label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">フロア数</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 ime-active txtar" id="ca_floorNum" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName bl2">その他<br />建物情報</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 ime-active" id="ca_buildingInfo" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">売場面積(坪)</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 ime-active txtar" id="ca_floorArea" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName bl2">バックヤード<br />面積(坪)</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 ime-active txtar" id="ca_backArea" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgr20 half flleft">
+						<p class="fieldName">駐車場台数</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 ime-active txtar" id="ca_parkingNum" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear mrgb10"></div>
+
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">補正業者１</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 ime-active" id="ca_vendorDisp1" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">補正業者２</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 ime-active" id="ca_vendorDisp2" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear mrgb10"></div>
+
+					<div class="fieldUnit mrgb10 flleft wt1000">
+						<p class="fieldName bl3">棚卸<br>レイアウト<br>ファイル１</p>
+						<div class="fieldBox flleft ca_torikomi_div wt960">
+							<span id="ca_view1" class="choose form-control wt280 flleft"></span>
+							<!-- <input type="text" class="form-control flleft wt280 ime-active" id="ca_view1" readonly/> -->
+							<input type="hidden" />
+							<button class="btn btn-default mrgl10 cl-file-attach wt200" id="ca_fileUp_btn1">添付ファイルを選択</button>
+							<!-- <button class="btn btn-default mrgl10 wt200 ca_file_DL" disabled>ダウンロード</button> -->
+							<button class="btn btn-default mrgl10 wt200 ca_file_delete" disabled>添付ファイルを削除</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft wt1000">
+						<p class="fieldName bl3">棚卸<br>レイアウト<br>ファイル２</p>
+						<div class="fieldBox flleft ca_torikomi_div wt960">
+							<span id="ca_view2" class="choose form-control wt280 flleft"></span>
+							<!-- <input type="text" class="form-control flleft wt280 ime-active" id="ca_view2" readonly/> -->
+							<input type="hidden" />
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileUp_btn2">添付ファイルを選択</button>
+							<!-- <button class="btn btn-default mrgl10 wt200 ca_file_DL" disabled>ダウンロード</button> -->
+							<button class="btn btn-default mrgl10 wt200 ca_file_delete" disabled>添付ファイルを削除</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft wt1000">
+						<p class="fieldName bl3">棚卸<br>レイアウト<br>ファイル３</p>
+						<div class="fieldBox flleft ca_torikomi_div wt960">
+							<span id="ca_view3" class="choose form-control wt280 flleft"></span>
+							<!-- <input type="text" class="form-control flleft wt280 ime-active" id="ca_view3" readonly/> -->
+							<input type="hidden" />
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileUp_btn3">添付ファイルを選択</button>
+							<!-- <button class="btn btn-default mrgl10 wt200 ca_file_DL" disabled>ダウンロード</button> -->
+							<button class="btn btn-default mrgl10 wt200 ca_file_delete" disabled>添付ファイルを削除</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft wt1000">
+						<p class="fieldName bl3">棚卸<br>レイアウト<br>ファイル４</p>
+						<div class="fieldBox flleft ca_torikomi_div wt960">
+							<span id="ca_view4" class="choose form-control wt280 flleft"></span>
+							<!-- <input type="text" class="form-control flleft wt280 ime-active" id="ca_view4" readonly/> -->
+							<input type="hidden" />
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileUp_btn4">添付ファイルを選択</button>
+							<!-- <button class="btn btn-default mrgl10 wt200 ca_file_DL" disabled>ダウンロード</button> -->
+							<button class="btn btn-default mrgl10 wt200 ca_file_delete" disabled>添付ファイルを削除</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft wt1000">
+						<p class="fieldName bl3">棚卸<br>レイアウト<br>ファイル５</p>
+						<div class="fieldBox flleft ca_torikomi_div wt960">
+							<span id="ca_view5" class="choose form-control wt280 flleft"></span>
+							<!-- <input type="text" class="form-control flleft wt280 ime-active" id="ca_view5" readonly/> -->
+							<input type="hidden" />
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileUp_btn5">添付ファイルを選択</button>
+							<!-- <button class="btn btn-default mrgl10 wt200 ca_file_DL" disabled>ダウンロード</button> -->
+							<button class="btn btn-default mrgl10 wt200 ca_file_delete" disabled>添付ファイルを削除</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div><!-- /#content -->
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		</div><!-- /#mainColumnFooter -->
+	</div><!-- /#mainColumninBox -->
+	</div><!-- /#mainColumn -->
+</div><!-- / #container -->
+
+<div class="clear"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>AMSDV0020 StoCSカラー商品マスタ登録・修正</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script type="text/javascript" src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<!--<script src="../../../js/jquery.tablesorter.js"></script>-->
+	<!--<script src="../../../js/tsort.js"></script>-->
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<!--<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>-->
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css' >
+
+	<link href="/css/slickgrid.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/slickgrid.js"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js"></script>
+	<link media="screen" rel="stylesheet" type="text/css" href="AMSDV0020.css">
+
+</head>
+
+<body class="cl_body_hidden">
+
+<div id="ca_main">
+
+<script src="AMSDV0020.js"></script>
+
+<div class="alert alert-danger al1">
+	<div class="error-row clearfix">
+		<div class="error-title"></div>
+		<div class="show-error"></div>
+	</div>
+	<div class="alert-row clearfix">
+		<div class="alert-title"></div>
+		<div class="show-alert"></div>
+	</div>
+</div>
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup" id="ca_form" style="min-width: 1100px;">
+				<div id="" class="fieldgroupInBox">
+					<!--<input type="hidden" id="ca_baseStockID">-->
+					<input type="hidden" id="ca_recno">
+					<input type="hidden" id="ca_state">
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox" id="div_ca_unitID">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_unitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 cl_valid cl_required" id="ca_itgrpID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10">
+						<div class="fieldBox">
+							<ul>
+								<li><label class="radio"><input type="radio" name="ca_codeType" value="1" data-toggle="radio" checked>メーカー品番</label></li>
+								<li><label class="radio"><input type="radio" name="ca_codeType" value="2" data-toggle="radio">集約品番</label></li>
+								<!-- <li><label class="radio"><input type="radio" name="ca_codeType" value="3" data-toggle="radio">振分用集約品番</label></li> -->
+							</ul>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required" id="div_makerID">
+						<p class="fieldName">メーカー</p>
+						<div class="fieldBox" id="">
+							<input class="form-control wt280 flleft cl_valid cl_required" type="text" id="ca_makerID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName" id="p_itemCode">メーカー品番</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input class="form-control wt280 flleft cl_valid cl_required" type="text" data-tflimit="10 hankaku" data-validator="maxlen:10 hankaku" id="ca_itemCode"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName" id="p_itemName">商品名</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input class="form-control wt280 flleft" type="text" id="ca_itemName" readonly />
+							<input type="hidden" id="ca_itemID">
+							<!--<input type="hidden" id="ca_sizePtnID">-->
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">カラー</p>
+						<div class="fieldBox" id="div_ca_colorID">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_colorID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">サブクラス1</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_subcls1ID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">サブクラス2</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_subcls2ID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">スタイル</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_styleID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">シーズン</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_seasonID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit flleft mrgb10 wt500 required">
+						<p class="fieldName bl2">フォロー<br />開始日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_followStartDate" data-validator="maxlen:13"/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit flleft mrgb10 wt500 required">
+						<p class="fieldName bl2">フォロー<br />終了日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_followEndDate" data-validator="maxlen:13"/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<div class="fieldgroup mrgbshort">
+				<p class="gtitle">基準在庫</p>
+				<div class="fieldgroupInBox" id="ca_base_form">
+					<div class="fieldUnit">
+						<p class="flleft frwkComment">集約品番の１品番あたりの上限在庫数&nbsp;&nbsp;</p>
+						<div class="fieldBox">
+							<ul>
+								<li><label class="radio"><input type="radio" name="ca_upLimitStockType" value="0" data-toggle="radio" checked>設定しない</label></li>
+								<li><label class="radio"><input type="radio" name="ca_upLimitStockType" value="1" data-toggle="radio">設定する</label></li>
+							</ul>
+						</div>
+						<div class="fieldUnit flleft mrgb10 mrgr20 Select" id="ca_upLimitStockNum_div">
+							<div class="fieldBox noName">
+								<p class="fieldName flleft">上限在庫数</p>
+								<p class="txtInFieldUnit flright help" id="ca_tp_upLimitStockNum" title="上限在庫数を設定すると、振分可能数を超えた場合の動作が「自動で振分ける」になり、「自動停止して通知する」は利用出来ません。"><span>?</span></p>
+								<input type="text" data-validator="min:1 uint:3" data-limit="len:3 digit" class="form-control wt100 cl_valid flleft" id="ca_upLimitStockNum" style="margin-left: 100px;"/>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<!--<div class="clear"></div>-->
+					<div class="fieldUnit">
+						<p class="flleft frwkComment">自動振分数が振分可能数を超えたら&nbsp;&nbsp;</p>
+						<div class="fieldBox">
+							<ul>
+								<li><label class="radio"><input type="radio" name="ca_autoFlag" value="0" data-toggle="radio" checked>自動停止して通知する</label></li>
+								<li><label class="radio"><input type="radio" name="ca_autoFlag" value="1" data-toggle="radio">自動で振分ける</label></li>
+							</ul>
+						</div>
+						<div class="fieldBox noName dispn flleft mrgl20" id="ca_autoType_div">
+							<select name="info" class="mbn wt280 cl_valid" id="ca_autoType"></select>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit flleft mrgb10">
+						<div class="fieldBox flleft">
+							<div class="flleft ">
+								<label class="checkbox flleft mrgr30"><input type="checkbox" id="ca_batchFlag" data-toggle="checkbox"/>バッチ対象フラグ</label>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+				</div>
+
+			</div>
+
+			<div class="fieldgroup mrgbshort">
+				<p class="gtitle">振分</p>
+				<div class="fieldgroupInBox" id="ca_dist_form">
+					<div class="fieldUnit mrgbshort flleft half">
+						<p class="fieldName bl2">同一JAN振分上限数</p>
+						<div class="fieldBox">
+							<input type="text" data-validator="min:1 uint:3" data-limit="len:3 digit" class="form-control cl_valid flleft wt100" id="ca_distLimit"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<!--<div class="mrgb20"></div>-->
+				</div>
+			</div>
+
+			<div class="fieldgroup mrgbshort">
+				<p class="gtitle">移動(セットアップ)</p>
+				<div class="fieldgroupInBox" id="ca_setup_form">
+					<div class="fieldUnit mrgbshort flleft half">
+						<p class="fieldName bl2">セットアップ<br />ID</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft cl_valid" type="text" data-tflimit="10 hankaku" data-validator="maxlen:10 hankaku" id="ca_setupID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<!--<div class="mrgb20"></div>-->
+				</div>
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<!-- <div class="mrgb20"></div> -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+
+</body>
+</html>

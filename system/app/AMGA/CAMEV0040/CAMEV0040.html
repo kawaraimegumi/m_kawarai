@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>商品リスト編集</title>
+
+<link href="../../AMGA/public/css/bootstrap.css" rel="stylesheet">
+<link href="../../AMGA/public/css/prettify.css" rel="stylesheet">
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style-AMGAV.css">
+
+<script src="../../AMGA/public/js/jquery-1.8.3.min.js"></script>
+<script src="../../AMGA/public/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../AMGA/public/js/jquery.ui.touch-punch.min.js"></script>
+
+<!-- Loading ui-folder -->
+<script type="text/javascript" src="../../AMGA/private/js/ui-folder.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/jquery.easing-1.3.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/underscore.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/backbone.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/json2.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.exchangeselect.0.1.0.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.fixedheadertable.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../AMGA/public/js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.form.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.slimscroll.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="../../AMGA/private/js/aman.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/messages2-ana_ja.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana-fix.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/ana-testdata.js"></script>
+
+<script type="text/javascript" src="../private/sub/CACMV0050/CACMV0050.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0060/CACMV0060.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0240/CACMV0240.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style-AMGAV.css">
+
+<script type="text/javascript" src="CAMEV0040.js"></script>
+</head>
+
+<body id="ca_body">
+
+<div id="cl_dialog_area" class="cl_dialog"></div>
+<div id="page-wrap">
+	<div id="cl_header"></div>
+	<!-- /#header -->
+
+	<!-- ダイアログ設定 -->
+	<div class="cl_echoback msgBox error"></div>
+	<div id="ca_CACMV0050_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0060_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0240_dialog" class="cl_dialog"></div>
+
+	<div id="ca_main">
+	<div id="container">
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+					<div id="title">
+						<h2>商品リスト編集</h2>
+						<div class="titleInBoxRight"></div>
+					</div>
+					<!-- /#title -->
+
+
+
+					<div id="content">
+
+						<div class="fieldgroup">
+							<div id="ca_searchArea">
+								<div class="fieldgroupInBox">
+
+
+
+									<!-- <div class="ca_noTouch" id="ca_orgSel"> -->
+									<div id="ca_orgSel">
+										<div class="clear"></div>
+										<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+											<p class="fieldName bl2">商品分類<br>種別</p>
+											<div class="fieldBox" id="ca_div_elem_func"></div>
+											<div class="clear"></div>
+										</div>
+
+
+
+										<div class="fieldUnit mrgb10 half flleft required">
+											<p class="fieldName bl2">商品分類<br>階層</p>
+											<div class="fieldBox" id="ca_div_elem_lvl"></div>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<!--  ここまで class="ca_noTouch" -->
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+										<p class="fieldName bl2">商品<br>リスト名</p>
+										<div class="fieldBox">
+											<input type="text" placeholder="" x-data-limit="len:32" class="form-control wt280 cl_required cl_valid" id="ca_name">
+										</div>
+										<div class="clear"></div>
+									</div>
+
+
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 required">
+										<p class="fieldName">公開区分</p>
+										<div class="fieldBox" id="ca_div_f_open" ></div>
+										<div class="clear"></div>
+									</div>
+
+									<input type="hidden" id="ca_id">		<!-- リストのID -->
+									<input type="hidden" id="ca_f_elemupd">	<!-- 編集可否フラグ -->
+								</div>
+								<!--  ここまで class="fieldgroupInBox" -->
+							</div>
+							<!--  ここまで class="ca_saerchArea" -->
+						</div>
+						<!--  ここまで class="fieldgroup" -->
+
+						<input type="hidden" id="ca_chk_func">		<!-- 階層種別チェック用 -->
+						<input type="hidden" id="ca_chk_lvl">		<!-- 階層レベルチェック用 -->
+
+
+						<div class="table listbuilder" id="ca_tbl_div">
+							<div class="control mrgb10">
+								<p class="sortUp mrgr10" id="ca_up">上へ</p>
+								<p class="sortDown mrgr10" id="ca_down">下へ</p>
+								<div class="clear"></div>
+							</div>
+							<table class="hilightRow ca_tbl">
+								<tr>
+									<th width="40px">
+										<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_chkall"></label>
+										<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+									<th width="150px">コード・品番</th>
+									<th>名称</th>
+									<th width="117px" class="th_elem_seq dispn">表示順</th>
+								</tr>
+							</table>
+							<div class="ht240 yScroll ca_tbody">
+								<table class="hilightRow ca_tbl">
+									<tbody id="ca_tbody">
+										<!-- ここにテンプレ -->
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+						<!-- tbl ここまで-->
+
+						<div class="mrgb20"></div>
+
+						<div class="fieldUnit" id ="ca_editBtn">
+							<div class="fieldBox mrgt30 mrgb30 noName">
+								<button id="ca_addGen" class="btn btn-default wt140 flleft">追加</button>
+
+
+
+								<div id="ca_upld">
+									<button class="submit btn btn-default wt140 flleft mrgl20 w cl-file-attach" type="submit">CSV取込</button>
+									<input type="file" class="hide-input">
+								</div>
+								<button id="ca_sample" class="btn btn-default wt140 flleft mrgl20">CSVサンプル</button>
+								<button id="ca_csvout" class="btn btn-default wt140 flleft mrgl20">CSV出力</button>
+								<button id="ca_del" class="btn btn-default wt140 flright mrgl20 delete">削除</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!-- fieldUnit ここまで-->
+
+						<!-- エラーリスト -->
+						<div class="clear"></div>
+						<div id="ca_csv_errArea">
+
+							<div class="mrgb20"></div>
+
+							<!-- 上ページャー -->
+							<div class="pagination-wrapper">
+								<div class="count" id="ca_pager_displaypanel1"></div>
+								<div class="pagination">
+									<ul id="ca_pager1">
+									</ul>
+								</div>
+							</div>
+
+							<div class="table">
+								<table class="hilightRow error report" id="ca_report_table">
+									<tbody id="ca_report_tbody_div">
+										<!--ここにテンプレート入る-->
+									</tbody>
+								</table>
+							</div>
+
+							<!--表テンプレート-->
+							<script id="ca_report_tbody_template" type="text/x-jquery-tmpl">
+								<tr>
+									<td class="linenum w40">${lineno}</td>
+									<td class="data w200">${linestr}</td>
+									<td class="comment">${errmsg}</td>
+								</tr>
+							</script>
+							<!--表テンプレートここまで-->
+
+							<!-- 下ページャー -->
+							<div class="pagination-wrapper">
+								<div class="count" id="ca_pager_displaypanel2"></div>
+								<div class="pagination">
+									<ul id="ca_pager2">
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn">
+						<p class="cancel"><a id="ca_cancel">キャンセル</a></p>
+						<p class="apply mrgCancel"><a id="ca_commit">登録</a></p>
+					</div>
+
+				</div><!-- /#mainColumninBox -->
+			</div><!-- /#mainColumn -->
+
+	</div><!-- / #container -->
+	</div><!-- / #ca_main -->
+
+<div class="clear"></div>
+</div>
+
+</body>
+</html>

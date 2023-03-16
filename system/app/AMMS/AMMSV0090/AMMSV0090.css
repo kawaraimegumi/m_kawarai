@@ -1,0 +1,106 @@
+@CHARSET "UTF-8";
+
+#ca_table {
+	width: 70%;
+}
+.th_checkbox {
+	position:absolute;
+	left:0px;
+	width:40px;
+}
+.td_checkbox {
+	position:absolute;
+	left:0px;
+	width:40px;
+}
+
+
+.th_maker {
+	position:absolute;
+	left:40px;
+	width:150px;
+}
+.td_maker {
+	position:absolute;
+	left:40px;
+	width:150px;
+}
+
+
+.th_makerItemCode {
+	position:absolute;
+	left:190px;
+	width:95px;
+}
+.td_makerItemCode {
+	position:absolute;
+	left:190px;
+	width:95px;
+}
+
+
+.th_name {
+	position:absolute;
+	left:285px;
+	width:200px;
+}
+.td_name {
+	position:absolute;
+	left:285px;
+	width:200px;
+}
+
+.th_subcls {
+	table-layout: fixed;
+	min-width:120px;
+}
+.th_year {
+	table-layout: fixed;
+	min-width:85px;
+}
+.th_season {
+	table-layout: fixed;
+	min-width:80px;
+}
+.th_tagtype {
+	table-layout: fixed;
+	min-width:160px;
+}
+.th_reapprove {
+	table-layout: fixed;
+	min-width:70px;
+
+}
+.th_approve {
+	table-layout: fixed;
+	min-width:110px;
+}
+.th_date {
+	table-layout: fixed;
+	min-width:80px;
+}
+.th_user {
+	table-layout: fixed;
+	min-width:280px;
+}
+.ruler {
+	table-layout: fixed;
+	position: absolute;
+	width: 0px;
+	left: 485px;
+	margin: 0;
+	padding: 0;
+	background: #dddddd;
+}
+
+
+/*
+ * outer/inner CSS
+ */
+.table_outer {position:relative}
+.table_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  width:58%;
+  margin-left:485px;
+}

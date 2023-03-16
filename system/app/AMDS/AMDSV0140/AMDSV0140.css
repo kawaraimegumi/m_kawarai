@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+.wt980{
+    width:980px;
+}
+.wt920{
+    width:920px;
+}
+.wt600{
+    width:600px;
+}
+.wt320{
+    width:320px;
+}
+.wt260{
+    width:260px;
+}
+.wt240{
+    width:240px;
+}
+.checkbox_td > label {
+    margin-left: 32px;
+}

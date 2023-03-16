@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>帳票作成</title>
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0080/AMPAV0080.js"></script>
+	<link rel="stylesheet" href="AMGAV2010.css" type="text/css">
+</head>
+
+<body class="cl_body_hidden">
+	<script src="AMGAV2010.js"></script>
+	<div id="ca_main">
+	<div id="container">
+		<div id="AMPAV0080_dialog" class="cl_dialog"></div>
+		<div id="mainColumn">
+			<div id="mainColumninBox" class="noLeftColumn">
+				<div id="content">
+					<div class="fieldgroup">
+						<div class="fieldgroupInBox">
+							<div class="fieldUnit required">
+								<p class="fieldName">帳票名</p>
+								<div class="fieldBox">
+									<input id="id" type="hidden">
+									<input class="form-control wt280 cl_valid cl_required" id="name" type="text" data-validator="maxlen:50">
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit required">
+								<p class="fieldName">帳票出力形式</p>
+								<div class="fieldBox">
+									<select class="cl_valid cl_required" id="output_type"></select>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldgroup">
+						<div class="fieldgroupInBox">
+							<div class="fieldUnit">
+								<p class="fieldName">実行期間</p>
+								<div class="fieldBox">
+									<div class="datepicker_wrap">
+										<input class="cl_date cl_valid ime-disabled" id="period_from" type="text" data-limit="len:10">
+									</div>
+								</div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="fieldBox">
+									<div class="datepicker_wrap">
+										<input class="cl_date cl_valid ime-disabled" id="period_to" type="text" data-limit="len:10">
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit required">
+								<p class="fieldName">サイクル</p>
+								<div class="fieldBox">
+									<span id="cycle_type_1_field">
+										<select class="cl_valid" id="cycle_type_1"></select>
+									</span>
+									<span id="cycle_type_2_field">
+										<select class="cl_valid" id="cycle_type_2" multiple></select>
+									</span>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit" id="tg_wday_field">
+								<p class="fieldName">曜日</p>
+								<div class="fieldBox">
+									<select class="cl_valid" id="tg_wday" multiple></select>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit" id="tg_dom_field">
+								<p class="fieldName">日にち</p>
+								<div class="fieldBox">
+									<select class="cl_valid" id="tg_dom" multiple></select>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit" id="tg_date_field" style="height: auto;">
+								<p class="fieldName">特定日</p>
+								<div class="fieldBox">
+									<div class="table">
+										<table style="width: max-content;">
+											<thead></thead>
+											<tbody id="tg_date_tbody"></tbody>
+											<tfoot></tfoot>
+										</table>
+										<button class="btn btn-sm btn-primary" id="tg_date_append_button">追加</button>
+										<script id="tg_date_tbody_template" type="text/x-jquery-tmpl">
+											<tr>
+												<td class="datepicker_wrap" style="display: revert;">
+													<input class="cl_date cl_valid cl_required ime-disabled" type="text" data-limit="len:10" name="tg_date" value=${tg_date}>
+												</td>
+												<td>
+													<button class="btn btn-sm btn-danger tg_date_remove_button">削除</button>
+												</td>
+											</tr>
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit" id="tg_time_field" style="height: auto; display: none;">
+								<p class="fieldName">時刻</p>
+								<div class="fieldBox">
+									<div class="table">
+										<table style="width: max-content;">
+											<thead></thead>
+											<tbody id="tg_time_tbody"></tbody>
+											<tfoot></tfoot>
+										</table>
+										<button class="btn btn-sm btn-primary" id="tg_time_append_button">追加</button>
+										<script id="tg_time_tbody_template" type="text/x-jquery-tmpl">
+											<tr>
+												<td>
+													<select class="cl_valid" name="tg_time_hh" value=${tg_time_hh}></select>時
+												</td>
+												<td>
+													<select class="cl_valid" name="tg_time_mm" value=${tg_time_mm}></select>分
+												</td>
+												<td>
+													<button class="btn btn-sm btn-danger tg_time_remove_button">削除</button>
+												</td>
+											</tr>
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldgroup">
+						<div class="fieldgroupInBox">
+							<div class="fieldUnit required">
+								<p class="fieldName">Excelテンプレート</p>
+								<div class="fieldBox ca_torikomi_div">
+									<input id="template_file_id" type="hidden">
+									<input id="template_file_name" type="hidden">
+									<input id="template_file_uri" type="hidden">
+									<span class="choose form-control wt280 flleft" id="template_file"></span>
+									<button class="btn btn-sm btn-default mrgl10 cl-file-attach flleft" id="template_file_upload_button">貼付ファイルを選択</button>
+									<button class="btn btn-sm btn-default mrgl10 cl-file-attach flleft" id="template_file_remove_button">貼付ファイルを削除</button>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit required" style="height: auto;">
+								<p class="fieldName">帳票作成機能</p>
+								<div class="fieldBox">
+									<div class="table">
+										<table>
+											<thead>
+												<tr>
+													<th>呼出カタログ・帳票</th>
+													<th>形式</th>
+													<th>貼付シート名</th>
+													<th>貼付位置(左上)</th>
+													<th>貼付位置(右下)</th>
+													<th>検索期間開始日</th>
+													<th>検索期間終了日</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody id="func_tbody"></tbody>
+											<tfoot></tfoot>
+										</table>
+										<button class="btn btn-sm btn-info" id="func_search_button">機能検索</button>
+										<script id="func_tbody_template" type="text/x-jquery-tmpl">
+											<tr>
+												<td>
+													<input type="hidden" name="type_id" value=${type_id}>
+													<input type="hidden" name="type_name" value=${type_name}>
+													<input type="hidden" name="id" value=${id}>
+													<input class="form-control cl_valid" type="text" disabled name="name" value=${name}>
+												</td>
+												<td>
+													<select class="cl_valid" name="catalog_output_type" value=${catalog_output_type}></select>
+												</td>
+												<td>
+													<input class="form-control cl_valid cl_required" type="text" data-validator="maxlen:30" name="sheet_name" value=${sheet_name}>
+												</td>
+												<td>
+													<input class="form-control cl_valid" type="text" data-validator="maxlen:8 hankaku alnum" name="paste_top" value=${paste_top}>
+												</td>
+												<td>
+													<input class="form-control cl_valid" type="text" data-validator="maxlen:8 hankaku alnum" name="paste_bottom" value=${paste_bottom}>
+												</td>
+												<td>
+													<div class="datepicker_wrap">
+														<input class="cl_date cl_valid ime-disabled" type="text" data-limit="len:10" name="from" value=${from}>
+													</div>
+												</td>
+												<td>
+													<div class="datepicker_wrap">
+														<input class="cl_date cl_valid ime-disabled" type="text" data-limit="len:10" name="to" value=${to}>
+													</div>
+												</td>
+												<td>
+													<button class="btn btn-sm btn-danger func_remove_button">削除</button>
+												</td>
+											</tr>
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldgroup">
+						<div class="fieldgroupInBox">
+							<div class="fieldUnit" id="to_mailaddr_field" style="height: auto; display: none;">
+								<p class="fieldName">配信メールアドレス</p>
+								<div class="fieldBox">
+									<div class="table">
+										<table style="width: max-content;">
+											<thead></thead>
+											<tbody id="to_mailaddr_tbody"></tbody>
+											<tfoot></tfoot>
+										</table>
+										<button class="btn btn-sm btn-primary" id="to_mailaddr_append_button">追加</button>
+										<script id="to_mailaddr_tbody_template" type="text/x-jquery-tmpl">
+											<tr>
+												<td>
+													<input class="form-control wt280 cl_valid cl_required cl_email" type="text" data-validator="maxlen:47 hankaku" name="to_mailaddr" value=${to_mailaddr}>
+												</td>
+												<td>
+													<button class="btn btn-sm btn-danger to_mailaddr_remove_button">削除</button>
+												</td>
+											</tr>
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit">
+								<p class="fieldName">エラー通知有無</p>
+								<div class="fieldBox">
+									<ul>
+										<li><label class="radio"><input type="radio" name="notice" value="1" data-toggle="radio">有</label></li>
+										<li><label class="radio"><input type="radio" name="notice" value="0" data-toggle="radio">無</label></li>
+									</ul>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit">
+								<p class="fieldName">通知メールアドレス</p>
+								<div class="fieldBox">
+									<input class="form-control wt280 cl_valid cl_email" id="noticeMailaddr" type="text" data-validator="maxlen:47 hankaku">
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit" style="height: auto;">
+								<p class="fieldName">メモ</p>
+								<div class="fieldBox">
+									<textarea class="form-control wt660 cl_valid" id="memo" type="text" data-validator="maxlen:100" style="resize: none;"></textarea>
+									<div id="memo2"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldgroup" id="ca_trial">
+						<div class="fieldgroupInBox">
+							<div class="fieldUnit">
+								<p class="fieldName">試行</p>
+								<div class="fieldBox">
+									<ul>
+										<li><label class="radio"><input type="radio" name="trial" value="1" data-toggle="radio">有</label></li>
+										<li><label class="radio"><input type="radio" name="trial" value="0" data-toggle="radio">無</label></li>
+									</ul>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<div id="mainColumnFooter" class="noLeftColumn x2">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

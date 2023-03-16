@@ -1,0 +1,60 @@
+<div id="ca_MDCMV1300_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>会員リスト登録</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+		
+		<div id="content">
+		
+			<div class="fieldgroup">
+				<div id="ca_MDCMV1300_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 required">
+							<p class="fieldName bl2">会員<br/>リスト名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active cl_valid cl_required" 
+									id="ca_MDCMV1300_listname" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						
+						<div class="fieldUnit mrgb10 required">
+							<p class="fieldName">公開区分</p>
+							<div class="fieldBox" id="ca_MDCMV1300_f_open_div">
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						
+						<div class="fieldUnit mrgb10 required">
+							<p class="fieldName bl2">リスト<br/>利用区分</p>
+							<div class="fieldBox" id="ca_MDCMV1300_f_listuse_div">
+							</div>
+							<div class="clear"></div>
+						</div>
+						
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_MDCMV1300_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_MDCMV1300_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

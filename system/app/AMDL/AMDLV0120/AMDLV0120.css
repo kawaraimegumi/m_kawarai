@@ -1,0 +1,65 @@
+@CHARSET "UTF-8";
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.mrgl_80 {
+  margin-left: 85%;
+}
+
+.mrgl_98 {
+  margin-left: 70%;
+  bottom: 0px;
+}
+
+.wt30 {
+  width: 30px;
+}
+.mrgr_5 {
+  position: absolute;
+  right: 5px;
+  bottom: 0px;
+}
+
+.cl_textarea
+{
+	resize: vertical;
+}
+
+.wt1200 {
+  width: 1200px;
+}
+
+.wt70pct {
+  width: 70%;
+}
+
+.fieldName.bl3 {
+margin-top: -16px;
+}
+
+.choose {
+	white-space : nowrap;
+    overflow: hidden;
+    text-overflow : ellipsis;
+}
+
+/* ファイル選択コンポーネント：参照モードスタイル */
+.cl_readonly .choose.form-control {
+	border: 0;
+	border-radius: 0;
+	border-bottom: 2px dotted #d0d5d9;
+	background-color: rgba(0,0,0,0);
+	color: rgb(33, 34, 38);
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	padding: 14px 8px 2px;
+	font-family: Lato, mplus-2p-regular, メイリオ, 'ＭＳ Ｐゴシック', sans-serif;
+	font-size: 14px;
+	opacity: 1;
+}

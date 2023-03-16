@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+		<title>共通</title>
+
+		<!-- Loading Bootstrap -->
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+		<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+		<script type="text/javascript" src="../../../../js/jquery.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+		<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+		<link media="screen" rel="stylesheet" type="text/css" href="AMCMV0150.css">
+
+		<script src="../../../js/function.js"></script>
+
+		<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+		<script src="../../../js/bootstrap.min.js"></script>
+		<script src="../../../js/bootstrap-select.js"></script>
+		<script src="../../../js/bootstrap-switch.js"></script>
+		<script src="../../../js/flatui-checkbox.js"></script>
+		<script src="../../../js/flatui-radio.js"></script>
+		<script src="../../../js/jquery.tagsinput.js"></script>
+		<script src="../../../js/jquery.placeholder.js"></script>
+		<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+		<script src="../../../js/application.js"></script>
+		<script src="../../../js/jquery.skOuterClick.js"></script>
+		<script src="../../../../js/jquery.contextmenu.js"></script>
+
+		<script src="../../../../js/jquery.ui.datepicker.js"></script>
+		<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+		<script src="../../../../js/jquery.blockUI.js"></script>
+		<script type="text/javascript" src="../../../../js/underscore.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.js"></script>
+		<script type="text/javascript" src="../../../../js/json2.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+		<script src="../../../js/clcom.js"></script>
+		<script src="AMCMV0150.js"></script>
+	</head>
+
+	<body class="cl_body_hidden">
+		<div id="ca_main">
+			<div id="container">
+				<div id="mainColumn">
+					<div id="mainColumninBox" class="noLeftColumn">
+
+						<div id="content">
+							<div class="fieldgroup">
+								<div id="ca_searchArea" class="fieldgroupInBox search">
+									<div class="fieldUnit mrgb10 flleft half mrgr20">
+										<p class="fieldName">事業ユニット</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt280 selectpicker" id="ca_srchUnitID" disabled>
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 flleft">
+										<p class="fieldName">店舗</p>
+										<div class="fieldBox">
+											<input type="text" class="form-control wt280 flleft cl_store" id="ca_srchOrgID" readonly/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft half mrgr20">
+										<p class="fieldName">データ種別</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt280 selectpicker cl_valid" id="ca_htDataType" disabled>
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 flleft">
+										<p class="fieldName bl2">ローディング<br/>時刻</p>
+										<div class="fieldBox">
+											<input type="text" class="form-control wt280 flleft" id="ca_timestamp" readonly/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit dispn">
+										<div class="fieldBox mrgt20 noName btnCenter">
+											<button id="ca_srch" class="btn btn-info wt280">
+												検索
+											</button>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+								<div class="dispn">
+									<button id="searchAgain" class="dispn btn">
+										検索条件を再指定
+									</button>
+								</div>
+							</div>
+
+							<div id="ca_result" class="dispn">
+
+								<div class="pagination-wrapper">
+								</div>
+
+								<div class="table">
+									<table class="hilightRow" id="ca_table">
+										<thead>
+											<tr>
+												<th class="ca_TRANS_IN ca_TRANS_IN_SCM ca_ORDER" width="100px">区分</th>
+												<th class="ca_TRANS_IN_SCM" width="100px">伝票区分</th>
+												<th class="ca_TRANS_IN ca_TRANS_OUT ca_RETURN ca_TRANS_IN_SCM" width="100px">伝票番号</th>
+												<th class="ca_TRANS_IN ca_TRANS_OUT ca_INVENT ca_TRANS_IN_SCM ca_RETURN ca_ORDER" width="100px">担当者</th>
+												<th class="ca_TRANS_OUT ca_RETURN" width="100px">出荷元店舗</th>
+												<th class="ca_TRANS_OUT" width="100px">相手店舗</th>
+												<th class="ca_RETURN" width="100px">メーカー</th>
+												<th class="ca_ORDER" width="100px">指示・依頼番号</th>
+												<th class="" width="100px">先頭伝票番号</th>
+												<th class="ca_TRANS_IN_SCM" width="100px">ＳＣＭ伝票番号</th>
+												<th class="ca_INVENT" width="100px">棚番</th>
+												<th class="ca_TRANS_IN ca_TRANS_OUT ca_INVENT ca_INVENT_PRICE ca_TRANS_IN_SCM ca_RETURN ca_ORDER" width="100px">単品コード</th>
+												<th class="ca_TRANS_IN ca_TRANS_OUT ca_INVENT ca_INVENT_PRICE ca_TRANS_IN_SCM ca_RETURN ca_ORDER" width="100px">商品名</th>
+												<th class="ca_INVENT_PRICE" width="100px">プライス</th>
+												<th class="ca_TRANS_IN ca_TRANS_OUT ca_INVENT ca_INVENT_PRICE ca_TRANS_IN_SCM ca_RETURN ca_ORDER" width="100px">数量</th>
+												<th class="ca_INVENT" width="100px">手入力フラグ</th>
+												<th class="ca_TRANS_IN ca_TRANS_OUT ca_INVENT ca_INVENT_PRICE ca_TRANS_IN_SCM ca_RETURN ca_ORDER" width="100px">状態</th>
+												<th class="ca_ERROR" width="100">エラー時刻</th>
+												<th class="ca_ERROR" width="100">プログラム</th>
+												<th class="ca_ERROR" width="100">ＨＴ番号</th>
+												<th class="ca_ERROR" width="100">データ名</th>
+												<th class="ca_ERROR" width="100">エラーコード</th>
+												<th class="ca_ERROR" width="500">詳細エラー情報</th>
+											</tr>
+										</thead>
+										<tbody id="ca_table_tbody"></tbody>
+									</table>
+								</div>
+
+								<div class="pagination-wrapper">
+								</div>
+
+							</div>
+
+						</div>
+						<!-- /#content -->
+						<div id="mainColumnFooter" class="noLeftColumn">
+						</div>
+
+					</div>
+					<!-- /#mainColumninBox -->
+				</div>
+				<!-- /#mainColumn -->
+			</div><!-- / #container -->
+			<!--0-->
+			<script id="ca_tmpl_ALL" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- slipCode %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_DELIV_TYPE, dataType) %></td>
+					<td><% if (staff && staff.id){ %><%- staff.code %>:<%- staff.name %><% } %></td>
+					<td><% if (fromStore && fromStore.id){ %><%- fromStore.code %>:<%- fromStore.name %><% } %></td>
+					<td><% if (toStore && toStore.id){ %><%- toStore.code %>:<%- toStore.name %><% } %></td>
+					<td><% if (maker && maker.id){ %><%- maker.code %>:<%- maker.name %><% } %></td>
+					<td><%- orderCode %></td>
+					<td><%- firstSlipCode %></td>
+					<td><%- scmSlipCode %></td>
+					<td><%- rackCode %></td>
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(price) %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td class="txtar"><%- handFlag %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--1-->
+			<script id="ca_tmpl_TRANS_IN" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_DELIV_TYPE, dataType) %></td>
+					<td><%- slipCode %></td>
+					<td><% if (staff && staff.id){ %><%- staff.code %>:<%- staff.name %><% } %></td>
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--2-->
+			<script id="ca_tmpl_TRANS_OUT" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- slipCode %></td>
+					<td><% if (staff && staff.id){ %><%- staff.code %>:<%- staff.name %><% } %></td>
+					<td><% if (fromStore && fromStore.id){ %><%- fromStore.code %>:<%- fromStore.name %><% } %></td>
+					<td><% if (toStore && toStore.id){ %><%- toStore.code %>:<%- toStore.name %><% } %></td>
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--3-->
+			<script id="ca_tmpl_INVENT" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><% if (staff && staff.id){ %><%- staff.code %>:<%- staff.name %><% } %></td>
+					<td><%- rackCode %></td>
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td class="txtar"><%- handFlag %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--4-->
+			<script id="ca_tmpl_INVENT_PRICE" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(price) %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--5-->
+			<script id="ca_tmpl_TRANS_IN_SCM" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_SCM_DLV, dataType) %></td>
+					<td><%- slipTypeStr %></td>
+					<td><%- slipCode %></td>
+					<td><% if (staff && staff.id){ %><%- staff.code %>:<%- staff.name %><% } %></td>
+					<td><%- scmSlipCode %></td>
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--6-->
+			<script id="ca_tmpl_RETURN" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- slipCode %></td>
+					<td><% if (staff && staff.id){ %><%- staff.code %>:<%- staff.name %><% } %></td>
+					<td><% if (fromStore && fromStore.id){ %><%- fromStore.code %>:<%- fromStore.name %><% } %></td>
+					<td><% if (maker && maker.id){ %><%- maker.code %>:<%- maker.name %><% } %></td>
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--7-->
+			<script id="ca_tmpl_ORDER" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_DELIV_TYPE, dataType) %></td>
+					<td><% if (staff && staff.id){ %><%- staff.code %>:<%- staff.name %><% } %></td>
+					<td><%- orderCode %></td>
+					<td><%- itemCode %></td>
+					<td><%- itemName %></td>
+					<td class="txtar"><%- clutil.comma(qy) %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_STATUS, status) %></td>
+				</tr>
+			</script>
+			<!--8-->
+			<script id="ca_tmpl_ERROR" type="text/template">
+				<tr class="contextmenu" name="ca_table_tr">
+					<td><%- errTimestamp %></td>
+					<td><%- errFuncCode %></td>
+					<td><%- htCode %></td>
+					<td><%- dataName %></td>
+					<td><%- errCode %></td>
+					<td><%- errMsg %></td>
+				</tr>
+			</script>
+			<div class="clear"></div>
+
+		</div>
+	</body>
+</html>

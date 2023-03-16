@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>インセンティブ</title>
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="./AMFUV0020.css">
+
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+<script src="./AMFUV0020.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+
+			<div id="content">
+				<div class="fieldgroup" id="ca_headInfoArea">
+					<div class="fieldgroupInBox mrgb10 termBox">
+						<div class="fieldUnit flleft wt500 mrgr20 required">
+							<p class="fieldName">インセンティブ期間</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap ca_fromDate_div"><input class="flleft cl_valid cl_date cl_required" type="text" id="ca_fromDate"  data-limit="len:10"/></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap ca_toDate_div"><input class="flleft cl_valid cl_date cl_required" type="text" id="ca_toDate"  data-limit="len:10"/></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldgroupInBox">
+						<input type="hidden" id="ca_fundId">
+						<input type="hidden" id="ca_state">
+						<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+							<p class="fieldName">事業ユニット</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_unitID">
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft half mrgr20">
+							<p class="fieldName">インセンティブ番号</p>
+							<div class="fieldBox">
+								<input type="text" class="form-control wt280" id="ca_fundCode" readonly/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+							<p class="fieldName">インセンティブ名称</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240" id="pa_name"></span>
+								<input type="text" class="form-control wt280 ime-active cl_valid cl_required" id="ca_fundName" data-limit="len:20"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit flleft">
+							<div class="fieldBox noName">
+								<p class="txtInFieldUnit flright help" id="ca_tp_code" title="遡及登録：新規登録時にチェックすることで、当月以前の期間にインセンティブが設定可能になります。"><span>?</span></p>
+								<label class="checkbox ib" for="ca_fAfter"><input type="checkbox" value="" id="ca_fAfter" data-toggle="checkbox">遡及登録</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!--p id="searchAgain" class="dispn">検索条件を再指定</p-->
+				</div>
+
+				<div class="fieldgroup">
+					<div class="fieldUnit mrgb20 flright ">
+						<div class="fieldBox noName flleft">
+							<!-- <input type="file" class="hide-input" id="file_csv_uptake"/> -->
+							<button class="btn btn-default  mrgl10 cl-file-attach wt280" id="ca_csv_uptake">CSV取込</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="table">
+						<table class="hilightRow drilldown" id="ca_table">
+						<thead>
+							<tr>
+								<!-- <th width="40px">No</th> -->
+								<th width="130px">品種</th>
+								<th width="180px">メーカー</th>
+								<th width="110px">メーカー品番</th>
+								<th width="160px" class="wt160">カラー</th>
+								<th width="100px">サブクラス１</th>
+								<th width="100px">サブクラス２</th>
+								<th width="160px">商品名</th>
+								<th class="th_period wt170">インセンティブ期間(開始)</th>
+								<th class="th_period wt170">インセンティブ期間(終了)</th>
+								<th width="90px">金額(円)</th>
+								<th width="30px"></th>
+							</tr>
+						</thead>
+						<tbody id="ca_table_tbody">
+						</tbody>
+						<tfoot>
+							<tr class="addRow">
+								<td colspan="12"><span class="btn-add"></span></td>
+							</tr>
+						</tfoot>
+						</table>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<!-- /#content -->
+
+			<div id="mainColumnFooter" class="noLeftColumn x2">
+				<!--p class="cancel"><a href="../BO003/mdBiod-Item.html">戻る</a></p-->
+				<p class="cancel"><a href="javascript:void(0)" id="ca_cancel">キャンセル</a></p>
+				<p class="apply mrgCancel" id="p_entry"><a href="javascript:void(0)" id="ca_entry">登録</a></p>
+				<p class="flleft"><a href="javascript:void(0)" id="ca_previous">前へ</a></p>
+				<p class="flright"><a href="javascript:void(0)" id="ca_next">次へ</a></p>
+				<div class="clear"></div>
+			</div>
+		</div><!-- /#mainColumninBox -->
+	</div><!-- /#mainColumn -->
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+	<tr class="deletable" id="">
+		<input type="hidden" name="itemState" value="${itemState}">
+		<input type="hidden" name="itemID" value="${itemID}">
+		<input type="hidden" name="itemCode" value="${itemCode}">
+		<input type="hidden" name="colorItemID" value="${colorItemID}">
+		<input type="hidden" name="colorItemCode" value="${colorItemCode}">
+		<!--<td class="txtar"></td>-->
+		<td class="editable pdg0">
+			<input name="itgrpID" class="form-control cl_autocomplete cl_valid cl_required" type="text" cs_id="${itgrpID}" data-limit="len:24" value="{{if itgrpID}}${itgrpCode}:${itgrpName}{{/if}}">
+		</td>
+		<td class="editable pdg0">
+			<input name="makerID" class="form-control cl_autocomplete cl_valid cl_required" type="text" cs_id="${makerID}" data-limit="len:25" value="{{if makerID}}${makerCode}:${makerName}{{/if}}">
+		</td>
+		<td class="editable pdg0">
+			<input name="makerItgrpCode" class="form-control cl_valid cl_required" type="text" value="${makerItgrpCode}" data-limit="len:10 hankaku">
+		</td>
+		<td class="editable pdg0 wt160">
+			<select  name="colorID" class="mbn wt160 cl_valid" value="${colorID}"></select>
+			<!-- <input name="colorID" class="form-control cl_autocomplete" type="text" cs_id="${colorID}" value="{{if colorID}}${colorCode}:${colorName}{{/if}}"> -->
+		</td>
+		<td class="subcls1"><span name="subcls1Disp">{{if subcls1ID}}${subcls1Code}:${subcls1Name}{{else}}{{/if}}</span>
+			<input type="hidden" name="subcls1ID" value=${subcls1ID}>
+			<input type="hidden" name="subcls1Code" value=${subcls1Code}>
+			<input type="hidden" name="subcls1Name" value=${subcls1Name}>
+		</td>
+		<td class="subcls2"><span name="subcls2Disp">{{if subcls2ID}}${subcls2Code}:${subcls2Name}{{else}}{{/if}}</span>
+			<input type="hidden" name="subcls2ID" value=${subcls2ID}>
+			<input type="hidden" name="subcls2Code" value=${subcls2Code}>
+			<input type="hidden" name="subcls2Name" value=${subcls2Name}>
+		</td>
+		<td name="itemName"><span name="itemName">${itemName}</span></td>
+		<td class="editable pdg0 wt170"><div class="AMFUV0020_posrel datepicker_wrap wt170"><input name="itemFrom" class="cl_valid cl_date wt170 dp_input cl_required" type="text" value="${itemFromDisp}"  data-limit="len:10"/></div></td>
+		<td class="editable pdg0 wt170"><div class="AMFUV0020_posrel datepicker_wrap wt170"><input name="itemTo" class="cl_valid cl_date wt170 dp_input cl_required" type="text" value="${itemToDisp}" data-limit="len:10"/></div></td>
+		<td class="editable pdg0"><input name="am" class="form-control txtar cl_valid cl_required" type="text" value="${am}" data-limit="len:9 int2" data-filter="comma"/></td>
+		<td><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+
+</div>
+</body>
+</html>

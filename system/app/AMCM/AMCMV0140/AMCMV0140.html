@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+		<title>共通</title>
+
+		<!-- Loading Bootstrap -->
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+		<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+		<script type="text/javascript" src="../../../../js/jquery.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+		<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+		<link media="screen" rel="stylesheet" type="text/css" href="AMCMV0140.css">
+
+		<script src="../../../js/function.js"></script>
+
+		<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+		<script src="../../../js/bootstrap.min.js"></script>
+		<script src="../../../js/bootstrap-select.js"></script>
+		<script src="../../../js/bootstrap-switch.js"></script>
+		<script src="../../../js/flatui-checkbox.js"></script>
+		<script src="../../../js/flatui-radio.js"></script>
+		<script src="../../../js/jquery.tagsinput.js"></script>
+		<script src="../../../js/jquery.placeholder.js"></script>
+		<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+		<script src="../../../js/application.js"></script>
+		<script src="../../../js/jquery.skOuterClick.js"></script>
+		<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+		<script src="../../../../js/jquery.ui.datepicker.js"></script>
+		<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+		<script src="../../../../js/jquery.blockUI.js"></script>
+		<script type="text/javascript" src="../../../../js/underscore.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.js"></script>
+		<script type="text/javascript" src="../../../../js/json2.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+		<script src="../../../js/clcom.js"></script>
+		<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+		<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+		<script src="AMCMV0140.js"></script>
+	</head>
+
+	<body class="cl_body_hidden">
+		<div id="ca_main">
+			<div id="container">
+				<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+				<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+				<div id="mainColumn">
+					<div id="mainColumninBox" class="noLeftColumn">
+
+						<div id="content">
+							<div class="fieldgroup">
+								<div id="ca_searchArea" class="fieldgroupInBox search">
+									<div class="fieldUnit mrgb10 flleft half required">
+										<p class="fieldName">事業ユニット</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt280 selectpicker cl_valid cl_required" id="ca_srchUnitID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft required">
+										<p class="fieldName">店舗</p>
+										<div class="fieldBox">
+											<input type="text" class="form-control wt280 flleft cl_valid cl_required" id="ca_srchOrgID" readonly/>
+											<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft half">
+										<p class="fieldName">データ種別</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt280 selectpicker cl_valid" id="ca_htDataType">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10">
+										<p class="fieldName">検索期間</p>
+										<div class="fieldBox">
+											<div class="datepicker_wrap"><input class="cl_date cl_valid" type="text" id="ca_fromDate"/></div>
+											<p class="txtInFieldUnit pdg flleft">〜</p>
+											<div class="datepicker_wrap"><input class="cl_date cl_valid" type="text" id="ca_toDate"/></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit">
+										<div class="fieldBox mrgt20 noName btnCenter">
+											<button id="ca_srch" class="btn btn-info wt280">
+												検索
+											</button>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+								<button id="searchAgain" class="dispn btn">
+									検索条件を再指定
+								</button>
+							</div>
+
+							<div id="ca_result" class="dispn">
+
+								<div class="pagination-wrapper">
+								</div>
+
+								<div class="table">
+									<table class="hilightRow" id="ca_table">
+										<thead>
+											<tr>
+												<th width="280px">店舗</th>
+												<th width="190px">データ種別</th>
+												<th width="220px">ローディング時刻</th>
+												<th width="50px">結果</th>
+												<th width="50px">件数</th>
+												<th width="80px">点数</th>
+												<th width="100px">状態</th>
+												<th width="100px"></th>
+												<th width="100px">ＮＧ内容</th>
+											</tr>
+										</thead>
+										<tbody id="ca_table_tbody"></tbody>
+									</table>
+								</div>
+
+								<div class="pagination-wrapper">
+								</div>
+
+							</div>
+
+						</div>
+						<!-- /#content -->
+					</div>
+					<!-- /#mainColumninBox -->
+				</div>
+				<!-- /#mainColumn -->
+			</div><!-- / #container -->
+			<script id="ca_tbody_template" type="text/template">
+				<tr class="csptr" name="ca_table_tr" id="<%- id %>" data-htDataType="<%- htDataType %>" data-timestamp="<%- timestamp %>">
+					<td><%- orgCode %>:<%- orgName %></td>
+					<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_HT_DATA, htDataType) %></td>
+					<!-- <td class="txtar"><%if (timestamp!=0){%><% String(timestamp).substring(0,4) %>/<% String(timestamp).substring(4,6) %>/<% String(timestamp).substring(6,8) %> <% String(timestamp).substring(8,10) %>:<% String(timestamp).substring(10,12) %>:<% String(timestamp).substring(12,14) %><% } %></td>表示設定必要-->
+					<td><%- timestampDisp %></td>
+					<td><%- result %></td>
+					<td class="txtar"><%- clutil.comma(slipCount) %></td>
+					<td class="txtar"><%- clutil.comma(itemCount) %></td>
+					<td class="ca_status_td">
+						<% if (htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_OUT || htDataType==amcm_type.AMCM_VAL_HT_DATA_RETURN){ %>
+							<%- clutil.gettypename(amcm_type.AMCM_TYPE_SLIP_PRINT, statusType).replace("印刷","出力") %>
+						<% } else if (htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_IN_SCM){ %>
+							<%- resultComment %>
+						<% } else { %>
+							-
+						<% } %>
+					</td>
+					<% if ( result != "OK" && (htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_IN_SCM || htDataType==amcm_type.AMCM_VAL_HT_DATA_INVENT || htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_IN) ){ %>
+					  <td class="ca_ng_td">
+						<% if ( htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_IN_SCM || htDataType==amcm_type.AMCM_VAL_HT_DATA_INVENT || (result == "NGあり" && htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_IN)){ %>
+							<a class="ca_ng_td" href="#" >エラー情報</a>
+						<% } else if (result == "警告" && htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_IN){ %>
+							<a class="ca_ng_td" href="#" >警告情報</a>
+						<% } %>
+					  </td>
+					<% } else { %>
+					  <td class="ca_dl_td">
+						<% if ( (result == "OK" || result == "NGあり") && (htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_OUT || htDataType==amcm_type.AMCM_VAL_HT_DATA_RETURN) ){ %>
+							<a href="javascript:void(0)">伝票出力</a>
+						<% } else if ( (result == "OK" || result == "NGあり") && htDataType==amcm_type.AMCM_VAL_HT_DATA_INVENT_PRICE){ %>
+							<a href="javascript:void(0)">データ出力</a>
+						<% } %>
+					  </td>
+					<% } %>
+					<% if( result != "OK" && htDataType==amcm_type.AMCM_VAL_HT_DATA_TRANS_OUT ){ %>
+					    <td class="ca_ng_td">
+							<a class="ca_ng_td" href="#" >エラー情報を参照</a>
+						</td>
+					<% } else { %>
+						<td><%- clutil.getclmsg(ngMessage) %></td>
+					<% } %>
+				</tr>
+			</script>
+			<div class="clear"></div>
+
+		</div>
+	</body>
+</html>

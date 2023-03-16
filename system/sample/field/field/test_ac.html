@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>オートコンプリート</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<!-- Loading Flat UI -->
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+					src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+					src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+    <script src="test_ac.js"></script>
+</head>
+<body>
+<div class="container">
+<div id="mainColumn">
+<div id="mainColumninBox" class="noLeftColumn">
+
+
+<div class="fieldGroup">
+<div class="fieldgroupInBox">
+	<div class="fieldUnit">
+		<p class="fieldName">事業ユニット</p>
+		<div class="fieldBox">
+			<select name="info" id="ca_busunitID" class="mbn wt280"></select>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">rx</p>
+		<div class="fieldBox">
+			<select name="info" id="rx" class="mbn wt280"></select>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">備品コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_equipID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div class="fieldUnit">
+		<p class="fieldName">備品取引先コード(X)</p>
+		<div class="fieldBox">
+			<input id="ca_equipVendID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">取引先コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_vendorID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">品種コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_varietyID" type="text" data-limit="digit" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">メーカー品番コード(D)</p>
+		<div class="fieldBox">
+			<input id="ca_makerHinbanID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">品種属性コード(D)</p>
+		<div class="fieldBox">
+			<input id="ca_itattrgrpID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<hr/>
+	<div class="fieldUnit">
+		<p class="fieldName">商品分類体系コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_itgrpfuncID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">商品階層コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_itgrplevelID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">商品コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_itgrpID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<hr/>
+	<div class="fieldUnit">
+		<p class="fieldName">組織体系コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_orgfuncID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">組織階層コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_orglevelID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">組織コード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_orgID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">カラーコード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_colorID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+		<p class="fieldName">カラー</p>
+		<div class="fieldBox">
+			<select name="info" id="ca_colorID2" class="mbn wt280"></select>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">サイズーコード(O)</p>
+		<div class="fieldBox">
+			<input id="ca_sizeID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">POオプショングループ</p>
+		<div class="fieldBox">
+			<input id="ca_pooptgrpID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">メニュー選択グループ</p>
+		<div class="fieldBox">
+			<input id="ca_menuID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">セットアップ</p>
+		<div class="fieldBox">
+			<input id="ca_setupID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">権限</p>
+		<div class="fieldBox">
+			<input id="ca_roleID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">画面名</p>
+		<div class="fieldBox">
+			<input id="ca_funcID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">社員コード</p>
+		<div class="fieldBox">
+			<input id="ca_staffID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+
+	<div class="fieldUnit">
+		<p class="fieldName">年月</p>
+		<div class="fieldBox">
+			<input id="ca_yearmonthID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">年週</p>
+		<div class="fieldBox">
+			<input id="ca_yearweekID" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+    <hr/>
+	<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+		<p class="fieldName">サイズグループ</p>
+		<div class="fieldBox">
+			<select name="info" id="ca_sizegrpID" class="mbn wt280"></select>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">サイズパターン</p>
+		<div class="fieldBox">
+			<input id="ca_sizeptn" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">サイズ(sizeptnID)</p>
+		<div class="fieldBox">
+			<input id="ca_size2" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">都道府県</p>
+		<div class="fieldBox">
+			<input id="ca_pref" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+
+	<div class="fieldUnit">
+		<p class="fieldName">商品属性項目定義検索</p>
+		<div class="fieldBox">
+			<input id="ca_iagfunc" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+    <hr/>
+	<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
+		<p class="fieldName">商品属性項目定義検索</p>
+		<div class="fieldBox">
+			<select name="info" id="ca_iagfunc2" class="mbn wt280"></select>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="fieldUnit">
+		<p class="fieldName">ユーザー定義オートコンプリート</p>
+		<div class="fieldBox">
+			<input id="ca_ac1" type="text" class="form-control wt280 flleft">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+
+    <input type="text" class="form-control"/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>

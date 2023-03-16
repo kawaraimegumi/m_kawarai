@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <title></title>
+  </head>
+  <body>
+    <h1>分析サンプル一覧</h1>
+    <ul>
+      <li>
+        <a href="md01.html">MD画面</a>
+      </li>
+      <li>
+        <a href="pl01.html">PL画面</a>
+      </li>
+      <li>
+        <a href="selectStore.html">分析項目選択画面(店舗単位分析)</a>
+      </li>
+      <li>
+        <a href="selectStore.html">分析項目選択画面(商品単位分析)</a>
+      </li>
+    </ul>
+    <h1>各種分析結果</h1>
+    <ul>
+      <li>
+        <a href="grid_1.html">MD 一軸</a>
+      </li>
+      <li>
+        <a href="grid_2.html">
+          MD 二軸
+        </a>
+      </li>
+      <li>
+        <a href="grid_3.html">
+          MD 三軸
+        </a>
+      </li>
+      <li>
+        <a href="grid_3_a.html">
+          MD 三軸 累積値表示
+        </a>
+      </li>
+      <li>
+        <a href="pl_grid_1.html">
+          PL 期間毎 月指定
+        </a>
+      </li>
+      <li>
+        <a href="pl_grid_2.html">
+          PL 期間毎 月範囲指定
+        </a>
+      </li>
+      <li>
+        <a href="pl_grid_3.html">
+          PL 組織毎(複数)
+        </a>
+      </li>
+      <li>
+        <a href="pl_grid_4.html">
+          PL 組織毎
+        </a>
+      </li>
+    </ul>
+  </body>
+</html>

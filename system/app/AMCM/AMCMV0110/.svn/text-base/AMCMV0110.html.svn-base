@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+		<title>共通</title>
+
+		<!-- Loading Bootstrap -->
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+		<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+		<script type="text/javascript" src="../../../../js/jquery.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+		<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+		<link media="screen" rel="stylesheet" type="text/css" href="AMCMV0110.css">
+
+		<script src="../../../js/function.js"></script>
+
+		<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+		<script src="../../../js/bootstrap.min.js"></script>
+		<script src="../../../js/bootstrap-select.js"></script>
+		<script src="../../../js/bootstrap-switch.js"></script>
+		<script src="../../../js/flatui-checkbox.js"></script>
+		<script src="../../../js/flatui-radio.js"></script>
+		<script src="../../../js/jquery.tagsinput.js"></script>
+		<script src="../../../js/jquery.placeholder.js"></script>
+		<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+		<script src="../../../js/application.js"></script>
+		<script src="../../../js/jquery.skOuterClick.js"></script>
+		<script src="../../../../js/jquery.contextmenu.js"></script>
+
+		<script src="../../../../js/jquery.ui.datepicker.js"></script>
+		<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+		<script type="text/javascript"
+		src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+		<script src="../../../../js/jquery.blockUI.js"></script>
+		<script type="text/javascript" src="../../../../js/underscore.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.js"></script>
+		<script type="text/javascript" src="../../../../js/json2.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+		<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+		<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+		<script src="../../../js/clcom.js"></script>
+		<script src="AMCMV0110.js"></script>
+	</head>
+
+	<body class="cl_body_hidden">
+		<div id="ca_main">
+			<div id="container">
+				<div id="mainColumn">
+					<div id="mainColumninBox" class="noLeftColumn">
+
+						<div id="content">
+							<div class="fieldgroup">
+								<div id="ca_searchArea" class="fieldgroupInBox search">
+									<div class="fieldUnit mrgb10 flleft half">
+										<p class="fieldName">状態</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt280 selectpicker" id="ca_srchProcState">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft half">
+										<p class="fieldName">アラーム種別</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt280 selectpicker" id="ca_alarmKind">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 flleft mrgr20 required">
+										<p class="fieldName">期限</p>
+										<div class="fieldBox">
+											<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_fromLimitDate"/></div>
+											<p class="txtInFieldUnit pdg flleft">〜</p>
+											<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_toLimitDate"/></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 flleft">
+										<div class="fieldBox noName flleft">
+											<label class="checkbox ib" for="check1"><input type="checkbox" value="" id="ca_showAllFlag" data-toggle="checkbox">期限切れアラームも表示</label>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit">
+										<div class="fieldBox mrgt20 noName btnCenter">
+											<button id="ca_srch" class="btn btn-info wt280">
+												検索
+											</button>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+								<button id="searchAgain" class="dispn btn">
+									検索条件を再指定
+								</button>
+							</div>
+
+							<div id="ca_result" class="dispn">
+
+								<div class="pagination-wrapper">
+								</div>
+
+								<div class="table">
+									<table class="hilightRow" id="ca_table">
+										<thead>
+											<tr>
+												<th width="100px">期限</th>
+												<th width="190px">タイトル</th>
+												<th width="540px">内容</th>
+												<th width="60px">添付</th><!-- MD-1355 2018/05/14 ADD -->
+												<th colspan="2" width="200px">発信元</th>
+												<th width="150px">ボタン</th>
+												<th width="100px">状態</th>
+											</tr>
+										</thead>
+										<tbody id="ca_table_tbody"></tbody>
+									</table>
+								</div>
+
+								<div class="pagination-wrapper">
+								</div>
+
+							</div>
+
+						</div>
+						<!-- /#content -->
+					</div>
+					<!-- /#mainColumninBox -->
+				</div>
+				<!-- /#mainColumn -->
+			</div><!-- / #container -->
+			<script id="ca_tbody_template" type="text/template">
+				<tr class="contextmenu <% if(procStatus == amcm_type.AMCM_VAL_MSG_PROC_TYPE_NOT_PROCESS){ if((limitDate - ca_listView.today) < 0){ %>errorCell<% } else if((limitDate - ca_listView.alartday) < 0 ){ %>alertCell<% }} %>" name="ca_table_tr" data-msgID="<%- msgID %>" data-seqNo="<%- seqNo %>">
+				<td><%- clutil.dateFormat(limitDate, "yyyy/mm/dd(w)") %></td>
+				<td><p><%- alarmTitle %></p></td>
+				<td class="ca_detail_td">
+                    <% if(noticeDate >= ca_listView.today){ %>
+                    <span class="icn-new" style="margin-top:6px;">NEW</span>
+                    <% } %>
+                    <p style="margin-top:5px;" class="flleft<% if(noticeDate >= ca_listView.today){ %> p-new<% } %>">
+                        <a href="javascript:void(0)"><%- alarmDetail %></a>
+                        <span class="txtInFieldUnit help ca_help_in_line" title="<%- compCond %>"><span>?</span></span>
+                    </p>
+				</td>
+				<!-- MD-1355 2018/05/14 ADD START -->
+				<td>
+					<% if(typeof filepath !== "undefined"){ %>
+						<% if(filepath != ""){ %>
+							<a href="<%- filepath %>"><img src="../../../images/icn_attachment_ie.png"></a>
+						<% } else { %>
+							<span></span>
+	                    <% } %>
+					<% } %>
+				</td>
+				<!-- MD-1355 2018/05/14 ADD END -->
+                </td><!--表示設定必要-->
+				<td><%- srcOrg %></td>
+				<td><%- srcUser %></td>
+				<td class="ca_btn_td"><% if(procStatus == amcm_type.AMCM_VAL_MSG_PROC_TYPE_NOT_PROCESS){ _.each(buttonList, function(i){ %><p><button type="button" class="btn btn-info ca_btn_inTable" data-acttypeid="<%- i.actTypeID %>" data-confirmflag="<%- i.confirmFlag %>"><% if(i.buttonName){ %><%- i.buttonName %><% }else{ %>?<%}%></button></p><% }) }%></td>
+				<td><%- clutil.gettypename(amcm_type.AMCM_TYPE_MSG_PROC_TYPE, procStatus, 1) %></td>
+				</tr>
+			</script>
+			<div class="clear"></div>
+
+		</div>
+	</body>
+</html>

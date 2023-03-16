@@ -1,0 +1,30 @@
+<div id="ca_CACMV0360_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>商品指定</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div class="fieldgroup" id="ca_CACMV0360_searchArea">
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACMV0360_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0360_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div>

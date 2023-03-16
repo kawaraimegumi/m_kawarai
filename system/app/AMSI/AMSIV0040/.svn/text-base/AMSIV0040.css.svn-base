@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+.boxLink {
+    cursor:pointer;
+    font-size: 82%;
+}
+
+.table thead > tr > th.sz002-feature,
+.table tbody > tr > th.sz002-feature,
+.table tfoot > tr > th.sz002-feature {
+  background: #868f9c;
+}
+
+.table thead > tr > td.sz002-feature,
+.table tbody > tr > td.sz002-feature,
+.table tfoot > tr > td.sz002-feature {
+  background: #bfe3f8;
+}
+
+.dialog-content {
+    padding: 20px;
+}

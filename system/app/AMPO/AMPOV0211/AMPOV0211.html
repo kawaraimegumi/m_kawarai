@@ -1,0 +1,1232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0211.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css'
+	href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+
+	<div id="ca_main">
+		<script src="AMPOV0211.js"></script>
+
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup" id="ca_base_form">
+							<div id="ssetaddr" class="fieldgroupInBox setaddr">
+								<input type="hidden" id="ca_recno"> <input type="hidden"
+									id="ca_state"> <input type="hidden" id="ca_id">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox ca_unitID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="unitID" id="ca_unitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- ＰＯ種別 -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox ca_poTypeID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="poTypeID" id="ca_poTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- オプショングループコード -->
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName bl2">オプショングループコード</p>
+									<div class="fieldBox">
+										<input type="text" placeholder=""
+											class="form-control wt520 ime-active cl_valid cl_required"
+											id="ca_code" name="code" data-limit="len:20" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName bl2">
+										オプション<br>グループ名称
+									</p>
+									<div class="fieldBox">
+										<input type="text" placeholder=""
+											class="form-control wt520 ime-active cl_valid cl_required"
+											id="ca_name" name="name" data-limit="len:20" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">適用開始日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_fromDate_div">
+											<input type="text" id="ca_fromDate" name="fromDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-limit="len:13" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">適用終了日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_toDate_div">
+											<input type="text" id="ca_toDate" name="toDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-limit="len:13" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20">
+									<p class="fieldName">発注停止日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_ordStopDate_div">
+											<input type="text" id="ca_ordStopDate" name="ordStopDate"
+												class="cl_date cl_valid  ime-disabled"
+												data-limit="len:13" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+
+
+					<div id="ca_result">
+
+						<div class="fieldgroup" id="ca_table_form1">
+							<p class="gtitle" id="gtitle_1">フィールド1</p>
+							<div class="fieldgroupInBox">
+								<div class="fieldgroup" id="ca_table_div101">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label101">ラベル101</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table101">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody101">
+												</tbody>
+												<tfoot id="ca_table_tfoot101">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div102">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label102">ラベル102</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table102">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody102">
+												</tbody>
+												<tfoot id="ca_table_tfoot102">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div103">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label103">ラベル103</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table103">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody103">
+												</tbody>
+												<tfoot id="ca_table_tfoot103">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div104">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label104">ラベル104</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table104">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody104">
+												</tbody>
+												<tfoot id="ca_table_tfoot104">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div105">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label105">ラベル105</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table105">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody105">
+												</tbody>
+												<tfoot id="ca_table_tfoot105">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div106">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label106">ラベル106</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table106">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody106">
+												</tbody>
+												<tfoot id="ca_table_tfoot106">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div107">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label107">ラベル107</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table107">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody107">
+												</tbody>
+												<tfoot id="ca_table_tfoot107">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div108">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label108">ラベル108</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table108">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody108">
+												</tbody>
+												<tfoot id="ca_table_tfoot108">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="fieldgroup" id="ca_table_form2">
+							<p class="gtitle" id="gtitle_2">フィールド2</p>
+							<div class="fieldgroupInBox">
+								<div class="fieldgroup" id="ca_table_div201">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label201">ラベル201</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table201">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody201">
+												</tbody>
+												<tfoot id="ca_table_tfoot201">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div202">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label202">ラベル202</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table202">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody202">
+												</tbody>
+												<tfoot id="ca_table_tfoot202">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div203">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label203">ラベル203</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table203">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody203">
+												</tbody>
+												<tfoot id="ca_table_tfoot203">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div204">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label204">ラベル204</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table204">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody204">
+												</tbody>
+												<tfoot id="ca_table_tfoot204">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div205">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label205">ラベル205</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table205">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody205">
+												</tbody>
+												<tfoot id="ca_table_tfoot205">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="fieldgroup" id="ca_table_form3">
+							<p class="gtitle" id="gtitle_3">フィールド3</p>
+							<div class="fieldgroupInBox">
+								<div class="fieldgroup" id="ca_table_div301">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label301">ラベル301</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table301">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody301">
+												</tbody>
+												<tfoot id="ca_table_tfoot301">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div302">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label302">ラベル302</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table302">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody302">
+												</tbody>
+												<tfoot id="ca_table_tfoot302">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="fieldgroup" id="ca_table_form4">
+							<p class="gtitle" id="gtitle_4">フィールド4</p>
+							<div class="fieldgroupInBox">
+								<div class="fieldgroup" id="ca_table_div401">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label401">ラベル401</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table401">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody401">
+												</tbody>
+												<tfoot id="ca_table_tfoot401">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div402">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label402">ラベル402</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table402">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody402">
+												</tbody>
+												<tfoot id="ca_table_tfoot402">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div403">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label403">ラベル403</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table403">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">費用区分</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody403">
+												</tbody>
+												<tfoot id="ca_table_tfoot403">
+													<tr class="addRow">
+														<td colspan="6"><span class="btn-add"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="fieldgroup" id="ca_table_form5">
+							<p class="gtitle" id="gtitle_5">フィールド5</p>
+							<div class="fieldgroupInBox">
+								<div class="fieldgroup" id="ca_table_div501">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label501">ラベル501</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table501">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody501">
+												</tbody>
+												<tfoot id="ca_table_tfoot501">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div502">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label502">ラベル502</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table502">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody502">
+												</tbody>
+												<tfoot id="ca_table_tfoot502">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div503">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label503">ラベル503</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table503">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody503">
+												</tbody>
+												<tfoot id="ca_table_tfoot503">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div504">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label504">ラベル504</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table504">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody504">
+												</tbody>
+												<tfoot id="ca_table_tfoot504">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div505">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label505">ラベル505</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table505">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody505">
+												</tbody>
+												<tfoot id="ca_table_tfoot505">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div506">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label506">ラベル506</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table506">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody506">
+												</tbody>
+												<tfoot id="ca_table_tfoot506">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div507">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label507">ラベル507</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table507">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody507">
+												</tbody>
+												<tfoot id="ca_table_tfoot507">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div508">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label508">ラベル508</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table508">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody508">
+												</tbody>
+												<tfoot id="ca_table_tfoot508">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div509">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label509">ラベル509</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table509">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody509">
+												</tbody>
+												<tfoot id="ca_table_tfoot509">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div510">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label510">ラベル510</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table510">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody510">
+												</tbody>
+												<tfoot id="ca_table_tfoot510">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div511">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label511">ラベル511</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table511">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody511">
+												</tbody>
+												<tfoot id="ca_table_tfoot511">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div512">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label512">ラベル512</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table512">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody512">
+												</tbody>
+												<tfoot id="ca_table_tfoot512">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div513">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label513">ラベル513</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table513">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody513">
+												</tbody>
+												<tfoot id="ca_table_tfoot513">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div514">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label514">ラベル514</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table514">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody514">
+												</tbody>
+												<tfoot id="ca_table_tfoot514">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div515">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label515">ラベル515</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table515">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody515">
+												</tbody>
+												<tfoot id="ca_table_tfoot515">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldgroup" id="ca_table_div516">
+									<div class="fieldUnit mrgb10 wid140 flleft ">
+										<p class="fieldName nameLong" id="label516">ラベル516</p>
+										<div class="fieldBox nameLong"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+										<div class="table">
+											<table class="hilight drilldown" id="ca_table516">
+												<thead>
+													<tr>
+														<th>内容</th>
+														<th>オプション品番</th>
+														<th class="costHead">料金（税込）(円)</th>
+
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody516">
+												</tbody>
+												<tfoot id="ca_table_tfoot516">
+												</tfoot>
+											</table>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<!-- /#content -->
+				<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+				<!-- /#mainColumnFooter -->
+
+			</div>
+			<!-- /#mainColumninBox -->
+		</div>
+		<!-- /#mainColumn -->
+
+
+		<script id="ca_tbody_template1" type="text/x-jquery-tmpl">
+				<tr class="deletable addRow" name="ca_table_tr1" >
+					<td class="editable pdg0">
+						<input name="comment" class="form-control cl_valid wt400" type="text" cs_id="${comment}"  data-limit="len:30" value="${comment}">
+					</td>
+					<td class="editable pdg0">
+						<input name="optHinban" class="form-control cl_valid wt140" type="text" cs_id="${optHinban}"  data-limit="len:8" value="${optHinban}">
+						<input type="hidden" name="seq" value="$seq}" cs_id="${seq}">
+						<input type="hidden" name="poOptTypeID" value="${poOptTypeID}" cs_id="${poOptTypeID}">
+					</td>
+					<td class="editable pdg0 ca_costTypeID_div">
+						<select name="costTypeID" cs_id="${costTypeID}"  class="mvn wt140 cl_valid ">
+						</select>
+					</td>
+					<td><span class="btn-delete flright"></span></td>
+				</tr>
+			</script>
+		<script id="ca_tbody_template2" type="text/x-jquery-tmpl">
+				<tr class="deletable addRow" name="ca_table_tr2" >
+					<td class="editable pdg0">
+						<input name="comment" class="form-control cl_valid wt400" type="text" cs_id="${comment}"  data-limit="len:30" value="${comment}">
+					</td>
+					<td class="editable pdg0">
+						<input name="optHinban" class="form-control cl_valid wt140" type="text" cs_id="${optHinban}"  data-limit="len:8" value="${optHinban}">
+						<input type="hidden" name="seq" value="$seq}" cs_id="${seq}">
+						<input type="hidden" name="poOptTypeID" value="${poOptTypeID}" cs_id="${poOptTypeID}">
+					</td>
+					<td class="editable pdg0">
+						<input name="cost" class="txtar form-control cl_valid wt140" type="text" cs_id="${cost}"  data-limit="len:9 digit" value="${cost}" data-filter="comma">
+					</td>
+					<td><span class="btn-delete flright"></span></td>
+				</tr>
+			</script>
+		<div class="clear"></div>
+	</div>
+	<!-- / #container -->
+	</div>
+</body>
+</html>

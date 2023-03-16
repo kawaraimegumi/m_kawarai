@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+<!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+    <meta charset="UTF-8">
+    <title>損益計算書検索</title>
+
+    <link rel="stylesheet" href="../../../css/jquery-ui.css">
+    <link rel="stylesheet" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+      .echoArea {
+      height: 200px;
+      overflow: auto;
+      }
+
+.table tr.opened td, .table tr.closed td {
+cursor: pointer;
+}
+tr.l2 i.icon-minus,
+tr.l2 i.icon-plus {
+display: none;
+}
+.table tr.closed td > i.icon-minus,
+.table tr.opened td > i.icon-plus {
+display: none;
+}
+
+.table tr.closed td > i.icon-plus,
+.table tr.opened td > i.icon-minus {
+display: show;
+}
+
+.table tr.l2 td {
+padding-left: 30px;
+}
+.table tr.l3 td {
+padding-left: 60px;
+}
+.table thead tr th.yLabel {
+width: 150px;
+}
+
+#footer1 thead tr th,
+#table1 thead tr th {
+width: 150px;
+}
+
+#footer1 tbody tr td,
+#table1 tbody tr td {
+width: 150px;
+}
+
+#table1, #footer1 {
+table-layout: fixed;
+}
+
+.table td.align-right {
+text-align: right;
+}
+    </style>
+    <script src="../../../js/jquery.js"></script>
+    <script src="../../../js/jquery-ui.js"></script>
+    <script src="../../../js/underscore.js"></script>
+    <script src="../../../js/backbone.js"></script>
+    <script src="../../../js/bootstrap.js"></script>
+    <script src="../../../js/jquery.tablefix_1.0.0.js"></script>
+    <script src="../../js/clcom.js"></script>
+    <script>
+var data = [
+  {id: 'p1', level: 1, label: '売上高', hasChild: true},
+  {label: '店舗売上', level: 2, parent: 'p1'},
+  {label: '掛売上', level: 2, parent: 'p1'},
+  {label: 'ＦＣ事業売上', level: 2, parent: 'p1'},
+  {label: '内部売上', level: 2, parent: 'p1'},
+  {label: '売上値引戻高', level: 2, parent: 'p1'},
+
+  {id: 'p2', level: 1, label: '売上原価', hasChild: true},
+  {parent: 'p2', label: '期首棚卸高', level: 2},
+  {parent: 'p2', label: '仕入高', level: 2},
+  {parent: 'p2', label: 'ＦＣ仕入高', level: 2},
+  {parent: 'p2', label: '期末棚卸高', level: 2},
+
+  {id: 'p3', level: 1, label: '委託外注/原価費用', hasChild: true},
+  {parent: 'p3', label: '食材運用費', level: 2},
+  {parent: 'p3', label: '委託外注費', level: 2},
+  {parent: 'p3', label: '他勘定振替高', level: 2},
+  {parent: 'p3', label: '仕入割戻高', level: 2},
+
+  {id: 'p4', level: 1, label: '売上総利益', hasChild: false},
+
+  {id: 'p5', level: 1, label: '販売一般管理費', hasChild: true},
+  {parent: 'p5', label: '人件費', level: 2},
+  {parent: 'p5', label: '消耗品費', level: 2},
+  {parent: 'p5', label: '水光熱費', level: 2},
+  {parent: 'p5', label: 'その他経費', level: 2},
+
+  {id: 'p6', level: 1, label: '営業利益'},
+
+  {id: 'p7', level: 1, label: '営業外収益', hasChild: true},
+  {parent: 'p7', label: '受取利息', level: 2},
+  {parent: 'p7', label: '有価証券利息', level: 2},
+  {parent: 'p7', label: '受取配当金', level: 2},
+  {parent: 'p7', label: '受取手数料', level: 2},
+  {parent: 'p7', label: '現金過不足', level: 2},
+  {parent: 'p7', label: '雑収入', level: 2},
+
+  {id: 'p8', level: 1, label: '営業外費用', hasChild: true},
+  {parent: 'p8', label: '支払利息', level: 2},
+  {parent: 'p8', label: 'その他営業外費用', level: 2},
+  {parent: 'p8', label: '現金過不足', level: 2},
+  {parent: 'p8', label: '雑損失', level: 2},
+
+  {id: 'p9', level: 1, label: '経常利益'}
+];
+
+var xLabels = [
+  '一番カルビ品川',
+  '一番カルビ田町',
+  '一番カルビ浜松町',
+  '一番カルビ新橋',
+  '一番カルビ有楽町',
+  '一番カルビ東京',
+  '一番カルビ神田',
+  '一番カルビ秋葉原',
+  '一番カルビ御徒町',
+  '一番カルビ上野',
+  '一番カルビ鶯谷',
+  '一番カルビ日暮里',
+  '一番カルビ西日暮里',
+  '一番カルビ田端',
+  '一番カルビ駒込',
+  '一番カルビ巣鴨',
+  '一番カルビ大塚',
+  '一番カルビ池袋',
+  '一番カルビ目白',
+  '一番カルビ高田馬場',
+  '一番カルビ新大久保',
+  '一番カルビ新宿',
+  '一番カルビ代々木',
+  '一番カルビ原宿',
+  '一番カルビ渋谷',
+  '一番カルビ恵比寿',
+  '一番カルビ目黒',
+  '一番カルビ五反田',
+  '一番カルビ大崎'
+];
+
+var footers = [
+  '客数',
+  '客単価',
+  '値引前売上',
+  '値引率'
+];
+
+$(function () {
+  var $table = $('#table1'),
+      $thead = $table.find('thead'),
+      $theadRow = $('<tr>').appendTo($thead);
+
+  $theadRow.append('<th class=""></th>');
+
+  _.each(xLabels, function (label)  {
+    $theadRow.append('<th class="">' + label + '</th>');
+  });
+
+  var template = _.template('<td class="l<%= level %>"><%= label %></td>');
+  var $tbody = $table.find('tbody');
+  var parent;
+  _.each(data, function (item) {
+    var $tr = $('<tr>').appendTo($tbody);
+    $tr.addClass('l' + item.level);
+    if (item.id) {
+      $tr.attr('data-id', item.id);
+    }
+    if (item.parent) {
+      $tr.attr('data-parent', item.parent);
+    }
+    if (item.hasChild) {
+      $tr.addClass('parent');
+    }
+    var $td = $(template(item)).appendTo($tr);
+    if (item.hasChild) {
+      $td.prepend('<i class="icon-plus"></i><i class="icon-minus"></i>');
+    }
+    _.each(xLabels, function () {
+      $('<td class="align-right">9,999,999</td>').appendTo($tr);
+    });
+  });
+
+  $('tr.parent').addClass('closed');
+  $('tr.closed td.l1').live('click', function () {
+    $(this).parent().removeClass('closed').addClass('opened');
+    $('[data-parent="' + $(this).parent().attr('data-id') + '"]').show();
+  });
+  $('tr.opened td.l1').live('click', function () {
+    $(this).parent().addClass('closed').removeClass('opened');
+    $('[data-parent="' + $(this).parent().attr('data-id') + '"]').hide();
+  });
+
+  $('tbody tr[data-parent]').hide();
+
+  _.each(footers, function (x) {
+    var $tr = $('<tr>').appendTo($('#footer1').find('tbody'));
+    $('<td>' + x + '</td>').appendTo($tr);
+    _.each([1,2,3,4,5], function () {
+      $('<td>999,999,999</td>').appendTo($tr);
+    });
+  });
+
+  $('#table1').tablefix({
+    height: 270,
+    fixRows: 1,
+    fixCols: 1,
+    width: $('#table1').parent().width()
+  });
+
+        new HeaderView();
+        new FooterView();
+
+
+            $('.term-selector').live('change', function () {
+            var x = $(':selected', this).index();
+            console.log(x);
+            $(this).parents('div').find('span').addClass('hide');
+            $(this).parents('div').find('span').eq(x).removeClass('hide');
+            });
+            $('.term-selector').parent('div').find('span:not(:eq(0))').addClass('hide');
+
+        // 右のエコーエリア
+        $('[data-togglex]').live('click', function () {
+        console.log(this);
+        var $this = $(this);
+        var klass = $this.attr('data-togglex');
+        var target = $this.attr('data-targetx');
+        var parent = $this.attr('data-parent');
+        var $parent;
+        if (parent) {
+        $parent = $this.parents(parent);
+        }
+        if ($parent) {
+        $parent.filter(target).toggleClass(klass);
+        $parent.find(target).toggleClass(klass);
+        } else {
+        $(target).toggleClass(klass);
+        }
+        });
+
+});
+    </script>
+  </head>
+  <body>
+    <div id="cl_header"></div>
+
+    <div class="container">
+      <div class="span12">
+	<button class="btn btn-mini" type="button">HOMEへ戻る</button>
+      </div>
+      <h3 class="pageTitle">損益計算書検索</h3>
+
+      <div class="row-fluid">
+        <div class="span7 accordion-group">
+          <div class="accordion-heading">
+            <div class="accordion-toggle">
+              <form id="form1" class="form-horizontal label100">
+                <fieldset>
+                  <div class="control-group">
+                    <label class="control-label">期間条件</label>
+                    <div class="controls">
+                      <select class="term-selector input-medium">
+                        <option value="x-1">日指定</option>
+                        <option value="x-2">日期間指定</option>
+                        <option value="x-3">週指定</option>
+                        <option value="x-4">週期間指定</option>
+                        <option value="x-5">月指定</option>
+                        <option value="x-6">月期間指定</option>
+                        <option value="x-7">四半期指定</option>
+                        <option value="x-8">四半期期間指定</option>
+                        <option value="x-9">年指定</option>
+                        <option value="x-10">年期間指定</option>
+                        <option value="x-11">年度指定</option>
+                        <option value="x-12">年度期間指定</option>
+                      </select>
+                      <span class="form-inline"> <!-- 1 -->
+                        <input type="text" name="" class="input-small" value="20120808" >
+                      </span>
+                      <span class="form-inline"> <!-- 2 -->
+                        <input type="text" name="" class="input-small" value="20120808" >
+                        〜
+                        <input type="text" name="" class="input-small" value="20131008" >
+                        <br/>
+                        曜日指定:
+                        <select class="input-mini">
+                          <option>日</option>
+                          <option selected>月</option>
+                          <option>火</option>
+                          <option>水</option>
+                          <option>木</option>
+                          <option>金</option>
+                          <option>土</option>
+                        </select>
+
+                        <label class="checkbox inline">
+                          <input type="checkbox" name="" checked>休日
+                        </label>
+                        時間帯:
+                        <input type="text" name="" class="input-mini" value="1000" >
+                        〜
+                        <input type="text" name="" class="input-mini" value="2000" >
+                      </span>
+                      <span class="form-inline"> <!-- 3 -->
+                        <input type="text" name="" class="input-small" value="201201" >
+                      </span>
+                      <span class="form-inline"> <!-- 4 -->
+                        <input type="text" name="" class="input-small" value="201201" >
+                        〜
+                        <input type="text" name="" class="input-small" value="201302" >
+                        <br/>
+                        曜日指定:
+                        <select class="input-mini">
+                          <option>日</option>
+                          <option selected>月</option>
+                          <option>火</option>
+                          <option>水</option>
+                          <option>木</option>
+                          <option>金</option>
+                          <option>土</option>
+                        </select>
+
+                        <label class="checkbox inline">
+                          <input type="checkbox" name="" checked>休日
+                        </label>
+                        時間帯:
+                        <input type="text" name="" class="input-mini" value="1000" >
+                        〜
+                        <input type="text" name="" class="input-mini" value="2000" >
+                      </span>
+                      <span class="form-inline"> <!-- 5 -->
+                        <input type="text" name="" class="input-small" value="201302" >
+                        <br/>
+                        曜日指定:
+                        <select class="input-mini">
+                          <option>日</option>
+                          <option selected>月</option>
+                          <option>火</option>
+                          <option>水</option>
+                          <option>木</option>
+                          <option>金</option>
+                          <option>土</option>
+                        </select>
+
+                        <label class="checkbox inline">
+                          <input type="checkbox" name="" checked>休日
+                        </label>
+                        時間帯:
+                        <input type="text" name="" class="input-mini" value="1000" >
+                        〜
+                        <input type="text" name="" class="input-mini" value="2000" >
+
+                      </span>
+                      <span class="form-inline"> <!-- 6 -->
+                        <input type="text" name="" class="input-small" value="201201" >
+                        〜
+                        <input type="text" name="" class="input-small" value="201302" >
+                        <br/>
+                        曜日指定:
+                        <select class="input-mini">
+                          <option>日</option>
+                          <option selected>月</option>
+                          <option>火</option>
+                          <option>水</option>
+                          <option>木</option>
+                          <option>金</option>
+                          <option>土</option>
+                        </select>
+
+                        <label class="checkbox inline">
+                          <input type="checkbox" name="" checked>休日
+                        </label>
+                        時間帯:
+                        <input type="text" name="" class="input-mini" value="1000" >
+                        〜
+                        <input type="text" name="" class="input-mini" value="2000" >
+
+                      </span>
+
+                      <span class="form-inline"> <!-- 7 -->
+                        <input type="text" name="" class="input-small" value="20132" >
+                      </span>
+                      <span class="form-inline"> <!-- 8 -->
+                        <input type="text" name="" class="input-small" value="20121" >
+                        〜
+                        <input type="text" name="" class="input-small" value="20132" >
+                      </span>
+                      <span class="form-inline"> <!-- 9 -->
+                        <input type="text" name="" class="input-small" value="201302" >
+                      </span>
+                      <span class="form-inline"> <!-- 10 -->
+                        <input type="text" name="" class="input-small" value="2012" >
+                        〜
+                        <input type="text" name="" class="input-small" value="2013" >
+                      </span>
+
+                      <span class="form-inline"> <!-- 11 -->
+                        <input type="text" name="" class="input-small" value="2013" >
+                      </span>
+                      <span class="form-inline"> <!-- 12 -->
+                        <input type="text" name="" class="input-small" value="2012" >
+                        〜
+                        <input type="text" name="" class="input-small" value="2013" >
+                      </span>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">組織条件</label>
+                    <div class="controls">
+                      <select class="input-medium">
+                        <option>店舗群択一</option>
+                        <option>店舗群複数</option>
+                        <option>店舗択一</option>
+                        <option selected>店舗複数</option>
+                      </select>
+                      <a href="../../app/design/cm340.html" class="btn btn-mini">選択</a>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">表示条件</label>
+                    <div class="controls">
+                      <select>
+                        <option>組織毎</option>
+                        <option>組織集計</option>
+                        <option>期間毎</option>
+                        <option>期間集計</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">対象</label>
+                    <div class="controls">
+                      <select>
+                        <option>確定データ</option>
+                        <option>確定データ(水高熱除く)</option>
+                        <option>速報データ</option>
+                        <option>予算+速報データ</option>
+                        <option>予算データ</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="controls">
+                      <button class="btn pull-right" type="button">検索</button>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="span5">
+          <div class="echoArea">
+            <table style="table-layout: auto;" class="table xtable-bordered xtable-striped table-condensed">
+              <thead>
+                <tr>
+                  <th style="xwidth: 60px;">
+                    種別
+                  </th>
+                  <!-- <th style="width: 60px;"> -->
+                  <!--   区分 -->
+                  <!-- </th> -->
+                  <th style="width: 290px;">
+                    設定内容
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a data-togglex="hide" data-parent="tr" data-targetx="[data-toggle-target]" href="#" data-cl-nopush>店舗</a>
+                  </td>
+                  <!-- <td> -->
+                  <!--   店舗 -->
+                  <!-- </td> -->
+                  <td data-toggle-target colspan="2">
+                    <button class="btn btn-mini pull-right" data-togglex="hide" data-parent="tr" data-targetx="[data-toggle-target]" type="button">開く</button>
+                    <button class="btn btn-mini pull-right" type="button">削除</button>
+
+                    <input class="input-large" style="text-overflow: ellipsis;" type="text" name="" value="一番カルビ高田馬場、一番カルビ新大久保、一番カルビ新宿、一番カルビ代々木、一番カルビ原宿、一番カルビ渋谷、一番カルビ恵比寿、一番カルビ目黒、一番カルビ五反田" readonly>
+                  </td>
+                  <td data-toggle-target class="relative hide" colspan="2">
+                    <button class="btn btn-mini pull-right" data-togglex="hide" data-parent="tr" data-targetx="[data-toggle-target]" type="button">隠す</button>
+
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ高田馬場
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ新大久保
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ新宿
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ代々木
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ原宿
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ渋谷
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ恵比寿
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ目黒
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">一番カルビ五反田
+                    </label>
+                    <button class="btn btn-mini" type="button">削除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a data-togglex="hide" data-parent="tr" data-targetx="[data-toggle-target]" href="#" data-cl-nopush>店舗群</a>
+                  </td>
+                  <!-- <td> -->
+                  <!--   店舗 -->
+                  <!-- </td> -->
+                  <td data-toggle-target colspan="2">
+                    <button class="btn btn-mini pull-right" data-togglex="hide" data-parent="tr" data-targetx="[data-toggle-target]" type="button">開く</button>
+                    <button class="btn btn-mini pull-right" type="button">削除</button>
+
+                    <input class="input-large" style="text-overflow: ellipsis;" type="text" name="" value="店舗群1、店舗群2、店舗群3" readonly>
+                  </td>
+                  <td data-toggle-target class="relative hide" colspan="2">
+                    <button class="btn btn-mini pull-right" data-togglex="hide" data-parent="tr" data-targetx="[data-toggle-target]" type="button">隠す</button>
+
+                    <label class="checkbox">
+                      <input type="checkbox">店舗群1
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">店舗群2
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox">店舗群3
+                    </label>
+                    <button class="btn btn-mini" type="button">削除</button>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <!-- <div class="echoArea"> -->
+          <!--   <div class="accordion"> -->
+          <!--     <div class="accordion-group"> -->
+          <!--       <div class="accordion-heading"> -->
+          <!--         <span class="accordion-toggle" data-toggle="collapse" data-target="#collapseOne"> -->
+          <!--           店舗条件 -->
+          <!--         </span> -->
+          <!--       </div> -->
+          <!--       <div id="collapseOne" class="accordion-body collapse in"> -->
+          <!--         <div class="accordion-inner"> -->
+          <!--           <label class="checkbox"> -->
+          <!--             <input type="checkbox" name="check1" checked>一番カルビ五反田 -->
+          <!--           </label> -->
+          <!--           <label class="checkbox"> -->
+          <!--             <input type="checkbox" name="check2" >一番カルビ大崎 -->
+          <!--           </label> -->
+          <!--           <label class="checkbox"> -->
+          <!--             <input type="checkbox" name="check3">一番カルビ品川 -->
+          <!--           </label> -->
+          <!--           <label class="checkbox"> -->
+          <!--             <input type="checkbox" name="check4">一番カルビ田町 -->
+          <!--           </label> -->
+          <!--           <div class="btn-group pull-right"> -->
+          <!--             <button class="btn" type="button">削除</button> -->
+          <!--             <\!-- <button class="btn" type="button">確定</button> -\-> -->
+          <!--           </div> -->
+          <!--         </div> -->
+          <!--       </div> -->
+          <!--     </div> -->
+          <!--   </div> -->
+          <!-- </div> -->
+
+
+        </div>
+      </div> <!-- .row-fluid -->
+
+      <hr/>
+      <div class="row-fluid">
+        <div class="span12">
+          <table id="table1" class="table table-bordered table-striped">
+            <thead></thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+          <br/>
+          <table id="footer1" style="margin-bottom: 0px;" class="table table-bordered table-striped">
+            <thead></thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+          <div style="width: 780px; overflow-x: scroll; margin-left: 155px; margin-top:0px;">
+            <div style="width: 4500px; height: 1px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

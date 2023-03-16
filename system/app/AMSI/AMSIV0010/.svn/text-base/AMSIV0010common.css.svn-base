@@ -1,0 +1,41 @@
+#container.amsiv-container {
+	min-width: 1200px;
+}
+
+.txt-ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.mrgr220 {
+	margin-right: 220px;
+}
+
+.wt500 {
+	width: 500px;
+}
+
+.wt520 {
+	width: 520px;
+}
+
+.wt540 {
+	width: 540px;
+}
+
+.wt560 {
+	width: 560px;
+}
+
+.wt580 {
+	width: 580px;
+}
+
+
+.stockCount li {
+	cursor: initial;
+}
+.stockCount li .storeName {
+	cursor: pointer;
+}

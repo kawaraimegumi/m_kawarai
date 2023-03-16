@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>demo.AMDS0110</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../../css/slickgrid.css">
+	<script src="../../../js/lib.js"></script>
+	<script src="../../../../js/slickgrid.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../../js/clgrid.js"></script>
+
+	<link rel="stylesheet" href="demo.AMDSV0110.css">
+	<script src="demo.AMDSV0110.data.js"></script>
+	<script src="demo.AMDSV0110.js"></script>
+</head>
+
+<body>
+    <div><button id="save" class="btn" type="button">保存</button></div>
+    <div><button id="valid" class="btn" type="button">バリデーション</button></div>
+    <select id="ca_bodyTypeID">
+        <option value="0">&nbsp;</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <hr/>
+	<!-- データグリッド領域 -->
+	<div class="cl_datagrid_container" id="ca_datagrid" style="height: 750px;"></div>
+
+    <script id="HdrCell" type="text/template">
+        <div class="cell sizeHdr">
+            <div class="grd-tbl">
+                <div style="display: table-row;">
+                    <div class="grd-cell" style="display:table-cell;vertical-align:middle;padding: 0 12px;">
+                        <%= it.label %>
+                    </div>
+                </div>
+                <div style="display: table-row;">
+                    <div class="deleteRow" style="display:table-cell;vertical-align:middle;padding: 0 12px; border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+                        <div style="float: left;"><%- it.value %></div>
+                        <div class="viewAll">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    <script id="StoreFilterView" type="text/template">
+        <div class="sfv <% !it.editMode && print('cell') %>" style="height: 100%;">
+            <div class="grd-tbl">
+                <div style="display: table-row;">
+                    <div style="display:table-cell;vertical-align:middle;">
+                            <div class="parentSelect editable" style="position:relative; height: 30px;">
+                                <% if (!it.editMode){ %>
+                                <%= it.parent %>
+                                <% } %>
+                            </div>
+                    </div>
+                </div>
+                <div style="display: table-row;">
+                    <div  style="display:table-cell;vertical-align:middle;border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+                            <div class="childSelect" style="position:relative; height: 30px;">
+                                <% if (!it.editMode){ %>
+                                <%= it.child %>
+                                <% } %>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </script>
+    <!-- <div class="<% !it.editMode && print('cell') %>"> -->
+    <!--     <div class="parentSelect editable" style="position:relative; height:40px;"> -->
+    <!--     </div> -->
+    <!--     <div class="childSelect editable" style="position:relative;height: 40px;"> -->
+    <!--         <% if (!it.editMode){ %> -->
+    <!--         <%= it.child %> -->
+    <!--         <% } %> -->
+    <!--     </div> -->
+
+    <!-- </div> -->
+    
+    <script id="TotalColFormatter" type="text/template">
+        <div class="cell">
+            <div class="grd-tbl ">
+                <div class="grd-cell reference pdg0" style="width: 38px;">
+                    <div class="txtar sales"><%- it.saleQy %></div>
+                    <div class="txtar stock"><%- it.distQy %></div>
+                </div>
+                <div class="grd-cell">
+                    <div class="txtar">
+                        <%- it.stockQy %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    <script id="SizeEditor" type="text/template">
+        <div class="cell">
+            <div class="grd-tbl">
+                <div class="grd-cell reference pdg0" style="width: 38px;">
+                    <div class="txtar sales"><%- it.saleQy %></div>
+                    <div class="txtar stock"><%- it.stockQy %></div>
+                </div>
+                <div class="grd-cell" style="padding: 0;">
+                    <div class="distQy txtar">
+                        <% if (it.editMode) { %>
+                        <input type="text" class="form-control txtar">
+                        <% } else { %>
+                        <div class="form-control <% it.editable && print('form-control'); %>">
+                            <div class="">
+                                <%- it.distQy %>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="SaleStockDistFormatter" type="text/template">
+        <div class="<%- !it.editable && 'noedit' %>">
+            <div class="grd-tbl  <%- it.rowClass %>">
+                <div class="grd-cell">
+                    <div class="txtar"><%- it.col1 %></div>
+                </div>
+                <div class="grd-cell">
+                    <div class="txtar"><%- it.col2 %></div>
+                </div>
+            </div>
+        </div>
+    </script>
+</body>
+</html>

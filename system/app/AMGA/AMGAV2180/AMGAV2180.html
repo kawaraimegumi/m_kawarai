@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>経戦前日実績帳票出力</title>
+
+<link href="../../AMGA/public/css/bootstrap.css" rel="stylesheet">
+<link href="../../AMGA/public/css/prettify.css" rel="stylesheet">
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style-AMGAV.css">
+
+<script src="../../AMGA/public/js/jquery-1.8.3.min.js"></script>
+<script src="../../AMGA/public/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../AMGA/public/js/jquery.ui.touch-punch.min.js"></script>
+
+<!-- Loading ui-folder -->
+<script type="text/javascript" src="../../AMGA/private/js/ui-folder.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/jquery.easing-1.3.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/underscore.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/backbone.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/json2.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.exchangeselect.0.1.0.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.fixedheadertable.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../AMGA/public/js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.form.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="../../AMGA/private/js/aman.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/messages2-ana_ja.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana-fix.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/ana-testdata.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/ana.js"></script>
+<script type="text/javascript" src="../../AMGA/private/sub/CACMV0020/CACMV0020.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style-AMGAV.css">
+
+<script type="text/javascript" src="AMGAV2180.js"></script>
+
+
+</head>
+<body id="cl_body_hidden"><!-- TODO _hiddenでいいのかな？ -->
+
+<div id="cl_dialog_area" class="cl_dialog">
+</div>
+<div id="page-wrap">
+<div id="cl_header"></div><!-- /#header -->
+
+<!-- ダイアログ設定 -->
+<div class="cl_echoback msgBox error" style="display:none;"></div>
+
+<div id="ca_main">
+	<div id="container">
+		<div id="ca_CACMV0030_CACMV0020_dialog" class="cl_dialog"></div>
+		<div id="mainColumn">
+			<div id="mainColumninBox" class="noLeftColumn">
+				<div id="title">
+					<h2>経戦前日実績帳票出力</h2>
+				</div>
+				<div id="content">
+					<div class="fieldgroup">
+						<div id="ca_searchArea" class="fieldgroupInBox search">
+							<div id="search" class="fieldgroupInBox search">
+
+								<!-- 出力対象 -->
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName">出力対象</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_outputTarget">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<!-- 対象週 -->
+								<div class="fieldUnit mrgb10 required">
+									<p class="fieldName">対象週</p>
+									<div class="fieldBox">
+										<div id="ca_week_temp" class="ca_unit_ymd_div">
+											<select class="flleft ca_opt wt140 cl_valid cl_required"
+													id="ca_week_y_period_val1"></select>
+											<div id="ca_week_w_period_val1_div"></div>
+											<p class="txtInFieldUnit pdg flleft">〜</p>
+										</div>
+									</div>
+								</div>
+								<!-- 組織 -->
+								<div class="fieldUnit mrgb10">
+									<p class="fieldName">組織</p>
+									<div class="fieldBox">
+										<input type="hidden" id="ca_CACMV0030_func_id" />
+										<input type="hidden" id="ca_CACMV0030_level_id" />
+										<input type="hidden" id="ca_CACMV0030_org_id" />
+										<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_CACMV0030_orgname" disabled/>
+										<button class="btn btn-default wt160 flleft mrgl10" id="ca_CACMV0030_show_CACMV0020">参照...</button>
+										<button class="btn btn-default wt160 flleft mrgl10" id="btn_orgClear">クリア</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<!-- 表示ボタン -->
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter " data-cl_groupid="AMGAV2180">
+										<button class="btn btn-info wt280" id="cl_csv">帳票出力</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div><!--  ここまで class="saerch" -->
+
+						</div><!--  ここまで class="ca_saerchArea" -->
+					</div>
+				</div>
+				<!-- /#content -->
+			</div>
+			<!-- /#mainColumninBox -->
+		</div>
+		<!-- /#mainColumn -->
+	</div>
+	<!-- / #container -->
+</div>
+<!-- / #ca_main -->
+
+<div class="clear"></div>
+</div>
+</body>
+</html>

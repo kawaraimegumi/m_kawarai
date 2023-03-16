@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>商品・在庫照会</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMSIV0050.css">
+
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+<script>
+
+</script>
+<style>
+#ca_tp_code+.tooltip .tooltip-inner {
+	/*text-align: left;*/
+	/*   width: 300px;*/
+}
+</style>
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+		<script src="AMSIV0050.js"></script>
+
+		<!-- /#header -->
+
+		<div id="container">
+
+			<!-- 組織選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+					<div id="content">
+
+						<div class="fieldgroup">
+							<div id="ca_srchArea" class="fieldgroupInBox search">
+							
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox" id="ca_srchUnitID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								
+								<div class="fieldUnit mrgb10 required">
+									<p class="fieldName">自店舗</p>
+									<div id="ca_srchMyOrgID_div" class="fieldBox">
+										<!--input type="text" placeholder="" data-limit="len:15" class="form-control wt280 flleft cl_valid cl_store" id="ca_srchOrgID" /-->
+										<input type="text" class="form-control wt280 flleft cl_valid cl_store cl_required" id="ca_srchMyOrgID" />
+										<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_Mystore_select" tabindex="-1">参照...</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								
+								
+								
+								<div class="fieldUnit  mrgb10 mrgr20 required">
+									<p class="fieldName">日付</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled cl_required" type="text"
+												id="ca_srchFromDate" />
+										</div>
+										<p class="txtInFieldUnit pdg flleft">〜</p>
+										<div class="datepicker_wrap">
+											<input class="cl_valid cl_date ime-disabled cl_required" type="text"
+												id="ca_srchToDate" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							
+								<hr>
+								<p class="txtInFieldUnit">※区分は1つ以上選択して下さい。</p>
+							
+								<div class="fieldUnit mrgb10">
+									<p class="fieldName">区分</p>
+									<div class="fieldBox flleft">
+										<ul>
+											<li><label class="checkbox ib flleft" for="ca_importFlag">
+												入荷<input type="checkbox" value="" id="ca_importFlag" data-toggle="checkbox">
+											</label></li>
+											<li><label class="checkbox ib flleft" for="ca_exportFlag">
+												出荷<input type="checkbox" value="" id="ca_exportFlag" data-toggle="checkbox">
+											</label></li>
+											<li><label class="checkbox ib flleft" for="ca_emendFlag">
+												訂正<input type="checkbox" value="" id="ca_emendFlag" data-toggle="checkbox">
+											</label></li>
+											<li><label class="checkbox ib flleft" for="ca_invFlag">
+												棚卸<input type="checkbox" value="" id="ca_invFlag" data-toggle="checkbox">
+											</label></li>
+											<li><label class="checkbox ib flleft" for="ca_saleFlag">
+												売上<input type="checkbox" value="" id="ca_saleFlag" data-toggle="checkbox">
+											</label></li>
+											<li><label class="checkbox ib flleft" for="ca_returnFlag">
+												売上返品<input type="checkbox" value="" id="ca_returnFlag" data-toggle="checkbox">
+											</label></li>
+											<li><label class="checkbox ib flleft" for="ca_cancelFlag">
+												売上取消<input type="checkbox" value="" id="ca_cancelFlag" data-toggle="checkbox">
+											</label></li>
+											<li><label class="checkbox ib flleft" for="ca_defectFlag">
+												不良品処理<input type="checkbox" value="" id="ca_defectFlag" data-toggle="checkbox">
+											</label></li>
+											
+										</ul>
+										<div class="clear"></div>
+									</div>
+								</div>
+								
+								<hr>
+								<p class="txtInFieldUnit mrgb10">※条件は1つ以上選択して下さい。</p>
+								
+								
+								<div class="fieldUnit mrgb10 flleft mrgr20">
+									<p class="fieldName">相手取引先</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_vendor"
+											title="入荷、出荷、訂正の場合に指定可能です。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid" name="srchVendorID" id="ca_srchVendorID" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								
+								<div class="fieldUnit mrgb10 flleft">
+									<p class="fieldName">相手先店舗</p>
+									<div id="ca_srchOrgID_div" class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_org"
+											title="入荷、出荷の場合に指定可能です。">
+											<span>?</span>
+										</p>
+										<!--input type="text" placeholder="" data-limit="len:15" class="form-control wt280 flleft cl_valid cl_store" id="ca_srchOrgID" /-->
+										<input type="text" class="form-control wt280 flleft cl_valid cl_store" id="ca_srchOrgID" />
+										<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								
+								
+								
+								<div class="fieldUnit mrgb10 mrgr20 flleft">
+									<p class="fieldName">JANコード</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_jan"
+											title="全ての区分で指定可能です。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:13 alnum" id="ca_srchJAN" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								<div class="fieldUnit mrgb10 mrgr20 flleft">
+									<p class="fieldName">SKU</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_sku"
+											title="全ての区分で指定可能です。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:20 alnum" id="ca_srchSKU" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								
+								<div class="fieldUnit mrgb10 mrgl20 flleft">
+									<p class="fieldName">メーカー品番</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_makerItemCode"
+											title="全ての区分で指定可能です。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:10 hankaku" id="ca_srchMakerItemCode" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								
+								<div class="fieldUnit mrgb10 mrgr20 flleft">
+									<p class="fieldName">伝票番号</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_billNo"
+											title="入荷、出荷、訂正、不良品処理の場合に指定可能です。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:10 digit" id="ca_srchBillNo" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								
+								<div class="fieldUnit mrgb10 mrgr20 flleft">
+									<p class="fieldName">レシートNo</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_rcptNo"
+											title="売上、売上返品、売上取消の場合に指定可能です。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:10 alnum" id="ca_srchRcptNo" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								<div class="fieldUnit mrgb10 mrgl20 flleft">
+									<p class="fieldName">棚番</p>
+									<div class="fieldBox">
+										<p class="txtInFieldUnit flright help" id="tp_invNo"
+											title="棚卸の場合に指定可能です。">
+											<span>?</span>
+										</p>
+										<input type="text" placeholder=""
+											class="form-control wt280 ime-disabled cl_valid"
+											data-validator="maxlen:4 digit" id="ca_srchInvNo" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								
+								
+								
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button id="ca_srch" class="btn btn-info wt280">検索</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+						</div>
+
+						<div id="result" class="dispn">
+							<div class="fieldgroupInBox">
+								<div class="fieldUnit mrgb20 flleft">
+								<p class="fieldName">合計点数</p>
+									<div class="fieldBox flleft" id="ca_rankNum">
+										<p class="flleft txtInfo">
+											<span class="abcnum" id="disp_sumQy">&nbsp;</span>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						
+							<div class="pagination-wrapper"></div>
+
+							<div class="table">
+								<table class="hilightRow" id="ca_table">
+									<thead>
+										<tr>
+											<!-- １番目の要素は全選択チェックボックス用に予約 -->
+											<!-- <th width="40px" class="cl_checkbox_selectall">☑全選択</th> -->
+											<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+											<th width="50px">日付</th>
+											<th width="80px">区分</th>
+											<th width="80px">伝票番号<br>レシートNo<br>棚番</th>
+											<th width="50px">担当者</th>
+											<th width="120px">相手先</th>
+											<th width="80px">メーカー品番</th>
+											<th width="100px">JANコード</th>
+											<th width="100px">SKU</th>
+											<th width="80px">品種</th>
+											<th width="120px">サブ1<br>サブ2</th>
+											<th width="60px">サイズ</th>
+											<th width="120px">商品名</th>
+											<th width="40px">点数</th>
+										</tr>
+									</thead>
+									<tbody id="ca_table_tbody"></tbody>
+								</table>
+							</div>
+
+							<div class="pagination-wrapper"></div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- /#content -->
+
+				<!--				<div id="mainColumnFooter" class="noLeftColumn">
+				</div>
+-->
+
+			</div>
+			<!-- /#mainColumninBox -->
+
+		</div>
+		<!-- /#mainColumn -->
+
+	</div>
+	<!-- / #container -->
+	<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+	<script id="ca_rec_template" type="text/template">
+		<tr class="">
+			<td class="ca_c_link"><%- clutil.dateFormat(date, 'yyyy/mm/dd(w)') %></td>
+			<td class="ca_c_link"><%- disp_kind %></td>
+			<td class="ca_c_link"><%- code %></td>
+			<td class="ca_c_link"><%- userCode %></td>
+			<td class="ca_c_link"><%- dispToOrg %></td>
+			<td class="ca_c_link"><%- makerItemCode  %></td>
+			<td class="ca_c_link"><a name="a_codeLink" class="txt-closed-on"><%- janCode  %></a></td>
+			<td class="ca_c_link"><%- skuCode  %></td>
+			<td class="ca_c_link"><%- itgrpCode %>:<%- itgrpName %></td>
+			<td class="ca_c_link"><%- subName1 %><br><%- subName2 %></td>
+			<td class="ca_c_link"><%- sizeName  %></td>
+			<td class="ca_c_link"><%- itemName  %></td>
+			<td class="ca_c_link txtar"><%- qy  %></td>
+			<td class="ca_c_link dispn"><input type="hidden" name="ca_item_id" value=<%- itemID %>></td>
+			<td class="ca_c_link dispn"><input type="hidden" name="ca_toOrg_id" value=<%- toOrgID %>></td>
+		</tr>
+	</script>
+
+	<div class="clear"></div>
+
+</body>
+</html>

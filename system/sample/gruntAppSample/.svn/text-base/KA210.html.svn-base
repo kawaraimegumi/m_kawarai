@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>食材マスタ一覧</title>
+    <meta charset="utf-8">
+
+    <link href="../../css/mono.css" rel="stylesheet" media="screen">
+    <script src="../../js/mono.js"></script>
+    <script src="KA210.js"></script>
+  </head>
+
+  <body>
+    <div id="cl_header"></div>
+
+    <div id="ca_main">
+
+      <div class="container-fluid">
+        <div class="row-fluid">
+	  <!--ミニボタン　一部ページ下部機能がかぶっています。-->
+	  <div class="span12">
+	    <button class="btn btn-mini" type="button">HOMEへ戻る</button>
+	  </div>
+	  <!--ミニボタンここまで-->
+	  <h3 class="pageTitle">商品管理＞食材マスタ一覧</h3>
+
+	  <!-- ここにエラーメッセージが表示される -->
+	  <div class="notice_red_large cl_echoback"></div>
+	  <!--検索エリア-->
+	  <div class="searchArea">
+	    <div class="form-inline" id="ca_search_form">
+	      <table class="search">
+	        <tr>
+		  <th>適用期間</th>
+		  <td><span class="datepicker_wrap"> <input type="text" id="ca_st_ymd" class="cl_valid cl_date">
+		  </span></td>
+		  <td><span> ～ </span></td>
+		  <td><span class="datepicker_wrap"> <input
+						        type="text" id="ca_ed_ymd" class="cl_valid cl_date">
+		    </span> <label for="ca_st_ymd" style="display: none">開始期間</label> <label
+									                     for="ca_ed_ymd" style="display: none">終了期間</label></td>
+	        </tr>
+	        <tr>
+		  <th></th>
+		  <td>
+		    <ul cl_valid_sticker_for="ca_st_ymd">
+		    </ul>
+		  </td>
+		  <td></td>
+		  <td>
+		    <ul cl_valid_sticker_for="ca_ed_ymd">
+		    </ul>
+		  </td>
+	        </tr>
+	        <tr>
+		  <th></th>
+		  <td colspan="3">
+		    <label class="checkbox inline">
+		      <input type="checkbox" id="ca_f_hist" value="">期間内の全履歴を表示
+		    </label>
+		  </td>
+	        </tr>
+	        <tr>
+		  <th></th>
+		  <td colspan="3">
+		    <label class="checkbox inline">
+		      <input type="checkbox" id="ca_f_stop" value="">停止したマスタも表示
+		    </label>
+		  </td>
+	        </tr>
+	        <tr>
+		  <th>業態</th>
+		  <td colspan="3"><select id="ca_business_id">
+		  </select></td>
+	        </tr>
+	        <tr>
+		  <th>食材区分</th>
+		  <td colspan="3"><label class="checkbox inline"> <input
+								     type="checkbox" id="ca_f_strecipe" value=""> 仕掛品
+		    </label> <label class="checkbox inline"> <input type="checkbox"
+								    id="ca_f_material" value=""> 発注食材
+		  </label></td>
+	        </tr>
+	        <tr>
+		  <th>食材コード</th>
+		  <td colspan="3"><input type="text" id="ca_material_code">
+		  </td>
+	        </tr>
+	        <tr>
+		  <th>食材名</th>
+		  <td colspan="3"><input class="input-xlarge" type="text"
+				         id="ca_material_name"></td>
+	        </tr>
+	        <tr>
+		  <th>レシピ単位</th>
+		  <td colspan="3"><select id="ca_uom_id">
+		  </select></td>
+	        </tr>
+	      </table>
+	      <input class="btn btn-success" type="submit" value="検索"
+		     style="width: 100px;" id="ca_search">
+	    </div>
+	  </div>
+	  <!--表示エリア-->
+	  <div class="row-fluid" style="margin-bottom: 10px;">
+	    <div class="span4">
+	      <button class="btn btn-warning" type="button" id="ca_edit">予約編集</button>
+	      <button class="btn btn-danger" type="button" id="ca_delete">予約削除</button>
+	      <button class="btn btn-info" type="button" id="ca_ref">参照</button>
+	    </div>
+	    <div class="pagination_span">
+	      <!--////////////　開始　ページャー　////////////-->
+	      <div class="pagination pagination-centered" style="margin: 0;">
+	        <ul id="ca_pager">
+	        </ul>
+	      </div>
+	      <div id="ca_pager_displaypanel"></div>
+	      <!--////////////　終了　ページャー　////////////-->
+	    </div>
+	  </div>
+
+	  <table class="table table-striped" id="ca_table">
+	    <thead>
+	      <tr>
+	        <th style="width: 5%;"></th>
+	        <th style="width: 5%;">NO.</th>
+	        <th>食材区分</th>
+	        <th>食材コード</th>
+	        <th>食材名</th>
+	        <th>レシピ単位</th>
+	        <th>歩溜り率</th>
+	        <th>単価</th>
+	        <th>適用期間</th>
+	      </tr>
+	    </thead>
+	    <tbody id="ca_tbody_div">
+	      <!--ここにテンプレート入る-->
+	    </tbody>
+
+	    <!--表テンプレート-->
+	    <script id="ca_tbody_template" type="text/x-jquery-tmpl">
+	      <tr id="${material_id}">
+	        <td><input type="checkbox" value="" name="ca_del_chk"></td>
+	        <td>${no}</td>
+	        <td>${material_sw_disp}</td>
+	        <td>${code}</td>
+	        <td>${name}</td>
+	        <td>${uom_id_disp}</td>
+	        <td>${yield_rate}</td>
+	        <td>${unit_price}</td>
+	        <td>${st_ymd}～${ed_ymd}</td>
+	      </tr>
+	    </script>
+	    <!--表テンプレートここまで-->
+
+	  </table>
+
+	  <div class="row-fluid" style="margin-bottom: 10px;">
+	    <div class="span4">
+	      <button class="btn btn-info" type="button" id="ca_back">戻る</button>
+	    </div>
+	    <div class="span4 offset4" style="text-align: right;">
+	      <button class="btn btn-primary" type="button" id="ca_entry">新規登録</button>
+	      <button class="btn btn-success" type="button" id="ca_csvout">CSV出力</button>
+	    </div>
+	  </div>
+
+	  <div id="cs_footer">
+	    <!--フッタもjsにて描写-->
+	    <div class="copyright">&copy; THE MONOGATARI CORPORATION. ALL
+	      RIGHT RESERVED.</div>
+	    <!--フッタもjsにて描写-->
+	  </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- ca_main -->
+    <script>
+      $('#ca_table').dragtable();
+      $('#ca_table').tablefix({
+      height : 300,
+      fixRows : 1
+      });
+    </script>
+
+  </body>
+</html>

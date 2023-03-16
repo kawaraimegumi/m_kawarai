@@ -1,0 +1,412 @@
+【SlickGrid 独自カスタムメモ】
+
+■ slick-anagridview-theme.css
+1) slick-default-theme.css をオーバーラードして独自スタイルを施すもの。
+
+■ slick.grid.js
+1) セル毎のスタイルを制御するためのクラスをoptions.xCellCssDecorator関数でも取得するようにI/F追加 -- 1977行目
+
+        function appendCellHtml(stringArray, row, cell, colspan, item) {
+            var m = columns[cell];
+            var cellCss = "slick-cell l" + cell + " r" + Math.min(columns.length - 1, cell + colspan - 1)
+                + (m.cssClass ? " " + m.cssClass : "");
+            if (row === activeRow && cell === activeCell) {
+                cellCss += (" active");
+            }
+
+            // TODO:  merge them together in the setter
+            for (var key in cellCssClasses) {
+                if (cellCssClasses[key][row] && cellCssClasses[key][row][m.id]) {
+                    cellCss += (" " + cellCssClasses[key][row][m.id]);
+                }
+            }
+
+// FIX vvvvv : 独自拡張: セル毎のスタイルを制御するためのクラスを関数で取得
+            if(typeof(options.xCellCssDecorator) == 'function'){
+            	var clss = options.xCellCssDecorator(row, cell, colspan, m, item);
+            	if(clss){
+            		cellCss += (" " + clss);
+            	}
+            }
+// FIX ^^^^^
+
+            stringArray.push("<div class='" + cellCss + "'>");
+
+            // if there is a corresponding row (if not, this is the Add New row or this data hasn't been loaded yet)
+            if (item) {
+                var value = getDataItemValueForColumn(item, m);
+
+                stringArray.push(getFormatter(row, m)(row, cell, value, m, item));
+            }
+
+            stringArray.push("</div>");
+
+            rowsCache[row].cellRenderQueue.push(cell);
+            rowsCache[row].cellColSpans[cell] = colspan;
+        }
+
+2) 下部 ViewPort エリアにて、FrozenRows 行分だけ余分に height がとられるのを修正。 -- 2278行目
+
+        function updateRowCount() {
+            if (!initialized) {
+                return;
+            }
+
+            var dataLengthIncludingAddNew = getDataLengthIncludingAddNew();
+            var numberOfRows = 0;
+            var oldH = ( hasFrozenRows && !options.frozenBottom ) ? $canvasBottomL.height() : $canvasTopL.height();
+
+// FIX vvvvv frozenBottom の機能がよくわからない。行数からの height 換算で、
+//           frozenRows 分の高さが余分にとられるだめ、frozenRows がある場合は差っ引く方で修正。
+//            if (hasFrozenRows && options.frozenBottom) {
+// FIX -----
+            if (hasFrozenRows /*&& options.frozenBottom*/) {
+// FIX ^^^^^
+                var numberOfRows = getDataLength() - options.frozenRow;
+            } else {
+                var numberOfRows = dataLengthIncludingAddNew + (options.leaveSpaceForNewRows ? numVisibleRows - 1 : 0);
+            }
+            ・・・・・省略・・・・・
+
+
+3) 列固定部が白抜けする問題を修正。--- 1947行目
+	横スクロールを右端に寄せてから、セル選択等で invalidate() して再描画すると、固定行部分が白抜けしていた。
+	以下のように修正した。
+
+        function appendRowHtml(stringArrayL, stringArrayR, row, range, dataLength) {
+             ・・・・・省略・・・・・
+            var colspan, m;
+            for (var i = 0, ii = columns.length; i < ii; i++) {
+                m = columns[i];
+                colspan = 1;
+                if (metadata && metadata.columns) {
+                    var columnData = metadata.columns[m.id] || metadata.columns[i];
+                    colspan = (columnData && columnData.colspan) || 1;
+                    if (colspan === "*") {
+                        colspan = ii - i;
+                    }
+                }
+
+                // Do not render cells outside of the viewport.
+                if (columnPosRight[Math.min(ii - 1, i + colspan - 1)] > range.leftPx) {
+                    if (columnPosLeft[i] > range.rightPx) {
+                        // All columns to the right are outside the range.
+                        break;
+                    }
+
+                    if (( options.frozenColumn > -1 ) && ( i > options.frozenColumn )) {
+                        appendCellHtml(stringArrayR, row, i, colspan, d);
+                    } else {
+                        appendCellHtml(stringArrayL, row, i, colspan, d);
+                    }
+                } else if (( options.frozenColumn > -1 ) && ( i <= options.frozenColumn )) {
+// FIX vvvvv: ViewPort 外でも、列固定部は描画対象とする。行データを渡さないと描画されないので変数 d を渡した。
+//                    appendCellHtml(stringArrayL, row, i, colspan);
+// FIX -----
+                    appendCellHtml(stringArrayL, row, i, colspan, d);
+// FIX ^^^^^
+                }
+
+                if (colspan > 1) {
+                    i += (colspan - 1);
+                }
+            }
+             ・・・・・省略・・・・・
+        }
+
+4) 固定行が白抜けする問題を修正。--- 2025行目
+	縦スクロールを最下段まで下げ、セル選択等で invalidate() して再描画すると、固定列部分が白抜けしていた。
+	以下のように修正した。
+
+	slickgrid.invalidate(keepFrozenRows) 引数 keepFrozenRows を追加、これが true 指定の場合は FrozenRows 範囲の行への
+	invalidate() を行わないように修正。
+
+// FIX vvvvv
+//        function invalidate() {
+//            updateRowCount();
+//            invalidateAllRows();
+//            render();
+//        }
+// FIX -----
+        function invalidate(keepFrozenRows) {
+            updateRowCount();
+            invalidateAllRows(keepFrozenRows);
+            render();
+        }
+// FIX ^^^^^
+
+// FIX vvvvv
+//        function invalidateAllRows() {
+//            if (currentEditor) {
+//                makeActiveCellNormal();
+//            }
+//            for (var row in rowsCache) {
+//                removeRowFromCache(row);
+//            }
+//        }
+// FIX -----
+        function invalidateAllRows(keepFrozenRows) {
+            if (currentEditor) {
+                makeActiveCellNormal();
+            }
+            if(keepFrozenRows){
+            	var range;
+            	if(options.frozenBottom){
+            		var totalRowCount = getDataLength();
+            		range = {
+            			top: totalRowCount - actualFrozenRow,
+            			bottom: totalRowCount -1
+            		};
+            	}else{
+            		range = {
+            			top: 0,
+            			bottom: actualFrozenRow - 1
+            		};
+            	}
+            	cleanupRows(range);
+            }else{
+                for (var row in rowsCache) {
+                    removeRowFromCache(row);
+                }
+            }
+        }
+// FIX ^^^^^
+
+5) 固定行が白抜けする問題＃２を修正。--- 2709行目
+	行ｘ列数が多めにある場合で、最下行において横スクロールし、キャッシュ外の列をロードするとき、
+	固定行(frozenRows)部分がロードされず、白抜けする問題を修正。
+
+        function render() {
+            if (!initialized) {
+                return;
+            }
+            var visible = getVisibleRange();
+            var rendered = getRenderedRange();
+
+            // remove rows no longer in the viewport
+            cleanupRows(rendered);
+
+            // add new rows & missing cells in existing rows
+            if (lastRenderedScrollLeft != scrollLeft) {
+                cleanUpAndRenderCells(rendered);
+// FIX vvvvv: 行固定部（frozenRow）が ViewPort 外にあっても、描画対象とする。さもないと白抜けするから。
+                if(hasFrozenRows){
+                	var top, bottom;
+                	if(options.frozenBottom){
+                		top = getDataLength() - actualFrozenRow;
+                		bottom = getDataLength() -1;
+                	}else{
+                		top = 0;
+                		bottom = actualFrozenRow-1;
+                	}
+                	// frozenRows 区間（top～bottom）の描画処理を行う。
+                	// rendered と frozenRows 重複部分は Triming する。
+                	if(bottom < rendered.top || top > rendered.bottom){
+                		// ケース１）frozenRows 区間が rendered 区間と被らない
+                		cleanUpAndRenderCells($.extend({}, rendered, {
+                			top: top,
+                			bottom: bottom
+                		}));
+                	}else if(top >= rendered.top && bottom <= rendered.bottom){
+                		// ケース２）frozenRows 全区間が rendered 区間内に包括している
+                		// 描画処理不要。
+                	}else if(top < rendered.top && bottom > rendered.bottom){
+                		// ケース３）frozenRows 区間が rendered 全区間を包括している
+                		// 3-1) 上部はみ出た部分描画
+                		cleanUpAndRenderCells($.extend({}, rendered, {
+                			top: top,
+                			bottom: rendered.top-1
+                		}));
+                		// 3-2) 下部はみ出た部分描画
+                		cleanUpAndRenderCells($.extend({}, rendered, {
+                			top: rendered.bottom+1,
+                			bottom: bottom
+                		}));
+                	}else if(top < rendered.top){
+                		// ケース４）frozenRows.top が rendered.top より上位で、frozenRows.bottom が rendered 区間内
+                		// 重複部分をカット
+                		cleanUpAndRenderCells($.extend({}, rendered, {
+                			top: top,
+                			bottom: rendered.top-1
+                		}));
+                	}else{
+                		// ケース５）frozenRows.top が rendered 区間内で、frozenRows.bottom が rendered より下位
+                		// 重複部分をカット
+                		cleanUpAndRenderCells($.extend({}, rendered, {
+                			top: rendered.bottom+1,
+                			bottom: bottom
+                		}));
+                	}
+// ^^^^^
+                }
+            }
+
+            // render missing rows
+            renderRows(rendered);
+
+            // Render frozen bottom rows
+            if (options.frozenBottom) {
+                renderRows({
+                    top: actualFrozenRow, bottom: getDataLength() - 1, leftPx: rendered.leftPx, rightPx: rendered.rightPx
+                });
+            }
+
+            postProcessFromRow = visible.top;
+            postProcessToRow = Math.min(getDataLengthIncludingAddNew() - 1, visible.bottom);
+            startPostProcessing();
+
+            lastRenderedScrollTop = scrollTop;
+            lastRenderedScrollLeft = scrollLeft;
+            h_render = null;
+        }
+
+6) cleanupRows(rangeToKeep) 関数、actualFrozenRow 境界値の取扱誤り？修正。--- 2011行目
+
+        function cleanupRows(rangeToKeep) {
+            for (var i in rowsCache) {
+                var removeFrozenRow = true;
+
+                if (hasFrozenRows
+                    && ( ( options.frozenBottom && i >= actualFrozenRow ) // Frozen bottom rows
+// FIX vvvvv
+//                            || ( !options.frozenBottom && i <= actualFrozenRow ) // Frozen top rows
+// FIX -----
+                            || ( !options.frozenBottom && i < actualFrozenRow ) // Frozen top rows
+// FIX ^^^^^
+                    )
+                    ) {
+                    removeFrozenRow = false;
+                }
+
+                if (( ( i = parseInt(i, 10)) !== activeRow )
+                    && ( i < rangeToKeep.top || i > rangeToKeep.bottom )
+                    && ( removeFrozenRow )
+                    ) {
+                    removeRowFromCache(i);
+                }
+            }
+        }
+
+7) setOverflow() 関数、縦スクロールは常に表示しておくよう修正。--- 1320 行目
+	真面目にやるなら、Viewport-右下で縦スクロールが出ている ⇒ Viewport-右上も縦スクロールを表示させる。
+	Viewport-右下が縦スクロール無用になった ⇒ Viewport-右上も縦スクロールをしまう。
+	・・・と、やらないといけないのだが、常に縦スクロール出しっぱなしの方が簡単な改修で済むので、
+	この改修方法で様子見としておこう。
+
+        function setOverflow() {
+            $viewportTopL.css({
+                'overflow-x': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'hidden' : 'scroll' : ( hasFrozenRows ) ? 'hidden' : 'auto',
+                'overflow-y': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'hidden' : 'hidden' : ( hasFrozenRows ) ? 'scroll' : 'auto'
+            });
+
+            $viewportTopR.css({
+                'overflow-x': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'hidden' : 'scroll' : ( hasFrozenRows ) ? 'hidden' : 'auto',
+                'overflow-y': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'scroll' : 'auto' : ( hasFrozenRows ) ? 'scroll' : 'auto'
+            });
+
+            $viewportBottomL.css({
+                'overflow-x': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'scroll' : 'auto' : ( hasFrozenRows ) ? 'auto' : 'auto',
+                'overflow-y': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'hidden' : 'hidden' : ( hasFrozenRows ) ? 'scroll' : 'auto'
+            });
+
+            $viewportBottomR.css({
+                'overflow-x': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'scroll' : 'auto' : ( hasFrozenRows ) ? 'auto' : 'auto',
+// FIX vvvvv
+//                'overflow-y': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'auto' : 'auto' : ( hasFrozenRows ) ? 'auto' : 'auto'
+// FIX -----
+                'overflow-y': ( options.frozenColumn > -1 ) ? ( hasFrozenRows ) ? 'scroll' : 'auto' : ( hasFrozenRows ) ? 'scroll' : 'auto'
+// FIX ^^^^^
+            });
+        }
+
+8) ホイールイベントで deltaY 変化量がある場合、イベントを伝播するよう修正。--- 2799 行目
+
+        function handleMouseWheel(event, delta, deltaX, deltaY) {
+            scrollTop = Math.max(0, $viewportScrollContainerY[0].scrollTop - (deltaY * options.rowHeight));
+            scrollLeft = $viewportScrollContainerX[0].scrollLeft + (deltaX * 10);
+            _handleScroll(true);
+// FIX vvvvv: マウスホイールのイベントを伝播させる
+            if(deltaY){
+            	return;
+            }
+// ^^^^^
+            event.preventDefault();
+        }
+
+
+■plugins/slick.cellselectionmodel.js
+1) セル選択の起点を憶えておくようにした。-- 72行目
+
+    function handleBeforeCellRangeSelected(e, args) {
+      if (_grid.getEditorLock().isActive()) {
+        e.stopPropagation();
+        return false;
+      }
+// FIX vvvvv
+      // 独自拡張: セル選択の起点を覚えておくよう加筆 //
+      // selectionmodel.xFrom: {row:<rowIndex>, cell:<columnIndex>} プロパティに保存
+      // console.log('handleBeforeCellRangeSelected: ' + args.toString());
+      _self.xFrom = args;
+// FIX ^^^^^
+    }
+
+■plugins/slick.cellrangeselector.js
+1) マウスドラッグによるセル選択範囲指定において、選択開始位置の算出方法を修正。-- 52行目、61行目、71行目
+   具体的には、サイズ測定する内部 canvas 内の要素を引き出す $selector の誤りを修正した。
+
+    function handleDragInit(e, dd) {
+        // Set the active canvas node because the decorator needs to append its
+        // box to the correct canvas
+        _$activeCanvas = $( _grid.getActiveCanvasNode( e ) );
+
+        var c = _$activeCanvas.offset();
+// FIX vvvvv
+        var container = _grid.getContainerNode();
+// FIX ^^^^^
+
+        _rowOffset = 0;
+        _columnOffset = 0;
+        _isBottomCanvas = _$activeCanvas.hasClass( 'grid-canvas-bottom' );
+
+        if ( _gridOptions.frozenRow > -1 && _isBottomCanvas ) {
+// FIX vvvvv
+//            _rowOffset = ( _gridOptions.frozenBottom ) ? $('.grid-canvas-bottom').height() : $('.grid-canvas-top').height();
+// FIX -----
+            _rowOffset = ( _gridOptions.frozenBottom ) ? $('.grid-canvas-bottom', container).height() : $('.grid-canvas-top', container).height();
+// FIX ^^^^^
+        }
+
+        _isRightCanvas = _$activeCanvas.hasClass( 'grid-canvas-right' );
+
+        if ( _gridOptions.frozenColumn > -1 && _isRightCanvas ) {
+// FIX vvvvv
+//            _columnOffset = $('.grid-canvas-left').width();
+// FIX -----
+            _columnOffset = $('.grid-canvas-left', container).width();
+// FIX ^^^^^
+        }
+
+        // prevent the grid from cancelling drag'n'drop by default
+        e.stopImmediatePropagation();
+    }
+
+
+【問題点】
+1) frozen-row & frozen-column を設定した上で、右下部のスクロールを横へ寄せて、
+	ドリルダウン（行追加）や、セル選択（選択色の設定）で再描画すると、
+	左下 frozen-column 部分へリフレッシュが及ばなくて、白牌になってしまう。
+	slick-grid の frozen-column まわりで、再描画に対するハンドリングの修正が必要だと思う。
+
+	slick.grid.js の、(3)と(4)で対処した。
+
+	＜残＞
+	行ｘ列数が多めにある場合で、最下行において横スクロールし、キャッシュ外の列をロードするとき、
+	固定行(frozenRows)部分がロードされていない。
+
+	slick.gird.js の(5)で対処した。
+
+
+2) frozen-row & frozen-column を設定した上で、右上部の縦スクロールバー表示の制御が
+	できていないように思える。
+
+	ひとまず、縦スクロールを常時表示で対処。

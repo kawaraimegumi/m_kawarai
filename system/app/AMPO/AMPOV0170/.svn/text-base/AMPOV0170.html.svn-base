@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0170.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css'
+	href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+
+	<div id="ca_main">
+		<script src="AMPOV0170.js"></script>
+
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup" id="ca_base_form">
+							<div id="ssetaddr" class="fieldgroupInBox setaddr">
+								<input type="hidden" id="ca_recno"> <input type="hidden"
+									id="ca_state"> <input type="hidden" id="ca_id">
+								<!--<input type="hidden" id="ca_id">-->
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox ca_unitID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="unitID" id="ca_unitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- ＰＯ種別 -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox ca_poTypeID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="poTypeID" id="ca_poTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- メーカーコード -->
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+									<p class="fieldName bl2">
+										メーカー<br />コード
+									</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240" length="3"></span> <input
+											type="text" placeholder=""
+											class="form-control wt280 cl_valid cl_required" name="code"
+											id="ca_code" data-tflimit="3" data-validator="maxlen:3 alnum"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- メーカー名称 -->
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName b">メーカー名称</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl280" length="20"></span> <input
+											type="text" placeholder=""
+											class="form-control wt320 cl_valid cl_required" name="name"
+											id="ca_name" data-tflimit="20" data-validator="maxlen:20"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- 送信区分 -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">送信区分</p>
+									<div class="fieldBox ca_poSendTypeID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="poSendTypeID" id="ca_poSendTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- FAXメーカー記入欄 -->
+								<!--
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName bl2">
+										FAXメーカー<br />記入欄
+									</p>
+									<div class="fieldBox ca_poMemoTypeID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="poMemoTypeID" id="ca_poMemoTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								-->
+
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup" id="ca_table_form1">
+							<p class="gtitle">送信先</p>
+							<div class="fieldgroupInBox">
+								<div class="table mrgb30  fieldUnit flleft half hta">
+									<!-- セルを直接編集可能に -->
+									<table class="hilight drilldown" id="ca_table1">
+										<thead>
+											<tr>
+												<th width="310px">FAX番号</th>
+												<th width="50px"></th>
+											</tr>
+										</thead>
+										<tbody id="ca_table_tbody1">
+										</tbody>
+										<tfoot id="ca_table_tfoot1">
+											<tr class="addRow">
+												<td colspan="5"><span class="btn-add"></span></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<div class="clear"></div>
+
+								<div class="table  fieldUnit flleft half hta">
+									<!-- セルを直接編集可能に -->
+									<table class="hilight drilldown" id="ca_table2">
+										<thead>
+											<tr>
+												<th width="310px">E-mailアドレス</th>
+												<th width="50px"></th>
+											</tr>
+										</thead>
+										<tbody id="ca_table_tbody2">
+										</tbody>
+										<tfoot id="ca_table_tfoot2">
+											<tr class="addRow">
+												<td colspan="5"><span class="btn-add"></span></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup" id="ca_table_form2">
+							<p class="gtitle">対象ブランド</p>
+							<div class="fieldgroupInBox">
+								<div class="table fieldUnit flleft wt580 hta">
+									<!-- セルを直接編集可能に -->
+									<table class="hilight drilldown" id="ca_table3">
+										<thead>
+											<tr>
+												<th width="520px">対象ブランド</th>
+												<th width="60px"></th>
+											</tr>
+										</thead>
+										<tbody id="ca_table_tbody3">
+										</tbody>
+										<tfoot id="ca_table_tfoot3">
+											<tr class="addRow">
+												<td colspan="5"><span class="btn-add"></span></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2">
+						<!-- <p class="cancel"><a href="javascript:void(0)" id="ca_cancel">戻る</a></p>
+			<p class="apply mrgCancel" id="p_entry"><a href="javascript:void(0)" id="ca_entry">登録</a></p>
+			<p class="flleft"><a href="javascript:void(0)" id="ca_previous">前へ</a></p>
+			<p class="flright"><a href="javascript:void(0)" id="ca_next">次へ</a></p>
+			<div class="clear"></div> -->
+					</div>
+					<!-- /#mainColumnFooter -->
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+		</div>
+		<!-- / #container -->
+		<script id="ca_tbody_template1" type="text/x-jquery-tmpl">
+			<tr class="deletable addRow" name="ca_table_tr1" >
+				<td class="editable pdg0">
+
+					<input name="faxNo" id="ca_faxNo" class="form-control cl_valid cl_required  " type="text" cs_id="${faxNo}"  data-validator="maxlen:20" value="${faxNo}">
+
+				</td>
+
+				<td><span class="btn-delete flright"></span></td>
+			</tr>
+		</script>
+		<script id="ca_tbody_template2" type="text/x-jquery-tmpl">
+			<tr class="deletable addRow" name="ca_table_tr2" >
+				<td class="editable pdg0">
+					<input name="mailAddr" id="ca_mailAddr" class="form-control cl_valid cl_required  cl_email" type="text" cs_id="${mailAddr}"  data-validator="maxlen:60 hankaku" value="${mailAddr}">
+				</td>
+
+				<td><span class="btn-delete flright"></span></td>
+			</tr>
+		</script>
+
+		<script id="ca_tbody_template3" type="text/x-jquery-tmpl">
+			<tr class="deletable addRow" name="ca_table_tr3" >
+				<td class="editable pdg0">
+					<input name="brandID" class="form-control  cl_required" type="text" cs_id="${brandID}" value="{{if brandID}}${brandCode}:${brandName}{{/if}}" ${readonly}>
+				</td>
+				<td><span class="btn-delete flright"></span></td>
+			</tr>
+		</script>
+		<div class="clear"></div>
+
+
+	</div>
+</body>
+</html>

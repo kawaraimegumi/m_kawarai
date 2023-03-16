@@ -1,0 +1,126 @@
+<div id="ca_MDCMV0060_main">
+    <div id="mainColumn">
+        <div id="mainColumninBox" class="mainColumninBox">
+            <div id="title">
+                <h2>閾値、表示色、計算項目追加</h2>
+                <div class="titleInBoxRight">
+                </div>
+            </div>
+            <div id="content">
+                <div class="fieldgroup" id="MDCMV0060_disprange_field">
+                    <p class="gtitle">閾値設定</p>
+                    <div class="fieldgroupInBox">
+                        <div class="fieldUnit">
+                            <div class="fieldBox noName">
+                                <ul>
+                                    <li>
+                                        <label class="radio"><input type="radio" name="MDCMV0060_mode" value="disp" data-toggle="radio" checked>出力範囲</label>
+                                    </li>
+                                    <li>
+                                        <label class="radio"><input type="radio" name="MDCMV0060_mode" value="pickup" data-toggle="radio">上位下位抽出</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div id="MDCMV0060_disp_pane">
+                            <div class="fieldUnit">
+                                <div class="fieldBox noName" style="display: -webkit-inline-box;">
+                                    <label class="radio"><input type="radio" name="MDCMV0060_disp_mode" value="range" data-toggle="radio" checked></label>
+                                    <div id="MDCMV0060_disp_range_input" style="display: inline-flex;">
+                                        <input class="form-control wt280 cl_valid" id="MDCMV0060_disp_range_min" type="number" step="0.1" max="999999999">
+                                        <span class="inlineText">から</span>
+                                        <input class="form-control wt280 cl_valid" id="MDCMV0060_disp_range_max" type="number" step="0.1" max="999999999">
+                                        <span class="inlineText">を</span>
+                                        <select class="cl_valid" id="MDCMV0060_f_disp_range_not"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="fieldUnit">
+                                <div class="fieldBox noName" style="display: -webkit-inline-box;">
+                                    <label class="radio"><input type="radio" name="MDCMV0060_disp_mode" value="value" data-toggle="radio"></label>
+                                    <div id="MDCMV0060_disp_value_input" style="display: inline-flex;">
+                                        <input class="form-control wt280 cl_valid" id="MDCMV0060_disp_value" type="number" step="0.1" max="999999999">
+                                        <select class="cl_valid" id="MDCMV0060_disp_value_type"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div id="MDCMV0060_pickup_pane">
+                            <div class="fieldUnit">
+                                <div class="fieldBox noName" style="display: -webkit-inline-box;">
+                                    <label class="radio"><input type="radio" name="MDCMV0060_pickup_mode" value="range" data-toggle="radio" checked></label>
+                                    <div id="MDCMV0060_pickup_range_input" style="display: inline-flex;">
+                                        <input class="form-control wt280 cl_valid" id="MDCMV0060_pickup_range_min" type="number" step="1" min="1" max="999999999">
+                                        <span class="inlineText">から</span>
+                                        <input class="form-control wt280 cl_valid" id="MDCMV0060_pickup_range_max" type="number" step="1" min="1" max="999999999">
+                                        <span class="inlineText">番目まで表示</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="fieldUnit">
+                                <div class="fieldBox noName" style="display: -webkit-inline-box;">
+                                    <label class="radio"><input type="radio" name="MDCMV0060_pickup_mode" value="value" data-toggle="radio"></label>
+                                    <div id="MDCMV0060_pickup_value_input" style="display: inline-flex;">
+                                        <select class="cl_valid" id="MDCMV0060_pickup_value_type"></select>
+                                        <input class="form-control wt280 cl_valid" id="MDCMV0060_pickup_value" type="number" step="1" min="1" max="999999999">
+                                        <span class="inlineText">番目まで表示</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fieldgroup" id="MDCMV0060_dispcolor_field">
+                    <p class="gtitle">表示色設定</p>
+                    <div class="fieldgroupInBox">
+                        <div class="fieldUnit" style="height: auto;">
+                            <div class="fieldBox noName">
+                                <div class="table">
+                                    <table style="width: max-content;">
+                                        <thead></thead>
+                                        <tbody id="MDCMV0060_dispcolor_tbody"></tbody>
+                                        <tfoot></tfoot>
+                                    </table>
+                                    <button class="btn btn-sm btn-primary" id="MDCMV0060_dispcolor_append_button">追加</button>
+                                    <script id="MDCMV0060_dispcolor_tbody_template" type="text/x-jquery-tmpl">
+                                        <div class="row" style="display: -webkit-inline-box; width: 100%">
+                                            <input class="form-control wt280 cl_valid cl_required" type="number" step="0.1" name="MDCMV0060_from_val" value=${MDCMV0060_from_val}>
+                                            <span class="inlineText">以上</span>
+                                            <input class="form-control wt280 cl_valid" type="number" step="0.1" disabled name="MDCMV0060_to_val" value=${MDCMV0060_to_val}>
+                                            <span class="inlineText">未満</span>
+                                            <select class="select--color cl_valid" name="MDCMV0060_color" value=${MDCMV0060_color}></select>
+                                            <button class="btn btn-sm btn-danger MDCMV0060_dispcolor_remove_button">削除</button>
+                                        </div>
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="fieldgroup">
+                    <p class="gtitle">計算項目追加設定</p>
+                    <div class="fieldgroupInBox">
+                        <div class="fieldUnit">
+                            <div class="fieldBox noName">
+                                <input id="MDCMV0060_dispitem_id" type="hidden">
+                                <input id="MDCMV0060_name" type="hidden">
+                                <select class="cl_valid" id="MDCMV0060_stcalc"></select>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mainColumnFooter" class="analytics">
+                <p class="cancel"><a id="MDCMV0060_cancel_button">キャンセル</a></p>
+                <p class="apply mrgCancel"><a id="MDCMV0060_commit_button">確定</a></p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+@CHARSET "UTF-8";
+
+table .ca_yellowBack {
+  background-color: #feeed6;
+  /*color: #fcae3f;*/
+}
+
+.cl_alert_field {
+  background-color: #feeed6 !important;
+}
+
+.mrgr_5 {
+  position: absolute;
+  right: 5px;
+  bottom: 0px;
+}
+
+.mrgl_60 {
+  margin-left: 60%;
+}
+
+.cl_textarea
+{
+	resize: vertical;
+}
+
+.choose {
+	white-space : nowrap;
+    overflow: hidden;
+    text-overflow : ellipsis;
+}
+
+#ca_datagrid{
+    height : 420px;
+}
+
+.fieldgroup > .ca_pdgb_60{
+    padding-bottom: 60px
+}
+
+/* ファイル選択コンポーネント：参照モードスタイル */
+.cl_readonly .choose.form-control {
+	border: 0;
+	border-radius: 0;
+	border-bottom: 2px dotted #d0d5d9;
+	background-color: rgba(0,0,0,0);
+	color: rgb(33, 34, 38);
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	padding: 14px 8px 2px;
+	font-family: Lato, mplus-2p-regular, メイリオ, 'ＭＳ Ｐゴシック', sans-serif;
+	font-size: 14px;
+	opacity: 1;
+}
+
+#myGrid .cl-colhead >.bdrTpColor {
+	border-top-color: #a2a9b3;
+}
+
+/* テーブル最終列の×ボタンのヘッダ(IDがないため項目番号指定) */
+#myGrid .cl-colhead >.r12 {
+	border-top-color: #a2a9b3;
+}

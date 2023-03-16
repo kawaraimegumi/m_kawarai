@@ -1,0 +1,3963 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0270.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0270_slider.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css'
+	href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+<script src="../lib/ObjTree.js"></script>
+<style>
+#tp_washable+.tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+
+#tp_jkSleeveButton+.tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+}
+
+#ca_brandID_div .btn .caret {
+	display: none;
+}
+</style>
+
+</head>
+
+<body class="cl_body_hidden">
+
+	<div id="ca_main">
+		<script src="AMPOV0270.js"></script>
+
+		<div id="container" style="min-width: 1200px;">
+			<!-- 店舗選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div id="ca_baseField">
+							<div id="ca_submitTypeArea" class="fieldgroup po--ordertiming">
+								<div id="" class="fieldgroupInBox">
+
+									<!-- 指示ID -->
+									<div id="ca_recArea" class="dispn">
+										<input type="hidden" id="ca_poOrderID" /> <input
+											type="hidden" id="ca_firstID" /> <input type="hidden"
+											id="ca_recno" /> <input type="hidden" id="ca_state" />
+									</div>
+
+									<div class="fieldUnit">
+										<div class="fieldBox noName flleft">
+											<div class="fieldBox flleft " id="ca_submitType_div"
+												style="padding-left: 0px;">
+
+												<input type="hidden" id="ca_submitTypeOld" />
+
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_submitType" value="0" data-toggle="radio">新規発注</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_submitType" value="1" data-toggle="radio">FAXオーダー済みの注文を登録</label></li>
+													<li id="ca_InsOldDateInputArea">
+														<p class="txtInFieldUnit flright help"
+															id="tp_InsOldDateInput"
+															title="入力された日付は「商品発注日」に表示されます。日付を変更すると、設定済のオーダー内容と店舗着日はクリアされます。またブランド設定部ではその日付で有効なブランドが選択可能になります。">
+															<span>?</span>
+														</p>
+														<div class="datepicker_wrap" id="ca_InsOldDateInput_div"
+															readonly>
+															<input type="text" id="ca_InsOldDateInput"
+																name="InsOldDateInput"
+																class="cl_date cl_valid ime-disabled"
+																data-validator="maxlen:13 " />
+														</div>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div id="ca_storeArea" class="fieldgroup">
+								<p class="gtitle">店舗情報</p>
+								<div id="" class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 flleft mrgr20 required">
+										<p class="fieldName">店舗</p>
+										<div class="fieldBox" id="ca_storeID_div">
+											<input type="text" placeholder=""
+												class="form-control wt280 flleft cl_valid cl_required"
+												name="storeID" id="ca_storeID" />
+											<input type="hidden" id="ca_storeOldID" />
+											<button class="btn btn-default wt140 flleft mrgl10"
+												tabindex="-1" id="ca_btn_store_select">参照...</button>
+
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10 half flleft required">
+										<p class="fieldName">担当者ID</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240" length="6"></span> <input
+												type="text" placeholder=""
+												class="form-control wt280 cl_valid cl_required"
+												name="userID" id="ca_userID" data-validator="maxlen:6 digit" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup" id="ca_guest_form">
+								<p class="gtitle">お客様情報</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 required flleft mrgr20"
+										id="ca_telnoArea">
+										<p class="fieldName ">電話番号</p>
+										<div class="fieldBox flleft">
+											<span class="limit wt40 flright mrgl40" length="5"></span> <input
+												type="text" placeholder=""
+												class="form-control wt80 flleft cl_valid cl_required ca_guest cl_telno_required"
+												name="telNo1" id="ca_telNo1" data-validator="maxlen:5 digit" />
+											<p class="txtInFieldUnit pdg flleft">―</p>
+											<span class="limit wt40 flright mrgl40" length="4"></span> <input
+												type="text" placeholder=""
+												class="form-control wt80 flleft cl_valid cl_required ca_guest cl_telno_required"
+												name="telNo2" id="ca_telNo2" data-validator="maxlen:4 digit" />
+											<p class="txtInFieldUnit pdg flleft">―</p>
+											<span class="limit wt40 flright mrgl40" length="4"></span> <input
+												type="text" placeholder=""
+												class="form-control wt80 flleft cl_valid cl_required ca_guest"
+												name="telNo3" id="ca_telNo3" data-validator="maxlen:4 digit" />
+											<button class="btn btn-default wt140 flleft mrgl10"
+												tabindex="-1" id="ca_btn_guest_select">お客様情報取得</button>
+
+											<!-- ツールチップでヘルプを表示 -->
+											<p class="txtInFieldUnit flright help" id="tp_tel"
+												title="電話番号を入力してボタンを押すと、顧客システムにあるお客様情報を表示します。（注：過去にパーソナルオーダーの購入があったお客様でも、”顧客システム”への登録がなければ表示されません）">
+												<span>?</span>
+											</p>
+										</div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit mrgb10  flleft mrgr20 required">
+										<p class="fieldName">氏名</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240" length="20"></span>
+											<input type="text" placeholder="" id="ca_custName"
+												name="custName"
+												class="form-control wt280 cl_valid cl_required ca_guest"
+												data-tflimit="20" data-validator="maxlen:20" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10  flleft mrgr20 required">
+										<p class="fieldName">フリガナ</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240" length="20"></span>
+											<input type="text" placeholder="" id="ca_custNameKana"
+												name="custNameKana"
+												class="form-control wt280 cl_valid ca_guest"
+												data-tflimit="20"
+												data-validator=" />
+										</div>
+										<div class="clear">
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10  flleft mrgr20">
+										<p class="fieldName">会員番号</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240" length="10"></span>
+											<input type="text" placeholder="" id="ca_membNo"
+												name="membNo" class="form-control wt280 cl_valid  ca_guest"
+												data-tflimit="13 " data-validator="maxlen:13 digit" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+
+							<div class="fieldgroup" id="ca_brandArea">
+								<p class="gtitle ">ブランド・生地</p>
+								<div class="fieldgroupInBox" id="ca_brandDiv">
+
+									<!-- ↓開発用のラジオボタン解除ver レディス試験等を行いたい際はこちらを使用 -->
+									<div id="ca_kindClearArea"
+										class="fieldUnit mrgb10 flleft mrgr20 required ca_storeEffectDiv">
+										<!-- ↓リリース用のラジオボタンロックver  -->
+										<!--<div id="ca_kindClearArea" class="fieldUnit mrgb10 flleft mrgr20 required ca_Lock">-->
+
+
+										<p class="fieldName">種別</p>
+										<div class="fieldBox flleft">
+											<ul>
+												<li class="ca_Lock"><label class="radio"><input
+														type="radio" name="ca_orderType" value="1"
+														data-toggle="radio" checked>メンズ</label></li>
+												<li class="ca_Lock ca_Lock2"><label class="radio"><input
+														type="radio" name="ca_orderType" value="2"
+														data-toggle="radio">レディス</label></li>
+												<li class="ca_Lock ca_Lock2 ca_Lock3"><label
+													class="radio"><input type="radio"
+														name="ca_orderType" value="3" data-toggle="radio">シャツ</label></li>
+											</ul>
+										</div>
+									</div>
+									<hr>
+									<div id="ca_typeClearArea">
+										<div id="ca_M_brandField" class="ca_M_Area">
+											<div
+												class="fieldUnit mrgb10 flleft mrgr20 required ca_storeEffectDiv">
+												<p class="fieldName">品種</p>
+												<div class="fieldBox flleft">
+													<ul>
+														<li id="ca_M_stArea"><label
+															class="checkbox ib flleft" for="ca_M_st"> スーツ<input
+																type="checkbox" value="" id="ca_M_st"
+																data-toggle="checkbox">
+														</label></li>
+														<li id="ca_M_jkArea"><label
+															class="checkbox ib flleft" for="ca_M_jk"> ジャケット<input
+																type="checkbox" value="" id="ca_M_jk"
+																data-toggle="checkbox">
+														</label></li>
+														<li id="ca_M_slArea"><label
+															class="checkbox ib flleft" for="ca_M_sl"> スラックス<input
+																type="checkbox" value="" id="ca_M_sl"
+																data-toggle="checkbox">
+														</label></li>
+														<li id="ca_M_veArea"><label
+															class="checkbox ib flleft" for="ca_M_ve"> ベスト<input
+																type="checkbox" value="" id="ca_M_ve"
+																data-toggle="checkbox">
+														</label></li>
+													</ul>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+											<div
+												class="fieldUnit mrgb10 mrgr20 required ca_storeEffectDiv">
+												<p class="fieldName">シーズン</p>
+												<div class="fieldBox" id="ca_M_seasonArea">
+													<select name="info"
+														class="mbn wt280 cl_valid  cl_M_required cl_M_com_required"
+														name="M_season" id="ca_M_season">
+													</select>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+
+											<div id="ca_M_clothArea"
+												class="fieldUnit mrgb10 mrgr20 required ca_sesonEffectDiv">
+												<p class="fieldName">生地</p>
+												<div class="fieldBox mrgr20" id="ca_M_clothDiv">
+													<ul>
+														<li><label class="checkbox ib flleft" for="ca_M_wash">
+																ウォッシャブル<input type="checkbox" value="" id="ca_M_wash"
+																data-toggle="checkbox">
+														</label></li>
+													</ul>
+												</div>
+
+												<p class="fieldName">生地</p>
+												<select name="info"
+													class="mbn wt380 cl_valid  cl_M_required cl_M_com_required"
+													name="M_cloth" id="ca_M_cloth">
+												</select> <input type="hidden" id="ca_M_clothOld"> <input
+													type="hidden" id="ca_M_clothPrice">
+
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+
+											<div class="fieldUnit mrgb10 mrgr20 required">
+												<p class="fieldName bl2">
+													ブランド<br>(型紙)
+												</p>
+												<div class="fieldBox ca_M_clothEffectDiv"
+													id="ca_M_brandArea">
+													<select name="info"
+														class="mbn wt280 cl_valid cl_M_required cl_M_com_required"
+														name="M_brand" id="ca_M_brand">
+													</select>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+
+										<div class="ca_L_Area" id="ca_L_brandField">
+
+											<div id="" class="fieldUnit mrgb10 flleft mrgr20 required ca_storeEffectDiv">
+												<p class="fieldName">モデル</p>
+												<div class="fieldBox flleft">
+													<ul>
+														<li class=""><label class="radio"><input
+																type="radio" name="ca_L_modelType" value="1"
+																data-toggle="radio" checked>ベーシック・スタイリッシュ</label></li>
+														<li class=""><label class="radio"><input
+																type="radio" name="ca_L_modelType" value="2"
+																data-toggle="radio">プレシャス(シルバー・ブラック)・エレガンス</label></li>
+													</ul>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+
+											<div class="fieldUnit mrgb10 flleft required wt220 ca_storeEffectDiv">
+
+
+												<p class="fieldName">品種</p>
+												<div class="fieldBox" id="">
+													<ul>
+														<li><label class="checkbox ib flleft" for="ca_L_jk">
+																ジャケット<input type="checkbox" value="" id="ca_L_jk"
+																data-toggle="checkbox">
+														</label></li>
+													</ul>
+												</div>
+											</div>
+											<div class="fieldUnit mrgb10 required flleft">
+												<div class="fieldBox noName ca_L_SelArea"
+													id="ca_L_jkSelArea">
+													<select name="info"
+														class="mbn wt280 cl_valid cl_L_required cl_L_jk_required"
+														id="ca_L_jkSel"></select>
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+
+
+
+											<div
+												class="fieldUnit mrgb10 flleft required wt220 ca_storeEffectDiv">
+												<div class="fieldBox" id="">
+													<ul>
+														<li><label class="checkbox ib flleft" for="ca_L_sk">
+																スカート<input type="checkbox" value="" id="ca_L_sk"
+																data-toggle="checkbox">
+														</label></li>
+													</ul>
+												</div>
+											</div>
+											<div class="fieldUnit mrgb10 required flleft">
+												<div class="fieldBox noName ca_L_SelArea"
+													id="ca_L_skSelArea">
+													<select name="info"
+														class="mbn wt280 cl_valid cl_L_required cl_L_sk_required"
+														id="ca_L_skSel"></select>
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+											<div
+												class="fieldUnit mrgb10 flleft required wt220 ca_storeEffectDiv">
+												<div class="fieldBox" id="">
+													<ul>
+														<li><label class="checkbox ib flleft" for="ca_L_sl">
+																パンツ<input type="checkbox" value="" id="ca_L_sl"
+																data-toggle="checkbox">
+														</label></li>
+													</ul>
+												</div>
+											</div>
+											<div class="fieldUnit mrgb10 required flleft">
+												<div class="fieldBox noName ca_L_SelArea"
+													id="ca_L_slSelArea">
+													<select name="info"
+														class="mbn wt280 cl_valid  cl_L_required cl_L_sl_required"
+														id="ca_L_slSel"></select>
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+											<div id="ca_L_veArea">
+												<div
+													class="fieldUnit mrgb10 flleft required wt220 ca_storeEffectDiv">
+													<div class="fieldBox" id="ca_L_veChkDiv">
+														<ul>
+															<li><label class="checkbox ib flleft" for="ca_L_ve">
+																	ベスト<input type="checkbox" value="" id="ca_L_ve"
+																	data-toggle="checkbox">
+															</label></li>
+														</ul>
+													</div>
+												</div>
+												<div class="fieldUnit mrgb10 required flleft">
+													<div class="fieldBox noName ca_L_SelArea"
+														id="ca_L_veSelArea">
+														<select name="info"
+															class="mbn wt280 cl_valid  cl_L_required cl_L_ve_required"
+															id="ca_L_veSel"></select>
+														<div class="clear"></div>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+											<div class="fieldUnit mrgb10 mrgr20 required ca_storeEffectDiv dispn" id="ca_L_brandDiv">
+												<p class="fieldName bl2">
+													ブランド<br>(型紙)
+												</p>
+												<div class="fieldBox" id="ca_L_brandArea">
+													<select name="info" class="mbn wt280 cl_valid" id="ca_L_brand"></select>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+											<div class="fieldUnit mrgb10 mrgr20 required ca_L_brandEffectDiv2 ca_storeEffectDiv">
+												<p class="fieldName">生地</p>
+												<div class="fieldBox" id="ca_L_clothArea">
+													<select name="info"
+														class="mbn wt380 cl_valid  cl_L_required cl_L_com_required"
+														id="ca_L_cloth"></select>
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+										</div>
+										<div class="clear"></div>
+
+
+										<div id="ca_S_brandField" class="ca_S_Area">
+											<div
+												class="fieldUnit mrgb10 mrgr20 required ca_storeEffectDiv">
+												<p class="fieldName">ブランド</p>
+												<div class="fieldBox" id="ca_S_brandArea">
+													<select name="info"
+														class="mbn wt280 cl_valid  cl_S_required cl_S_com_required"
+														id="ca_S_brand"></select>
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+											<div
+												class="fieldUnit mrgb10 mrgr20 required ca_S_brandEffectDiv">
+												<p class="fieldName">生地</p>
+												<div class="fieldBox" id="ca_S_clothArea">
+													<select name="info"
+														class="mbn wt380 cl_valid  cl_S_required cl_S_com_required"
+														id="ca_S_cloth"></select> <input type="hidden"
+														id="ca_S_clothOld">
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div class="clear"></div>
+
+											<div
+												class="fieldUnit mrgb10  flleft mrgr20 required ca_S_brandEffectDiv">
+												<p class="fieldName">枚数</p>
+												<div class="fieldBox">
+													<span class="limit wt40 flright mrgl240" length="20"></span>
+													<input type="text" placeholder="" id="ca_S_num"
+														name="S_num"
+														class="form-control wt140 cl_valid cl_S_required cl_S_com_required mrgr5 flleft"
+														data-tflimit="2" data-validator="" />
+													<p class="txtInFieldUnit pdg flleft">枚</p>
+												</div>
+												<div class="clear"></div>
+
+											</div>
+											<div class="clear"></div>
+										</div>
+
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+						<div id="ca_M_Field">
+							<div class="fieldgroup ca_M_Area ca_M_Div" id="ca_M_jkDiv">
+								<p class="gtitle ">ジャケット</p>
+								<div class="fieldgroupInBox">
+									<div id="ca_M_jk_styleArea"
+										class="fieldUnit mrgb10 mrgr20 required ca_M_brandEffectDiv">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_jk_required"
+												name="M_jk_style" id="ca_M_jk_style">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div id="ca_M_jkOptDiv">
+										<div class="fieldUnit mrgb10 mrgr20 required">
+											<p class="fieldName">サイズ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><select name="info"
+														class="mbn wt140 cl_valid mrgr5 cl_M_required cl_M_jk_required"
+														name="M_jk_size1" id="ca_M_jk_size1">
+													</select></li>
+													<li><p class="txtInFieldUnit pdg mrgr5 flleft">体</p></li>
+													<li id="ca_M_jk_size2Area"><select name="info"
+														class="mbn wt140 cl_valid mrgr5 cl_M_required cl_M_jk_required"
+														name="M_jk_size2" id="ca_M_jk_size2">
+													</select></li>
+													<li><p class="txtInFieldUnit pdg mrgr5 flleft">号</p></li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft mrgr20 required mrgb10">
+											<p class="fieldName">ベント</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_ventType" value="1" data-toggle="radio">ノーベント</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_ventType" value="3" data-toggle="radio"
+															checked>センターベント</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_ventType" value="2" data-toggle="radio">サイドベンツ</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div
+											class="fieldUnit flleft mrgr20 required mrgb10 half ca_M_amfFlagEffectDiv ca_M_brandFlagEffectDiv">
+											<p class="fieldName bl2">
+												AMF<br>ステッチ
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_amfType" value="1" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_amfType" value="2" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div
+											class="fieldUnit flleft mrgr20 required mrgb10 ca_M_liningFlagEffectDiv ca_M_brandFlagEffectDiv">
+											<p class="fieldName">裏仕様</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_liningType" value="1" data-toggle="radio"
+															checked>総裏</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_liningType" value="2" data-toggle="radio">背抜き</label></li>
+													<li id="ca_M_jk_liningTypeKannon"><label class="radio"><input
+															type="radio" name="ca_M_jk_liningType" value="3"
+															data-toggle="radio">背抜き観音</label></li>
+												</ul>
+											</div>
+										</div>
+										<div
+											class="fieldUnit flleft mrgr20 required mrgb10 ca_M_pocketEffectDiv ca_M_brandFlagEffectDiv">
+											<p class="fieldName">腰ポケット</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_pocketType" value="1" data-toggle="radio"
+															checked>標準ポケット</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_pocketType" value="2" data-toggle="radio">スラントポケット</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<div
+											class="fieldUnit flleft mrgr20 required ca_M_buttonEffectDiv ca_M_brandFlagEffectDiv">
+											<p class="fieldName">重ねボタン</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_layerButtonType" value="1"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_layerButtonType" value="2"
+															data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<hr>
+
+										<div class="fieldUnit mrgb10 required flleft">
+											<p class="fieldName">ネーム</p>
+											<div class="fieldBox">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_jk_required"
+													name="M_jk_name" id="ca_M_jk_name">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+
+										<div id="ca_M_jk_nameInputArea">
+											<div
+												class="fieldUnit mrgb10 required flleft ca_M_jk_nameDiv ca_M_jkOptElem"
+												id="ca_M_jk_nameKanjiDiv">
+												<div class="fieldBox noName">
+													<span class="limit wt40 flright mrgl200" length="20"></span>
+													<input type="text" placeholder="例）青木太郎"
+														id="ca_M_jk_nameKanji" name="M_jk_nameKanji"
+														class="form-control wt240 cl_valid cl_M_required ca_M_jk_nameElem cl_M_jkOptrequired mrgr5 flleft"
+														data-tflimit="10" data-validator="maxlen:10 zenkaku" />
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div
+												class="fieldUnit mrgb10 required flleft ca_M_jk_nameDiv ca_M_jkOptElem"
+												id="ca_M_jk_nameFullDiv">
+												<div class="fieldBox noName">
+													<span class="limit wt40 flright mrgl200" length="20"></span>
+													<input type="text"
+														placeholder="例）Taro.Aoki、T.Aoki、Taro Aoki"
+														id="ca_M_jk_nameFull" name="M_jk_nameFull"
+														class="form-control wt240 cl_valid cl_M_required ca_M_jk_nameElem cl_M_jkOptrequired mrgr5 flleft"
+														data-tflimit="15" data-validator="maxlen:15 alphaperiod" />
+												</div>
+												<div class="clear"></div>
+											</div>
+
+											<div
+												class="fieldUnit mrgb10 mrgr20 required flleft ca_M_jk_nameDiv ca_M_jkOptElem"
+												id="ca_M_jk_nameIniDiv">
+												<div class="fieldBox noName">
+													<span class="limit wt40 flright mrgl85" length="3"></span>
+													<input type="text" placeholder="例）T.A" id="ca_M_jk_nameIni"
+														name="M_jk_nameIni"
+														class="form-control wt120 cl_valid cl_M_required ca_M_jk_nameElem cl_M_jkOptrequired mrgr5 flleft"
+														data-tflimit="3" data-validator="maxlen:3 upperperiod" />
+												</div>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit flleft mrgr20 mrgb10 ca_M_jk_nameDiv ca_M_jkOptElem"
+											id="ca_M_jk_nameMakeTypeDiv">
+											<div class="fieldBox noName">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_nameMakeType" value="2" data-toggle="radio"
+															checked>工場</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_nameMakeType" value="3" data-toggle="radio">店舗</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">左袖丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_M_jk_armLeft" name="M_jk_armLeft"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s5-05">
+													<ul class="stepnum">
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_jk_armLeft_slider" aria-disabled="true">
+														<span
+															class="ca_M_jkSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">右袖丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_M_jk_armRigth"
+													name="M_jk_armRigth"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s5-05">
+													<ul class="stepnum">
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_jk_armRigth_slider" aria-disabled="false">
+														<span
+															class="ca_M_jkSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">着丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_M_jk_length" name="M_jk_length"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s5-05">
+													<ul class="stepnum">
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_jk_length_slider" aria-disabled="false">
+														<span
+															class="ca_M_jkSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div
+											class="fieldUnit mrgb10 ca_M_trunkEffectDiv ca_M_brandFlagEffectDiv">
+											<p class="fieldName">中胴補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_M_jk_trunk" name="M_jk_trunk"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s5-05">
+													<ul class="stepnum">
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_jk_trunk_slider" aria-disabled="false">
+														<span id="ca_M_jk_trunk_SliderDot"
+															class="ca_M_jkSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<hr>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_M_jk_amfPayTypeDiv">
+											<p class="fieldName bl2">
+												有料AMF<br>ステッチ
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_amfPayType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															id="ca_M_jk_amfPayTypeOn" name="ca_M_jk_amfPayType"
+															value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_M_jk_sleeveButtonTypeDiv">
+											<p class="fieldName">袖ボタン4つ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_sleeveButtonType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_sleeveButtonType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_M_jk_changePocketTypeDiv">
+											<p class="fieldName bl2">
+												チェンジ<br>ポケット
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_changePocketType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_changePocketType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_M_jk_cuffsTypeDiv">
+											<p class="fieldName">本切羽</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_cuffsType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_cuffsType" value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_M_jk_daibaTypeDiv">
+											<p class="fieldName">切台場</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_daibaType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_daibaType" value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_M_jk_summerTypeDiv">
+											<p class="fieldName">サマー仕様</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_summerType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_summerType" value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_M_jk_changeButtonTypeDiv">
+											<p class="fieldName">ボタン変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_changeButtonType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_changeButtonType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_M_jkOptElem"
+											id="ca_M_jk_changeButtonSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_jkOptrequired"
+													name="M_jk_changeButtonSel" id="ca_M_jk_changeButtonSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit mrgb10 flleft mrgr20"
+											id="ca_M_jk_flowerHoleDiv">
+											<p class="fieldName bl2">
+												ボタンホール<br>カラー糸
+											</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="checkbox ib flleft"
+														for="ca_M_jk_cuffsFirst"> 切羽 袖口第一ボタン<input
+															type="checkbox" value="" id="ca_M_jk_cuffsFirst"
+															data-toggle="checkbox">
+													</label></li>
+													<li><label class="checkbox ib flleft"
+														for="ca_M_jk_flowerHole"> フラワーホール<input
+															type="checkbox" value="" id="ca_M_jk_flowerHole"
+															data-toggle="checkbox">
+													</label></li>
+												</ul>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_M_jkOptElem"
+											id="ca_M_jk_buttonThreadColorDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_jkOptrequired"
+													name="M_jk_buttonThreadColorSel"
+													id="ca_M_jk_buttonThreadColorSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft" id="ca_M_jk_changeLiningTypeDiv">
+											<p class="fieldName">裏地変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_changeLiningType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_jk_changeLiningType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div class="fieldUnit mrgr20 half flleft ca_M_jkOptElem"
+											id="ca_M_jk_changeLiningSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_jkOptrequired"
+													name="M_jk_changeLiningSel" id="ca_M_jk_changeLiningSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+
+
+							<div class="fieldgroup ca_M_Area ca_M_Div" id="ca_M_slDiv">
+								<p class="gtitle ">スラックス</p>
+								<div class="fieldgroupInBox">
+									<div
+										class="fieldUnit mrgb10 mrgr20 required ca_M_brandEffectDiv"
+										id="ca_M_sl_styleArea">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_sl_required"
+												name="M_sl_style" id="ca_M_sl_style">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div id="ca_M_slOptDiv">
+										<div class="fieldUnit mrgb10 mrgr20 required">
+											<p class="fieldName">サイズ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><select name="info"
+														class="mbn wt140 cl_valid mrgr5 cl_M_required cl_M_sl_required"
+														name="M_sl_size1" id="ca_M_sl_size1">
+													</select></li>
+													<li><p class="txtInFieldUnit pdg mrgr5 flleft">体</p></li>
+													<li id="ca_M_sl_size2Area"><select name="info"
+														class="mbn wt140 cl_valid mrgr5 cl_M_required cl_M_sl_required"
+														name="M_sl_size2" id="ca_M_sl_size2">
+													</select></li>
+													<li><p class="txtInFieldUnit pdg mrgr5 flleft">号</p></li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit flleft mrgr20 required">
+											<p class="fieldName">スペア</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_spareType" value="1" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_spareType" value="2" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<hr>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10 required">
+											<p class="fieldName">裾仕上げ</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomType" value="3" data-toggle="radio">丈上げなし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomType" value="1" data-toggle="radio"
+															checked>シングル</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomType" value="4" data-toggle="radio"
+															checked>モーニング</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomType" value="2" data-toggle="radio">ダブル</label></li>
+												</ul>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 flleft ca_M_slOptElem ca_M_slDoubleSliderArea"
+											id="ca_M_sl_bottomSliderDiv">
+											<div class="fieldBox noName">
+												<input type="text" id="ca_M_sl_bottom" name="M_sl_bottom"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s3-05 short">
+													<ul class="stepnum">
+														<li>2.0</li>
+														<li>2.5</li>
+														<li>3.0</li>
+														<li>3.5</li>
+														<li>4.0</li>
+														<li>4.5</li>
+														<li>5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li class="zero"></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_slSlider ca_M_slSlider35 slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_sl_bottom_slider" aria-disabled="false">
+														<span
+															class="ca_M_slSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+
+										<div
+											class="fieldUnit flleft mrgr20 mrgb10 ca_M_sl_SpareDiv ca_M_slOptElem"
+											id="ca_M_sl_bottomSpareDiv">
+											<p class="fieldName bl2">
+												スペア<br>裾仕上げ
+											</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomSpareType" value="3"
+															data-toggle="radio">丈上げなし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomSpareType" value="1"
+															data-toggle="radio" checked>シングル</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomSpareType" value="4"
+															data-toggle="radio" checked>モーニング</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_bottomSpareType" value="2"
+															data-toggle="radio">ダブル</label></li>
+												</ul>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 flleft ca_M_sl_SpareDiv ca_M_slOptElem ca_M_slDoubleSliderArea"
+											id="ca_M_sl_bottomSpareSliderDiv">
+											<div class="fieldBox noName">
+												<input type="text" id="ca_M_sl_bottomSpare"
+													name="M_sl_bottomSpare"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s3-05 short">
+													<ul class="stepnum">
+														<li>2.0</li>
+														<li>2.5</li>
+														<li>3.0</li>
+														<li>3.5</li>
+														<li>4.0</li>
+														<li>4.5</li>
+														<li>5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li class="zero"></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_slSlider ca_M_slSlider35 slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_sl_bottomSpare_slider" aria-disabled="false">
+														<span
+															class="ca_M_slSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div
+											class="fieldUnit flleft mrgr20 mrgb10 required ca_M_sl_lengthDiv"
+											id="ca_M_sl_lengthLeftDiv">
+											<p class="fieldName">丈上股下</p>
+											<div class="fieldBox flleft">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">左</p>
+												<input type="text"
+													class="form-control wt240 flleft mrgr5 ca_M_sl_lengthrequired cl_M_slOptrequired"
+													id="ca_M_sl_lengthLeft"
+													placeholder="60.0cmから99.0cmまで0.5cm刻み"
+													data-validator="maxlen:4 decimal">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10 ca_M_sl_lengthDiv"
+											id="ca_M_sl_lengthRigthDiv">
+											<div class="fieldBox flleft noName">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">右</p>
+												<input type="text"
+													class="form-control wt240 flleft mrgr5 ca_M_sl_lengthrequired cl_M_slOptrequired"
+													id="ca_M_sl_lengthRight"
+													placeholder="60.0cmから99.0cmまで0.5cm刻み"
+													data-validator="maxlen:4 decimal">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">ウエスト補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_M_sl_weist" name="M_sl_weist"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s3-05">
+													<ul class="stepnum">
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_slSlider ca_M_slSlider0 slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_sl_weist_slider" aria-disabled="false">
+														<span
+															class="ca_M_slSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<hr>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10"
+											id="ca_M_sl_adjusterDiv">
+											<p class="fieldName">アジャスター</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_adjuster" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_adjuster" value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div
+											class="fieldUnit flleft mrgr20 ca_M_sl_SpareDiv ca_M_slOptElem"
+											id="ca_M_sl_adjusterSpareDiv">
+											<p class="fieldName bl2">
+												スペア<br>アジャスター
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_adjusterSpare" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_sl_adjusterSpare" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<div id="ca_M_sl_changeButtonTypeDiv">
+											<div class="fieldUnit flleft mrgb10">
+												<p class="fieldName">ボタン変更</p>
+												<div class="fieldBox">
+													<ul>
+														<li><label class="radio"><input type="radio"
+																name="ca_M_sl_changeButtonType" value="0"
+																data-toggle="radio" checked>なし</label></li>
+														<li><label class="radio"><input type="radio"
+																name="ca_M_sl_changeButtonType" value="1"
+																data-toggle="radio">あり</label></li>
+													</ul>
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div
+												class="fieldUnit mrgb10 mrgr20 half flleft ca_M_slOptElem"
+												id="ca_M_sl_changeButtonSelDiv">
+												<div class="fieldBox noName">
+													<select name="info"
+														class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_slOptrequired"
+														name="M_sl_changeButtonSel" id="ca_M_sl_changeButtonSel">
+													</select>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup ca_M_Area ca_M_Div" id="ca_M_veDiv">
+								<p class="gtitle ">ベスト</p>
+								<div class="fieldgroupInBox">
+									<div
+										class="fieldUnit mrgb10 mrgr20 required ca_M_brandEffectDiv"
+										id="ca_M_ve_styleArea">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_ve_required"
+												name="M_ve_style" id="ca_M_ve_style">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+
+									<div id="ca_M_veOptDiv">
+										<div class="fieldUnit mrgb10 mrgr20 required">
+											<p class="fieldName">サイズ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><select name="info"
+														class="mbn wt140 cl_valid mrgr5 cl_M_required cl_M_ve_required"
+														name="M_ve_size1" id="ca_M_ve_size1">
+													</select></li>
+													<li><p class="txtInFieldUnit pdg mrgr5 flleft">体</p></li>
+													<li id="ca_M_ve_size2Area"><select name="info"
+														class="mbn wt140 cl_valid mrgr5 cl_M_required cl_M_ve_required"
+														name="M_ve_size2" id="ca_M_ve_size2">
+													</select></li>
+													<li><p class="txtInFieldUnit pdg mrgr5 flleft">号</p></li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit flleft mrgr20" id="ca_M_ve_amfTypeDiv">
+											<p class="fieldName bl2">
+												AMF<br>ステッチ
+											</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_amfType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_amfType" value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<hr>
+
+
+										<div
+											class="fieldUnit mrgb10 ca_M_vestTrunkEffectDiv ca_M_brandFlagEffectDiv">
+											<p class="fieldName">中胴補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_M_ve_trunk" name="M_ve_trunk"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s8-05">
+													<ul class="stepnum">
+														<li>-8.0</li>
+														<li>-7.0</li>
+														<li>-6.0</li>
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+														<li>+6.0</li>
+														<li>+7.0</li>
+														<li>+8.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_M_veSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_M_ve_trunk_slider" aria-disabled="false">
+														<span id="ca_M_ve_trunk_SliderDot"
+															class="ca_M_veSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<hr>
+
+
+
+
+										<div class="fieldUnit flleft mrgr20 mrgb10"
+											id="ca_M_ve_amfPayTypeDiv">
+											<p class="fieldName bl2">
+												有料AMF<br>ステッチ
+											</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_amfPayType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_amfPayType" value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+
+
+
+
+
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_M_ve_changeButtonTypeDiv">
+											<p class="fieldName">ボタン変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_changeButtonType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_changeButtonType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_M_veOptElem"
+											id="ca_M_ve_changeButtonSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_veOptrequired"
+													name="M_ve_changeButtonSel" id="ca_M_ve_changeButtonSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<p class="detailtext4 mrgb10">※スーツと異なるものを指定できます。</p>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_M_ve_changeLiningTypeDiv">
+											<p class="fieldName">裏地変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_changeLiningType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_M_ve_changeLiningType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div class="fieldUnit mrgr20 half flleft ca_M_veOptElem"
+											id="ca_M_ve_changeLiningSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_M_required cl_M_veOptrequired"
+													name="M_ve_changeLiningSel" id="ca_M_ve_changeLiningSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<p class="detailtext4 mrgb10">※スーツと異なるものを指定できます。</p>
+										<div class="clear"></div>
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+
+
+						<div id="ca_L_Field">
+							<div class="fieldgroup ca_L_Area ca_L_Div" id="ca_L_jkDiv">
+								<p class="gtitle ">ジャケット</p>
+								<div class="fieldgroupInBox">
+									<div
+										class="fieldUnit mrgb10 mrgr20 required ca_L_clothEffectDiv"
+										id="ca_L_jk_styleArea">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_L_required cl_L_jk_required"
+												name="L_jk_style" id="ca_L_jk_style">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+
+									<div id="ca_L_jkOptDiv">
+										<div class="fieldUnit mrgb10 mrgr20 required">
+											<p class="fieldName">サイズ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><select name="info"
+														class="mbn wt280 cl_valid mrgr5 cl_L_required cl_L_jk_required"
+														name="L_jk_size" id="ca_L_jk_size">
+													</select></li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft mrgr20 required mrgb10 half">
+											<p class="fieldName">裏地</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_liningType" value="1" data-toggle="radio"
+															checked>総裏</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_liningType" value="2" data-toggle="radio">背抜き</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 required mrgb10 half">
+											<p class="fieldName">胸ポケット</p>
+											<div class="fieldBox flleft" id="ca_L_jk_pocketTypeArea">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_pocketType" value="1" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_pocketType" value="2" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10"
+											id="ca_L_jk_cuffsTypeDiv">
+											<!-- 2016/1/26 PRS追加対応 -->
+											<p class="fieldName bl2">
+												リターン<br>カフス
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio">
+														<input type="radio" id="ca_L_jk_cuffsType_0" class="ca_L_jk_cuffsRadio"
+															name="ca_L_jk_cuffsType" value="0" data-toggle="radio" checked>なし
+														</label></li>
+													<li><label class="radio">
+														<input type="radio" id="ca_L_jk_cuffsType_1" class="ca_L_jk_cuffsRadio"
+															name="ca_L_jk_cuffsType" value="1" data-toggle="radio">
+																<p id="ca_L_jk_cuffsType_label_1">ボタンなし</p>
+														</label></li>
+													<li id="ca_L_jk_cuffsType2Area"><label class="radio">
+														<input type="radio" id="ca_L_jk_cuffsType_2" class="ca_L_jk_cuffsRadio"
+															name="ca_L_jk_cuffsType" value="2" data-toggle="radio">
+																<p id="ca_L_jk_cuffsType_label_2">ボタンあり</p>
+														</label></li>
+												</ul>
+											</div>
+										</div>
+
+										<!-- 2015/12/9 STB追加対応 -->
+										<!-- 2016/1/26 PRS追加対応削除 -->
+										<!--
+										<div class="fieldUnit flleft mrgr20 mrgb10 half ca_L_STBArea"
+											id="ca_L_jk_cuffsButtonTypeDiv">
+											<p class="fieldName bl2">
+												リターン<br>カフスボタン
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_cuffsButtonType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_cuffsButtonType" value="1" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+										-->
+										<!-- 2015/12/9 STB追加対応 ここまで-->
+										<div class="clear"></div>
+
+										<hr>
+
+										<div class="fieldUnit mrgb10 required flleft">
+											<p class="fieldName">ネーム</p>
+											<div class="fieldBox" id="ca_L_jk_nameArea">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_L_required cl_L_jk_required"
+													name="L_jk_name" id="ca_L_jk_name">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+
+										<div id="ca_L_jk_nameInputArea">
+											<div
+												class="fieldUnit mrgb10 required flleft ca_L_jk_nameDiv ca_L_jkOptElem"
+												id="ca_L_jk_nameKanjiDiv">
+												<div class="fieldBox noName">
+													<span class="limit wt40 flright mrgl200" length="20"></span>
+													<input type="text" placeholder="例）青木花"
+														id="ca_L_jk_nameKanji" name="L_jk_nameKanji"
+														class="form-control wt240 cl_valid mrgr5 flleft cl_L_jkOptrequired ca_L_jk_nameElem"
+														data-tflimit="10" data-validator="maxlen:10 zenkaku" />
+												</div>
+												<div class="clear"></div>
+											</div>
+											<div
+												class="fieldUnit mrgb10 required flleft ca_L_jk_nameDiv ca_L_jkOptElem"
+												id="ca_L_jk_nameFullDiv">
+												<div class="fieldBox noName">
+													<span class="limit wt40 flright mrgl200" length="20"></span>
+													<input type="text" placeholder="例）Hana.Aoki、H.Aoki"
+														id="ca_L_jk_nameFull" name="L_jk_nameFull"
+														class="form-control wt240 cl_valid mrgr5 flleft cl_L_jkOptrequired ca_L_jk_nameElem"
+														data-tflimit="15" data-validator="maxlen:15 alphaperiod" />
+												</div>
+												<div class="clear"></div>
+											</div>
+
+											<div
+												class="fieldUnit mrgb10 mrgr20 required flleft ca_L_jk_nameDiv ca_L_jkOptElem"
+												id="ca_L_jk_nameIniDiv">
+												<div class="fieldBox noName">
+													<span class="limit wt40 flright mrgl85" length="3"></span>
+													<input type="text" placeholder="例）H.A" id="ca_L_jk_nameIni"
+														name="L_jk_nameIni"
+														class="form-control wt120 cl_valid mrgr5 flleft cl_L_jkOptrequired ca_L_jk_nameElem"
+														data-tflimit="3" data-validator="maxlen:3 upperperiod" />
+												</div>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit flleft mrgr20 mrgb10 ca_L_jk_nameDiv ca_L_jkOptElem"
+											id="ca_L_jk_nameMakeTypeDiv">
+											<div class="fieldBox noName">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_nameMakeType" value="2" data-toggle="radio"
+															checked>工場</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_nameMakeType" value="3" data-toggle="radio">店舗</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+										<p class="detailtext mrgb20">※ネームを入れる場合は胸内ポケットがつきます。</p>
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">左袖丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_jk_armLeft" name="L_jk_armLeft"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s7-05 ca_L_jk_armLeftSlider"
+													id="ca_L_jk_armLeft7_sliderArea">
+													<ul class="stepnum">
+														<li>-7.0</li>
+														<li>-6.0</li>
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+														<li>+6.0</li>
+														<li>+7.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_jk_sizeEffect_slider"
+														id="ca_L_jk_armLeft7_slider" aria-disabled="false">
+														<span
+															class="ca_L_jkSliderDot ca_L_jk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+
+												<div class="slider--step s2-05 ca_L_jk_armLeftSlider"
+													id="ca_L_jk_armLeft2_sliderArea">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_jk_sizeEffect_slider"
+														id="ca_L_jk_armLeft2_slider" aria-disabled="false">
+														<span
+															class="ca_L_jkSliderDot ca_L_jk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">右袖丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_jk_armRight"
+													name="L_jk_armRight"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+
+												<div class="slider--step s7-05 ca_L_jk_armRightSlider"
+													id="ca_L_jk_armRight7_sliderArea">
+													<ul class="stepnum">
+														<li>-7.0</li>
+														<li>-6.0</li>
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+														<li>+6.0</li>
+														<li>+7.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_jk_sizeEffect_slider"
+														id="ca_L_jk_armRight7_slider" aria-disabled="false">
+														<span
+															class="ca_L_jkSliderDot ca_L_jk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+
+												<div class="slider--step s2-05 ca_L_jk_armRightSlider"
+													id="ca_L_jk_armRight2_sliderArea">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_jk_sizeEffect_slider"
+														id="ca_L_jk_armRight2_slider" aria-disabled="false">
+														<span
+															class="ca_L_jkSliderDot ca_L_jk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">着丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_jk_length" name="L_jk_length"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s5-05 ca_L_jk_lengthSlider"
+													id="ca_L_jk_length5_sliderArea">
+													<ul class="stepnum">
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_jk_sizeEffect_slider"
+														id="ca_L_jk_length5_slider" aria-disabled="false">
+														<span
+															class="ca_L_jkSliderDot ca_L_jk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+
+												<div class="slider--step s3-05 ca_L_jk_lengthSlider"
+													id="ca_L_jk_length3_sliderArea">
+													<ul class="stepnum">
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_jk_sizeEffect_slider"
+														id="ca_L_jk_length3_slider" aria-disabled="false">
+														<span
+															class="ca_L_jkSliderDot ca_L_jk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+
+												<div class="slider--step s2-05 ca_L_jk_lengthSlider"
+													id="ca_L_jk_length2_sliderArea">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_jkSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_jk_sizeEffect_slider"
+														id="ca_L_jk_length2_slider" aria-disabled="false">
+														<span
+															class="ca_L_jkSliderDot ca_L_jk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<hr>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10"
+											id="ca_L_jk_ventTypeDiv">
+											<!-- 2016/1/26 PRS追加対応 -->
+											<p class="fieldName">
+												ベント
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio">
+															<input type="radio" id="ca_L_jk_ventType_0" class="ca_L_jk_ventRadio"
+																name="ca_L_jk_ventType" value="0" data-toggle="radio" checked>
+																<p id="ca_L_jk_ventType_label_0"></p>
+														</label></li>
+													<li><label class="radio" id="ca_L_jk_ventType_disp_1">
+															<input type="radio" id="ca_L_jk_ventType_1" class="ca_L_jk_ventRadio"
+																name="ca_L_jk_ventType" value="1" data-toggle="radio">
+																<p id="ca_L_jk_ventType_label_1"></p>
+														</label></li>
+													<li><label class="radio">
+															<input type="radio" id="ca_L_jk_ventType_2" class="ca_L_jk_ventRadio"
+																name="ca_L_jk_ventType" value="2" data-toggle="radio">
+																<p id="ca_L_jk_ventType_label_2"></p>
+														</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10"
+											id="ca_L_jk_cuffsPayTypeDiv">
+											<!-- 2016/1/26 PRS追加対応 -->
+											<p class="fieldName bl2">
+												有料リターン<br>カフス
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio">
+															<input type="radio" id="ca_L_jk_cuffsPayType_0" class="ca_L_jk_cuffsPayRadio"
+																name="ca_L_jk_cuffsPayType" value="0" data-toggle="radio"checked>なし
+														</label></li>
+													<li><label class="radio">
+															<input type="radio" id="ca_L_jk_cuffsPayType_1" class="ca_L_jk_cuffsPayRadio"
+																name="ca_L_jk_cuffsPayType" value="1" data-toggle="radio">
+																<p id="ca_L_jk_cuffsPayType_label_1">ボタンなし</p>
+														</label></li>
+													<li id="ca_L_jk_cuffsPayType2Area"><label class="radio">
+															<input type="radio" id="ca_L_jk_cuffsPayType_2" class="ca_L_jk_cuffsPayRadio"
+																name="ca_L_jk_cuffsPayType" value="2" data-toggle="radio">
+																<p id="ca_L_jk_cuffsPayType_label_2">ボタンあり</p>
+														</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_L_jk_amfTypeDiv">
+											<p class="fieldName bl2">
+												AMF<br>ステッチ
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_amfType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_amfType" value="1" data-toggle="radio">あり(2,700円)</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_L_jk_pocketInnerTypeDiv">
+											<p class="fieldName">胸内ポケット</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_pocketInnerType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_pocketInnerType" value="1"
+															data-toggle="radio">あり(2,700円)</label></li>
+												</ul>
+											</div>
+										</div>
+
+										<!-- 2015/12/9 STB追加対応 -->
+										<!-- 2016/1/26 PRS追加対応削除 -->
+										<!--
+										<div class="fieldUnit flleft mrgr20 mrgb10 half ca_L_STBArea"
+											id="ca_L_jk_sideVentTypeDiv">
+											<p class="fieldName bl2">サイド<br>ベンツ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_sideVentType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_sideVentType" value="1"
+															data-toggle="radio">あり(2,700円)</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+										-->
+										<!-- 2015/12/9 STB追加対応 ここまで-->
+
+										<!-- 2016/1/26 PRS追加対応 -->
+										<div class="fieldUnit flleft mrgr20 mrgb10 half"
+											id="ca_L_jk_cuffsFirstDiv">
+											<p class="fieldName">本切羽</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio" id="ca_L_jk_cuffsFirstType_0"
+															name="ca_L_jk_cuffsFirstType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio" id="ca_L_jk_cuffsFirstType_1"
+															name="ca_L_jk_cuffsFirstType" value="1"
+															data-toggle="radio">あり(2,700円)</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+										<!-- 2016/1/26 PRS追加対応 ここまで-->
+
+										<!-- 2016/1/26 PRS追加対応 -->
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_L_jk_buttonHoleDiv">
+											<p class="fieldName bl2">ボタンホール<br>カラー糸</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_buttonHoleType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_buttonHoleType" value="1"
+															data-toggle="radio">あり(1,620円)</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div  class="fieldUnit mrgb10 mrgr20 flleft ca_L_jkOptElem"
+											id="ca_L_jk_buttonHoleSelDiv">
+											<div class="fieldBox noName">
+												<ul>
+													<li><select name="info"
+														class="mbn wt280 cl_valid mrgr20 cl_L_jkOptrequired"
+														name="L_jk_buttonHoleSel" id="ca_L_jk_buttonHoleSel">
+														</select>
+													</li>
+													<li>
+														<p class="detailtext5 mrgb10 mrgt10">＊袖口第一ボタンホール配色</p>
+													</li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<!-- 2016/1/26 PRS追加対応 ここまで-->
+
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_L_jk_changeButtonTypeDiv">
+											<p class="fieldName">ボタン変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_changeButtonType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_changeButtonType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_L_jkOptElem"
+											id="ca_L_jk_changeButtonSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_L_jkOptrequired"
+													name="L_jk_changeButtonSel" id="ca_L_jk_changeButtonSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_L_jk_changeLiningTypeDiv">
+											<p class="fieldName">裏地変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_changeLiningType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_jk_changeLiningType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_L_jkOptElem"
+											id="ca_L_jk_changeLiningSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_L_jkOptrequired"
+													name="L_jk_changeLiningSel" id="ca_L_jk_changeLiningSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+
+							<div class="fieldgroup ca_L_Area ca_L_Div" id="ca_L_skDiv">
+								<p class="gtitle ">スカート</p>
+								<div class="fieldgroupInBox">
+									<div
+										class="fieldUnit mrgb10 mrgr20 required ca_L_clothEffectDiv"
+										id="ca_L_sk_styleArea">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_L_required cl_L_sk_required"
+												name="L_sk_style" id="ca_L_sk_style">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+
+									<div id="ca_L_skOptDiv">
+										<div class="fieldUnit mrgb10 mrgr20 required">
+											<p class="fieldName">サイズ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><select name="info"
+														class="mbn wt280 cl_valid mrgr5 cl_L_required cl_L_sk_required"
+														name="L_sk_size" id="ca_L_sk_size">
+													</select></li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<hr>
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName bl2">
+												スカート丈<br>補正
+											</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_sk_length" name="L_sk_length"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+
+												<div class="slider--step s10-05 ca_L_sk_lengthSlider"
+													id="ca_L_sk_length10_sliderArea">
+													<ul class="stepnum">
+														<li>-10.0</li>
+														<li>&nbsp;</li>
+														<li>-8.0</li>
+														<li>&nbsp;</li>
+														<li>-6.0</li>
+														<li>&nbsp;</li>
+														<li>-4.0</li>
+														<li>&nbsp;</li>
+														<li>-2.0</li>
+														<li>&nbsp;</li>
+														<li>±0</li>
+														<li>&nbsp;</li>
+														<li>+2.0</li>
+														<li>&nbsp;</li>
+														<li>+4.0</li>
+														<li>&nbsp;</li>
+														<li>+6.0</li>
+														<li>&nbsp;</li>
+														<li>+8.0</li>
+														<li>&nbsp;</li>
+														<li>+10.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_skSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_sk_sizeEffect_slider"
+														id="ca_L_sk_length10_slider" aria-disabled="false">
+														<span
+															class="ca_L_skSliderDot ca_L_sk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+												<div class="slider--step s5-05 ca_L_sk_lengthSlider"
+													id="ca_L_sk_length5_sliderArea">
+													<ul class="stepnum">
+														<li>-5.0</li>
+														<li>-4.0</li>
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+														<li>+4.0</li>
+														<li>+5.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_skSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all ca_L_sk_sizeEffect_slider"
+														id="ca_L_sk_length5_slider" aria-disabled="false">
+														<span
+															class="ca_L_skSliderDot ca_L_sk_sizeEffect_sliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">ウエスト補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_sk_waist" name="L_sk_waist"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s3-05">
+													<ul class="stepnum">
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_skSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_L_sk_waist_slider" aria-disabled="false">
+														<span
+															class="ca_L_skSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+
+							<div class="fieldgroup ca_L_Area ca_L_Div" id="ca_L_slDiv">
+								<p class="gtitle ">パンツ</p>
+								<div class="fieldgroupInBox">
+									<div
+										class="fieldUnit mrgb10 mrgr20 required ca_L_clothEffectDiv"
+										id="ca_L_sl_styleArea">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_L_required cl_L_sl_required"
+												name="L_sl_style" id="ca_L_sl_style">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+
+									<div id="ca_L_slOptDiv">
+										<div class="fieldUnit mrgb10 mrgr20 required">
+											<p class="fieldName">サイズ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><select name="info"
+														class="mbn wt280 cl_valid mrgr5 cl_L_required cl_L_sl_required"
+														name="L_sl_size" id="ca_L_sl_size">
+													</select></li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<hr>
+
+										<div class="fieldUnit flleft mrgr20 mrgb10 required">
+											<p class="fieldName">裾仕上げ</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_sl_bottomType" value="3" data-toggle="radio">丈上げなし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_sl_bottomType" value="1" data-toggle="radio"
+															checked>丈上げあり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit flleft mrgr20 mrgb10 ca_L_sl_lengthDiv"
+											id="ca_L_sl_lengthLeftDiv">
+											<p class="fieldName">丈上股下</p>
+											<div class="fieldBox flleft">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">左</p>
+												<input type="text" class="form-control wt240 flleft mrgr5"
+													id="ca_L_sl_lengthLeft"
+													placeholder="60.0cmから98.0cmまで0.5cm刻み"
+													data-validator="maxlen:4 decimal">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10 ca_L_sl_lengthDiv"
+											id="ca_L_sl_lengthRigthDiv">
+											<div class="fieldBox flleft noName">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">右</p>
+												<input type="text" class="form-control wt240 flleft mrgr5 "
+													id="ca_L_sl_lengthRight"
+													placeholder="60.0cmから98.0cmまで0.5cm刻み"
+													data-validator="maxlen:4 decimal">
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">ウエスト補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_sl_waist" name="L_sl_waist"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s3-05">
+													<ul class="stepnum">
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_slSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_L_sl_waist_slider" aria-disabled="false">
+														<span
+															class="ca_L_slSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">裾幅補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_sl_bottomWidth"
+													name="L_sl_bottomWidth"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s2-05">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_slSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_L_sl_bottomWidth_slider" aria-disabled="false">
+														<span
+															class="ca_L_slSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<hr id="ca_L_sl_changeButtonTypeHr">
+
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_L_sl_changeButtonTypeDiv">
+											<p class="fieldName">ボタン変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_sl_changeButtonType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_sl_changeButtonType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_L_slOptElem"
+											id="ca_L_sl_changeButtonSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_L_slOptrequired"
+													name="L_sl_changeButtonSel" id="ca_L_sl_changeButtonSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup ca_L_Area ca_L_Div" id="ca_L_veDiv">
+								<p class="gtitle ">ベスト</p>
+								<div class="fieldgroupInBox">
+									<div
+										class="fieldUnit mrgb10 mrgr20 required ca_L_clothEffectDiv"
+										id="ca_L_ve_styleArea">
+										<p class="fieldName">スタイル</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_L_required cl_L_ve_required"
+												name="L_ve_style" id="ca_L_ve_style">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+
+									<div id="ca_L_veOptDiv">
+										<div class="fieldUnit mrgb10 mrgr20 required">
+											<p class="fieldName">サイズ</p>
+											<div class="fieldBox">
+												<ul>
+													<li><select name="info"
+														class="mbn wt280 cl_valid mrgr5 cl_L_required cl_L_ve_required"
+														name="L_ve_size" id="ca_L_ve_size">
+													</select></li>
+												</ul>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit flleft mrgr20 mrgb10">
+											<p class="fieldName">胸ポケット</p>
+											<div class="fieldBox flleft">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_pocketType" value="1" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_pocketType" value="2" data-toggle="radio">あり</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+										<hr>
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">着丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_L_ve_length" name="L_ve_length"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s3-05">
+													<ul class="stepnum">
+														<li>-3.0</li>
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+														<li>+3.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_L_veSlider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_L_ve_length_slider" aria-disabled="false">
+														<span
+															class="ca_L_veSliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<hr>
+
+
+										<div class="fieldUnit flleft mrgr20 mrgb10"
+											id="ca_L_ve_amfTypeDiv">
+											<p class="fieldName bl2">
+												AMF<br>ステッチ
+											</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_amfType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_amfType" value="1" data-toggle="radio">あり(2,700円)</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="fieldUnit flleft mrgr20 mrgb10"
+											id="ca_L_ve_buckleTypeDiv">
+											<p class="fieldName">尾錠</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_buckleType" value="0" data-toggle="radio"
+															checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_buckleType" value="1" data-toggle="radio">あり(2,160円)</label></li>
+												</ul>
+											</div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_L_ve_changeButtonTypeDiv">
+											<p class="fieldName">ボタン変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_changeButtonType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_changeButtonType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_L_veOptElem"
+											id="ca_L_ve_changeButtonSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_L_veOptrequired"
+													name="L_ve_changeButtonSel" id="ca_L_ve_changeButtonSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit flleft mrgb10"
+											id="ca_L_ve_changeLiningTypeDiv">
+											<p class="fieldName">裏地変更</p>
+											<div class="fieldBox">
+												<ul>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_changeLiningType" value="0"
+															data-toggle="radio" checked>なし</label></li>
+													<li><label class="radio"><input type="radio"
+															name="ca_L_ve_changeLiningType" value="1"
+															data-toggle="radio">あり</label></li>
+												</ul>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 half flleft ca_L_veOptElem"
+											id="ca_L_ve_changeLiningSelDiv">
+											<div class="fieldBox noName">
+												<select name="info"
+													class="mbn wt280 cl_valid mrgr20 cl_L_veOptrequired"
+													name="L_ve_changeLiningSel" id="ca_L_ve_changeLiningSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+
+
+						<div id="ca_S_Field">
+							<div class="fieldgroup ca_S_Area" id="ca_S_collarArea">
+								<p class="gtitle ">衿</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 mrgr20 required">
+										<p class="fieldName">衿型</p>
+										<div class="fieldBox">
+											<ul>
+												<li id="ca_S_collarSelDiv"><select name="info"
+													class="mbn wt320 cl_valid mrgr20 cl_S_required"
+													name="S_collarSel" id="ca_S_collarSel">
+												</select></li>
+
+												<li id="ca_S_miterDiv"><label
+													class="checkbox ib flleft" for="ca_S_miter">
+														マイター(540円)<input type="checkbox" value="" id="ca_S_miter"
+														data-toggle="checkbox">
+												</label></li>
+												<li><p class="fix--slider--price3">マイター選択の場合フラシ芯にはできません。</p></li>
+											</ul>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit flleft mrgr20 required">
+										<p class="fieldName">衿芯地</p>
+										<div class="fieldBox flleft" id="ca_S_collarTypeDiv">
+											<ul>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_collarType" value="0" data-toggle="radio"
+														checked>標準</label></li>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_collarType" value="1" data-toggle="radio">フラシ芯</label></li>
+											</ul>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup ca_S_Area" id="ca_S_cuffsArea">
+								<p class="gtitle ">袖・カフス</p>
+								<div class="fieldgroupInBox">
+
+									<div class="fieldUnit flleft mrgr20 mrgb10 required">
+										<p class="fieldName">袖</p>
+										<div class="fieldBox flleft" id="ca_S_cuffsTypeDiv">
+											<ul>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_cuffsType" value="1" data-toggle="radio"
+														checked>長袖</label></li>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_cuffsType" value="2" data-toggle="radio">半袖</label></li>
+											</ul>
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<div
+										class="fieldUnit mrgb10 mrgr20 required ca_S_cuffsEffectDiv"
+										id="ca_S_cuffsDiv">
+										<p class="fieldName">カフス</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_cuffsSel" id="ca_S_cuffsSel">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup ca_S_Area" id="ca_S_clericArea">
+								<p class="gtitle ">クレリック</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 mrgr20 required" id="ca_S_clericSelDiv">
+										<p class="fieldName">クレリック</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt320 cl_valid mrgr20 cl_S_required"
+												name="S_clericSel" id="ca_S_clericSel">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldgroup ca_S_Area" id="ca_S_typeArea">
+								<p class="gtitle ">身頃</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 mrgr20 required flleft">
+										<p class="fieldName">前身頃</p>
+										<div class="fieldBox" id="ca_S_frontSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_frontSel" id="ca_S_frontSel">
+											</select>
+										</div>
+									</div>
+									<div class="fieldUnit mrgb10 mrgr20 required flleft">
+										<p class="fieldName">後身頃</p>
+										<div class="fieldBox" id="ca_S_backSelDiv">
+											<select name="info"
+												class="mbn wt400 cl_valid mrgr20 cl_S_required"
+												name="S_backSel" id="ca_S_backSel">
+											</select>
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 mrgr20 flleft required"
+										id="ca_S_amfDiv">
+										<p class="fieldName bl2">
+											AMF<br>ステッチ
+										</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_amfSel" id="ca_S_amfSel">
+											</select>
+										</div>
+									</div>
+									<div class="fieldUnit mrgb10 mrgr20 flleft required">
+										<p class="fieldName">ポケット</p>
+										<div class="fieldBox" id="ca_S_pocketSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_pocketSel" id="ca_S_pocketSel">
+											</select>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup ca_S_Area" id="ca_S_buttonArea">
+								<p class="gtitle ">ボタン</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 mrgr20 required flleft">
+										<p class="fieldName">ボタン</p>
+										<div class="fieldBox" id="ca_S_buttonSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_buttonSel" id="ca_S_buttonSel">
+											</select>
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 mrgr20 required flleft">
+										<p class="fieldName">ボタンホール</p>
+										<div class="fieldBox" id="ca_S_buttonHoleSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_buttonHoleSel" id="ca_S_buttonHoleSel">
+											</select>
+										</div>
+									</div>
+									<div class="fieldUnit mrgb10 mrgr20 required flleft">
+										<p class="fieldName">ボタン付糸</p>
+										<div class="fieldBox" id="ca_S_buttonThreadSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_buttonThreadSel" id="ca_S_buttonThreadSel">
+											</select>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+
+
+							<div class="fieldgroup ca_S_Area" id="ca_S_nameArea">
+								<p class="gtitle ">ネーム</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 mrgr20 required flleft">
+										<p class="fieldName">ネーム</p>
+										<div class="fieldBox">
+											<select name="info"
+												class="mbn wt280 cl_valid flleft cl_S_required"
+												name="S_name" id="ca_S_name">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div id="ca_S_nameInputArea">
+										<div class="fieldUnit mrgb10 required flleft ca_S_optElem"
+											id="ca_S_nameFullDiv">
+											<div class="fieldBox noName">
+												<span class="limit wt40 flright mrgl200" length="20"></span>
+												<input type="text"
+													placeholder="例）Taro.Aoki、T.Aoki、Taro Aoki"
+													id="ca_S_nameFull" name="S_nameFull"
+													class="form-control wt240 cl_valid mrgr5 flleft cl_S_optrequired cl_S_nameElem"
+													data-tflimit="12" data-validator="maxlen:12 alphaperiod" />
+											</div>
+											<div class="clear"></div>
+										</div>
+
+										<div class="fieldUnit mrgb10 required flleft ca_S_optElem"
+											id="ca_S_nameIniDiv">
+											<div class="fieldBox noName">
+												<span class="limit wt40 flright mrgl85" length="3"></span> <input
+													type="text" placeholder="例）T.A" id="ca_S_nameIni"
+													name="S_nameIni"
+													class="form-control wt120 cl_valid mrgr5 flleft cl_S_optrequired cl_S_nameElem"
+													data-tflimit="3" data-validator="maxlen:3 alphaperiod" />
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<p class="detailtext mrgb10">※大文字・小文字は入力した通りになります。</p>
+										<div class="clear"></div>
+
+										<div
+											class="fieldUnit mrgb10 mrgr20 required flleft ca_S_nameDiv ca_S_optElem"
+											id="ca_S_nameTypeDiv">
+											<p class="fieldName">字体</p>
+											<div class="fieldBox">
+												<select name="info"
+													class="mbn wt280 cl_valid flleft cl_S_optrequired cl_S_nameOptElem"
+													name="S_nameTypeSel" id="ca_S_nameTypeSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div
+											class="fieldUnit mrgb10 mrgr20 required flleft ca_S_nameDiv ca_S_optElem"
+											id="ca_S_namePlaceDiv">
+											<p class="fieldName">場所</p>
+											<div class="fieldBox">
+												<select name="info"
+													class="mbn wt280 cl_valid flleft cl_S_optrequired cl_S_nameOptElem"
+													name="S_namePlaceSel" id="ca_S_namePlaceSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div
+											class="fieldUnit mrgb10 mrgr20 required flleft ca_S_nameDiv ca_S_optElem"
+											id="ca_S_nameColorDiv">
+											<p class="fieldName">色</p>
+											<div class="fieldBox">
+												<select name="info"
+													class="mbn wt280 cl_valid flleft cl_S_optrequired cl_S_nameOptElem"
+													name="S_nameColorSel" id="ca_S_nameColorSel">
+												</select>
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup ca_S_Area" id="ca_S_sewingArea">
+								<p class="gtitle">縫製</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit flleft mrgr20">
+										<p class="fieldName">縫製</p>
+										<div class="fieldBox flleft" id="ca_S_sewingTypeDiv">
+											<ul>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_sewingType" value="0" data-toggle="radio"
+														checked>なし</label></li>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_sewingType" value="1" data-toggle="radio">袖付：巻状本縫、脇縫い：巻状二本針(1,080円)</label></li>
+											</ul>
+										</div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit flleft mrgr20">
+										<p class="fieldName bl2">
+											ポケット<br>チーフ
+										</p>
+										<div class="fieldBox flleft" id="ca_S_pocketChiefTypeDiv">
+											<ul>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_pocketChiefType" value="0" data-toggle="radio"
+														checked>なし</label></li>
+												<li><label class="radio"><input type="radio"
+														name="ca_S_pocketChiefType" value="1" data-toggle="radio">あり(1,080円)</label></li>
+											</ul>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup ca_S_Area" id="ca_S_sizeArea">
+								<p class="gtitle ">サイズ</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit mrgb10 mrgr20 flleft required">
+										<p class="fieldName">ボディ型</p>
+										<div class="fieldBox" id="ca_S_bodySelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_bodySel" id="ca_S_bodySel">
+											</select>
+										</div>
+									</div>
+									<div class="fieldUnit mrgb10 flleft required">
+										<p class="fieldName">首まわり</p>
+										<div class="fieldBox" id="ca_S_neckSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required"
+												name="S_neckSel" id="ca_S_neckSel">
+											</select>
+										</div>
+									</div>
+									<p class="fix--slider--price2">首まわり51-55cmと裄丈91-99cmは、</br>両方を選んでも片方だけを選んだ場合と同一料金です。</p>
+									<div class="clear"></div>
+
+									<div
+										class="fieldUnit mrgb10 mrgr20 flleft required ca_S_cuffsEffectDiv">
+										<p class="fieldName">左裄丈</p>
+										<div class="fieldBox" id="ca_S_armLeftSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required ca_S_cuffsEffectrequired"
+												name="S_armLeftSel" id="ca_S_armLeftSel">
+											</select>
+										</div>
+									</div>
+									<div
+										class="fieldUnit mrgb10 flleft required ca_S_cuffsEffectDiv">
+										<p class="fieldName">右裄丈</p>
+										<div class="fieldBox" id="ca_S_armRigthSelDiv">
+											<select name="info"
+												class="mbn wt280 cl_valid mrgr20 cl_S_required ca_S_cuffsEffectrequired"
+												name="S_armRigthSel" id="ca_S_armRigthSel">
+											</select>
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<hr>
+									<p class="fix--slider--price">下記の補正は何種類でも1,080円です。</p>
+
+									<div id="ca_S_sliderArea">
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">肩幅補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_S_shoulder" name="S_shoulder"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s2-10">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_S_Slider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_S_shoulder_slider" aria-disabled="false">
+														<span
+															class="ca_S_SliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">胸回り補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_S_chest" name="S_chest"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s2-10">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_S_Slider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_S_chest_slider" aria-disabled="false">
+														<span
+															class="ca_S_SliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">胴回り補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_S_waist" name="S_waist"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s6-10">
+													<ul class="stepnum">
+														<li>-6.0</li>
+														<li>&nbsp;</li>
+														<li>-4.0</li>
+														<li>&nbsp;</li>
+														<li>-2.0</li>
+														<li>&nbsp;</li>
+														<li>±0</li>
+														<li>&nbsp;</li>
+														<li>+2.0</li>
+														<li>&nbsp;</li>
+														<li>+4.0</li>
+														<li>&nbsp;</li>
+														<li>+6.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li class="zero"></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_S_Slider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_S_waist_slider" aria-disabled="false">
+														<span
+															class="ca_S_SliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">裾回り補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_S_bottom" name="S_bottom"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s6-10">
+													<ul class="stepnum">
+														<li>-6.0</li>
+														<li>&nbsp;</li>
+														<li>-4.0</li>
+														<li>&nbsp;</li>
+														<li>-2.0</li>
+														<li>&nbsp;</li>
+														<li>±0</li>
+														<li>&nbsp;</li>
+														<li>+2.0</li>
+														<li>&nbsp;</li>
+														<li>+4.0</li>
+														<li>&nbsp;</li>
+														<li>+6.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li class="zero"></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_S_Slider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_S_bottom_slider" aria-disabled="false">
+														<span
+															class="ca_S_SliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10">
+											<p class="fieldName">身丈補正</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_S_length" name="S_length"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s8-10">
+													<ul class="stepnum">
+														<li>-8.0</li>
+														<li>&nbsp;</li>
+														<li>-6.0</li>
+														<li>&nbsp;</li>
+														<li>-4.0</li>
+														<li>&nbsp;</li>
+														<li>-2.0</li>
+														<li>&nbsp;</li>
+														<li>±0</li>
+														<li>&nbsp;</li>
+														<li>+2.0</li>
+														<li>&nbsp;</li>
+														<li>+4.0</li>
+														<li>&nbsp;</li>
+														<li>+6.0</li>
+														<li>&nbsp;</li>
+														<li>+8.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li class="zero"></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+														<li class="blank"></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_S_Slider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_S_length_slider" aria-disabled="false">
+														<span
+															class="ca_S_SliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10 ca_S_cuffsEffectDiv"
+											id="ca_S_cuffsLeftDiv">
+											<p class="fieldName bl2">
+												左カフス回り<br>補正
+											</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_S_cuffsLeft" name="S_cuffsLeft"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s2-10">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_S_Slider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_S_cuffsLeft_slider" aria-disabled="true">
+														<span id="ca_S_cuffsLeft_dot"
+															class="ca_S_SliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+
+										<div class="fieldUnit mrgb10 ca_S_cuffsEffectDiv"
+											id="ca_S_cuffsRightDiv">
+											<p class="fieldName bl2">
+												右カフス回り<br>補正
+											</p>
+											<div class="fieldBox">
+												<input type="text" id="ca_S_cuffsRight" name="S_cuffsRight"
+													class="form-control wt60 flleft mrgr5 ca_iniReadOnly"
+													disabled />
+												<p class="txtInFieldUnit pdg mrgr5 flleft">cm</p>
+												<div class="slider--step s2-10">
+													<ul class="stepnum">
+														<li>-2.0</li>
+														<li>-1.0</li>
+														<li>±0</li>
+														<li>+1.0</li>
+														<li>+2.0</li>
+													</ul>
+													<ul class="stepdot">
+														<li></li>
+														<li></li>
+														<li class="zero"></li>
+														<li></li>
+														<li></li>
+													</ul>
+													<div
+														class="ca_S_Slider slider--step--bar ui-slider ui-slider-horizontal
+																ui-widget ui-widget-content ui-corner-all"
+														id="ca_S_cuffsRight_slider" aria-disabled="false">
+														<span
+															class="ca_S_SliderDot ui-slider-handle ui-state-default ui-corner-all"
+															style="left: 50%;"></span>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+
+
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+
+						<div id="ca_otherField">
+							<div class="fieldgroup" id="ca_dateArea">
+								<p class="gtitle ">納期</p>
+								<div class="fieldgroupInBox">
+
+									<div
+										class="fieldUnit mrgb10  flleft mrgr20 required ca_mustReadOnly">
+										<p class="fieldName">商品発注日</p>
+										<div class="fieldBox">
+											<div class="datepicker_wrap" id="ca_orderDate_div">
+												<input type="text" id="ca_orderDate" name="orderDate"
+													class="cl_date cl_valid cl_required ime-disabled ca_iniReadOnly"
+													data-validator="maxlen:13" />
+											</div>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div
+										class="fieldUnit mrgb10  flleft mrgr20 required ca_mustReadOnly">
+										<p class="fieldName">店舗着日</p>
+										<div class="fieldBox">
+											<div class="datepicker_wrap" id="ca_arrivalDate_div" readonly>
+												<input type="text" id="ca_arrivalDate" name="arrivalDate"
+													class="cl_date cl_valid cl_required ime-disabled ca_iniReadOnly"
+													data-validator="maxlen:13" readonly /> <input
+													type="hidden" id="ca_arrivalDateSave">
+											</div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<p class="detailtext mrgb10">※17時以降は、発注日は翌日になります。</p>
+									<div class="clear"></div>
+
+
+
+
+
+
+									<div class="fieldUnit flleft required">
+										<p class="fieldName">お渡し日</p>
+										<div class="fieldBox">
+											<ul id="ca_expressArea">
+												<li><label class="checkbox flleft" for="ca_express">
+														短納期にする(1,080円)<input type="checkbox" value=""
+														id="ca_express" data-toggle="checkbox">
+												</label></li>
+											</ul>
+										</div>
+									</div>
+
+									<div class="fieldUnit flleft half required wt240">
+										<div class="fieldBox noName">
+											<div class="datepicker_wrap" id="ca_saleDate_div">
+												<input type="text" id="ca_saleDate" name="saleDate"
+													class="cl_date cl_valid cl_required ime-disabled"
+													data-validator="maxlen:13" />
+											</div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup" id="ca_other_form">
+								<p class="gtitle ">その他</p>
+								<div class="fieldgroupInBox" style="padding-bottom: 35px;">
+									<div class="fieldUnit mrgb10 half mrgr20 required"
+										id="ca_otStoreAdjTypeIDArea">
+										<p class="fieldName">店舗補正</p>
+										<div class="fieldBox" id="ca_otStoreAdjTypeID_div">
+											<select name="info" class="mbn wt280 cl_valid  cl_required"
+												name="otStoreAdjTypeID" id="ca_otStoreAdjTypeID">
+											</select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgb10 half required">
+										<p class="fieldName">レシート番号</p>
+										<div class="fieldBox" id="ca_otRcptNo_div">
+											<span class="limit wt40 flright mrgl240" length="10"></span>
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid cl_required"
+												name="otRcptNo" id="ca_otRcptNo" data-tflimit="10 "
+												data-validator="maxlen:10 alnum"></input>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit hta wt100pct">
+										<p class="fieldName">店舗用備考欄</p>
+										<div class="fieldBox" id="ca_otStoreMemo_div">
+											<span class="limit wt40 cl_counter" length="170"></span>
+											<textarea name="otStoreMemo" id="ca_otStoreMemo" rows="4"
+												class="form-control wt100pct cl_valid  cl_valid_auto_off cl_textarea"
+												placeholder="4行(170文字以内)" data-tflimit="170"
+												data-validator="maxlen:170"></textarea>
+										</div>
+									</div>
+									<div class="clear"></div>
+									<div class="fieldUnit flleft mrgr20">
+										<p class="detailtext">※メーカー様には一切通知されません</p>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup" id="ca_noArea ca_mustReadOnly">
+								<div class="fieldgroupInBox">
+									<div class="fieldUnit half flleft">
+										<p class="fieldName">管理番号</p>
+										<div class="fieldBox" id="ca_no_div">
+											<input type="text" placeholder=""
+												class="form-control wt280 cl_valid ca_iniReadOnly" name="no"
+												id="ca_no" readonly disabled />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+		</div>
+		<!-- / #container -->
+
+		<div class="clear"></div>
+
+	</div>
+	<script id="GuestEditView" type="text/template">
+<div class="dialog-content">
+<div id="innerScroll">
+    <div class=" table drilldownWrapper">
+		<table class="hilightRow flleft" >
+			<thead>
+				<tr>
+					<th width="40px"></th>
+					<th width="120px">漢字氏名</th>
+                    <th width="120px">カナ氏名</th>
+                    <th width="120px">会員番号</th>
+                    <th width="120px">有効期限</th>
+				</tr>
+			</thead>
+			<tbody id="ca_table_tbody"></tbody>
+		</table>
+		<div class="clear"></div>
+	</div>
+</div>
+</div>
+</script>
+	<script id="ca_rec_template" type=text/x-jquery-tmpl">
+				<tr>
+					<td>
+					<label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_chk"></label></td>
+					</td>
+					<td name="name" class="txtal">${name}</td>
+					<td name="kana" class="txtal">${kana}</td>
+					<td name="memberNo" class="txtal">${memberNo}</td>
+					<td name="term" class="txtal">${term}</td>
+				</tr>
+	</script>
+</body>
+</html>
+

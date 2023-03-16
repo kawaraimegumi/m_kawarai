@@ -1,0 +1,595 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>備品管理</title>
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link href="../../../css/multiple-select.css" rel="stylesheet">
+<link media="screen" rel="stylesheet" type="text/css" href="AMEQV0040.css">
+<script src="../../../js/function.js"></script>
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+<!-- SlickGrid -->
+<link href="/css/slickgrid.css" rel="stylesheet">
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+<!-- SlickGrid -->
+
+<style>
+	#ca_tp_equip_code1 + .tooltip .tooltip-inner {
+		text-align: left;
+		width: 350px;
+		min-width: 350px;
+	}
+	#ca_tp_prem_code1 + .tooltip .tooltip-inner {
+		text-align: left;
+		width: 350px;
+		min-width: 350px;
+	}
+</style>
+
+</head>
+
+<body class="cl_body_hidden">
+
+<script src="AMEQV0040.js"></script>
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup" id="ca_key_form">
+
+				<div class="fieldgroupInBox mrgb10">
+
+					<!-- レコード番号 -->
+					<input type="hidden" id="ca_recno">
+					<!-- レコード状態 -->
+					<input type="hidden" id="ca_state">
+					<!-- 備品ID -->
+					<input type="hidden" id="ca_equipID">
+					<!-- 画像ファイルID（全体） -->
+					<input type="hidden" id="wholeImageFileID">
+					<!-- 画像ファイル名（全体） -->
+					<input type="hidden" id="wholeImageFileName">
+					<!-- 画像URI（全体） --><!-- 画像URI（全体） -->
+					<input type="hidden" id="wholeImageURI">
+					<!-- 画像ファイルID（拡大） -->
+					<input type="hidden" id="closeupImageFileID">
+					<!-- 画像ファイル名（拡大） -->
+					<input type="hidden" id="closeupImageFileName">
+					<!-- 画像URI（拡大） -->
+					<input type="hidden" id="closeupImageURI">
+
+					<!-- 事業ユニット -->
+					<div class="fieldUnit mrgb10 half flleft required" id="div_ca_unitID">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" id="ca_unitID" name="unitID"></select>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- 適用日 -->
+					<div class="fieldUnit mrgr20 required">
+						<p class="fieldName" id="pFromTo">適用日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap ca_fromDate_div flleft">
+								<input type="text" name="fromDate" id="ca_fromDate" class="cl_date cl_valid cl_required"/>
+								<p class="txtInFieldUnit flright help" id="ca_tp_del" data-original-title="削除日以降に無効扱いとなります"><span>?</span></p>
+							</div>
+							<div id="div_ca_toDate">
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap ca_toDate_div">
+									<input type="text" name="toDate" id="ca_toDate" class="cl_date cl_valid cl_required"/>
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<!-- ========== 基本情報 ================= -->
+			<div class="fieldgroup" id="ca_base_form">
+				<p class="gtitle">基本情報</p>
+				<div class="fieldgroupInBox">
+
+					<!-- 備品/プレミアム商品ラジオボタン -->
+					<div class="fieldUnit mrgb10 half mrgr20" id="div_ca_equipManTypeID">
+						<!-- <p class="fieldName">備品管理区分</p> -->
+						<div class="fieldBox noName">
+							<ul>
+								<li><label class="radio"><input type="radio" id="ca_equipManTypeID" name="equipManTypeID" value="1"
+												data-toggle="radio" checked>備品</label></li>
+								<li><label class="radio"><input type="radio" id="ca_equipManTypeID" name="equipManTypeID" value="2"
+												data-toggle="radio">プレミアム商品</label></li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 備品区分 -->
+					<div class="fieldUnit mrgb10 half flleft required" id="div_ca_equipTypeID">
+						<p class="fieldName">備品区分</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" name="equipTypeID" id="ca_equipTypeID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- プレミアム商品区分 -->
+					<div class="fieldUnit mrgb10 half flleft required" id="div_ca_premTypeID">
+						<p class="fieldName bl2">プレミアム<br />商品区分</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required cl_prem" name="premTypeID" id="ca_premTypeID"></select>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- 備品コード -->
+					<div class="fieldUnit mrgb10 half flleft required" id="div_ca_equipCode">
+						<p class="fieldName">備品コード</p>
+						<div class="fieldBox">
+							<!-- ツールチップでヘルプを表示 -->
+							<p class="txtInFieldUnit flright help dispn" id="ca_tp_equip_code1"
+								title="営業管理部<br/>
+								&nbsp&nbsp&nbsp先頭0または1のコードをご利用ください。例)0999<br/>
+								&nbsp&nbsp&nbsp但し、商品管理部の範囲は使用しないでください。<br/>
+								販促部<br/>
+								&nbsp&nbsp&nbsp3000 - 3009の範囲又は先頭5のコードをご利用ください。例)3009<br/>
+								商品管理部<br/>
+								&nbsp&nbsp&nbsp先頭03のコードをご利用ください。例)0399<br/>
+								店舗環境企画部<br/>
+								&nbsp&nbsp&nbsp先頭3または4のコードをご利用ください。例)3999<br/>
+								&nbsp&nbsp&nbsp但し、販促部の範囲は使用しないでください。"><span>?</span></p>
+
+							<span class="limit wt40 flright mrgl240 pa_equipCode"></span>
+							<input type="text" placeholder=""
+									class="form-control wt280 ime-disabled cl_valid cl_required cl_length"
+									data-tflimit="4"
+									data-validator="maxlen:4 digit"
+									name="equipCode"
+									id="ca_equipCode" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- プレミアム商品コード -->
+					<div class="fieldUnit mrgb10 half flleft required" id="div_ca_premCode">
+						<p class="fieldName">備品コード</p>
+						<div class="fieldBox">
+							<!-- ツールチップでヘルプを表示 -->
+							<p class="txtInFieldUnit flright help dispn" id="ca_tp_prem_code1"
+								title="営業管理部<br/>
+								&nbsp&nbsp&nbsp先頭0または1のコードをご利用ください。例)0999<br/>
+								&nbsp&nbsp&nbsp但し、商品管理部の範囲は使用しないでください。<br/>
+								販促部<br/>
+								&nbsp&nbsp&nbsp3000 - 3009の範囲又は先頭5のコードをご利用ください。例)3009<br/>
+								商品管理部<br/>
+								&nbsp&nbsp&nbsp先頭03のコードをご利用ください。例)0399<br/>
+								店舗環境企画部<br/>
+								&nbsp&nbsp&nbsp先頭3または4のコードをご利用ください。例)3999<br/>
+								&nbsp&nbsp&nbsp但し、販促部の範囲は使用しないでください。"><span>?</span></p>
+
+							<span class="limit wt40 flright mrgl240 pa_premCode"></span>
+							<input type="text" placeholder=""
+									class="form-control wt280 ime-disabled cl_valid cl_required cl_length cl_prem"
+									data-tflimit="7"
+									data-validator="maxlen:7 alnum2"
+									name="premCode"
+									id="ca_premCode" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- 備品名称 -->
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName" id="lblSrchEquipNameE">備品名称</p>
+						<p class="fieldName bl2" id="lblSrchEquipNameP">プレミアム<br />商品名称</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl620 pa_equipName"></span>
+								<input type="text" placeholder=""
+									class="form-control wt660 ime-active cl_valid cl_required"
+									data-tflimit="60"
+									data-validator="maxlen:60 zenkaku"
+									name="equipName"
+									id="ca_equipName" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- 担当部署 -->
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">担当部署</p>
+						<div class="fieldBox" id="div_ca_departmentID">
+							<select class="mbn wt280 cl_valid cl_required" name="departmentID" id="ca_departmentID"></select>
+						</div>
+						<div class="fieldBox" id="div_ca_departmentID_ori">
+							<select class="mbn wt280 cl_valid cl_required" name="departmentID_ori" id="ca_departmentID_ori"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- デザイン（全体） -->
+					<div class="fieldUnitContainer flleft">
+						<div class="fieldUnit mrgb10 half flleft hta">
+							<p class="fieldName bl2">デザイン<br />（全体）</p>
+							<div class="fieldBox mainPic" id="ca_img1"></div>
+							<div class="clear"></div>
+							<div class="fieldBox mainPic2" id="">
+								<button class="btn wt280 delete" id="ca_del_img1">画像を削除</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- デザイン（拡大） -->
+					<div class="fieldUnitContainer flleft">
+						<div class="fieldUnit mrgb10 half flleft hta">
+							<p class="fieldName bl2">デザイン<br />（拡大）</p>
+							<div class="fieldBox mainPic" id="ca_img2"></div>
+							<div class="clear"></div>
+							<div class="fieldBox mainPic2" id="">
+								<button class="btn wt280 delete" id="ca_del_img2">画像を削除</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<!-- ========== プレミアム情報 =============== -->
+			<div class="fieldgroup" id="ca_premInfo_form">
+				<p class="gtitle">プレミアム情報</p>
+				<div class="fieldgroupInBox">
+					<div class="fieldUnit" id="div_premium_info2">
+						<p class="fieldName">配付期間</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap ca_distFromDate_div">
+								<input type="text" name="distFromDate" id="ca_distFromDate" class="cl_date"/>
+							</div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap ca_distToDate_div">
+								<input type="text" name="distToDate" id="ca_distToDate" class="cl_date"/>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<!-- ========== 発注 =============== -->
+			<div class="fieldgroup" id="ca_order_form">
+				<p class="gtitle">発注</p>
+
+				<div class="fieldgroupInBox" >
+
+					<!-- ========== 左側フィールドユニットコンテナ =============== -->
+					<div class="fieldUnitContainer flleft">
+
+					<!-- 発注方法 -->
+					<div class="fieldUnit mrgb10 half flleft required" id="div_ca_orderFuncTypeID">
+						<p class="fieldName">発注方法</p>
+						<div class="fieldBox" id="div_orderFuncType_e">
+							<select class="mbn wt280 cl_valid cl_required" name="orderFuncTypeID" id="ca_orderFuncTypeID"></select>
+						</div>
+						<div class="fieldBox" id="div_orderFuncType_p">
+							<select class="mbn wt280 cl_valid cl_required" name="orderFuncTypeID_p" id="ca_orderFuncTypeID_p"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- 単価（円） -->
+					<!-- <div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">単価（円）</p>
+						<div class="fieldBox">
+							<input type="text" placeholder=""
+									class="form-control wt280 ime-disabled cl_valid cl_required txtar"
+									data-tflimit="5"
+									data-validator="min:1 int:5"
+									name="orderUnitPrice" id="ca_orderUnitPrice"
+									data-filter="comma fixed:1" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div> -->
+
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">単価（円）</p>
+						<div class="fieldBox">
+							<input type="text" placeholder=""
+									class="form-control wt280 ime-disabled cl_valid cl_required txtar"
+									data-tflimit="6"
+									data-validator="min:0.1 decimal:5"
+									name="orderUnitPrice" id="ca_orderUnitPrice"
+									data-filter="comma fixed:1" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- 箱入数 -->
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">箱入数</p>
+						<div class="fieldBox">
+							<input type="text" placeholder=""
+									class="form-control wt280 ime-disabled cl_valid cl_required txtar"
+									data-tflimit="3"
+									data-validator="min:1 int:3"
+									name="numOfLot"
+									id="ca_numOfLot" data-filter="comma" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<!-- チェックボックス -->
+					<div class="fieldUnit mrgb10 flleft half mrgl30" id="div_ca_flag_odrStore">
+						<div class="fieldBox noName">
+							<label class="checkbox ib" for="check0">
+							<input type="checkbox" value="" name="flagOdrStore" id="ca_flagOdrStore"
+									data-toggle="checkbox">発注可能な店舗のみ入力する</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+					<!-- 最大発注箱数 -->
+					<div class="fieldUnit mrgb10 half flleft" id="div_ca_maxOrderLotQy"">
+						<p class="fieldName">最大発注箱数</p>
+						<div class="fieldBox">
+							<input type="text" placeholder=""
+									class="form-control wt280 ime-disabled txtar"
+									data-tflimit="3"
+									data-validator="min:1 int:3"
+									name="maxOrderLotQy" id="ca_maxOrderLotQy"
+									data-filter="comma" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<!-- ========== 右側フィールドユニットコンテナ =============== -->
+				<div class="fieldUnitContainer flleft mrgl40" id="div_ca_grid_order">
+
+					<!-- 店舗別例外設定グリッド -->
+					<div class="table mrgl20 mrgb10 half flleft">
+						<p class="gtitle" id=ldlStoreExtraConfig>店舗別例外設定</p>
+						<p class="gtitle" id=ldlStoreOdrAble>発注可能店舗</p>
+						<div class="cl_datagrid_container" id="ca_datagrid_order" style="width:420px; height: 480px;"></div>
+					</div>
+					<label>　</label>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			</div>
+
+			<!-- ========== 発注日情報 =============== -->
+			<div class="fieldgroup" id="ca_orderDate_form">
+					<p class="gtitle">発注日</p>
+
+					<div class="fieldgroupInBox">
+
+						<!-- チェックボックス -->
+						<div class="fieldUnit mrgb10 flleft half mrgl30" id="div_ca_flagAN_OFF">
+							<div class="fieldBox noName">
+								<label class="checkbox ib" for="check1">
+								<input type="checkbox" value="" name="flagAuto" id="ca_flagAuto"
+										data-toggle="checkbox">発注サイクルを指定して自動で締めを行う（定時）</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- 発注サイクル -->
+						<div class="fieldUnit mrgb10 half flleft mrgl40" id="div_ca_orderCycle">
+							<p class="fieldName">発注サイクル</p>
+							<div class="fieldBox">
+								<select class="mbn wt280" name="orderCycle" id="ca_orderCycle"></select>
+							</div>
+						</div>
+
+						<!-- 発注締めタイミング -->
+						<div class="fieldUnit mrgb10 half flleft" id="div_ca_orderCountTimingID">
+							<p class="fieldName bl2">発注締め<br />タイミング</p>
+							<div class="fieldBox">
+								<select multiple class="mbn wt520" name="orderCountTiming" id="ca_orderCountTiming"></select>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- チェックボックス -->
+						<div class="fieldUnit mrgb10 flleft half mrgl30" id="div_ca_flagAN">
+							<div class="fieldBox noName">
+								<label class="checkbox ib" for="check1">
+								<input type="checkbox" value="" name="flagAN" id="ca_flagAN"
+											data-toggle="checkbox">手動で締めを行う（随時）</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- 説明文 -->
+						<div class="fieldUnit mrgb10 flleft mrgl30 hideRel">
+							<div class="fieldBox noName">
+								<label>定時、随時のどちらかはチェックが必要です。</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+					</div>
+				</div>
+
+				<!-- ======= 納品予定日 ================ -->
+				<div class="fieldgroup" id="ca_leadTime_form">
+					<p class="gtitle">納品予定日</p>
+					<div id="setcust" class="fieldgroupInBox setcust">
+						<div class="fieldUnit mrgb10 flleft wt480" id="div_premium_info2">
+							<p class="fieldName">リードタイム</p>
+							<div class="fieldBox">
+								<input type="text" placeholder=""
+									class="form-control wt80 ime-disabled cl_valid txtar"
+									style="float: left;" data-tflimit="3"
+									data-validator="min:1 int:3" name="leadTime" id="ca_leadTime" />
+								<p class="txtInFieldUnit pdg flleft">日</p>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<!-- ========== 取引先設定 ===================== -->
+				<div class="fieldgroup" id="ca_vendor_form">
+
+					<p class="gtitle">取引先設定</p>
+
+					<div class="fieldgroupInBox">
+
+						<!-- ========= 左側ユニットコンテナ =================== -->
+						<div class="fieldUnitContainer flleft">
+
+							<!-- 発注先 -->
+							<div class="fieldUnit mrgb10 half flleft required" id="div_ca_equipVend">
+								<p class="fieldName">発注先</p>
+								<div class="fieldBox">
+									<input type="text" placeholder=""
+										class="form-control wt280 ime-disabled cl_valid cl_required"
+										name="equipVend" id="ca_equipVend" data-tflimit="24" />
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- 説明文 -->
+							<div class="fieldUnit mrgl10 hideRel">
+								<div class="fieldUnit mrgb10 half flleft">
+									<div class="fieldBox noName flleft">
+										<label>取引先マスタ(備品)に登録したコード、名称を指定します。</label>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<!-- ========= 右側ユニットコンテナ =================== -->
+						<div class="fieldUnitContainer flleft mrgl40" id="div_ca_grid_vend">
+
+							<!-- 店舗別例外設定データグリッド -->
+							<div class="table mrgl20 mrgb10 half flleft">
+								<p class="gtitle">店舗別例外設定</p>
+								<div class="cl_datagrid_container" id="ca_datagrid_vend"  style="width:420px; height: 480px;"></div>
+							</div>
+							<label>　</label>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<!-- ========= 店舗通達メモ =================== -->
+				<div class="fieldgroup" id="ca_notice_form">
+					<p class="gtitle">店舗通達メモ</p>
+					<div id="setmemo" class="fieldgroupInBox setmemo">
+						<div class="fieldUnit flleft mrgb10 hta wt100pct">
+							<div class="fieldBox" style="padding-left: 25px;">
+								<span class="limit wt40 pa_storeNoticeMemo cl_counter"></span>
+								<textarea rows="3" class="form-control wt100pct cl_textarea" id="ca_storeNoticeMemo"
+									data-tflimit="100" data-validator="maxlen:100" name="storeNoticeMemo"/></textarea>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<!--<div class="fieldgroup" id="ca_notice_form">
+					<p class="gtitle">店舗通達メモ</p>
+					<div id="setmemo" class="fieldgroupInBox setmemo">
+						<div class="fieldUnit flleft mrgb10 hta wt100pct">
+							<div class="fieldBox" style="padding-left: 25px;">
+								<span class="limit wt40 pa_storeNoticeMemo cl_counter"></span>
+									<textarea rows="3" class="form-control wt100pct cl_textarea"
+										data-tflimit="100" data-validator="maxlen:100" name="storeNoticeMemo"
+										id="ca_storeNoticeMemo">
+									</textarea>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+			--></div><!-- /#content -->
+
+			<div id="mainColumnFooter" class="noLeftColumn x2"></div><!-- /#mainColumnFooter -->
+
+		</div><!-- /#mainColumninBox -->
+
+		</div><!-- /#mainColumn -->
+
+	</div><!-- / #container -->
+
+</div>
+
+</body>
+</html>

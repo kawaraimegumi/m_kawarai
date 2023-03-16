@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>商品・在庫照会</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="../AMSIV0010/AMSIV0010common.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMSIV0040.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+ 	<script src="../../AMPA/AMPAV0030/AMPAV0030.js"></script>
+	<script src="../../AMPA/AMPAV0040/AMPAV0040.js"></script>
+
+    <script src="../AMSIV0010/AMSIV0010lib.js"></script>
+    <script src="dummy.js"></script>
+    <script src="AMSIV0040.js"></script>
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<div id="container" class="amsiv-container">
+	<!-- 店舗検索画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft required">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" data-validator="required" class="form-control cl_valid wt280 flleft" id="ca_srchOrgID">
+							<!-- <input type="hidden" id="ca_srchOrgID"> -->
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+                    <hr/>
+                    
+					<div class="fieldUnit mrgb20 flleft required">
+						<p class="fieldName">タグコード</p>
+						<div class="fieldBox">
+							<!-- focusするとプルダウンで履歴を表示 -->
+							<input type="text" placeholder="" class="form-control cl_valid wt280 flleft ime-disabled"  data-validator="required maxlen:15 digit" data-xlimit="len:15 digit" id="ca_srchTagCode"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+                    
+					<div class="fieldUnit required">
+						<p class="fieldName">対象期間</p>
+						<div class="fieldBox">
+                            <div class="datepicker_wrap"><input type="text" id="ca_srchStDate" class="cl_date cl_valid" data-validator="required"></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+                            <div class="datepicker_wrap"><input type="text" id="ca_srchEdDate" class="cl_date cl_valid" data-validator="required"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+                    
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName"></p>
+						<div class="fieldBox ">
+							<label class="checkbox ib" for="ca_srchZeroChk"><input type="checkbox" id="ca_srchZeroChk" data-toggle="checkbox" checked>０値非表示</label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button id="searchStock" class="btn btn-info wt280">表示</button>
+						</div>
+
+						<div class="clear"></div>
+					</div>
+
+				</div>
+				<p id="searchAgain" class="dispn btn">検索条件を再指定</p>
+				<div class="clear"></div>
+			</div>
+
+            <div id="resultArea"></div>
+
+            <!-- 検索結果 -->
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+<div class="clear"></div>
+</div>	<!-- ca_main -->
+
+<div id="pagerArea" class="dispn">
+	<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+	<div class="pagination-wrapper"></div>
+	<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+	<div class="pagination-wrapper"></div>
+</div>
+
+<!-- ================================================================ -->
+<!-- ここからテンプレート -->
+<script id="ResultLayout" type="text/template">
+    <div class="itemView"></div>
+    <div class="dayListView"></div>
+</script>
+
+
+<!-- 商品リスト -->
+<!-- 商品情報リスト -->
+<script id="ItemView" type="text/template">
+    <% var item = it.model.attributes %>
+    <div class="fieldgroup" id="<%- item.tagCode %>">
+		<!-- 商品情報リスト(AMSIV0010GetRsp.itemList) -->
+		<div class="fieldgroupInBox view">
+			<div class="fieldUnit mrgb10 flleft mrgr220">
+				<p class="fieldName">タグコード</p>
+				<div class="fieldBox">
+					<p class=" txtbox wt240 txt24">
+						<a class="gotoAMMSV0100 txt-closed-on" style="cursor: pointer;">
+							<span><%- item.tagCode %></span>
+						</a>
+					</p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fieldUnit mrgb10 flleft">
+				<p class="fieldName">部門</p>
+				<div class="fieldBox">
+					<p class=" txtbox txt-ellipsis wt440 txt24"><span><%- item.divCode %></span>：<span ><%- item.divName %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="fieldUnit mrgb10 mrgr20 flleft">
+				<p class="fieldName">品種</p>
+				<div class="fieldBox">
+					<p class=" txtbox txt-ellipsis wt440 txt24"><span><%- item.itgrpCode %></span>：<span><%- item.itgrpName %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fieldUnit mrgb10 mrgr20 flleft">
+				<p class="fieldName">メーカー品番</p>
+				<div class="fieldBox">
+					<p class=" txtbox txt-ellipsis wt180 txt24"><span ><%- item.makerHinban %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="fieldUnit mrgb10 flleft mrgr20">
+				<p class="fieldName">メーカー</p>
+				<div class="fieldBox">
+					<p class=" txtbox txt-ellipsis wt440 txt18" ><span><%- item.makerCode %></span>：<span><%- item.makerName %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fieldUnit mrgb10 flleft mrgr20">
+				<p class="fieldName">商品名</p>
+				<div class="fieldBox">
+					<p class=" txtbox txt-ellipsis wt440 txt18"><span><%- item.itemName %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="fieldUnit mrgb10 flleft mrgr20">
+				<p class="fieldName">サブ1</p>
+				<div class="fieldBox">
+					<p class="txtbox txt-ellipsis wt160"><span><%- item.sub1Name %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fieldUnit mrgb10 flleft mrgr20">
+				<p class="fieldName">サブ2</p>
+				<div class="fieldBox">
+					<p class="txtbox txt-ellipsis wt160"><span><%- item.sub2Name %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fieldUnit mrgb10 flleft mrgr20">
+				<p class="fieldName">カラー</p>
+				<div class="fieldBox">
+					<p class="txtbox txt-ellipsis wt160"><span><%- item.colorName %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fieldUnit mrgb10 flleft">
+				<p class="fieldName">柄</p>
+				<div class="fieldBox">
+					<p class="txtbox txt-ellipsis wt160"><span><%- item.designName %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="fieldUnit mrgb10 flleft mrgr20">
+				<p class="fieldName">シーズン</p>
+				<div class="fieldBox">
+					<p class=" txtbox wt140"><span><%- it.gettypename(it.amcm_type.AMCM_TYPE_SEASON, item.season, true) %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fieldUnit mrgb10 flleft">
+				<p class="fieldName">年度</p>
+				<div class="fieldBox">
+					<p class="txtbox wt80"><span><%- item.year %></span></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</script>
+
+<script id="DayListView" type="text/template">
+    <div class="table">
+        <table class="hilight" id="ca_table">
+		<thead>
+			<tr>
+				<th width="100px"><span>日付</span></th>
+				<th width="100px"><span>前日残在庫数</span></th>
+				<th width="100px"><span>メーカー入荷数</span></th>
+				<th width="100px"><span>メーカー返品数</span></th>
+				<th width="100px"><span>移動入荷数</span></th>
+				<th width="100px"><span>移動出荷数</span></th>
+				<th width="100px"><span>センター入荷数</span></th>
+				<th width="100px"><span>仕入エラー・訂正</span></th>
+				<th width="100px"><span>移動エラー・訂正</span></th>
+				<th width="100px"><span>売上数</span></th>
+				<th width="100px"><span>売上返品数</span></th>
+				<th width="100px"><span>不良品数</span></th>
+				<th width="100px"><span>当日残在庫数</span></th>
+			</tr>
+		</thead>
+		<tbody>
+            <% it.dayList.each(function(model){ %>
+            <% var item = model.attributes; %>
+            <tr id="<%- model.cid %>" class="csptr">
+			    <td><%- it.dateFormat(item.date, 'yyyy/mm/dd') %></td>
+			    <td class="txtar"><%- it.comma(item.lastStockQy) %></td>
+			    <td class="txtar"><%- it.comma(item.makerDelivQy) %></td>
+			    <td class="txtar"><%- it.comma(item.makerReturnQy) %></td>
+			    <td class="txtar"><%- it.comma(item.transInQy) %></td>
+			    <td class="txtar"><%- it.comma(item.transOutQy) %></td>
+			    <td class="txtar"><%- it.comma(item.centerDelivQy) %></td>
+			    <td class="txtar"><%- it.comma(item.delivErrCorrectQy) %></td>
+			    <td class="txtar"><%- it.comma(item.transErrCorrectQy) %></td>
+			    <td class="txtar"><%- it.comma(item.saleQy) %></td>
+			    <td class="txtar"><%- it.comma(item.saleReturnQy) %></td>
+			    <td class="txtar"><%- it.comma(item.defectiveQy) %></td>
+			    <td class="txtar"><%- it.comma(item.stockQy) %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    </div>
+</script>
+
+<script id="SlipListView" type="text/template">
+    <div class="dialog-content">
+    <div class="fieldgroup clearfix">
+		<div class="fieldUnit mrgb10 flleft mrgr20">
+			<p class="fieldName">日付</p>
+			<div class="fieldBox">
+				<p style="margin-top:13px;" class="txtbox wt80"><span><%- it.dateFormat(it.item.get('date'), 'yyyy/mm/dd') %></span></p>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="fieldUnit mrgb10 flleft mrgr20">
+			<p class="fieldName">前日残在庫数</p>
+			<div class="fieldBox">
+				<p style="margin-top:13px;" class="txtbox wt80"><span><%- it.comma(it.item.get('lastStockQy')) %></span></p>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="fieldUnit mrgb10 flleft mrgr20">
+			<p class="fieldName">当日残在庫数</p>
+			<div class="fieldBox">
+				<p style="margin-top:13px;" class="txtbox wt80"><span><%- it.comma(it.item.get('stockQy')) %></span></p>
+			</div>
+			<div class="clear"></div>
+		</div>
+    </div>
+    
+    <div class="table">
+        <table class="hilight" id="ca_table">
+		<thead>
+			<tr>
+				<th width="100px"><span>タイプ</span></th>
+				<th width="100px"><span>伝票番号／</span><br><span>POSレシート番号</span></th>
+				<th width="100px"><span>時刻</span></th>
+				<th width="100px"><span>数量</span></th>
+				<th width="100px"><span>在庫数</span></th>
+			</tr>
+		</thead>
+		<tbody>
+            <% it.model.slipList.each(function(model){ %>
+            <% var item = model.attributes; %>
+            <tr id="<%- model.cid %>">
+			    <td><%- it.getSlipTypeName(item.slipType) %></td>
+			    <td><%- item.slipNo %></td>
+			    <td><%- it.timeFormat(item.time) %></td>
+			    <td class="txtar"><%- it.comma(item.qy) %></td>
+			    <td class="txtar"><%- it.comma(item.tmpStockQy) %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</script>
+
+<!-- ================================================================ -->
+
+</body>
+</html>
+

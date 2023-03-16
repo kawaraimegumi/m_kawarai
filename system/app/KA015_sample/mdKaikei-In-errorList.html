@@ -1,0 +1,505 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>会計</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../css/style.css">
+	<script src="../../js/function.js"></script>
+
+<!-- <script src="../../../js/jquery-1.8.3.js"></script>
+<script src="../../js/jquery-ui-1.10.3.custom.min.js"></script> -->
+<script src="../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/bootstrap-select.js"></script>
+<script src="../../js/bootstrap-switch.js"></script>
+<script src="../../js/flatui-checkbox.js"></script>
+<script src="../../js/flatui-radio.js"></script>
+<script src="../../js/jquery.tagsinput.js"></script>
+<script src="../../js/jquery.placeholder.js"></script>
+<script src="../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../js/application.js"></script>
+<script src="../../js/jquery.skOuterClick.js"></script>
+<script src="../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+	<script src="../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../js/jquery.dragtable.js"></script>
+
+	<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../js/clcom.js"></script>
+	<script src="../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../AMPA/AMPAV0020/AMPAV0020.js"></script>
+	<script src="../AMPA/AMPAV0030/AMPAV0030.js"></script>
+	<script src="../AMPA/AMPAV0040/AMPAV0040.js"></script>
+	<script src="../AMPA/AMPAV0070/AMPAV0070.js"></script>
+
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+
+<!-- 動作疑似再現用 -->
+<script>
+
+</script>
+
+
+</head>
+
+<body>
+<div id="ca_main">
+<script src="KA015.js"></script>
+
+<div id="header">
+	<p class="back"></p>
+	<h1 class="contextmenu">会計</h1>
+	<div class="rightBox">
+		<span class="logo"></span>
+		<span class="logout"><a href="../../../index.html">ログアウト</a></span>
+		<span class="user">Username</span>
+
+	</div>
+</div><!-- /#header -->
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+	<!-- 商品選択補助画面 -->
+	<div id="ca_AMPAV0030_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0040_dialog" class="cl_dialog"></div>
+	<!-- 組合せ商品選択補助画面 -->
+	<div id="ca_AMPAV0070_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<div id="title">
+			<h2>入荷エラーリスト出力</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+
+		<div id="content">
+
+
+			<div class="fieldgroup">
+				<div id="search" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_bus_unit">
+								<!-- <option value="0" selected>AOKI</option>
+								<option value="1">ORIHICA</option>-->
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 店舗選択テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_store" disabled />
+							<!--button class="btn btn-default wt140 flleft mrgl10" onclick="location.href=''">参照...</button-->
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 商品選択テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">商品</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_item" disabled />
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_item_select">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 組合せ商品選択テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">組合せ商品</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_bundle" disabled />
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_bundle_select">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 商品属性テスト用その１ -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">サブクラス１</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_itemattr_subclass1">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 商品属性テスト用その2 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">サブクラス２</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_itemattr_subclass2">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 商品属性テスト用その3 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">国</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_itemattr_season">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 区分テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">組織階層</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_org_level">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 品種入力テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_itemkind" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 取引先テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">取引先</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_vendor" />
+							<input type="hidden" id="ca_vendor_id" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 商品分類体系テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">商品分類体系</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_igfunc" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 商品分類階層テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">商品分類階層</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_iglevel" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- カラーテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">カラー</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_color" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- サイズテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">サイズ</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_size" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 商品分類テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">商品分類</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_itgrp" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 組織体系テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">組織体系</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_orgfunc" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 組織階層テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">組織階層</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_orglevel" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 組織テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">組織</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_org" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 組織体系セレクタテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">組織体系</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_orgfunc_select">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 組織階層セレクタテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">組織階層</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_orglevel_select">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 商品分類体系セレクタテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">商品分類体系</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_itgrpfunc_select">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 商品分類階層セレクタテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">商品分類階層</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_itgrplevel_select">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- ユーザーコードテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">ユーザー</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_user" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- タグコードテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">タグコード</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_tagcode" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- メーカー品番テスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">メーカー品番</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_makeritemcode" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- カラーテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">カラー</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_color" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- 備品用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">備品(スタブ)</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_equipID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- サイズグループセレクタテスト用 -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">サイズグループ</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280"  id="ca_sizegrpID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- サイズパターン -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">サイズパターン</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_sizeptnID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- メニュー -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">メニュー</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_menuID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- ロール -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">ロール</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_roleID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- セットアップ -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">セットアップ</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_setupID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- PDFアップロード -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flright ">
+						<div class="fieldBox noName flleft" id="ca_csvinput1">
+							<input type="file" class="hide-input" id="file_csv_uptake"/>
+							<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">PDFアップロード</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">対象日</p>
+						<div class="fieldBox">
+							<div class="inputDatepicker"><input type="text" class="input_datepicker" id="ca_ymd" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn btn-info wt280" id="ca_output" >表示</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+		</div>
+		<!-- /#content -->
+
+
+
+
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+<script src="../../js/jquery.contextmenu.js"></script>
+<script>
+    $('.contextmenu').contextmenu({
+        'ctrl':false,
+        'menu':{
+            '編集':'#',
+            '複製':'#',
+            '削除':'#'
+        }
+    });
+</script>
+
+<!-- Load JS here for greater good =============================-->
+<!--
+-->
+
+</div> <!-- / #ca_main -->
+</body>
+</html>

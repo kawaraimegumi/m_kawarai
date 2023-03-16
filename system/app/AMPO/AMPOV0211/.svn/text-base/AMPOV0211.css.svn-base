@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+p.fieldName.nameLong {
+    width:140px;
+}
+
+.fieldgroup .fieldUnit.wid120{
+    width:120px;
+}
+.fieldgroup .fieldUnit.wid140{
+    width:140px;
+}
+.fieldgroup .fieldUnit.wid160{
+    width:160px;
+}
+.fieldgroup .fieldUnit.wid180{
+    width:160px;
+}
+.wt480 {
+    width : 480px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.termBox{
+    padding : 10px;
+}
+.three_quarters {
+  width: 60%;
+}
+.wt580 {
+    width : 580px;
+}
+.wt520 {
+    width : 520px;
+}

@@ -1,0 +1,48 @@
+<div id="ca_AMMSV0102_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>上代履歴</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="AMMSV0102_price_content">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="table">
+						<table class="hilight " id="ca_table_price_hist">
+						<thead id="ca_table_price_hist_thead">
+							<tr>
+								<th>適用開始日</th>
+								<th>適用終了日</th>
+								<th>上代(税抜)</th>
+								<th>上代変更対象</th>
+							</tr>
+						</thead>
+						<tbody id="ca_table_price_hist_tbody">
+						</tbody>
+						</table>
+						<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+						<script id="ca_rec_template_hist" type="text/template">
+							<tr>
+								<td class="ca_c_link"><%- clutil.dateFormat(priceApplyFrom, 'yyyy/mm/dd') %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(priceApplyTo, 'yyyy/mm/dd') %></td>
+								<td class="ca_c_link txtar"><%- clutil.comma(priceHist) %></td>
+								<td class="ca_c_link"><%- priceHistOrg %></td>
+							</tr>
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- //mainColumninBox -->
+		<div id="mainColumnFooter">
+			<!--  <p class="apply"><a id="ca_AMMSV0102_commit">戻る</a></p>		-->
+			<p class="cancel" style="position: relative; width: 100%;"><a id="ca_AMMSV0102_commit">戻る</a></p>
+		</div>
+	</div>
+</div>
+</div>

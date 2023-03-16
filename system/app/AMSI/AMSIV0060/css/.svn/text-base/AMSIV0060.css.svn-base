@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+.table--stock thead > tr > th {
+  font-size: 18px;
+  background-color: white;
+  color: #98a9b0;
+  padding-top: 16px;
+  padding-left: 0;
+  font-weight: bold;
+}
+.table--stock thead > tr > td.stock--num {
+  font-size: 24px;
+  text-align: right;
+  font-weight: bold;
+  color: #029df4;
+}
+
+.table--size thead > tr > th {
+  font-size: 13px;
+  color: #029fd4;
+}
+
+.dispn {
+  display: none;
+}
+
+.col-right label {
+  display: block;
+  width: 100%;
+}
+
+/* MD-1777 20180404 START*/
+.bus_hours {
+  margin-top: -20px;
+}
+/* MD-1777 20180404 END*/

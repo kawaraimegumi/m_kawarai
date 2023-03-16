@@ -1,0 +1,362 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>プライス別棚卸</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="AMCPV0020.css">
+<link href="../../../css/multiple-select.css" rel="stylesheet">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+<script src="./AMCPV0021.js"></script>
+
+<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+<style>
+#ca_tp_season+.tooltip .tooltip-inner {
+	text-align: left;
+	width: 300px;
+	margin-left: 160px;
+}
+</style>
+
+
+</head>
+
+<body class="cl_body_hidden">
+
+	<script src="AMCPV0020.js"></script>
+
+	<div id="ca_main">
+		<div id="container">
+
+			<!-- 店舗選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+			<div id="ca_AMCPV0021_dialog" class="cl_dialog"></div>
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+					<!-- #title -->
+
+					<div id="content">
+
+						<div class="fieldgroup" id="ca_base_form">
+							<div class="fieldgroupInBox">
+								<div class="fieldUnit mrgb10 half flleft" id="div_ca_unitID">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox" id="div_ca_unitID">
+										<select class="mbn wt280" id="ca_unitID"></select>
+										<input type="hidden" placeholder="" class="form-control wt280 flleft" name="srchID" id="ca_srchID" />
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 required">
+									<p class="fieldName">店舗</p>
+									<div class="fieldBox" id="div_ca_store">
+										<input type="text" placeholder="" class="form-control wt280 flleft cl_valid cl_required" name="storeID" id="ca_storeID"/>
+										<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+									<p class="fieldName">社員番号入力</p>
+									<div class="fieldBox" id="div_ca_staff">
+										<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" name="staffID" id="ca_staffID" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+									<p class="fieldName">作成日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap">
+											<input type="text" class="cl_date cl_valid cl_required ime-disabled" name="srchDate" id="ca_srchDate" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+							</div>
+						</div>
+
+						<div class="fieldgroup" id="ca_info1">
+							<div class="fieldgroupInBox">
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10">
+									<p class="flleft frwkComment">①プライス別棚卸報告情報を入力してください。</p>
+								</div>
+
+								<div class="fieldUnit mrgb10 required">
+									<p class="fieldName">報告名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright pa_reportName" style="margin-left: 440px;"></span>
+										<input type="text" placeholder="" class="form-control wt480 flleft cl_valid cl_required" data-tflimit="30" data-validator="maxlen:30 zenkaku" id="ca_reportName" name="reportName" />
+										<input type="hidden" placeholder="" class="form-control" name="recno" id="ca_recno" />
+										<input type="hidden" placeholder="" class="form-control" name="state" id="ca_state" />
+										<input type="hidden" placeholder="" class="form-control" name="cntPrcRprtID" id="ca_cntPrcRprtID" value="0" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required"
+									id="div_ca_stditgrp">
+									<p class="fieldName">品種</p>
+									<div class="fieldBox">
+										<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" name="stditgrp" id="ca_stditgrp" />
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="fieldUnit mrgb20 half flleft required">
+									<p class="fieldName">シーズン</p>
+									<div class="fieldBox">
+
+										<!-- ツールチップでヘルプを表示 -->
+										<p class="txtInFieldUnit flright help" id="ca_tp_season"
+											title="シーズンを指定すると、ＨＴローディング結果からそのシーズンのみを使用して、プライス別棚卸の結果を表示します。">
+											<span style="margin-left: 200px;">?</span>
+										</p>
+
+										<select multiple class="mbn wt480 cl_valid cl_required flright" name="seasonList" id="ca_seasonList"></select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit">
+									<p class="flleft frwkComment">競合店名を登録します。</p>
+								</div>
+
+								<div class="fieldUnit mrgb10">
+									<div class="fieldBox" id="div_ca_targetName">
+										<span class="limit wt40 flright pa_targetName1" style="margin-left: 200px;"></span>
+										<input type="text" placeholder="" class="form-control wt240 flleft" data-tflimit="16" data-validator="maxlen:16" name="targetName1" id="ca_targetName1" />
+										<span class="limit wt40 flright pa_targetName2" style="margin-left: 200px;"></span>
+										<input type="text" placeholder="" class="form-control wt240 flleft" data-tflimit="16" data-validator="maxlen:16" name="targetName2" id="ca_targetName2" />
+										<span class="limit wt40 flright pa_targetName3" style="margin-left: 200px;"></span>
+										<input type="text" placeholder="" class="form-control wt240 flleft" data-tflimit="16" data-validator="maxlen:16" name="targetName3" id="ca_targetName3" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup" id="ca_info2">
+							<div class="fieldgroupInBox">
+								<div class="fieldUnit mrgb10">
+									<p class="flleft frwkComment">②プライス別棚卸のHTローディング結果を選択してください（誤って選択した場合は、再度データ選択を行ってください）。</p>
+								</div>
+								<div class="indent flleft"></div>
+
+								<div class="fieldUnit flleft">
+									<div class="fieldBox noName">
+										<button class="btn btn-default mrgr10 wt140" id="ca_btn_data_select">データ選択</button>
+									</div>
+								</div>
+
+								<div class="fieldUnit flleft mrgb10 hta">
+									<div class="fieldBox table mrgl10 noName">
+										<p>HTローディング結果</p>
+										<span class="errorInside" style="display:none;">テーブル内にエラー箇所があります</span>
+										<table class="hilightRow" id="ca_cntprc_table">
+											<thead>
+												<tr>
+													<th class="wt120">ローディング日</th>
+													<th class="wt120">ローディング時刻</th>
+													<th class="wt120">HT-ID</th>
+												</tr>
+											</thead>
+											<tbody id="ca_cntprc_table_tbody"></tbody>
+										</table>
+<script id="ca_cntprc_template" type="text/x-jquery-tmpl">
+								<tr id="${accessLogID}">
+									<td>
+										${cntPrcDateDisp}
+										<input type="hidden" name="accessLogID" id="ca_accessLogID" value="${accessLogID}"/>
+										<input type="hidden" name="cntPrcRprtID" id="ca_cntPrcRprtID" value="${cntPrcRprtID}"/>
+										<input type="hidden" name="cntPrcDate" id="ca_cntPrcDate"  value="${cntPrcDate}"/>
+									</td>
+									<td>
+										${cntPrcTimeDisp}
+										<input type="hidden" name="cntPrcTime" id="ca_cntPrcTime"  value="${cntPrcTime}"/>
+									</td>
+									<td>
+										${htid}
+										<input type="hidden" name="htid" id="ca_htid" value="${htid}"/>
+									</td>
+								</tr>
+</script>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgt30 mrgb10">
+									<p class="flleft frwkComment">③ローディング結果の振り分けを行うための商品属性を選択し、「登録ボタン」を押してください。</p>
+								</div>
+
+								<div id="div_ca_itemAttr">
+									<div class="indent flleft"></div>
+									<div class="fieldUnit mrgt-10 mrgb10 mrgr10 flleft " id="div_ca_itemAttr1">
+										<p class="fieldName">商品属性1</p>
+										<div class="fieldBox">
+											<select class="mbn wt280 cl_valid " name="itemAttr1" id="ca_itemAttr1"></select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldUnit mrgt-10 mrgb10 flleft">
+										<div class="fieldBox noName mrgb10" id="div_ca_itemAttr1Value">
+											<select multiple class="mbn wt480 cl_valid " name="itemAttr1Value" id="ca_itemAttr1Value"></select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+									<div class="indent flleft"></div>
+									<div class="fieldUnit mrgb10 mrgr10 flleft" id="div_ca_itemAttr2">
+										<p class="fieldName">商品属性2</p>
+										<div class="fieldBox">
+											<select class="mbn wt280 cl_valid" name="itemAttr2" id="ca_itemAttr2"></select>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div class="fieldUnit mrgb10 flleft">
+										<div class="fieldBox noName" id="div_ca_itemAttr2Value">
+											<select multiple class="mbn wt480 flleft cl_valid cl_required" name="itemAttr2Value" id="ca_itemAttr2Value"></select>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 flleft">
+										<div class="fieldBox noName" id="div_ca_btn">
+											<button class="btn btn-default wt140 mrgl830" id="ca_btn_make_report">登録</button>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="fieldUnit mrgt30 mrgb10">
+									<p class="flleft frwkComment">④競合店の品揃え数と自店改善数を入力してください。</p>
+								</div>
+								<div class="fieldUnit flleft mrgb10 hta">
+									<div class="fieldBox table mrgb0">
+										<p>プライス別棚卸明細</p>
+										<table class="hilightRow" id="ca_axis_table">
+											<thead>
+												<tr>
+													<th class="wt180">商品属性１の値</th>
+													<th class="wt180">商品属性２の値</th>
+													<th class="wt120">登録状態</th>
+												</tr>
+											</thead>
+											<tbody id="ca_axis_table_tbody"></tbody>
+										</table>
+<script id="ca_axis_template" type="text/x-jquery-tmpl">
+								<tr class="csptr" id="${no}">
+									<td class="cl_axis">
+										${itemAttr1Name}
+										<input type="hidden" name="cntPrcAxisID" id="ca_cntPrcAxisID" value="${cntPrcAxisID}"/>
+										<input type="hidden" name="itemAttr1" id="ca_itemAttr1" value="${itemAttr1}"/>
+										<input type="hidden" name="itemAttr1Value" id="ca_itemAttr1Value"  value="${itemAttr1Value}"/>
+										<input type="hidden" name="itemAttr1Name" id="ca_itemAttr1Name"  value="${itemAttr1Name}"/>
+									</td>
+									<td class="cl_axis">
+										${itemAttr2Name}
+										<input type="hidden" name="itemAttr2" id="ca_itemAttr2" value="${itemAttr2}"/>
+										<input type="hidden" name="itemAttr2Value" id="ca_itemAttr2Value"  value="${itemAttr2Value}"/>
+										<input type="hidden" name="itemAttr2Name" id="ca_itemAttr2Name"  value="${itemAttr2Name}"/>
+									</td>
+									<td class="cl_axis">
+										${registStatusDisp}
+										<input type="hidden" name="registStatus" id="ca_registStatus" value="${registStatus}"/>
+									</td>
+								</tr>
+</script>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgt30 mrgb10">
+									<p class="flleft frwkComment">⑤全ての行の品揃え数と自社改善数を入力したら、「プライス別棚卸報告作成ボタン」を押して、報告書作成画面へ遷移してください。</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+
+				</div>
+				<!-- /#mainColumninBox -->
+
+			</div>
+			<!-- /#mainColumn -->
+
+		</div>
+		<!-- / #container -->
+
+		<div class="clear"></div>
+	</div>
+</body>
+</html>

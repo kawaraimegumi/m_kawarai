@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+.wt480 {
+    width : 480px;
+}
+.wt380 {
+    width : 380px;
+}
+.wt240 {
+    width : 240px;
+}
+.wt420 {
+    width : 420px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.mrgl200 {
+    margin-left: 200px;
+}
+.mrgl340 {
+    margin-left: 340px;
+}
+.mrgl380 {
+    margin-left: 380px;
+}
+.termBox{
+    padding : 10px;
+}
+.fieldgroup .fieldUnit.half.ampo0060_org {
+width: 340px;
+}
+
+.mrgt12 {
+    margin-top: 12px;
+}
+
+.liningLabel {
+    /*position: absolute;*/
+    color: #667180;
+    font-size: 82%;
+    /*padding-top: 14px;*/
+    line-height: 1.3;
+    /*width: 100px;*/
+    text-align: right;
+    /*padding-right: 20px;*/
+}

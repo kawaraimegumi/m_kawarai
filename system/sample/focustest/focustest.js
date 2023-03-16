@@ -1,0 +1,3 @@
+$(function () {
+  clutil.enterFocusMode($('body'));
+});

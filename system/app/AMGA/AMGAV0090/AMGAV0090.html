@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>バスケット分析</title>
+
+<link href="../public/css/bootstrap.css" rel="stylesheet">
+<link href="../public/css/prettify.css" rel="stylesheet">
+<link href="../public/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style.css">
+
+<script src="../public/js/jquery-1.8.3.min.js"></script>
+<script src="../public/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../public/js/jquery.ui.touch-punch.min.js"></script>
+
+<!-- Loading ui-folder -->
+<script type="text/javascript" src="../private/js/ui-folder.js"></script>
+
+<script type="text/javascript" src="../public/js/jquery.easing-1.3.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../public/js/underscore.js"></script>
+<script type="text/javascript" src="../public/js/backbone.js"></script>
+<script type="text/javascript" src="../public/js/json2.js"></script>
+<script type="text/javascript" src="../public/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../public/js/jquery.contextmenu.js"></script>
+
+<script type="text/javascript" src="../public/js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../public/js/jquery.fixedheadertable.js"></script>
+<script type="text/javascript" src="../public/js/jquery.skOuterClick.js"></script>
+
+<script type="text/javascript" src="../public/js/jquery-ui.js"></script>
+<script type="text/javascript" src="../public/js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.form.js"></script>
+<script type="text/javascript" src="../public/js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.slimscroll.js"></script>
+
+<!-- slick.grid -->
+<link href="../public/SlickGrid-2.0/slick.grid.css" rel="stylesheet">
+<link href="../public/SlickGrid-2.0/slick-anagridview-theme.css" rel="stylesheet">
+<script type="text/javascript" src="../public/SlickGrid-2.0/lib+/jquery.ui.sortable.js"></script>
+<script type="text/javascript" src="../public/SlickGrid-2.0/lib/jquery.event.drag-2.2.js"></script>
+<script type="text/javascript" src="../public/SlickGrid-2.0/slick.core.js"></script>
+<!-- ↓↓↓slick プラグインは、core ～ grid の間に入れる↓↓↓ -->
+<script type="text/javascript" src="../public/SlickGrid-2.0/plugins/slick.cellrangedecorator.js"></script>
+<script type="text/javascript" src="../public/SlickGrid-2.0/plugins/slick.cellrangeselector.js"></script>
+<script type="text/javascript" src="../public/SlickGrid-2.0/plugins/slick.cellexternalcopymanager.js"></script>
+<script type="text/javascript" src="../public/SlickGrid-2.0/plugins/slick.cellselectionmodel.js"></script>
+<!-- ↑↑↑slick プラグインは、core ～ grid の間に入れる↑↑↑ -->
+<script type="text/javascript" src="../public/SlickGrid-2.0/slick.grid.js"></script>
+<script type="text/javascript" src="../public/SlickGrid-2.0/slick.dataview.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="../private/js/aman.js"></script>
+<script type="text/javascript" src="../private/js/clcom-ana.js"></script>
+<script type="text/javascript" src="../private/js/messages2-ana_ja.js"></script>
+<script type="text/javascript" src="../private/js/clcom-ana-fix.js"></script>
+<script type="text/javascript" src="../private/js/ana-testdata.js"></script>
+<script type="text/javascript" src="../private/js/ana.js"></script>
+
+<script type="text/javascript" src="../private/sub/CACMV0010/CACMV0010.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0011/CACMV0011.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0020/CACMV0020.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0030/CACMV0030.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0040/CACMV0040.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0050/CACMV0050.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0060/CACMV0060.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0070/CACMV0070.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0080/CACMV0080.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0090/CACMV0090.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0100/CACMV0100.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0110/CACMV0110.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0120/CACMV0120.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0130/CACMV0130.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0140/CACMV0140.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0150/CACMV0150.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0160/CACMV0160.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0170/CACMV0170.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0180/CACMV0180.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0190/CACMV0190.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0200/CACMV0200.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0210/CACMV0210.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0220/CACMV0220.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0240/CACMV0240.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0280/CACMV0280.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0300/CACMV0300.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0310/CACMV0310.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0320/CACMV0320.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0330/CACMV0330.js"></script>
+<script type="text/javascript" src="../private/sub/CACMV0370/CACMV0370.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0010/CAPAV0010.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0020/CAPAV0020.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0030/CAPAV0030.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0040/CAPAV0040.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0050/CAPAV0050.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0060/CAPAV0060.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0070/CAPAV0070.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0080/CAPAV0080.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0090/CAPAV0090.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0120/CAPAV0120.js"></script>
+<script type="text/javascript" src="../private/sub/CAPAV0130/CAPAV0130.js"></script>
+<script type="text/javascript" src="../private/sub/CACTV0010/CACTV0010.js"></script>
+<script type="text/javascript" src="../private/sub/CACTV0040/CACTV0040.js"></script>
+<script type="text/javascript" src="../private/sub/MDPAV0010/MDPAV0010.js"></script>
+<script type="text/javascript" src="../private/sub/MDCMV0010/MDCMV0010.js"></script>
+<script type="text/javascript" src="../private/sub/MDCMV0020/MDCMV0020.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style-AMGAV.css">
+
+<script type="text/javascript" src="AMGAV0090.js"></script>
+
+</head>
+
+<body id="ca_body">
+
+<div id="cl_dialog_area" class="cl_dialog"></div>
+<div id="page-wrap">
+<div id="ca_main">
+
+<div id="cl_header"></div><!-- /#header -->
+<div class="cl_echoback msgBox error"></div>
+
+<div id="container">
+	<div id="ca_CACMV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0011_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0020_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0030_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0040_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0050basis_dialog" class="cl_dialog"></div>	<!-- 商品分類選択画面 -->
+	<div id="ca_CACMV0060basis_dialog" class="cl_dialog"></div>	<!-- 商品選択画面 -->
+	<div id="ca_CACMV0070basis_dialog" class="cl_dialog"></div>	<!-- 商品属性選択画面 -->
+	<div id="ca_CACMV0080basis_dialog" class="cl_dialog"></div>	<!-- 商品リスト選択画面 -->
+	<div id="ca_CACMV0050alt_dialog" class="cl_dialog"></div>	<!-- 商品分類選択画面 -->
+	<div id="ca_CACMV0060alt_dialog" class="cl_dialog"></div>	<!-- 商品選択画面 -->
+	<div id="ca_CACMV0070alt_dialog" class="cl_dialog"></div>	<!-- 商品属性選択画面 -->
+	<div id="ca_CACMV0080alt_dialog" class="cl_dialog"></div>	<!-- 商品リスト選択画面 -->
+	<div id="ca_CACMV0090_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0100_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0110_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0120_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0130_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0140_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0150_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0160_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0170_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0180_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0190_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0210_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0220_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0240basis_dialog" class="cl_dialog"></div>	<!-- カラーサイズＳＫＵ選択画面 -->
+	<div id="ca_CACMV0240alt_dialog" class="cl_dialog"></div>	<!-- カラーサイズＳＫＵ選択画面 -->
+	<div id="ca_CACMV0280_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0300_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0310basis_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0320basis_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0330basis_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0310alt_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0320alt_dialog" class="cl_dialog"></div>
+	<div id="ca_CACMV0330alt_dialog" class="cl_dialog"></div>
+	<div id="ca_CACTV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_MDCMV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_MDCMV0020_dialog" class="cl_dialog"></div>
+	<div id="ca_result" class="ca_analyze">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>顧客マトリクス分析</h2>
+			<div class="titleInBoxRight">
+				<div class="copymodeControl">
+					<button class="btn btn-default wt140" data-toggle=false>コピーモードを開始</button>
+				</div>
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+		<!-- 分析結果View -->
+		<div id="ca_resultView">
+
+			<div id="ca_result_pager1" class="pagination-wrapper">
+				<div class="count"></div>
+				<div class="pagination">
+					<ul></ul>
+				</div>
+			</div>
+
+			<!-- 結果表示 -->
+			<div id="ca_anagridview" class="anagridview" style="height: 388px;">
+				<H1>←左側の項目より条件を指定してください。</H1>
+			</div>
+
+		</div>
+		<!-- /.resultView -->
+
+		<!-- コピーView -->
+		<div id="ca_copyView" style="display: none;">
+			<div class="spread-sheet" id="ca_copygridview">
+				<H1>←左側の項目より条件を指定してください。</H1>
+			</div>
+		</div>
+		<!-- /.copyView -->
+
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<!--
+			<p class="flleft"><a id="ca_btn_savelist" data-intro="選択した会員をリストとして登録します。" data-step="1010" data-position="top" class="scroll_flg">リストに登録</a></p>
+			<p class="flleft"><a id="ca_btn_dummylist" data-intro="分析対象の会員情報を照会します。" data-step="1020" data-position="top" class="scroll_flg">会員情報照会</a></p>
+			<p class="flleft" id="ca_btn_nextanalize_wrap"><a id="ca_btn_nextanalize" data-intro="分析条件や、選択した会員を引き継ぎ、他の分析画面を起動します。" data-step="1030" data-position="top" class="scroll_flg">他分析へ</a></p>
+			-->
+			<!-- <p class="flleft"><a href="">他シナリオへ</a></p> -->
+			<p class="flright"><a id="ca_btn_csv" data-intro="分析結果をCSVで出力します。" data-step="1050" data-position="left" class="scroll_flg right_flg">CSV出力</a></p>
+			<p class="flright"><a id="ca_btn_xls" data-intro="分析結果をExcelで表示します。" data-step="1040" data-position="left" class="scroll_flg">XLS出力</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+	</div>
+	<!-- /#ca_result -->
+
+	<div id="leftColumn" class="analytics closed">
+		<div id="leftColumnInBox" data-intro="条件入力エリアを開閉します。" data-step="9999" data-position="right">
+
+
+			<div class="condition dispn">
+				<span class="icon closeCondition" data-intro="条件入力エリアを開閉します。" data-step="9999" data-position="right"></span>
+				<div class="conditionInbox">
+					<div class="title">分析条件</div>
+					<div class="guidance">
+						ガイダンスの内容がはいりますガイダンスの内容がはいりますガイダンスの内容がはいりますガイダンスの内容がはいりますガイダンスの内容がはいりますガイダンスの内容がはいります
+					</div>
+					<div class="">
+						<div id="ca_clear_panel" data-intro="指定した条件をリセットし、初期状態にします。" data-step="20"></div>
+						<div class="clear"></div>
+					</div>
+					<div class="table" id="ca_panel" data-intro="分析条件を入力します。（タイトルをクリックすると、条件入力エリアが開きます。）" data-step="10" data-position="top">
+						<div class="head" id="ca_expand_panel">
+						</div>
+					</div>
+
+					<div class="mrgt30 mrgb20">
+						<div id=ca_CACTV0010_panel>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+				</div>
+			</div>
+		</div><!-- / #leftColumnInBox-->
+
+		<div class="conditionFooter dispn" id="ca_show_result">
+		</div>
+
+	</div><!-- / #leftColumn-->
+</div><!-- / #container -->
+
+<div class="clear"></div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,998 @@
+@CHARSET "utf-8";
+/**
+ * このファイルは自動生成されたものです。これを直接編集せずに build/lib/js/SlickGrid/*.css を編集してください。
+ */
+
+/*
+IMPORTANT:
+In order to preserve the uniform grid appearance, all cell styles need to have padding, margin and border sizes.
+No built-in (selected, editable, highlight, flashing, invalid, loading, :focus) or user-specified CSS
+classes should alter those!
+*/
+
+.slick-header.ui-state-default, .slick-headerrow.ui-state-default {
+  width: 100%;
+  overflow: hidden;
+  border-left: 0px;
+}
+
+.slick-header-columns, .slick-headerrow-columns {
+  position: relative;
+  white-space: nowrap;
+  cursor: default;
+  overflow: hidden;
+}
+
+.slick-header-column.ui-state-default {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  height: 16px;
+  line-height: 16px;
+  margin: 0;
+  padding: 4px;
+  border-right: 1px solid silver;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 0px;
+  float: left;
+}
+
+.slick-headerrow-column.ui-state-default {
+  padding: 4px;
+}
+
+.slick-header-column-sorted {
+  font-style: italic;
+}
+
+.slick-sort-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 5px;
+  margin-left: 4px;
+  margin-top: 6px;
+  float: left;
+}
+
+.slick-sort-indicator-desc {
+  background: url(images/sort-desc.gif);
+}
+
+.slick-sort-indicator-asc {
+  background: url(images/sort-asc.gif);
+}
+
+.slick-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+  cursor: col-resize;
+  width: 4px;
+  right: 0px;
+  top: 0;
+  height: 100%;
+}
+
+.slick-resizable-handle-hover {
+	background-color: #ccc;
+}
+
+.slick-sortable-placeholder {
+  background: silver;
+}
+
+.grid-canvas {
+  position: relative;
+  outline: 0;
+	overflow: hidden;
+}
+
+.slick-row.ui-widget-content, .slick-row.ui-state-active {
+  position: absolute;
+  border: 0px;
+  width: 100%;
+}
+
+.slick-cell, .slick-headerrow-column {
+  position: absolute;
+  border: 1px solid transparent;
+  border-right: 1px dotted silver;
+  border-bottom-color: silver;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  z-index: 1;
+  padding: 1px 2px 2px 1px;
+  margin: 0;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.slick-group {
+}
+
+.slick-group-toggle {
+  display: inline-block;
+}
+
+.slick-cell.highlighted {
+  background: lightskyblue;
+  background: rgba(0, 0, 255, 0.2);
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.slick-cell.flashing {
+  border: 1px solid red !important;
+}
+
+.slick-cell.editable {
+  z-index: 11;
+  overflow: visible;
+  background: white;
+  border-color: black;
+  border-style: solid;
+}
+
+.slick-cell:focus {
+  outline: none;
+}
+
+.slick-reorder-proxy {
+  display: inline-block;
+  background: blue;
+  opacity: 0.15;
+  filter: alpha(opacity = 15);
+  cursor: move;
+}
+
+.slick-reorder-guide {
+  display: inline-block;
+  height: 2px;
+  background: blue;
+  opacity: 0.7;
+  filter: alpha(opacity = 70);
+}
+
+.slick-selection {
+  z-index: 10;
+  position: absolute;
+  border: 2px dashed black;
+}
+
+.slick-pane {
+	position: absolute;
+	outline: 0;
+	overflow: hidden;
+	width: 100%;
+}
+
+.slick-pane-header {
+	display: block;
+}
+
+.slick-header {
+	overflow: hidden;
+	position: relative;
+}
+
+.slick-headerrow {
+	overflow: hidden;
+	position: relative;
+}
+
+.slick-top-panel-scroller {
+	overflow: hidden;
+	position: relative;
+}
+
+.slick-top-panel {
+	width:10000px
+}
+
+.slick-viewport {
+	position: relative;
+	outline: 0;
+	width: 100%;
+}
+
+/*
+IMPORTANT:
+In order to preserve the uniform grid appearance, all cell styles need to have padding, margin and border sizes.
+No built-in (selected, editable, highlight, flashing, invalid, loading, :focus) or user-specified CSS
+classes should alter those!
+*/
+
+.slick-header-columns {
+  background: url('images/header-columns-bg.gif') repeat-x center bottom;
+  border-bottom: 1px solid silver;
+}
+
+.slick-header-column {
+  background: url('images/header-columns-bg.gif') repeat-x center bottom;
+  border-right: 1px solid silver;
+}
+
+.slick-header-column:hover, .slick-header-column-active {
+  background: white url('images/header-columns-over-bg.gif') repeat-x center bottom;
+}
+
+.slick-headerrow {
+  background: #fafafa;
+}
+
+.slick-headerrow-column {
+  background: #fafafa;
+  border-bottom: 0;
+  height: 100%;
+}
+
+.slick-row.ui-state-active {
+  background: #F5F7D7;
+}
+
+.slick-row {
+  position: absolute;
+  background: white;
+  border: 0px;
+  line-height: 20px;
+}
+
+.slick-row.selected {
+  z-index: 10;
+  background: #DFE8F6;
+}
+
+.slick-cell {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.slick-group {
+  border-bottom: 2px solid silver;
+}
+
+.slick-group-toggle {
+  width: 9px;
+  height: 9px;
+  margin-right: 5px;
+}
+
+.slick-group-toggle.expanded {
+  background: url(images/collapse.gif) no-repeat center center;
+}
+
+.slick-group-toggle.collapsed {
+  background: url(images/expand.gif) no-repeat center center;
+}
+
+.slick-group-totals {
+  color: gray;
+  background: white;
+}
+
+.slick-cell.selected {
+  background-color: beige;
+}
+
+.slick-cell.active {
+  border-color: gray;
+  border-style: solid;
+}
+
+.slick-sortable-placeholder {
+  background: silver !important;
+}
+
+.slick-row.odd {
+  background: #fafafa;
+}
+
+.slick-row.ui-state-active {
+  background: #F5F7D7;
+}
+
+.slick-row.loading {
+  opacity: 0.5;
+  filter: alpha(opacity = 50);
+}
+
+.slick-cell.invalid {
+  border-color: red;
+  -moz-animation-duration: 0.2s;
+  -webkit-animation-duration: 0.2s;
+  -moz-animation-name: slickgrid-invalid-hilite;
+  -webkit-animation-name: slickgrid-invalid-hilite;  
+}
+
+@-moz-keyframes slickgrid-invalid-hilite {
+  from { box-shadow: 0 0 6px red; }
+  to { box-shadow: none; }
+}
+
+@-webkit-keyframes slickgrid-invalid-hilite {
+  from { box-shadow: 0 0 6px red; }
+  to { box-shadow: none; }
+}
+
+@import url('slick-default-theme.css');
+
+/*
+* {
+  font-family: arial;
+  font-size: 8pt;
+}
+
+.anagridview * {
+  font-family: arial;
+  font-size: 8pt;
+}
+*/
+
+
+/* -----------------------------------------------
+ * 分析結果
+ */
+.anagridview {
+	background: white;
+	outline: 0;
+	border: 1px solid #d0d5d9;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/*
+ * カラムの高さ
+ * slick.grid.css#21 オーバーライド
+ */
+.anagridview .slick-header.slick-header-left {
+	border-right: 1px solid silver;
+}
+.anagridview .slick-header-columns {
+	height: 10px;
+}
+.anagridview .slick-header-column {
+	height: 100%;
+	padding: 0;
+	text-align: center;
+	line-height: 8px;
+}
+
+/*
+ * カラム幅リサイズハンドルのオーバーライド
+ * 4px -> 8px
+ */
+.anagridview .slick-resizable-handle {
+	width: 8px;
+}
+
+/*
+ * デフォルトのオーバーラード
+ */
+.anagridview .slick-cell {
+	text-align: right;
+}
+.anagridview .slick-cell.center {
+	text-align: center;
+}
+.anagirdview .slick-cell.left {
+	text-align: left;
+}
+
+/*
+ * 列ヘッダのタイトル
+ */
+.anagridview .cell-title {
+	text-align: left;
+	font-weight: bold;
+	background: #a2a9b3;
+	color: #f0f1f2;
+	/*border-left: 1px solid #d0d5d9;*/
+}
+/*
+ * ボーダー
+ */
+.anagridview .slick-cell.glue:not(.active) {
+	border-bottom: none;
+}
+
+/*
+ * 列ヘッダ、ドリルダウンボタン［＋］/［－］
+ */
+.anagridview .toggle {
+	height: 9px;
+	width: 9px;
+	display: inline-block;
+	cursor: pointer;
+}
+.anagridview .toggle.expand {
+	background: url(/SlickGrid-2.0/images/expand.gif) no-repeat center center;
+}
+.anagridview .toggle.collapse {
+	background: url(/SlickGrid-2.0/images/collapse.gif) no-repeat center center;
+}
+
+/*
+ * セル選択
+ * クラス[selected]: 元々のセル選択色定義 --> 剥ぎ取る
+ * クラス[cell-selected]: 分析結果表示Grid用のセル選択クラスとして定義。
+ */
+.anagridview .grid-canvas.grid-canvas-bottom.grid-canvas-right .slick-row .slick-cell.selected {
+	/* 元々のセル選択色定義を剥ぎ取る */
+	background-color: inherit;
+}
+.anagridview .grid-canvas.grid-canvas-bottom.grid-canvas-right .slick-row .slick-cell.cell-selected {
+	background-color: #bfe3f8;
+}
+.anagridview .grid-canvas.grid-canvas-bottom.grid-canvas-right .slick-row.odd .slick-cell.cell-selected {
+	background-color: #d6edfa;
+}
+
+/*
+ * トップパネル -- 行ヘッダ部
+ */
+ 
+ 
+/*
+ * コンテキストメニュー
+ * 基本は共通 style.css を踏襲。
+ * 説明部のスタイルを定義。
+ */
+#contextmenu.anagridview-contextmenu:after {
+	border-bottom-color: #a2a9b3;
+}
+#contextmenu.anagridview-contextmenu > .description {
+	background: #a2a9b3;
+	color: white;
+	border-bottom: white 1px;
+	border-bottom-style: dashed;
+	padding: 3px;
+	font-size: 90%;
+	line-height: 16px;
+	text-align: center;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-topleft-radius: 4px;
+	-moz-border-topright-radius: 4px;
+	-ms-border-top-left-radius: 4px;
+	-ms-border-top-right-radius: 4px;
+	-o-border-top-left-radius: 4px;
+	-o-border-top-right-radius: 4px;
+}
+
+/*
+ * カラムヘッダのソート▲▼マーキング
+ */
+ .anagridview .cell-title.sortAsc span:after, 
+ .anagridview .cell-title.sortDsc span:after, 
+ .anagridview .cell-title.sortOff span:after {
+ 	top: 10px;
+}
+
+
+/* -----------------------------------------------
+ * スプレッドシート
+ */
+.spread-sheet {
+	background: white;
+	outline: 0;
+	border: 1px solid #d0d5d9;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* -----------------------------------------------
+ * 元定義のオーバーライド
+ */
+/*
+.spread-sheet .slick-cell:last-child {
+	border-right: none;
+}
+.spread-sheet .grid-canvas-right {
+	border-left: 1px solid silver;
+	border-right: 1px solid silver;
+}
+*/
+
+
+/*
+ * オーバーライド
+ */
+.spread-sheet .slick-pane-header.slick-pane-left{
+	border-right: 1px solid silver;
+}
+.spread-sheet .slick-header-columns {
+	background: #e4e6eb;
+}
+.spread-sheet .slick-header-column {
+	height: 24px;
+	background: #e4e6eb;
+	color: #323a45;
+	text-align: center;
+	font-weight: normal;
+}
+.spread-sheet .slick-cell {
+	text-align: right;
+	cursor: crosshair;
+}
+.spread-sheet .slick-row .slick-cell:last-child {
+	border-right: 1px solid silver;
+}
+/* セル選択ドラッグ中枠内でカーソルを「┼」にする */
+.spread-sheet .slick-range-decorator {
+	cursor: crosshair;
+}
+
+/* 選択色 */
+.spread-sheet .slick-cell.selected {
+	background-color: #d6edfa;
+}
+
+/* タイトルラベル */
+.spread-sheet .cell-title {
+	text-align: left;
+}
+
+/* 行番号列 */
+.spread-sheet .cell-lineno {
+	background: #e4e6eb;
+	color: #323a45;
+	text-align: center;
+	font-weight: normal;
+	border-right: 1px solid silver;
+	cursor: default;
+}
+
+/* 左上角で全選択 */
+.spread-sheet .selectall-handle {
+	cursor: crosshair;
+}
+.spread-sheet .selectall-handle:hover {
+	background-color: #a2a9b3;
+}
+.spread-sheet .selectall-handle:after {
+	float: right;
+	content: '>';
+	text-indent: -9999px;
+	margin-top: 4px;
+	width: 0;
+	height: 0;
+	border: 6px solid transparent;
+	border-bottom: 6px solid #a2a9b3;
+	border-right: 6px solid #a2a9b3;
+}
+.spread-sheet .selectall-handle:hover:after {
+	border-bottom: 6px solid #667180;
+	border-right: 6px solid #667180;
+}
+
+
+.cl_datagrid {
+	width: 100%;
+	height: 100%;
+	/* XXX: 高さは全行数出す。（options.autoHeight = true） */
+	/* height: 300px; */
+	/* border: 1px solid gray; */
+	background: #ffffff;
+}
+
+/* 本物ヘッダ - カラム幅調整ハンドラとして置く */
+.cl_datagrid .slick-pane-header {
+	height: 10px;
+}
+/* 可変幅カラムがひとつも無い - 本物ヘッダは潰すクラス(".cl-no-header") */
+.cl_datagrid.cl-no-header .slick-pane-header {
+	height: 0px;
+}
+.cl_datagrid.cl-no-header .slick-header {
+	border: none;
+}
+.cl_datagrid .slick-header.slick-header-left {
+	border-right: 1px solid silver;
+	height: 100%;
+}
+.cl_datagrid .slick-header-columns {
+	border-bottom: 0;
+	color: #667180;
+	font-weight: bold;
+	font-size: 12px;	/* 100% */
+	font-family: Lato, メイリオ, 'ＭＳ Ｐゴシック', sans-serif;
+	text-align: center;
+}
+.cl_datagrid .slick-header-columns.slick-header-columns-left {
+	height: 100%;
+}
+.cl_datagrid .slick-header-column {
+	height: 100%;
+	padding: 0;
+	border-right: solid #dddddd;
+	border-width: 0 1px;
+	line-height: 6px;
+	/*box-sizing: border-box;*/
+}
+.cl_datagrid .slick-header-column:hover,
+.cl_datagrid .slick-header-column-active {
+	background: rgba(0,0,0,0) none;
+}
+
+/*
+ * セル内のテキスト標準
+ */
+.cl_datagrid .slick-cell {
+	/*line-height: 40px;*/
+	line-height: 24px;
+	border: solid #e4e6eb;
+	border-width: 1px 0 0 1px;
+	padding: 8px 12px;
+}
+.cl_datagrid .slick-row:first-child .slick-cell {
+	border-top-width: 0;
+}
+.cl_datagrid .slick-cell:first-child {
+	border-left-width: 0;
+}
+.cl_datagrid .slick-row:last-child .slick-cell {
+	border-bottom-width: 1px;
+}
+.cl_datagrid .slick-cell:last-child {
+	border-right-width: 1px;
+}
+.cl_datagrid .slick-cell.input {
+	background: url("../images/bg_tdinput.png");
+}
+.cl_datagrid .slick-cell.editable {
+	padding: 0;
+	border: none;
+}
+.cl_datagrid .slick-pane-top .slick-cell.txtalign-center,
+.cl_datagrid .slick-pane-bottom .slick-cell.txtalign-center {
+	text-align: center;
+}
+.cl_datagrid .slick-pane-top .slick-cell.txtalign-right,
+.cl_datagrid .slick-pane-bottom .slick-cell.txtalign-right {
+	text-align: right;
+}
+.cl_datagrid .slick-pane-top .slick-row.cl-colhead > .slick-cell.txtalign-right,
+.cl_datagrid .slick-pane-top .slick-row.cl-colhead > .slick-cell.txtalign-center {
+	text-align: initial;
+}
+
+/*
+ * カラムヘッダもどきセルの Expander
+ */
+.cl_datagrid .slick-pane-top .slick-cell > .expander {
+	cursor: pointer;
+	padding-left: 18px;
+	position: relative;
+}
+.cl_datagrid .slick-pane-top .slick-cell > .expander:before {
+	content: "";
+	position: absolute;
+	margin-left: -16px;
+	border: 6px solid transparent;
+	border-top-color: #f2555f;
+	border-top-width: 10px;
+	border-bottom-width: 0;
+	top: 10%;
+}
+.cl_datagrid .slick-pane-top .slick-cell > .expander.closed:before {
+	border: 6px solid transparent;
+	border-left-color: #1e9ce6;
+	border-left-width: 10px;
+	border-right-width: 0;
+	content: "";
+}
+
+
+/*
+ * 行削除ボタンのセル
+ */
+.cl_datagrid .slick-cell > .btn-delete {
+	display: table-cell;
+	width: 20px;
+	height: 20px;
+	margin: 0;
+	position: absolute;
+	top: 25%;
+	right: 4px;
+	cursor: pointer;
+	background: url("../images/icn_delete.svg") no-repeat left center;
+}
+.cl_datagrid .slick-pane-bottom .slick-cell:hover > .btn-delete {
+/*	background: url("../images/icn_delete_active.svg") no-repeat left center;*/
+}
+.cl_datagrid .slick-pane-bottom .slick-row.delflag .slick-cell > .btn-delete {
+	background: url("../images/icn_delete_active.svg") no-repeat left center;
+}
+
+/*
+ * 行
+ */
+/* 疑似ヘッダ部 */
+.cl_datagrid .slick-pane-top .slick-row.cl-colhead {
+	background: #a2a9b3;
+	color: #f0f1f2;
+	font-weight: bold;
+	font-size: 12px;	/* 100% */
+	font-family: Lato, メイリオ, 'ＭＳ Ｐゴシック', sans-serif;
+	text-align: left;
+}
+.cl_datagrid .slick-pane-top .slick-row.cl-colhead:last-child {
+	border-bottom: 2px solid #dddddd;
+}
+
+/* 行：削除フラグ付き */
+.cl_datagrid .slick-pane-bottom .slick-row.delflag {
+	background: #fde3e5;
+	color: #d0d5d9;
+}
+/* 行：ハイライト */
+.cl_datagrid .slick-pane-bottom .slick-row:hover {
+	background: #d6edfa;
+}
+/* 行：合計行などのUI */
+.cl_datagrid .slick-row.reference {
+	background: rgba(15, 184, 170, 0.1);
+	color: #a2a9b3;
+}
+
+/*
+ * テーブルフッタ部（行追加用）
+ */
+.cl_datagrid_footer {
+	height: 40px;
+	width: 100%;
+	cursor: pointer;
+	border: solid #e4e6eb;
+	border-width: 1px 0;
+	background: #ffffff;
+	padding: 8px;
+}
+.cl_datagrid_footer:hover {
+	background: #d6edfa;
+}
+.cl_datagrid_footer .btn-add {
+	display: block;
+	width: 20px;
+	height: 20px;
+	margin: 0;
+	background: url("../images/icn_add.svg") no-repeat left center;
+}
+.cl_datagrid_footer:hover .btn-add {
+	background: url("../images/icn_add_active.svg") no-repeat left center;
+}
+
+.cl_datagrid .slick-row.errorFinderRow > .slick-cell{
+  background-color: #fef1f2;
+}
+
+/*
+ * グリッド・セルメッセージ
+ */
+.cl_datagrid .slick-pane-bottom .slick-cell.cl_warn_field {
+	border: 2px solid #fcae3f;
+	background-color: #feeed6 !important;
+}
+.cl_datagrid .slick-pane-bottom .slick-cell.cl_error_field {
+	border: 2px solid #f2555f;
+}
+
+.cl_datagrid_components {
+	width: 0;
+	height: 0;
+	position: absolute;
+}
+
+/* セルに適用するクラス */
+.slick-cell.positiveCell {
+  background-color: #bfe3f8;
+  color: #1e9ce6;
+}
+
+.slick-cell.alertCell {
+  background-color: #feeed6;
+  color: #fcae3f;
+}
+
+.slick-cell.errorCell {
+  background-color: #fde3e5;
+  color: #f2555f;
+}
+
+
+
+
+/*
+ * ＵＩ調整
+ */
+.cl_datagrid.ui-widget .slick-cell.editable input,
+.cl_datagrid.ui-widget .slick-cell.editable select,
+.cl_datagrid.ui-widget .slick-cell.editable textarea,
+.cl_datagrid.ui-widget .slick-cell.editable button{
+	font-size: inherit;
+	font-family: inherit;
+	width: 100%;
+	height: 100%;
+	padding: 8px 10px;
+}
+
+/*
+ * テキストフィールドのスタイル
+ */
+.cl_datagrid .slick-cell.editable > input.editor-text{
+    width: 100%;
+}
+
+.cl_datagrid .slick-cell.editable.txtalign-right > input.editor-text{
+	text-align: right;
+}
+
+/*
+ * チェックボックス(フォーマッタ)
+ */
+.cl_datagrid .slick-cell > .checkbox {
+	margin: 4px 0;
+	padding: 0;
+}
+.cl_datagrid .slick-cell.disabled > .checkbox {
+	margin: 4px 0;
+	padding: 0;
+}
+
+/*
+ * プルダウンエディタのスタイル
+ */
+.cl_datagrid .slick-cell.editable .clgrid-editor-select,
+.cl_datagrid .slick-cell.editable .clgrid-editor-select > div,
+.cl_datagrid .slick-cell.editable .clgrid-editor-select > div > button{
+	width: 100%;
+}
+
+/* プルダウン(フォーマッタ) */
+.cl_datagrid .slick-cell .clgrspfe {
+	display: none;
+}
+.cl_datagrid .slick-cell.input .clgrspfr {
+	display: none;
+}
+.cl_datagrid .slick-cell.input .clgrspfe {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 0;
+}
+.cl_datagrid .slick-cell.input .clgrspfe > .selectpicker.btn {
+	width: 100%;
+	padding: 0;
+	height: 38px;
+}
+.cl_datagrid .slick-cell.cl_error_field .selectpicker.btn {
+	background-color: #fde3e5 !important;
+/*	border-color: #f2555f;*/
+/* position:fixedにしているプルダウン部品がグリッドに埋もれてしまう謎の
+   現象が発生するため、box-shadowは無効に*/
+	/* -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392; */
+    /* -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392; */
+    /* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392; */
+}
+.cl_datagrid .slick-cell.cl_warn_field .selectpicker.btn {
+	background-color: #feeed6 !important;
+}
+
+.cl_datagrid .slick-cell.cl_error_field.active select+.bootstrap-select,
+.cl_datagrid .slick-cell.cl_warn_field.active select+.bootstrap-select {
+	height: 36px;
+	margin-left: 2px;
+	margin-top: 2px;
+}
+.cl_datagrid .slick-cell.cl_error_field.active button.selectpicker,
+.cl_datagrid .slick-cell.cl_warn_field.active button.selectpicker {
+	border: 0;
+	outline: 1px solid #d0d5d7 !important;
+}
+
+
+/* バリデーションエラー */
+.cl_datagrid .slick-cell.cl_error_field input[type="text"] {
+	background-color: #fde3e5 !important;
+}
+.cl_datagrid .slick-cell.cl_error_field input[type="text"]:focus {
+	outline: 1px solid #d0d5d9;
+}
+
+.cl_datagrid .slick-cell.cl_warn_field input[type="text"] {
+	background-color: #feeed6 !important;
+}
+.cl_datagrid .slick-cell.cl_warn_field input[type="text"]:focus {
+	outline: 1px solid #d0d5d9;
+}
+
+
+/*
+ * Datepicker 調整 $('.cl_datagrid .datepicker_wrap')
+ */
+.cl_datagrid .slick-cell > .datepicker_wrap {
+	width: 100%;
+	display: block;
+	height: 100%;
+}
+
+.cl_datagrid .datepicker_wrap.dayOfWeek0:after,
+.cl_datagrid .datepicker_wrap.dayOfWeek1:after,
+.cl_datagrid .datepicker_wrap.dayOfWeek2:after,
+.cl_datagrid .datepicker_wrap.dayOfWeek3:after,
+.cl_datagrid .datepicker_wrap.dayOfWeek4:after,
+.cl_datagrid .datepicker_wrap.dayOfWeek5:after,
+.cl_datagrid .datepicker_wrap.dayOfWeek6:after{
+	font-size: 14px;
+	font-family: Lato, メイリオ, 'ＭＳ Ｐゴシック', sans-serif;
+	margin-top: 8px;
+	position: absolute;
+}
+/*
+ * Formatter('date')
+ */
+.cl_datagrid .slick-cell > span.dayOfWeek0,
+.cl_datagrid .slick-cell > span.dayOfWeek1,
+.cl_datagrid .slick-cell > span.dayOfWeek2,
+.cl_datagrid .slick-cell > span.dayOfWeek3,
+.cl_datagrid .slick-cell > span.dayOfWeek4,
+.cl_datagrid .slick-cell > span.dayOfWeek5,
+.cl_datagrid .slick-cell > span.dayOfWeek6 {
+	margin-left: 20px;
+}
+
+.cl_datagrid .slick-cell > span.dayOfWeek0 {
+	color: red;
+}
+.cl_datagrid .slick-cell > span.dayOfWeek6 {
+	color: #1e9ce6;
+}
+
+.cl_datagrid .slick-cell > img.cal {
+	display: none;
+}
+.cl_datagrid .slick-cell.input > img.cal {
+	display: inline;
+	position: absolute;
+	top: 12px;
+	right: 14px;
+}
+
+/* 新コンボボックス(ui.autocomplete_combobox.js) */
+.cl_datagrid.ui-widget .slick-cell.editable .combobox-wrap {
+	height: 40px;
+}
+.cl_datagrid.ui-widget .slick-cell.editable input.combobox-input {
+	height: 36px;
+}
+
+cl_datagrid .slick-cell.cl_error_field .combobox-wrap .combobox-input,
+.cl_datagrid .slick-cell.cl_error_field .combobox-wrap .combobox-input:focus {
+	outline: none;
+}
+.cl_datagrid .slick-cell.cl_error_field .combobox-wrap .combobox-btn {
+	background-color: #fde3e5 !important;
+}
+.cl_datagrid .slick-cell.cl_error_field .bootstrap-select .selectpicker.btn:active,
+.cl_datagrid .slick-cell.cl_error_field .combobox-wrap .combobox-btn,
+.cl_datagrid .slick-cell.cl_error_field .combobox-wrap .combobox-btn:active {
+	border-color: #f2555f !important;
+}

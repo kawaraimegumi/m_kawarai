@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>振分</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMDSV0070.css">
+	<link href="../../../css/multiple-select.css" rel="stylesheet">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<link href="/css/slickgrid.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/slickgrid.js"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js"></script>
+
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMDSV0070.js"></script>
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup mrgbshort">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox required">
+							<input type="text" class="form-control wt280 cl_valid cl_required" id="ca_srchItgrpID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName bl2">サイズ<br />パターン</p>
+						<div class="fieldBox" id="div_ca_sizePtnID">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchSizePtnID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="flleft div_radio">
+						<label class="radio"><input type="radio" name="ca_codeType" value="1" data-toggle="radio" checked>商品属性<br>絞込</label>
+					</div>
+					<div class="flleft" id="div_srchItemCond">
+						<div class="fieldUnit mrgb10 half flleft mrgr50">
+							<p class="fieldName">ブランド</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_srchBrandID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">スタイル</p>
+							<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_srchStyleID">
+										<optgroup label=""></optgroup>
+									</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr50">
+							<p class="fieldName">色</p>
+							<div class="fieldBox">
+									<select name="info" class="mbn wt280" id="ca_srchColorID">
+										<optgroup label=""></optgroup>
+									</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">柄</p>
+							<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_srchDesignID">
+										<optgroup label=""></optgroup>
+									</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half">
+							<p class="fieldName bl2">プライス<br />ライン</p>
+							<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_srchPriceLineID">
+										<optgroup label=""></optgroup>
+									</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft mrgr50">
+							<p class="fieldName">サブクラス1</p>
+							<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_srchSubCls1ID">
+										<optgroup label=""></optgroup>
+									</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">サブクラス2</p>
+							<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_srchSubCls2ID">
+										<optgroup label="">	</optgroup>
+									</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20" id="maker_cd">
+							<p class="fieldName">メーカー</p>
+							<div class="fieldBox">
+								<input type="text" class="form-control wt280 cl_valid" id="ca_srchMakerID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="flleft div_radio">
+						<label class="radio"><input type="radio" name="ca_codeType" value="2" data-toggle="radio">メーカー<br>品番絞込</label>
+					</div>
+					<div class="flleft" id="div_srchMakerCond">
+						<div class="fieldUnit wt140 flleft">
+							<p class="fieldName wt140">メーカー品番指定</p>
+						</div>
+						<div class="fieldUnit wt400 mrgb10 flleft">
+							<div class="fieldUnit mrgb10 half flleft mrgr20 required" id="maker_cd2">
+								<p class="fieldName">メーカー</p>
+								<div class="fieldBox">
+									<input type="text" class="form-control wt280 cl_valid cl_required" id="ca_srchMakerID2"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft" id="div_itemCode">
+							<p class="fieldName" id="p_itemCode">メーカー品番</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240"></span>
+								<input type="text" class="form-control wt280 cl_valid" data-tflimit="10 hankaku" data-validator="maxlen:10 hankaku"  id="ca_srchItemCode"/>
+								<input type="hidden" id="ca_srchItemID">
+								<input type="hidden" id="ca_itemName">
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="flleft div_radio">
+						<label class="radio"><input type="radio" name="ca_codeType" value="3" data-toggle="radio"><span>集約品番<br>絞込</span></label>
+					</div>
+					<div class="flleft" id="div_srchPackCond">
+						<div class="fieldUnit wt140 flleft">
+							<p class="fieldName wt140">集約品番指定</p>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft" id="div_itemCode">
+							<p class="fieldName" id="p_itemCode2">集約品番</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240"></span>
+								<input type="text" class="form-control wt280 cl_valid" data-tflimit="10 hankaku" data-validator="maxlen:10 hankaku"  id="ca_srchItemCode2"/>
+								<input type="hidden" id="ca_srchItemID2">
+								<input type="hidden" id="ca_itemName2">
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+<!--
+					<div class="fieldUnit wt430 mrgb10 flleft">
+						<p class="fieldName">商品</p>
+						<div class="fieldBox">
+							<ul>
+								<li><label class="radio"><input type="radio" name="ca_codeType" value="0" data-toggle="radio" checked>指定なし</label></li>
+								<li><label class="radio"><input type="radio" name="ca_codeType" value="1" data-toggle="radio">メーカー品番</label></li>
+								<li><label class="radio"><input type="radio" name="ca_codeType" value="2" data-toggle="radio">集約品番</label></li>
+							</ul>
+						</div>
+					</div>
+ -->
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">検索日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_valid cl_date ime-disabled" type="text" id="ca_srchDate" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<div class="fieldBox noName flleft">
+							<label class="checkbox ib" for="check1"><input type="checkbox" value="" name="srch0Flag" id="ca_srch0Flag" data-toggle="checkbox">全サイズ0の店舗は表示しない</label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<hr>
+					<div class="fieldUnit mrgb20">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 flleft cl_valid cl_store" id="ca_srchStoreID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button id="ca_srch" class="btn btn-info wt280">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+
+			</div>
+
+			<div id="result" class="dispn">
+
+				<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+				<!-- <div class="pagination-wrapper"></div> -->
+
+				<p class="flleft filterComment mrgbshort mrgl10 mrgr20">店舗属性で絞込</p>
+				<div class="fieldUnit mrgbshort flleft">
+					<div class="fieldBox noName flleft" id="">
+						<select name="info" class="mbn wt180 cl_valid" id="ca_storeParent"></select>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="fieldUnit mrgbshort flleft">
+					<div class="fieldBox noName flleft" id="">
+						<select name="info" class="mbn wt180 cl_valid" id="ca_storeChild"></select>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+
+				<div class="cl_datagrid_container" id="ca_datagrid" style=""></div>
+
+				    <script id="HdrCell" type="text/template">
+				        <div class="cell sizeHdr">
+				            <div class="grd-tbl">
+				                <div style="display: table-row;">
+				                    <div class="grd-cell" style="display:table-cell;vertical-align:middle;padding: 0 12px;">
+				                        <%= it.label %>
+				                    </div>
+				                </div>
+				                <div style="display: table-row;">
+				                    <div class="deleteRow" style="display:table-cell;vertical-align:middle;padding: 0 12px; border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+				                        <div style="float: left;"><%- it.value %></div>
+				                        <div class="viewAll">&nbsp;</div>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="StoreFilterView" type="text/template">
+				        <div class="sfv <% !it.editMode && print('cell') %>" style="height: 100%;">
+				            <div class="grd-tbl">
+				                <div style="display: table-row;">
+				                    <div style="display:table-cell;vertical-align:middle;">
+				                            <div class="parentSelect editable" style="position:relative; height: 40px;">
+				                                <% if (!it.editMode){ %>
+				                                <%= it.parent %>
+				                                <% } %>
+				                            </div>
+				                    </div>
+				                </div>
+				                <div style="display: table-row;">
+				                    <div style="display:table-cell;vertical-align:middle;border-top:1px solid #D0D5D9;border-right: 1px solid #E4E6Eb;">
+									     <% if (!it.editMode){ %>
+									     	<%= it.child %>
+									     <% } %>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+
+				    </script>
+
+				    <script id="TotalColFormatter" type="text/template">
+				        <div class="cell">
+				            <div class="grd-tbl">
+				                <div class="grd-cell reference pdg0" style="width: 80px;">
+				                    <div class="txtar baseStockQy"><%- clutil.comma(it.baseStockQy) %></div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="SizeEditor" type="text/template">
+				        <div class="cell">
+				            <div class="grd-tbl">
+				                <div class="grd-cell pdg0" style="width: 80px;">
+				                    <div class="txtar baseStockQy"><%- clutil.comma(it.baseStockQy) %></div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				    <script id="BaseStockQyFormatter" type="text/template">
+				        <div class="<%- !it.editable && 'noedit' %>">
+				            <div class="grd-tbl  <%- it.rowClass %>">
+				                <div class="grd-cell">
+				                    <div class="txtar"><%- it.col %></div>
+				                </div>
+				            </div>
+				        </div>
+				    </script>
+
+				<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+				<!-- <div class="pagination-wrapper"></div> -->
+
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<div id="mainColumnFooter" class="noLeftColumn"></div>
+
+		<!-- /#mainColumnFooter -->
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+
+</body>
+</html>

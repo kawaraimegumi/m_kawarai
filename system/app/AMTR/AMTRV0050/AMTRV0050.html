@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>移動</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+		<link media="screen" rel="stylesheet" type="text/css" href="AMTRV0050.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="AMTRV0050.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+
+<div id="ca_main">
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_search" class="fieldgroupInBox">
+
+					<!-- 伝票ID -->
+					<input type="hidden" id="ca_transID">
+					<input type="hidden" id="ca_firstID">
+					<input type="hidden" id="ca_recno">
+					<input type="hidden" id="ca_state">
+
+					<div class="fieldUnit mrgb10 required ca_radio">
+						<div class="fieldBox">
+							<ul>
+							<li class="ca_outRadio"><label class="radio">
+								<input class="ca_outRadio" type="radio" name="ca_transInOutTypeID" value="1" data-toggle="radio" checked>出荷伝票登録
+							</label></li>
+							<li class="ca_inRadio"><label class="radio">
+								<input class="ca_inRadio" type="radio" name="ca_transInOutTypeID" value="2" data-toggle="radio">入荷伝票登録
+							</label></li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+					<div id="ca_unCngArea">
+
+						<div class="fieldUnit mrgb10 flleft required ca_outStoreArea">
+							<p class="fieldName ">出荷店舗</p>
+							<div class="fieldBox ca_readOnly">
+								<input class="form-control wt280 flleft cl_valid ca_outStoreCell" type="text" id="ca_outStoreID"/>
+								<button class="btn btn-default wt140 flleft mrgl10 ca_btn_store" id="ca_btn_storeOut" store_type="out" tabindex="-1">参照...</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit flleft mrgb10 mrgr20 required ca_outStoreArea">
+							<p class="fieldName">出荷日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap"><input class="cl_date cl_valid ca_dateRange ca_outStoreCell" type="text" id="ca_outDate" data-validator="maxlen:13"/></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 flleft required ca_inStoreArea">
+							<p class="fieldName">入荷店舗</p>
+							<div class="fieldBox ca_readOnly">
+								<input class="form-control wt280 flleft cl_valid ca_inStoreCell" type="text" id="ca_inStoreID"/>
+								<button class="btn btn-default wt140 flleft mrgl10 ca_btn_store" id="ca_btn_store" store_type="in" tabindex="-1">参照...</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="fieldUnit flleft mrgb10 mrgr20 required ca_inStoreArea" id="ca_inStoreDayArea">
+							<p class="fieldName">入荷日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap"><input class="cl_date cl_valid ca_dateRange ca_inStoreCell" type="text" id="ca_inDate" data-validator="maxlen:13"/></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+
+
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">伝票番号</p>
+							<div class="fieldBox" id="ca_slipNoArea">
+								<input type="text" class="form-control wt280" id="ca_slipNo" disabled/>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div class="clear"></div>
+
+
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="fieldgroup">
+				<div id="ca_tblArea" class="fieldgroupInBox">
+
+
+
+					<div class="table">
+						<table class="hilightRow drilldown" id="ca_table_head">
+							<thead>
+								<tr>
+									<th width="50px"></th>
+									<th width="200px">タグコード</th>
+									<th width="130px">品種</th>
+									<th width="">商品名</th>
+									<th width="100px">出荷数</th>
+									<th width="100px">入荷数</th>
+									<th width="52px"></th>
+								</tr>
+							</thead>
+						</table>
+
+
+						<div class="table yScroll ht200 ca_headNon ca_footNon" style="overflow-y: scroll;">
+							<table class="hilightRow drilldown" id="ca_table">
+							<!-- <thead>
+								<tr>
+									<th width="200px">タグコード</th>
+									<th width="130px">品種</th>
+									<th width="">商品名</th>
+									<th width="100px">出荷数</th>
+									<th width="100px">入荷数</th>
+									<th width="30px"></th>
+								</tr>
+							</thead>-->
+							<tbody id="ca_table_tbody"></tbody>
+							<!--
+							<tfoot>
+								<tr class="addRow">
+									<td colspan="11" id="ca_addRow"><span class="btn-add"></span></td>
+								</tr>
+							</tfoot>
+							-->
+							</table>
+
+
+
+
+							<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+								<tr class="deletable" id="">
+									<td width="50px" class="editable pdg0 ca_noArea">
+                   						 <input type="text" class="form-control txtar" name="no" value="${no}" readonly>
+                					</td>
+
+									<td width="200px" class="ca_c_link editable pdg0">
+										<input name="tagCode" class="ca_tagCodeCell ca_tagChk editableArea form-control cl_valid cl_required" type="text" cs_id="${tagCode}" value="${tagCode}">
+									</td>
+
+									<td width="130px" class="ca_c_link"><span class="ca_itgrpCodeCell" name="itgrpCode">${itgrpCode}</span></td>
+									<td class="ca_c_link"><span class="ca_itemNameCell" name="itemName">${itemName}</span></td>
+									<td width="100px" class="ca_c_link editable pdg0 ca_outStoreArea">
+										<input name="outQy" data-filter="comma" class="txtar editableArea form-control ca_outQy cl_valid cl_required" type="text"  cs_id="${outQy}" value="${outQy}" data-validator="int:6 min:0">
+									</td>
+
+									<td width="100px" class="ca_c_link editable pdg0 ca_inStoreArea ca_inQyCell">
+										<input name="inQy" data-filter="comma" class="ca_inStoreCell txtar editableArea form-control ca_inQy cl_valid" type="text" cs_id="${inQy}" value="${inQy}" data-validator="int:6 min:0">
+									</td>
+
+									<td width="35px" class="ca_c_link"><span class="ca_delBtn btn-delete flright"></span></td>
+									<td class="ca_c_link dispn">
+										<input type="hidden" class="ca_itemIDCell" name="ca_itemID" value="${itemID}">
+									</td>
+									<td class="ca_c_link dispn">
+										<input type="hidden" class="ca_scmLineNoCell" name="ca_scmLineNo" value="${scmLineNo}">
+									</td>
+								</tr>
+							</script>
+						</div>
+
+						<table class="hilightRow drilldown" id="ca_table_foot">
+							<tfoot>
+								<tr class="addRow">
+									<td colspan="11" id="ca_addRow"><span class="btn-add"></span></td>
+								</tr>
+							</tfoot>
+						</table>
+
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit flleft mrgb10 hta wt100pct">
+						<p class="fieldName">摘要</p>
+						<div id="ca_commentArea" class="fieldBox">
+							<span class="limit wt40 mrgr_5 pa_storeComment"></span>
+							<textarea rows="3" class="form-control wt100pct cl_valid cl_textarea" id="ca_comment" data-tflimit="100" data-validator="maxlen:100"/></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

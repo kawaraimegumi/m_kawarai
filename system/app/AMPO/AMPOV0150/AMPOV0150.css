@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+.wt270 {
+    width : 270px;
+}
+.wt300 {
+    width : 320px;
+}
+.wt320 {
+    width : 320px;
+}
+.wt370 {
+    width : 370px;
+}
+
+.wt480 {
+    width : 480px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.termBox{
+    padding : 10px;
+}

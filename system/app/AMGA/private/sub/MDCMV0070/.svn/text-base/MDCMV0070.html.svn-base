@@ -1,0 +1,103 @@
+<div id="ca_MDCMV0070_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>表示項目追加</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<div id="content">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox search">
+					<div class="fieldUnit">
+						<div class="fieldBox noName">
+							<select name="info" class="mbn wt280 flleft" id="MDCMV0070_dispgroup">
+							<option value="0">売上</option>
+							<option value="1">項目2</option>
+							<option value="2">項目3</option>
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="table fieldUnit mrgb20 mrgr20 wt240 flleft hta">
+						<div class="ht340 wt240 yScroll">
+							<table class="hilightRow drilldown selectable">
+								<tbody id="MDCMV0070_disp_item_tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<script id="MDCMV0070_disp_item_tbody_template" type="text/x-jquery-tmpl">
+					<tr id="${dispitem_id}" class="MDCMV0070_disp_item">
+						<td>${name}</td>
+						<input type="hidden" name="dispitem_id" value="${dispitem_id}">
+						<input type="hidden" name="name" value="${name}">
+						<input type="hidden" name="sum_bitset" value="${sum_bitset}">
+					</tr>
+					</script>
+					<div class="fieldUnit mrgb20 mrgr20 wt280 flleft hta">
+						<div class="col-md-12">
+							<label>&ensp;</label>
+							<button id="MDCMV0070_add_button" class="btn btn-block btn-hover-primary mbm">追加</button>
+						</div>
+						<div class="col-md-12" id="MDCMV0070_calc_button">
+							<div class="row">
+							  <div class="col-md-3"><button id="MDCMV0070_calc_7" name="7" class="btn btn-block btn-hover-primary mbm" >７</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_8" name="8" class="btn btn-block btn-hover-primary mbm" >８</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_9" name="9" class="btn btn-block btn-hover-primary mbm" >９</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_add" name="add" class="btn btn-block btn-hover-primary mbm" >＋</button></div>
+							</div>
+							<div class="row">
+							  <div class="col-md-3"><button id="MDCMV0070_calc_4" class="btn btn-block btn-hover-primary mbm" >４</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_5" class="btn btn-block btn-hover-primary mbm" >５</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_6" class="btn btn-block btn-hover-primary mbm" >６</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_minus" class="btn btn-block btn-hover-primary mbm" >－</button></div>
+							</div>
+							<div class="row">
+							  <div class="col-md-3"><button id="MDCMV0070_calc_1" class="btn btn-block btn-hover-primary mbm" >１</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_2" class="btn btn-block btn-hover-primary mbm" >２</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_3" class="btn btn-block btn-hover-primary mbm" >３</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_ast" class="btn btn-block btn-hover-primary mbm" >＊</button></div>
+							</div>
+							<div class="row">
+							  <div class="col-md-3"><button id="MDCMV0070_calc_0" class="btn btn-block btn-hover-primary mbm" >０</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_st" class="btn btn-block btn-hover-primary mbm" >（</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_ed" class="btn btn-block btn-hover-primary mbm" >）</button></div>
+							  <div class="col-md-3"><button id="MDCMV0070_calc_sla" class="btn btn-block btn-hover-primary mbm" >／</button></div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<button id="MDCMV0070_clear_button" class="btn btn-flat-default btn-block" style="padding: 11px 2px;">クリア</button>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldUnit mrgb20 mrgr20 wt240 flleft hta">
+						<span class="inlineText required">表示項目名</span>
+						<div class="fieldBox noName">
+							<input id="MDCMV0070_dispitem_id" type="hidden">
+							<input class="form-control wt280 cl_valid cl_required" id="MDCMV0070_name" type="text" maxlength="20">
+						</div>
+						<div class="fieldBox noName">
+							<input id="MDCMV0070_expr_formula" type="hidden">
+							<textarea readonly class="form-control wt280 cl_valid" id="MDCMV0070_expr_formula_txt" style="resize: none; height: 170px;"></textarea>
+						</div>
+						<span class="inlineText">小数点以下</span>
+						<div class="fieldBox noName">
+							<select class="cl_valid" id="MDCMV0070_expr_decpoint"></select>
+							<span class="inlineText">桁</span>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="MDCMV0070_cancel_button">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="MDCMV0070_commit_button">確定</a></p>
+		</div>
+	</div>
+</div>
+</div>

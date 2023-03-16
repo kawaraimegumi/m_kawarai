@@ -1,0 +1,91 @@
+<div id="ca_CACMV0070_main">
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>商品属性</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+
+			<div id="selected" class="ca_CACMV0070_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_CACMV0070_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_CACMV0070_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_CACMV0070_searchArea">
+				<div class="fieldgroupInBox search">
+					<div class="fieldUnit">
+						<p class="fieldName">商品属性</p>
+						<div class="fieldBox">
+							<select class="mbn wt280" id="ca_CACMV0070_kind" ></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				</div>
+			</div>
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+
+					<div class="table drilldownWrapper ht320 ca_CACMV0070_resultArea" id="ca_CACMV0070_itemattrtree">
+					</div>
+					
+					<!--表テンプレート-->
+					<script id="ca_CACMV0070_box_tmp" type="text/x-jquery-tmpl">
+					<div class="drilldownItem mrgr20">
+						<input type="text" class="form-control wt380 ca_CACMV0070_srch_input" placeholder="入力して絞込み"
+							data-limit="len:30" tgt-id="ca_CACMV0070_box_${level}"/>
+						<div class="ht240 wt380 yScroll">
+							<table class="hilightRow drilldown selectable ca_CACMV0070_resultArea"
+								id="ca_CACMV0070_box_${level}" box-level="${level}">
+							</table>
+						</div>
+					</div>
+					</script>
+					<script id="ca_CACMV0070_node_tmp" type="text/x-jquery-tmpl">
+					<tr id="${cn_id}" class="ca_CACMV0070_node" lvl-no="${lvl_no}" no="${no}" is-leaf="${is_leaf}">
+						<td>${code}:${name}</td>
+					</tr>
+					</script>
+
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 mrgb30 noName btnCenter">
+							<button class="addtoSelected btn btn-primary wt280 ca_CACMV0070_multi" id="ca_CACMV0070_add">選択内容に追加</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+				</div>
+			</div>
+
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_CACMV0070_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0070_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

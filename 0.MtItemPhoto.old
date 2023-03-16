@@ -1,0 +1,2 @@
+recno   ,state ,from    ,to      ,id,item_id,seqno,tag,comment,file_id,f_top,f_cloth,f_approve,f_del,ins_date,ins_time,ins_user_id,upd_date,upd_time,upd_user_id
+[-1.0:7752],0x8001,20220523,20701231,7598,1061766,1,"","",24784454,1,0,1,0,20221130,2149,221022,20221130,2149,221022

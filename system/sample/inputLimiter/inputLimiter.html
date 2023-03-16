@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>FC法人マスタ管理　＞　ＦＣ法人マスタ一覧</title>
+    <meta charset="utf-8">
+    <!-- Bootstrap -->
+    <link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+	<script src="../../js/lib.js"></script>
+    <!-- App -->
+    <script type="text/javascript" src="../../js/clcom.js"></script>
+ 
+  </head>
+  <body>
+
+    <div class="container">
+
+        <div class="row">
+          <div class="span4">
+            <div class="notice_red_large cl_echoback" style="display: none; "></div>
+            <textarea data-limit="len:5"></textarea>
+            <p>
+              #ca_id0
+              長さ:5 data-limit="len:5"
+            </p>
+            <input id="ca_id0" text="text" class="form-control" data-limit="len:5">
+            <p>
+              #ca_id1
+              5桁の数字 data-limit="len:5 digit"
+            </p>
+            <input id="ca_id1" text="text" class="form-control" data-limit="len:5 digit">
+            <p>
+              #ca_id001
+              コード(0-9と-)data-limit="code2 len:8"
+            </p>
+            <input id="ca_id001" text="text" class="form-control" name="" value="" data-limit="code2 len:8">
+            <p>
+              #ca_id2
+              アルファベットと数字
+            </p>
+            <input id="ca_id2" text="text" class="form-control" data-limit="alnum">
+            <p>
+              #ca_id3
+              アルファベット
+            </p>
+            <input id="ca_id3" text="text" class="form-control" data-limit="alpha">
+
+            <p>
+              #ca_id4
+              全角 <strong class="text-error">OS、IME、Browserによっての動作が不安定なので使用しないでください。代わりにdata-validator="zenkaku"を使用してください<a href="../valid/field.html">こちらを参照</a></strong>
+            </p>
+            <input id="ca_id4" text="text" class="form-control" data-limit="zenkaku">
+            <p>
+              #ca_id5
+              半角<strong class="text-error">OS、IME、Browserによっての動作が不安定なので使用しないでください。代わりにdata-validator="hankaku"を使用してください<a href="../valid/field.html">こちらを参照</a></strong>
+            </p>
+            <input id="ca_id5" text="text" class="form-control" data-limit="hankaku">
+            <h5>直接利用する</h5>
+            <pre><code>$.inputlimiter.mask('123456', {filter:'comma'}) === '123,456'
+              </code></pre>
+            <h5>data-filter、data-limiter属性つきのspanに対してdata2view, view2dataできる</h5>
+            <p>
+              下のspan#ca_span1 data-filter="comma"タグにdata2viewでセット
+            </p>
+            <div class="well">
+              <span id="ca_span1" data-filter="comma"></span>  
+            </div>
+            
+          <!--   <input id="ca_id5" text="text" class="form-control" data-limit="hankaku"> -->
+          <!--   <p> -->
+          <!--     #ca_id6 -->
+          <!--     数字のカンマ区切り data-limit="digit" data-filter="comma" -->
+          <!--   </p> -->
+          <!--   <input id="ca_id6" text="text" class="form-control" value="123456789" data-limit="digit" data-filter="comma"> -->
+          </div>
+          <div class="span4">
+            <!-- <p> -->
+            <!--   #ca_id7 -->
+            <!--   数値のカンマ区切り data-limit="digit:5" data-filter="comma" -->
+            <!-- </p> -->
+            <!-- <input id="ca_id7" text="text" class="form-control" data-limit="digit:5" data-filter="comma"> -->
+            <p>
+              #ca_id7
+              整数>=0カンマ区切り data-limit="int2:8" data-filter="comma"
+            </p>
+            <input id="ca_id7" text="text" class="form-control" name="" value="" data-limit="int2:8" data-filter="comma">
+            <p>
+              #ca_id8
+              整数のカンマ区切り data-limit="int:5" data-filter="comma"
+            </p>
+            <input id="ca_id8" text="text" class="form-control" name="" value="" data-limit="int:5" data-filter="comma">
+            <p>
+              #ca_id9
+              小数のカンマ区切り data-limit="number" data-filter="comma"
+            </p>
+            <input id="ca_id9" text="text" class="form-control" data-limit="number" data-filter="comma">
+            <p>
+              #ca_id10
+              小数のカンマ区切り data-limit="number:5" data-filter="comma"
+            </p>
+            <input id="ca_id10" text="text" class="form-control" data-limit="number:5" data-filter="comma">
+            <p>
+              #ca_id11
+              小数のカンマ区切り data-limit="number:5,3" data-filter="comma"
+            </p>
+            <input id="ca_id11" text="text" class="form-control" data-limit="number:5,3" data-filter="comma">
+            <p>
+              #ca_id12
+              小数のカンマ区切り data-limit="number:,3" data-filter="comma"
+            </p>
+            <input id="ca_id12" text="text" class="form-control" data-limit="number:,3" data-filter="comma">
+            <br>
+            <p>
+              #ca_id13
+              小数のカンマ区切り(負) data-limit="number:5,3,-" data-filter="comma"
+            </p>
+            <input id="ca_id13" text="text" class="form-control" data-limit="number:5,3,-" data-filter="comma">
+            <br>
+            <p>
+              #ca_id14
+              小数のカンマ区切り(負) data-limit="number:12,,-" data-filter="comma"
+            </p>
+            <input id="ca_id14" text="text" class="form-control" data-limit="number:12,,-" data-filter="comma">
+            <br>
+            <label>
+                    <input type="checkbox">a
+            </label>
+            <br>
+            <input text="text" class="form-control" data-limit="number:,3" data-filter="comma" value="123456">
+
+            <br>
+            <select><option>1</option><option>2</option></select>
+            <br>
+            <input text="text" class="form-control" data-limit="number:,3" data-filter="comma" value="123456">
+            <br>
+            <select><option>1</option><option>2</option></select>
+            <br>
+            <span class="datepicker_wrap">
+                    <input text="text" class="form-control" id="ca_ymd" class="cl_date" value="2012/10/01" maxlength="10" size="10">
+	    </span>
+            <br>
+            <select><option>1</option><option>2</option></select>
+            <br>
+            <script>
+                    clutil.datepicker($('#ca_ymd'));
+            </script>
+          </div>
+          <div class="span4">
+            <h5>時間</h5>
+            <p>
+              class属性に cl_timeとcl_valid、
+              data-limit 属性に time、
+              data-filter属性に time、
+              id属性に任意のIDを指定してください
+
+              js:
+              clutil.inputlimiter($('#form1'));
+            </p>
+            <P>
+              例
+              <pre><code>
+                  &lt;input text="text" class="form-control" id="time0" class="cl_time cl_valid" data-limit="time" data-filter="time"&gt;
+              </code></pre>
+
+            </p>
+            <input text="text" class="form-control" id="time0" class="cl_time cl_valid" data-limit="time" data-filter="time">
+            <br/>
+            <input text="text" class="form-control" id="time0" class="cl_time cl_valid" data-limit="time" data-filter="time" data-min="16:00" data-max="33:00">
+            <br/>
+            <input type="submit" value="submit"/>
+            <input type="reset" value="reset"/>
+            <br/>
+            <hr/>
+            <textarea class="inputArea input-block-level" rows="7">{
+  "id0": "123456789", "id1": "1234567890",
+  "id2": "abcde12235",  "id3": "abcdef12345",
+  "id4": "あいうえお", "id5": "abcde",
+  "id6": "98765", "id7": "12345",
+  "id9": "123456789.12345",
+  "span1": "123456789"            
+}</textarea>
+            <button id="data2view" class="btn" type="button">data2view</button>
+            <button id="view2data" class="btn" type="button">view2data</button>
+            <pre id="outputArea"></pre>
+          </div>
+        </div>
+    </div>
+  </body>
+</html>

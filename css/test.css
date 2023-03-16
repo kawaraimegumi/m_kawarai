@@ -1,0 +1,44 @@
+body.gateLogin {
+  background: #0fb8aa;
+  background-image: url("../images/bg_test.png");
+  background-repeat: repeat;
+  background-size: 64px 64px;
+}
+body.gateLogin .btn.btn-primary {
+  background: #0fb8aa;
+}
+body.gateLogin:before {
+  content: "検証環境";
+  color: white;
+  font-size: 32px;
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+}
+
+#header {
+  background: #0fb8aa;
+  background-image: url("../images/bg_test.png");
+  background-repeat: repeat;
+  background-size: 64px 64px;
+}
+#header .rightBox:before {
+  content: "検証";
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  right: 16px;
+}
+#header .rightBox span {
+  color: white;
+}
+#header .rightBox span.user {
+  color: rgba(255, 255, 255, 0.6);
+}
+#header .rightBox span.logout a {
+  color: rgba(255, 255, 255, 0.8);
+  border-left: 1px solid rgba(255, 255, 255, 0.8);
+}
+#header .rightBox span.logout a:hover {
+  color: white;
+}

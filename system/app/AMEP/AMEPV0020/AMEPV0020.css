@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+
+#myGrid .bdrTpColor {
+	border-top-color: #a2a9b3;
+}
+
+#myGrid .bdrLftColor {
+	border-left-color: #a2a9b3;
+}
+
+
+#myGrid .darken {
+  background: #868f9c;
+}
+
+
+#myGrid ._Even {
+  background: white;
+}
+
+#myGrid ._Odd {
+  background-color: rgb(250, 250, 250);
+}
+
+#myGrid .bdrTp0 {
+  border-top:0px;
+}

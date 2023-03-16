@@ -1,0 +1,160 @@
+<div id="ca_MDCMV1060_MDCMV1050_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV1060_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>商品</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div id="selected" class="ca_MDCMV1060_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control">
+					<p class="sortUp mrgr10" id="ca_MDCMV1060_up">上へ</p>
+					<p class="sortDown mrgr10" id="ca_MDCMV1060_down">下へ</p>
+					<span class="delete" id="ca_MDCMV1060_edit_delall">すべて削除</span>
+					<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<table class="hilightRow drilldown selectable" id="ca_MDCMV1060_edit_tbl">
+					<tbody id="ca_MDCMV1060_edit_tbody">
+					</tbody>
+				</table>
+				<!--
+				<ul id="ca_MDCMV1060_edit_tbl">
+				</ul>
+				-->
+				</div>
+			</div>
+
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_MDCMV1060_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">品番</p>
+							<div class="fieldBox">
+								<!-- <input type="text" placeholder="" class="form-control wt280 ime-disabled" id="ca_MDCMV1060_code" data-limit="len:20 digit"/> -->
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" id="ca_MDCMV1060_code" data-limit="len:10 hankaku"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">商品名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_MDCMV1060_name" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit">
+							<p class="fieldName">商品分類</p>
+							<div class="fieldBox">
+								<input type="hidden" id="ca_MDCMV1060_itgrpfunc_id" />
+								<input type="hidden" id="ca_MDCMV1060_itgrplvl_id" />
+								<input type="hidden" id="ca_MDCMV1060_itgrp_id" />
+								<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_MDCMV1060_itgrpname" disabled/>
+								<button class="btn btn-default wt160 flleft mrgl10" id="ca_MDCMV1060_show_MDCMV1050">参照...</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_MDCMV1060_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button class="btn btn-default wt140" id="ca_MDCMV1060_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV1060_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV1060_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_MDCMV1060_tbl">
+			<tr>
+				<th width="40px">
+					<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_MDCMV1060_chkall"></label>
+				</th>
+<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+				<th width="180px" class="ca_th_sort" key="CODE"><span>品番</span></th>
+				<th width="" class="ca_th_sort" key="NAME"><span>商品名</span></th>
+				<th width="" class="ca_th_sort" key="VCODE"><span>品種コード</span></th>
+				<th width="" class="ca_th_sort" key="VNAME"><span>品種名</span></th>
+				<th width="" class="ca_th_sort" key="YEAR"><span>登録年</span></th>
+			</tr>
+			<tbody id="ca_MDCMV1060_tbody">
+			</tbody>
+		</table>
+		<script id="ca_MDCMV1060_tbody_single_tmp" type="text/x-jquery-tmpl">
+			<tr id="${item_id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_MDCMV1060_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${variety_code}</td>
+				<td>${variety_name}</td>
+				<td>${year}</td>
+			</tr>
+		</script>
+		<script id="ca_MDCMV1060_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+			<tr id="${item_id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1060_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${variety_code}</td>
+				<td>${variety_name}</td>
+				<td>${year}</td>
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV1060_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV1060_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_MDCMV1060_multi" id="ca_MDCMV1060_add">チェックしたものを選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_MDCMV1060_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_MDCMV1060_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

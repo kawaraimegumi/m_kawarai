@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>マスタメンテ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMMSV0340.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script src="../../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="AMMSV0340.js"></script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div  class="fieldgroupInBox setaddr mrgb10 termBox">
+					<input type="hidden" id="ca_id">
+					<div class="fieldUnit flleft  mrgr20 required" id="ca_term">
+						<p class="fieldName">適用期間</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap ca_fromDate_div"><input type="text" id="ca_fromDate" class="cl_date cl_valid cl_required" /></div>
+							<p class="txtInFieldUnit pdg flleft deldspn">〜</p>
+							<div class="datepicker_wrap ca_toDate_div deldspn"><input type="text" id="ca_toDate" class="cl_date cl_valid cl_required" readonly/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div id="ca_basicView" class="fieldgroupInBox">
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required ca_upd_dis">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 selectpicker cl_valid cl_required" id="ca_unitID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft required ca_upd_dis">
+						<p class="fieldName">客層コード</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl40"></span>
+							<input type="text" class="form-control wt80 ime-disabled cl_valid cl_required" id="ca_code" data-tflimit="2" data-validator="len:2,2 digit"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft required">
+						<p class="fieldName">客層名称</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 ime-active cl_valid cl_required" data-tflimit="20" data-validator="maxlen:20 zenkaku" id="ca_name"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">客層カナ名称</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl280"></span>
+							<input type="text" class="form-control wt320 ime-active cl_valid cl_required" data-tflimit="30" data-validator="maxlen:30 hankaku" id="ca_nameKana"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="fieldName">客層略称</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="7" data-validator="maxlen:7 zenkaku" id="ca_shortName"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">客層カナ略称</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl240"></span>
+							<input type="text" class="form-control wt280 ime-active cl_valid" data-tflimit="10" data-validator="maxlen:10 hankaku" id="ca_shortNameKana"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn">
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+
+</div>
+</body>
+</html>

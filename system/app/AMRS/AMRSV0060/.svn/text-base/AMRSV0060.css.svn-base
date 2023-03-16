@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+
+//#ca_datagrid>.cl_datagrid {
+//	height: 738px !important;
+//}
+
+.cl-colhead > .slick-cell.input {
+	background-color: white;
+	color: #667180;
+	font-weight: normal;
+}
+
+/* .slick-row.row0 .slick-cell.l0, */
+/* .slick-row.row0 .slick-cell.l1, */
+/* .slick-row.row0 .slick-cell.l2, */
+/* .slick-row.row0 .slick-cell.l3, */
+.slick-row.row0 .slick-cell.l4 {
+	height: 70px;
+	line-height: 20px;
+	/* padding-top: 10px; */
+}
+
+
+.slick-row.row1 .slick-cell.l0,
+.slick-row.row1 .slick-cell.l1,
+.slick-row.row1 .slick-cell.l2,
+.slick-row.row1 .slick-cell.l3,
+.slick-row.row1 .slick-cell.l4 {
+	border-top-color: transparent;
+}

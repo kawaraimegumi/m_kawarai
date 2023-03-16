@@ -1,0 +1,146 @@
+@CHARSET "UTF-8";
+
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+    height:600px;
+}
+
+#myGrid .bdrTpColor {
+	border-top-color: #a2a9b3;
+}
+
+
+
+
+
+.slick-cell .noedit,
+.slick-cell .cell {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+.slick-cell .noedit table td {
+	font-size: 12px;
+	padding: 8px 12px;
+}
+
+.slick-cell .grd-tbl {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.slick-cell .grd-tbl .grd-row {
+	display: table-row;
+}
+
+.slick-cell.input.active.editable {
+	padding: 0;
+	border-left: 1px solid #E4E6EB;
+	border-top: 1px solid #E4E6EB;
+
+}
+
+.slick-cell .grd-tbl .grd-cell {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 8px 12px;
+}
+
+.slick-cell .grd-tbl .grd-cell.editable {
+	padding: 0;
+}
+
+.slick-cell .grd-tbl .grd-cell.half {
+	width: 50%;
+}
+
+.slick-cell .grd-tbl .grd-cell:not(:first-child) {
+	border-left: 1px solid #E4E6EB;
+}
+
+.slick-cell .grd-cell {
+	padding: 8px 12px;
+}
+
+.slick-cell .grd-cell .distQy input[type=text]{
+	font-size: 14px;
+}
+
+.cl_datagrid .slick-cell.input {
+	background: transparent;
+}
+
+.cl_datagrid .slick-cell.input .distQy .form-control {
+	background: url("/system/images/bg_tdinput.png");
+}
+
+.cl_datagrid .slick-cell .pdg0 {
+	padding: 0;
+}
+
+.cl_datagrid .slick-cell .sales {
+	border-bottom: 1px solid #FFF;
+	padding: 8px 8px;
+	height: 37px;
+}
+
+.cl_datagrid .slick-cell .stock {
+	padding: 3px 8px;
+	height: 37px;
+}
+
+.slick-row {
+	font-family: Lato, 繝｡繧､繝ｪ繧ｪ, '�ｭ�ｳ �ｰ繧ｴ繧ｷ繝�け', sans-serif;
+	font-size: 12px;
+	color: #212226;
+}
+
+.slick-cell .reference {
+	background: rgba(15, 184, 170, 0.1);
+	color: #A2A9B3;
+}
+
+.slick-row.reference {
+	background: rgba(15, 184, 170, 0.1);
+	color: #A2A9B3;
+}
+
+.cl_datagrid .grid-canvas-top .slick-cell {
+	border-left: 0;
+}
+.cl_datagrid .grid-canvas-top .slick-cell.l0,
+.cl_datagrid .grid-canvas-top .slick-cell.l1,
+.cl_datagrid .grid-canvas-top .slick-cell.l2,
+.cl_datagrid .grid-canvas-top .slick-cell.l3 {
+	border-left: 1px solid #E4E6EB;
+}
+
+.viewAll {
+	margin-top: 0;
+}
+
+.deleteRow:hover div:after {
+	width: 12px;
+	height: 12px;
+	background: url("/system/images/icn_delete_active.svg") no-repeat right top;
+	background: url("/system/images/icn_delete_active.png") no-repeat right top\9;
+	content: "";
+	display: block;
+	position: absolute;
+	right: 8px;
+	top: 11px;
+}
+
+.cl_datagrid .slick-cell  .sfv  .btn-group.bootstrap-select,
+.cl_datagrid .slick-cell  .sfv  .clgrspfe .btn-group.bootstrap-select,
+.cl_datagrid .slick-cell  .sfv  .btn.selectpicker,
+.cl_datagrid .slick-cell  .sfv .clgrspfe .btn.selectpicker {
+	height: 30px;
+}

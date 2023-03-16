@@ -1,0 +1,172 @@
+@CHARSET "UTF-8";
+
+.portal .information .title .sttl{
+    width : 60px;
+}
+
+.portal .information .title .sttl.second{
+    width : 150px;
+}
+
+.portal .information .title .sttl.second.num{
+    width : 50px;
+    font-size : 150%;
+    font-weight: bold;
+    margin-top: -5px;
+    text-align:right;
+}
+.portal .information .title .sttl.second.tail{
+    padding-left: 10px;
+    width : 150px;
+}
+
+.portal .toolNavi ul li.nodeLevel {
+  border-bottom: 1px solid #f0f1f2;
+}
+
+.portal .toolNavi ul li.nodeLevel.second:first-child{
+  border-top: 1px solid #f0f1f2;
+}
+
+.portal .toolNavi ul li.nodeLevel > p {
+  background: #dee1e7;
+  padding: 10px 15px 9px 15px;
+  color: #667180;
+  font-size: 88%;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.portal .toolNavi ul li.nodeLevel.second > p {
+    padding-left: 25px;
+}
+
+
+.portal .toolNavi ul li.nodeLevel > p:hover {
+  background: #e4e6eb;
+}
+
+.portal .toolNavi ul li.endLevel {
+  background: white;
+}
+
+.portal .toolNavi ul li.endLevel:hover {
+  background: #edf7fd;
+}
+
+.portal .toolNavi ul li.endLevel > p {
+  background: none;
+  padding: 10px 0 9px 30px;
+  color: #667180;
+  font-size: 88%;
+  width: 190px;
+  line-height: 1.4;
+  float: left;
+  cursor: default;
+}
+
+.portal .toolNavi ul li.endLevel > p a:hover {
+  color: #5abdf6;
+}
+
+.portal .toolNavi ul li.endLevel .addQm {
+  background: url("../../../images/icn_addquickmenu.png") no-repeat 10px 12px;
+  width: 40px;
+  height: 36px;
+  float: right;
+  cursor: pointer;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+  opacity: 0.4;
+}
+
+.portal .toolNavi ul li.endLevel .addQm:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.portal .toolNavi ul li.nodeLevel> p .icnExpander {
+  display: inline-block;
+  border: 6px solid transparent;
+  content: "";
+  margin-right: 6px;
+}
+
+.portal .toolNavi ul li.nodeLevel.closed > p .icnExpander {
+  border-left-color: #1e9ce6;
+  border-left-width: 10px;
+  border-right-width: 0;
+  margin-top: 3px;
+  margin-left: 2px;
+}
+
+.portal .toolNavi ul li.nodeLevel.opened > p .icnExpander {
+  border-top-color: #f2555f;
+  border-top-width: 10px;
+  border-bottom-width: 0;
+  margin-top: 5px;
+  margin-left: 0;
+}
+
+.portal .toolNavi ul li.nodeLevel:last-child {
+  border-bottom: none;
+}
+
+.portal .quickmenu{
+    padding-right: 0px;
+}
+
+.portal .quickmenu li a{
+    display : block;
+    width : 180px;
+    white-space : nowrap;
+    overflow: hidden;
+    text-overflow : ellipsis;
+    float :left;
+}
+
+.portal .quickmenu li .delQm {
+  background: url("../../../images/icn_delete_02.png") no-repeat 10px 12px;
+  width: 40px;
+  height: 30px;
+  float: right;
+  cursor: pointer;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+  opacity: 0.4;
+}
+
+.portal .quickmenu li .delQm:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/*.subject {
+    color: #1e9ce6;
+}
+
+.subject:hover {
+    text-decoration: underline;
+}*/
+
+/*.titleLink:hover {
+    text-decoration: underline;
+}*/
+
+
+/*
+ * クイックメニュー: hover 制御
+ */
+#ca_quickArea li .delQm {
+	display: none;
+}
+#ca_quickArea li:hover .delQm {
+	display: block;
+}
+
+/*
+ * メニュー: hover 制御
+ */
+#ca_menuArea li.endLevel .addQm {
+	display: none;
+}
+#ca_menuArea li.endLevel:hover .addQm {
+	display: block;
+}

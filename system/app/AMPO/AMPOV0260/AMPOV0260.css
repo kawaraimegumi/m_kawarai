@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.link_color {
+  color: #1e9ce6;
+}
+.detailtext {
+    color: #f2555f;
+    font-size: 77%;
+    padding-top: 0px;
+    line-height: 1.3;
+	padding-left: 20px;
+}

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>店舗マスタ管理　＞　店舗マスタ更新</title>
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+
+<!-- pager -->
+<script type="text/javascript" src="../../js/simplePagination.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker_ja.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+				
+<!-- App -->
+<script type="text/javascript" src="../../js/clcom.js"></script>
+<script type="text/javascript" src="../../js/messages_ja.js"></script>
+<script type="text/javascript" src="edit.js"></script>
+</head>
+
+<body>
+		
+	<div id="cs_header"></div>
+	
+	<div class="container-fluid">
+	<div class="row-fluid">
+
+	<div class="span12">
+		<button class="btn btn-mini" type="button">HOMEへ戻る</button>
+		<div class="pull-right">
+			<button class="btn btn-mini" type="button">全クリア</button>　<button class="btn btn-mini" type="button">CSV保存</button>　<button class="btn btn-mini" type="button">登録</button>
+		</div>
+	</div>
+	<h3 class="pageTitle">店舗マスタ管理　＞　店舗マスタ更新</h3>
+	
+	<div class="notice_red_large cl_echoback" ></div>
+
+	<h4 class="mainTitle">店舗基本情報</h4>
+	<div class="form-horizontal" id="ca_base_form">
+	
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">直営/ＦＣ区分</label>
+			<div class="controls">
+				<label class="radio">
+				<input type="radio" name="ca_optionsRadios" id="optionsRadios1" value="option1" checked>
+				直営
+				</label>
+				<label class="radio">
+				<input type="radio" name="ca_optionsRadios" id="optionsRadios2" value="option2">
+				FC
+				</label>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">法人</label>
+			<div class="controls">
+				  <input class="span4" id="ca_appendedInputButton" type="text" value=""> <button class="btn" type="input" id="btnappendedInput">選択</button>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">店舗名（正式）</label>
+			<div class="controls">
+				<input class="input-xxlarge" type="text" id="ca_store_name" value="">
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">店舗名（略式）</label>
+			<div class="controls">
+				<input class="input-xlarge" type="text" id="ca_store_name_short" value="お好み　大阪梅田店">
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">業態</label>
+			<div class="controls">
+				<select id="ca_business_conditions">
+					<option value="okonomiyaki">お好み焼き</option>
+					<option value="dummy1">ダミー</option>
+					<option value="dummy2">ダミー</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">エリア</label>
+			<div class="controls">
+				<select>
+					<option value="">梅田店</option>
+					<option value="">ダミー</option>
+					<option value="">ダミー</option>
+				</select>
+			</div>
+		</div>
+
+
+		<div class="control-group">
+			<label class="control-label">郵便番号</label>
+			<div class="controls">
+				<input class="input-mini" type="text" value="565"> - <input class="input-mini" type="text" value="4349">　<button class="btn btn-mini" type="button">検索</button>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">都道府県</label>
+			<div class="controls">
+				<select>
+					<option value="">大阪</option>
+					<option value="">ダミー</option>
+					<option value="">ダミー</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">市区町村</label>
+			<div class="controls">
+				<input class="input-xxlarge" type="text" value="大阪市梅田">
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">番地</label>
+			<div class="controls">
+				<input class="input-xxlarge" type="text" value="1-2-3">
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">マンション・ビル名</label>
+			<div class="controls">
+				<input class="input-xxlarge" type="text">
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">電話番号</label>
+			<div class="controls">
+				<input class="input-mini" type="text" value="06"> - <input class="input-mini" type="text" value="2345"> - <input class="input-mini" type="text" value="1234">  
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">FAX番号</label>
+			<div class="controls">
+				<input class="input-mini" type="text" value="06"> - <input class="input-mini" type="text" value="2345"> - <input class="input-mini" type="text" value="1234"> 
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">営業時間　平日</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">17:00</option>
+				</select>&nbsp;～&nbsp;
+				<select class="span2">
+					<option value="">25:00</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">営業時間　土・日・祝</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">11:00</option>
+				</select>&nbsp;～&nbsp;
+				<select class="span2">
+					<option value="">25:00</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">備考</label>
+			<div class="controls">
+				<textarea rows="3" class="span8">祝日前だけ営業時間が遅い</textarea>
+			</div>
+		</div>
+	</div>	
+
+
+
+
+
+
+
+
+	<h4 class="mainTitle">物件情報</h4>
+
+	<div class="form-horizontal">
+	
+		
+		<div class="control-group">
+			<label class="control-label">卓数</label>
+			<div class="controls">
+				<input class="input-mini" type="text" value="36">&nbsp;卓
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">席数</label>
+			<div class="controls">
+				<input class="input-mini" type="text" value="162">&nbsp;席
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">敷地面積</label>
+			<div class="controls">
+				<input class="input-small" type="text" value="3305">&nbsp;㎡　　<input class="input-mini" type="text" value="1000">&nbsp;坪
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">店舗面積</label>
+			<div class="controls">
+				<input class="input-mini" type="text" value="51.2">&nbsp;坪
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">新居・居抜</label>
+			<div class="controls">
+				<select>
+					<option value="">居抜</option>
+					<option value="">ダミー</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">駐車台数</label>
+			<div class="controls">
+				<input class="input-small" type="text" value="300">&nbsp;台
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">用途地域</label>
+			<div class="controls">
+				<select>
+					<option value="">準工業</option>
+					<option value="">ダミー</option>
+				</select>
+			</div>
+		</div>
+
+		
+		<div class="control-group">
+			<label class="control-label">単独・複合</label>
+			<div class="controls">
+				<select>
+					<option value="">複合</option>
+					<option value="">ダミー</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">下水道・浄化槽</label>
+			<div class="controls">
+				<select>
+					<option value="">浄化槽</option>
+					<option value="">ダミー</option>
+				</select>　　<input class="input-mini" type="text" value="100">&nbsp;人槽
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">プロパン・都市ガス</label>
+			<div class="controls">
+				<select>
+					<option value="">プロパン</option>
+					<option value="">ダミー</option>
+				</select>
+			</div>
+		</div>
+
+	</div>	
+
+
+
+
+	<h4 class="mainTitle">出店スケジュール</h4>
+
+
+	<div class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label">地鎮祭日</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2013年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">2月</option>
+				</select>　
+				<select class="span2">
+					<option value="">15日</option>
+				</select>　
+				<select class="span2">
+					<option value="">確定</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">レセプション日程</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2013年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">2月</option>
+				</select>　
+				<select class="span2">
+					<option value="">30日</option>
+				</select>　
+				<select class="span2">
+					<option value="">未確定</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">着工日</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2013年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">3月</option>
+				</select>　
+				<select class="span2">
+					<option value="">20日</option>
+				</select>　
+				<select class="span2">
+					<option value="">確定</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">チラシ</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2013年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">7月</option>
+				</select>　
+				<select class="span2">
+					<option value="">20日</option>
+				</select>　
+				<select class="span2">
+					<option value="">確定</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">引渡日</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2013年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">5月</option>
+				</select>　
+				<select class="span2">
+					<option value="">20日</option>
+				</select>　
+				<select class="span2">
+					<option value="">確定</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">花輪</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2013年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">6月</option>
+				</select>　
+				<select class="span2">
+					<option value="">1日</option>
+				</select>　
+				<select class="span2">
+					<option value="">未確定</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">オープン日</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2013年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">6月</option>
+				</select>　
+				<select class="span2">
+					<option value="">1日</option>
+					<option value="">2日</option>
+				</select>　
+				<select class="span2">
+					<option value="">未確定</option>
+				</select>
+			</div>
+		</div>
+		
+
+
+
+
+		<div class="control-group">
+			<label class="control-label">ビールメーカー</label>
+			<div class="controls">
+				<select class="span3">
+					<option value="">キリン</option>
+				</select>　
+				<select class="span2">
+					<option value="">確定</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">担当AM</label>
+			<div class="controls">
+				<input class="input-xlarge" type="text" value="">　
+				<select class="span2">
+					<option value="">確定</option>
+				</select>
+			</div>
+		</div>
+	</div>	
+
+
+
+
+	<h4 class="mainTitle">閉店情報</h4>
+
+
+	<div class="form-horizontal">
+	
+		<div class="control-group">
+			<label class="control-label">合意解約日</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2015年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">2月</option>
+				</select>　
+				<select class="span2">
+					<option value="">25日</option>
+				</select>
+			</div>
+		</div>
+
+		
+		<div class="control-group">
+			<label class="control-label">閉店理由</label>
+			<div class="controls">
+				<select class="span8">
+					<option value="">賃貸借契約中途解約</option>
+					<option value="">キリン</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">最終営業日</label>
+			<div class="controls">
+				<select class="span2">
+					<option value="">2015年</option>
+					<option value="">2011年</option>
+				</select>　
+				<select class="span2">
+					<option value="">2月</option>
+				</select>　
+				<select class="span2">
+					<option value="">20日</option>
+				</select>
+			</div>
+		</div>
+
+
+
+
+
+		<div class="control-group">
+			<label class="control-label">備考</label>
+			<div class="controls">
+				<textarea rows="3" class="span8">営業不振のため</textarea>
+			</div>
+		</div>
+	</div>	
+
+
+
+
+	<h4 class="mainTitle">物件契約情報</h4>
+
+	<div style="text-align:right; margin-bottom: 10px;"><button class="btn btn-primary btn-small" type="button">契約の履歴を見る</button>　<button class="btn btn-primary btn-small" type="button">契約物件の追加</button></div>
+	
+
+<div class="row-fluid">
+	<div class="span10" style="margin-left: 180px;">
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>NO.</th>
+				<th>借主</th>
+				<th>店舗面積</th>
+				<th>賃料</th>
+				<th>契約期間</th>
+				<th>契約書へのリンク</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td>佐藤</td>
+				<td>12.2坪</td>
+				<td>400000</td>
+				<td>2011/10/01～</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>鈴木</td>
+				<td>13.41坪</td>
+				<td>450000</td>
+				<td>2011/11/01～</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>高橋</td>
+				<td>23.9坪</td>
+				<td>500000</td>
+				<td>2011/12/01～</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td style="font-weight:bold;">賃料合計</td>
+				<td style="font-weight:bold;">1,350,000</td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	</div>
+	
+	<div style="text-align:right; margin-bottom: 10px;"><button class="btn" type="button" id="ca_back">一覧に戻る</button>　<button class="btn btn-success" type="button" id="ca_update">更新</button></div>
+
+
+<div id="cs_footer"></div>
+
+</div>
+</div>
+
+</body>
+</html>

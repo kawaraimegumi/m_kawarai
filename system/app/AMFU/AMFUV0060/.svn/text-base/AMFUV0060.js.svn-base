@@ -1,0 +1,135 @@
+// セレクターをオートコンプリートと合体(funcrion()中に入れるとおかしくなる)
+useSelectpicker2();
+
+$(function(){
+	// Enterキーによるフォーカスをする。
+	clutil.enterFocusMode($('body'));
+
+	var CsvOutView = Backbone.View.extend({
+		el : $("#ca_main"),
+		validator : null,
+		events : {
+		},
+		uri : "AMFUV0060",
+		initialize: function(){
+			_.bindAll(this);
+			// 共通ビュー(共通のヘッダなど内包）
+			this.mdBaseView = new clutil.View.MDBaseView({
+				opeTypeId:		-1,
+				title: '品番カラー別ファンド実績出力',
+				btn_submit: false,
+				btn_csv: false
+			});
+			this.validator = clutil.validator($("#ca_searchArea"), {
+				echoback : $('.cl_echoback')
+			});
+			// OPE系イベント
+			clutil.mediator.on('onOperation', this._doOpeAction);
+		},
+
+		initUIelement : function(){
+			this.mdBaseView.initUIElement();
+
+			// validatorエラー時の表示領域
+			$(".cl_echoback").hide();
+
+//			clutil.clmonthselector(this.$("#ca_srchYm"), 0, 1, 0, null, null, 1); //初期表示調整
+			clutil.clyearmonthcode({el:this.$("#ca_srchYm")}).setValue(clutil.monthFormat(clcom.getOpeDate(), "yyyymm"));
+
+			// 事業ユニット取得
+			return clutil.clbusunitselector(this.$('#ca_srchUnitID'));
+		},
+
+		/**
+		 * 画面描画
+		 */
+		render: function() {
+			this.mdBaseView.render();
+			return this;
+		},
+
+		/**
+		 * 出力ボタンのアクション
+		 */
+		_doOpeAction: function(rtyp, pgIndex, e){
+			// ope_btn 系
+			switch(rtyp){
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:	// CSV 出力
+				console.log('CSV 出力');
+				this.doCSVDownload(rtyp);
+				break;
+			default:
+				console.warn('unsupported rtyp[' + rtyp + '] received.');
+				return;
+			}
+		},
+
+		buildReq: function(rtyp){
+			// validation
+			if (!this.validator.valid()) {
+				return null;
+			}
+
+			//リクエストの内容をセットする
+			var srchDto = clutil.view2data(this.$("#ca_searchArea"));
+			var reqDto = {
+				reqHead: {
+					opeTypeId: rtyp
+				},
+				reqPage: {
+					start_record: 0,
+					page_size: 0
+				},
+				AMFUV0060GetReq: srchDto
+			};
+
+			return reqDto;
+		},
+
+		/**
+		 * 出力ボタン押下処理
+		 */
+		doCSVDownload: function(rtyp) {
+			// リクエストをつくる
+			var srchReq = this.buildReq(rtyp);
+			if(_.isNull(srchReq)){
+				return;
+			}
+			// 要求を送出
+			// clutil.postDLJSON() を使うと共通ヘッダを補完してくれる。
+			var defer = clutil.postDLJSON('AMFUV0060', srchReq);
+			defer.fail(_.bind(function(data){
+				// ヘッダーにメッセージを clutil.View.MDBaseView へ通知
+				// AJAX 呼び出しの共通処理で済ませるべきか・・・
+				clutil.mediator.trigger('onTicker', data);
+			}, this));
+		}
+	});
+
+	clutil.getIniJSON(null, null)
+	.done(_.bind(function(data,dataType){
+		var ca_csvOutView = new CsvOutView;
+		ca_csvOutView.initUIelement().done(_.bind(function(){
+			ca_csvOutView.render();
+			if(clcom.userInfo.unit_id >= clutil.getclsysparam('PAR_AMMS_UNITID_AOKI')){
+				clutil.setFocus($('#ca_srchYm'));
+			}
+			else{
+				clutil.setFocus($('#ca_srchUnitID'));
+			}
+		},this));
+	},this)).fail(function(data){
+		console.error('iniJSON failed.');
+		console.log(arguments);
+
+		// clcom のネタ取得に失敗。
+		// 動かしようがないので、Abort 扱いとしておく？？？
+		clutil.View.doAbort({
+			messages: [
+				//'初期データ取得に失敗しました。'
+				clutil.getclmsg('cl_ini_failed')
+			],
+			rspHead: data.rspHead
+		});
+	});
+});

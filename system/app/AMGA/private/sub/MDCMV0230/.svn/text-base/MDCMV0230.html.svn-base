@@ -1,0 +1,144 @@
+<div id="ca_MDCMV0230_MDCMV0170_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV0230_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>優待割引社員</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+			<div id="selected" class="ca_MDCMV0230_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_MDCMV0230_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_MDCMV0230_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_MDCMV0230_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">社員番号</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" id="ca_MDCMV0230_code" data-limit="len:20 digit"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">社員名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_MDCMV0230_name" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">社員名ｶﾅ</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="半角ｶﾅで入力" class="form-control wt280 ime-active" id="ca_MDCMV0230_namekana" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">所属組織</p>
+							<div class="fieldBox">
+								<input type="hidden" id="ca_MDCMV0230_func_id" />
+								<input type="hidden" id="ca_MDCMV0230_org_id" />
+								<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_MDCMV0230_orgname" disabled/>
+								<button class="btn btn-default wt160 flleft mrgl10" id="ca_MDCMV0230_show_MDCMV0170">参照...</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_MDCMV0230_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button class="btn btn-default wt140" id="ca_MDCMV0230_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV0230_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV0230_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_MDCMV0230_tbl">
+			<tr>
+				<th width="40px">
+					<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_MDCMV0230_chkall"></label>
+				</th>
+<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+				<th width="180px" class="ca_th_sort" key="CODE"><span>社員番号</span></th>
+				<th width="" class="ca_th_sort" key="NAME"><span>社員名</span></th>
+			</tr>
+			<tbody id="ca_MDCMV0230_tbody">
+			</tbody>
+		</table>
+		<script id="ca_MDCMV0230_tbody_single_tmp" type="text/x-jquery-tmpl">
+			<tr id="${staff_id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_MDCMV0230_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		<script id="ca_MDCMV0230_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+			<tr id="${staff_id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV0230_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV0230_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV0230_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_MDCMV0230_multi" id="ca_MDCMV0230_add">チェックしたものを選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_MDCMV0230_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_MDCMV0230_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

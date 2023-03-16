@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>営業帳票</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMBRV0040.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+	<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css' >
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMBRV0040.js"></script>
+
+<!-- 共通ヘッダは MDBaseView によって置き換えるので、設置不要。-->
+<!-- エコーバックエリアは MDBaseView によって置き換えるので、設置不要。-->
+<!-- ダイアログ設定：MDBaseView によって置き換えるので、設置不要。 -->
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- タイトル部は MDBaseView によって置き換えるので、設置不要。-->
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<!-- <div class="fieldUnit mrgb10 flleft half mrgr20 required" id="ca_srchUnitID_div">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID" name="srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div> -->
+
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">組織</p>
+						<div class="fieldBox">
+							<input class="form-control wt280 flleft cl_valid cl_store cl_required" type="text" id="ca_srchOrgID"/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_org_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					
+					
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">対象月</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 selectpicker cl_valid cl_required" id="ca_srchMonth"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn btn-info wt280" id="ca_srch">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<!-- /#ca_srchArea -->
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+			<div id="result" class="dispn">
+
+			<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<!-- <div class="pagination-wrapper"></div> -->
+
+				<div class="mrgb20"></div>
+				<div class="unit flright mrgb20">金額（千円）、比（％）</div>
+				<div class="clear"></div>
+
+				<div id="div_ca_table" class="table">
+					<table class="hilightRow" id="ca_table">
+					<thead id="ca_table_thead">
+						<tr id="ca_thHead">
+						</tr>
+						<tr id="ca_thItem">
+						</tr>
+					</thead>
+					<tbody id="ca_table_tbody">
+					</tbody>
+					</table>
+
+					<script id="ca_thHead_template" type="text/x-jquery-tmpl">
+						<th name="tmpl" colspan="11"><span class="rowClose month">${month}月度損益計算表業態計</span></th>
+						<th name="tmpl" class="dispn"><span class="rowOpen month">&nbsp;</span></th>
+						<th name="tmpl" colspan="12"><span class="rowClose total">${month}月累計業態計</span></th>
+						<th name="tmpl" class="dispn"><span class="rowOpen total">&nbsp;</span></th>
+					</script>
+
+					<script id="ca_thItem_template" type="text/x-jquery-tmpl">
+						<th name="tmpl" class="bdrt month">勘定科目名</th>
+						<th name="tmpl" class="bdrt month">本年実績</th>
+						<th name="tmpl" class="bdrt month">構成比</th>
+						<th name="tmpl" class="bdrt month">本年計画</th>
+						<th name="tmpl" class="bdrt month">構成比</th>
+						<th name="tmpl" class="bdrt month">計画比</th>
+						<th name="tmpl" class="bdrt month">計画差異</th>
+						<th name="tmpl" class="bdrt month">前年実績</th>
+						<th name="tmpl" class="bdrt month">構成比</th>
+						<th name="tmpl" class="bdrt month">前年比</th>
+						<th name="tmpl" class="bdrt month">前年差異</th>
+						<th name="tmpl" class="bdrt month dispn"></th>
+
+						<th name="tmpl" colspan="2" class="bdrt total">勘定科目名</th>
+						<th name="tmpl" class="bdrt total">本年実績</th>
+						<th name="tmpl" class="bdrt total">構成比</th>
+						<th name="tmpl" class="bdrt total">本年計画</th>
+						<th name="tmpl" class="bdrt total">構成比</th>
+						<th name="tmpl" class="bdrt total">計画比</th>
+						<th name="tmpl" class="bdrt total">計画差異</th>
+						<th name="tmpl" class="bdrt total">前年実績</th>
+						<th name="tmpl" class="bdrt total">構成比</th>
+						<th name="tmpl" class="bdrt total">前年比</th>
+						<th name="tmpl" class="bdrt total">前年差異</th>
+						<th name="tmpl" class="bdrt total dispn"></th>
+					</script>
+
+					<script id="ca_rec_template" type="text/template">
+						<tr class="">
+							<td rowspan="2" class="ca_c_link"><%- m_accTitleName %></td>
+							<td rowspan="2" class="ca_c_link txtar"><%- clutil.comma(m_result) %></td>
+							<td rowspan="2" class="ca_c_link txtar"><%if(m_result==0){%>-<%}else{%><%- clutil.comma(m_compRatio) %><%}%></td>
+							<td rowspan="2" class="ca_c_link txtar"><%- clutil.comma(m_plan) %></td>
+							<td rowspan="2" class="ca_c_link txtar"><%if(m_plan==0){%>-<%}else{%><%- clutil.comma(m_planCompRatio) %><%}%></td>
+							<td rowspan="2" class="ca_c_link txtar"><%if(m_plan==0){%>-<%}else{%><%- clutil.comma(m_planRatio) %><%}%></td>
+							<td rowspan="2" class="ca_c_link txtar"><%- clutil.comma(m_planDiff) %></td>
+							<td rowspan="2" class="ca_c_link txtar"><%- clutil.comma(m_resultPrev) %></td>
+							<td rowspan="2" class="ca_c_link txtar"><%if(m_resultPrev==0){%>-<%}else{%><%- clutil.comma(m_compRatioPrev) %><%}%></td>
+							<td rowspan="2" class="ca_c_link txtar"><%if(m_resultPrev==0){%>-<%}else{%><%- clutil.comma(m_YTY) %><%}%></td>
+							<td rowspan="2" class="ca_c_link txtar"><%- clutil.comma(m_diff) %></td>
+							<td rowspan="2" class="dispn"></td>'
+							<td rowspan="2" class="ca_c_link"><%- t_accTitleName %></td>
+							<td rowspan="" class="ca_c_link">半期</td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(hy_result) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(hy_result==0){%>-<%}else{%><%- clutil.comma(hy_compRatio) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(hy_plan) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(hy_plan==0){%>-<%}else{%><%- clutil.comma(hy_planCompRatio) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(hy_plan==0){%>-<%}else{%><%- clutil.comma(hy_planRatio) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(hy_planDiff) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(hy_resultPrev) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(hy_resultPrev==0){%>-<%}else{%><%- clutil.comma(hy_compRatioPrev) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(hy_resultPrev==0){%>-<%}else{%><%- clutil.comma(hy_YTY) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(hy_diff) %></td>
+							<td rowspan="2" class="dispn"></td>'
+						</tr>
+						<tr class="">
+							<td rowspan="" class="ca_c_link">年間</td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(y_result) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(y_result==0){%>-<%}else{%><%- clutil.comma(y_compRatio) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(y_plan) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(y_plan==0){%>-<%}else{%><%- clutil.comma(y_planCompRatio) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(y_plan==0){%>-<%}else{%><%- clutil.comma(y_planRatio) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(y_planDiff) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(y_resultPrev) %></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(y_resultPrev==0){%>-<%}else{%><%- clutil.comma(y_compRatioPrev) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%if(y_resultPrev==0){%>-<%}else{%><%- clutil.comma(y_YTY) %><%}%></td>
+							<td rowspan="" class="ca_c_link txtar"><%- clutil.comma(y_diff) %></td>
+						</tr>
+					</script>
+				</div>
+				<!-- /#table -->
+
+				<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+				<!-- <div class="pagination-wrapper"></div> -->
+
+			</div>
+			<!-- /#result -->
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<div id="mainColumnFooter" class="noLeftColumn"></div>
+
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</body>
+</html>

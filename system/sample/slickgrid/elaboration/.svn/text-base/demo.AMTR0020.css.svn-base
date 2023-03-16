@@ -1,0 +1,5 @@
+.cl-colhead > .slick-cell.input {
+	background-color: white;
+	color: #667180;
+	font-weight: normal;
+}

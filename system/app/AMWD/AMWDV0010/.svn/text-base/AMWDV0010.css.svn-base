@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+
+.txtInFieldUnit.help {
+    margin-top: 2px;
+    margin-left: 10px;
+}

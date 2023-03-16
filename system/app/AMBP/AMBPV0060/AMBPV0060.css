@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+.alertTip span {
+  font-size: 75%;
+  background: #fcae3f;
+  margin-right: 0;
+  color: white;
+  height: 14px;
+  width: 14px;
+  padding: 0;
+  text-align: center;
+  line-height: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+  border-radius: 16px;
+}

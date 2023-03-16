@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>商品マスタ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../js/jquery.form.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<link rel="stylesheet" href="./AMMSV0160.css" type="text/css">
+
+<script>
+
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+
+<script src="AMMSV0160.js"></script>
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+
+			<div id="content">
+
+				<div class="fieldgroup" id="ca_form">
+					<input type="hidden" id="ca_id" />
+					<div class="fieldgroupInBox">
+						<div id="ca_main2">
+							<div id="ca_main3">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required" id="div_unitID">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox required">
+										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_unitID"></select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft half mrgr20">
+									<p class="fieldName bl2">組合わせ<br />企画コード</p>
+									<div class="fieldBox required">
+										<input type="text" placeholder="" class="form-control wt280" disabled id="ca_code"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName bl2">組合わせ<br />販売名称</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240" id="pa_name"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active cl_valid cl_required" data-tflimit="12" data-validator="maxlen:12 zenkaku" id="ca_name"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName ">値下区分</p>
+									<div class="fieldBox" id="div_discTypeID">
+										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_discTypeID"></select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit flleft mrgb10 mrgr20 required">
+									<p class="fieldName">販売期間</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap flleft" id="div_ca_saleStartDate">
+											<input type="text" class="cl_valid cl_required cl_date" id="ca_saleStartDate" />
+										</div>
+										<p class="txtInFieldUnit pdg flleft">〜</p>
+										<div class="datepicker_wrap flleft">
+											<input type="text" class="cl_valid cl_required cl_date" id="ca_saleEndDate" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<hr>
+							<div class="mrgb10"></div>
+							<div class="unit flright mrgb10">金額（円）</div>
+							<div class="fieldUnit flleft mrgb20 mrgr20 hta wt100pct required">
+								<p class="fieldName bl2">組合せ<br />段階</p>
+								<div class="fieldBox table mrgb0">
+
+									<table class="hilightRow list" id="ca_table1">
+									<thead id="ca_table1_thead">
+										<tr>
+											<th width="50px"></th>
+											<th width="120px">組合せ点数</th>
+											<th width="140px">組合せ金額</th>
+											<th width="120px">1点当たり平均額</th>
+										</tr>
+									</thead>
+									<tbody id="ca_table1_tbody">
+										<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+									</tbody>
+									</table>
+									<script id="ca_rec_template1" type="text/template">
+									<tr name="<%- no %>" class="deletable">
+										<td class="ca_c_link txtar">
+											<%- step %>
+											<input type="hidden" name="ca_step" value="<%- step %>" />
+										</td>
+										<td class="ca_c_link editable pdg0">
+											<input type="text" class="form-control txtar cl_valid" name="ca_qy" data-validator="int:2" value="<%- qy %>" />
+										</td>
+										<td class="ca_c_link editable pdg0">
+											<input type="text" class="form-control txtar cl_valid" name="ca_am" data-validator="int:7" data-filter="comma" value="<%- clutil.comma(am) %>" />
+										</td>
+										<td class="ca_c_link txtar" name="ca_average">
+											<%- qy == 0 ? "" : clutil.comma(Math.round(am / qy)) %>
+										</td>
+										<td class="dispn">
+											<input type="hidden" name="ca_step" value="<%- step %>" />
+										</td>
+									</tr>
+								</script>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit hta mrgb10 flleft mrgr10 required">
+							<div class="fieldUnit mrgb20 flright ">
+								<div class="fieldBox noName flleft " id="ca_csvinput2">
+									<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_download">Excelサンプルダウンロード</button>
+								</div>
+								<div class="fieldBox noName flleft" id="ca_csvinput1">
+									<input type="file" class="hide-input" id="file_csv_uptake"/>
+									<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+							<div class="pagination-wrapper"></div>
+
+								<p class="fieldName">対象商品</p>
+								<div class="table fieldBox mrgb10">
+									<table class="hilightRow list flleft " id="ca_table2">
+									<thead id="ca_table2_thead">
+										<tr>
+											<th width="140px" >品種</th>
+											<th width="200px" >メーカー</th>
+											<th width="180px" >メーカー品番</th>
+											<th width="260px" >商品名称</th>
+											<th width="40px"></th>
+										</tr>
+									</thead>
+									<tbody id="ca_table2_tbody">
+										<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+									</tbody>
+									<tfoot id="ca_table2_tfoot">
+										<tr class="addRow">
+											<td colspan="6"><span class="btn-add"></span></td>
+										</tr>
+									</tfoot>
+									</table>
+								</div>
+								<div class="clear"></div>
+							<div class="clear"></div>
+							<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+							<div class="pagination-wrapper"></div>
+						</div>
+						<div class="clear"></div>
+						<script id="ca_rec_template2" type="text/template">
+							<tr name="<%- no %>" class="deletable">
+								<td class="ca_c_link editable pdg0">
+									<input type="text" class="form-control cl_valid cl_required" name="ca_itgrpID" />
+								</td>
+								<td class="ca_c_link editable pdg0">
+									<input type="text" class="form-control cl_valid cl_required" name="ca_makerID" />
+								</td>
+								<td class="ca_c_link editable pdg0">
+									<input type="text" class="form-control cl_valid cl_required" name="ca_makerItemCode" data-validator="maxlen:10 hankaku" value="<%- makerItemCode %>" />
+								</td>
+								<td class="ca_c_link" name="td_name">
+									<%- itemName %>
+								</td>
+								<td class="ca_c_link" name="td_delete"><span class="btn-delete flright"></span></td>
+								<td class="ca_c_link dispn">
+									<input type="hidden" name="ca_itemID" value="<%- itemID %>" />
+								</td>
+								<td class="ca_c_link dispn">
+									<input type="hidden" name="ca_itemName" value="<%- itemName %>" />
+									<input type="hidden" name="ca_editableFlag" value="<%- editableFlag %>" />
+								</td>
+							</tr>
+						</script>
+
+						<div id="div_org_price">
+							<hr>
+							<div class="flleft half">
+								<div class="fieldUnit mrgb10">
+									<p class="fieldName">地区</p>
+									<div class="fieldBox">
+										<label class="checkbox ib" for="check1"><input type="checkbox" value="" id="ca_zoneFlag" data-toggle="checkbox">地区を指定する</label>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<!-- ゾーンを指定する がuncheckedの場合 以下fieldUnit非表示 -->
+								<div class="fieldUnit flleft mrgr20 hta wt100pct" id="ca_div_zone">
+									<div class="fieldBox table mrgb0">
+										<table class="hilightRow list" id="ca_table3">
+										<thead id="ca_table3_thead">
+											<tr>
+												<th width="">地区</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody id="ca_table3_tbody">
+											<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+										</tbody>
+										<tfoot id="ca_table3_tfoot">
+											<tr class="addRow">
+												<td colspan="2"><span class="btn-add"></span></td>
+											</tr>
+										</tfoot>
+										</table>
+										<script id="ca_rec_template3" type="text/template">
+										<tr name="<%- no %>" class="deletable">
+											<td class="ca_c_link editable pdg0">
+												<input type="text" class="form-control" name="ca_orgID" />
+											</td>
+											<td class="ca_c_link" name="td_delete"><span class="btn-delete flright"></span></td>
+										</tr>
+									</script>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+							<div class="flleft half">
+								<div class="fieldUnit mrgb10">
+									<p class="fieldName">店舗</p>
+									<div class="fieldBox">
+										<label class="checkbox ib" for="check2"><input type="checkbox" value="" id="ca_storeFlag" data-toggle="checkbox">店舗を指定する</label>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<!-- 店舗を指定する がuncheckedの場合 以下fieldUnit非表示 -->
+								<div class="fieldUnit flleft mrgr20 hta wt100pct" id="ca_div_store">
+									<div class="fieldBox table mrgb0">
+										<table class="hilightRow list" id="ca_table4">
+										<thead id="ca_table4_thead">
+											<tr>
+												<th width="">店舗</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody id="ca_table4_tbody">
+											<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+										</tbody>
+										<tfoot id="ca_table4_tfoot">
+											<tr class="addRow">
+												<td colspan="2"><span class="btn-add"></span></td>
+											</tr>
+										</tfoot>
+										</table>
+										<script id="ca_rec_template4" type="text/template">
+										<tr name="<%- no %>" class="deletable">
+											<td class="ca_c_link editable pdg0">
+												<input type="text" class="form-control" name="ca_orgID"  />
+											</td>
+											<td class="ca_c_link" name="td_delete"><span class="btn-delete flright"></span></td>
+										</tr>
+									</script>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<!-- /#content -->
+
+			<div id="mainColumnFooter" class="x2">
+			</div>
+			<!-- /#mainColumnFooter -->
+
+		</div>
+		<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

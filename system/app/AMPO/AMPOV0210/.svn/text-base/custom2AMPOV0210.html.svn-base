@@ -1,0 +1,841 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0210.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+
+<link href="/css/slickgrid.css" rel="stylesheet">
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<!--<script src="../../../../js/slickgrid.js"></script>-->
+<script src="../../../js/clcom.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+<!--<script src="../../../js/clgrid.js"></script>-->
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+
+
+<style>
+#ca_tp_code+.tooltip .tooltip-inner {
+	text-align: left;
+	/*   width: 300px;*/
+}
+
+#tp_slAdjuster+.tooltip .tooltip-inner {
+	text-align: left;
+	/*   width: 300px;*/
+}
+</style>
+
+
+</head>
+
+<body class="cl_body_hidden">
+
+	<div id="ca_main">
+<script src="custom2AMPOV0210.js"></script>
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup" id="ca_base_form">
+							<div id="ssetaddr" class="fieldgroupInBox setaddr">
+								<input type="hidden" id="ca_recno"> <input type="hidden"
+									id="ca_state"> <input type="hidden" id="ca_id">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox ca_unitID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="unitID" id="ca_unitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- ＰＯ種別 -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox ca_poTypeID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="poTypeID" id="ca_poTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- オプショングループコード -->
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName bl2">オプショングループコード</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240" length="6"></span> <input
+											type="text" placeholder=""
+											class="form-control wt280 ime-active cl_valid cl_required"
+											id="ca_code" name="code" data-tflimit="6"
+											data-validator="maxlen:6 alnum" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft required">
+									<p class="fieldName bl2">
+										オプション<br>グループ名称
+									</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240" length="6"></span> <input
+											type="text" placeholder=""
+											class="form-control wt280 ime-active cl_valid cl_required"
+											id="ca_name" name="name" data-tflimit="20"
+											data-validator="maxlen:20" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">適用開始日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_stDate_div">
+											<input type="text" id="ca_stDate" name="stDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-limit="len:13" data-validator="maxlen:13" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20 required">
+									<p class="fieldName">適用終了日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap ca_edDate_div">
+											<input type="text" id="ca_edDate" name="edDate"
+												class="cl_date cl_valid cl_required ime-disabled"
+												data-limit="len:13" data-validator="maxlen:13" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10  flleft mrgr20">
+									<p class="fieldName">発注停止日</p>
+									<div class="fieldBox">
+										<!-- ツールチップでヘルプを表示 -->
+										<p class="txtInFieldUnit flright help" id="ca_tp_code"
+											title="発注停止日：この日付以降店舗ではそのマスタを参照不可になります。<br />適用終了日：店舗だけでなく本部でもそのマスタを参照不可になります。">
+											<span>?</span>
+										</p>
+
+										<div class="datepicker_wrap ca_ordStopDate_div">
+											<input type="text" id="ca_ordStopDate" name="ordStopDate"
+												class="cl_date cl_valid  ime-disabled" data-limit="len:13"
+												data-validator="maxlen:13" _headbase />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+
+
+						<div id="ca_result">
+
+							<div class="fieldgroup" id="ca_table_form0">
+								<p class="gtitle" id="gtitle_0">フィールド0</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldgroup" id="ca_table_div001">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label001">ラベル001</p>
+										</div>
+										<div class="clear"></div>
+											<div class="cl_datagrid_container" id="ca_datagrid001" ></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="fieldgroup" id="ca_table_form1">
+								<p class="gtitle" id="gtitle_1">フィールド1</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldgroup" id="ca_table_div101">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label101">ラベル101</p>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid101"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div102">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label102">ラベル102</p>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid102"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div103">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label103">ラベル103</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid103"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div104">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label104">ラベル104</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid104"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div105">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label105">ラベル105</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="table">
+												<div class="cl_datagrid_container" id="ca_datagrid105"></div>
+												<div class="clear"></div>
+											</div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div106">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label106">ラベル106</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid106"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div107">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label107">ラベル107</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid107"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div108">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label108">ラベル108</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid108"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="fieldgroup" id="ca_table_form2">
+								<p class="gtitle" id="gtitle_2">フィールド2</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldgroup" id="ca_table_div201">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label201">ラベル201</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid201"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div202">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label202">ラベル202</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid202"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div203">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName fieldName" id="label203">ラベル203</p>
+											<div class="fieldBox">
+												<p class="txtInFieldUnit flright help" id="tp_slAdjuster"
+													title="アジャスターに登録したオプションは、発注登録画面のスペアアジャスターのオプションと同じになります">
+													<span>?</span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid203"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div204">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label204">ラベル204</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid204"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div205">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label205">ラベル205</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid205"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+								</div>
+
+							</div>
+
+							<div class="fieldgroup" id="ca_table_form3">
+								<p class="gtitle" id="gtitle_3">フィールド3</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldgroup" id="ca_table_div301">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label301">ラベル301</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid301"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div302">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label302">ラベル302</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid302"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="fieldgroup" id="ca_table_form4">
+								<p class="gtitle" id="gtitle_4">フィールド4</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldgroup" id="ca_table_div401">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label401">ラベル401</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid401"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div402">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label402">ラベル402</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid402"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div403">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label403">ラベル403</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid403"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div404">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label404">ラベル404</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid404"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="fieldgroup" id="ca_table_form5">
+								<p class="gtitle" id="gtitle_5">フィールド5</p>
+								<div class="fieldgroupInBox">
+									<div class="fieldgroup" id="ca_table_div501">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label501">ラベル501</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid501"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div502">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label502">ラベル502</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid502"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div503">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label503">ラベル503</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid503"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div504">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label504">ラベル504</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid504"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div505">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label505">ラベル505</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid505"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div506">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label506">ラベル506</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid506"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div507">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label507">ラベル507</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid507"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div508">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label508">ラベル508</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid508"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div509">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label509">ラベル509</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid509"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div510">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label510">ラベル510</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid510"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div511">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label511">ラベル511</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid511"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div512">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label512">ラベル512</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid512"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div513">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label513">ラベル513</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid513"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div514">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label514">ラベル514</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid514"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div515">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label515">ラベル515</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid515"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div516">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label516">ラベル516</p>
+											<div class="fieldBox">
+												<p class="txtInFieldUnit flright help" id="tp_form"
+													title="イニシャル字体の「内容」は全角のみ入力可です">
+													<span>?</span>
+												</p>
+											</div>
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid516"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div517">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label517">ラベル517</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid517"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div518">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label518">ラベル518</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid518"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div519">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label519">ラベル519</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid519"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div520">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label520">ラベル520</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid520"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div521">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label521">ラベル521</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid521"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div522">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label522">ラベル522</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid522"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div523">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label523">ラベル523</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid523"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div524">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label524">ラベル524</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid524"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div525">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label525">ラベル525</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid525"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div526">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label526">ラベル526</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid526"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div527">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label527">ラベル527</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid527"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="fieldgroup" id="ca_table_div528">
+										<div class="fieldUnit mrgb10 wid140 flleft ">
+											<p class="tableHeasName" id="label528">ラベル528</p>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+										<div class="fieldUnit hta mrgb10 flleft  pdgt10">
+											<div class="cl_datagrid_container" id="ca_datagrid528"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- /#content -->
+					<div id="mainColumnFooter" class="noLeftColumn x2"></div>
+					<!-- /#mainColumnFooter -->
+
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+			<div class="clear"></div>
+		</div>
+		<!-- / #container -->
+	</div>
+</body>
+</html>

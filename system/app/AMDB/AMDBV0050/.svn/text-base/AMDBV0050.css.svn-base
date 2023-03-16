@@ -1,0 +1,110 @@
+.remainDays {
+  text-align: right;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+
+  height: 13px;
+  left: 100%;
+  position: relative;
+  transform: translateX(-100%);
+}
+.remainDaysBlue {
+  color: rgba(52, 152, 219, 1);
+  border-bottom: rgba(52, 152, 219, 1) solid 3px;
+}
+.remainDaysYellow {
+  color: rgba(252, 174, 63, 1);
+  border-bottom: rgba(252, 174, 63, 1) solid 3px;
+}
+.remainDaysRed {
+  color: rgba(242, 85, 95, 1);
+  border-bottom: rgba(242, 85, 95, 1) solid 3px;
+}
+.header {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+
+  background-color: rgba(240, 241, 242, 1);
+  padding: 2.5px;
+}
+.column0 {
+  min-width: 50.5px;
+}
+.columnName1 {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+}
+.columnName2 {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+
+  height: 10px;
+}
+.rowName {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(102, 113, 128, 1);
+}
+.val {
+  text-align: right;
+  font-family: Microsoft PhagsPa;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(50, 58, 69, 1);
+}
+.plandfVal {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+}
+.planrtVal {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+}
+.green {
+  color: rgba(15, 184, 170, 1);
+}
+.yellow {
+  color: rgba(252, 174, 63, 1);
+}
+.red {
+  color: rgba(242, 85, 95, 1);
+}
+
+#weekPlan table,
+#weekLand table,
+#monthPlan table,
+#monthLand table,
+#year2Plan table,
+#year2Land table {
+  width: auto;
+}
+#yearPlan table,
+#yearLand table {
+  width: 75%;
+}

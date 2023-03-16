@@ -1,0 +1,74 @@
+.inlineText {
+  display: inline-block;
+  color: #667180;
+  height: 40px;
+  padding: 5px;
+  padding-top: 14px;
+  font-size: 13px;
+}
+.inlineText.required:after {
+  content: '＊';
+  color: #f2555f;
+  position: absolute;
+  top: 10px;
+}
+
+.btn-add2 {
+  display: inline-block;
+  width: 20px;
+  height: 15px;
+  background: url('../../../../images/icn_add.svg') no-repeat left center;
+  background: url('../../../../images/icn_add.png') no-repeat left center\9;
+  cursor: pointer;
+}
+.btn-add2:hover {
+  background: url('../../../../images/icn_add_active.svg') no-repeat left center;
+  background: url('../../../../images/icn_add_active.png') no-repeat left
+    center\9;
+}
+.btn-delete2 {
+  display: inline-block;
+  width: 20px;
+  height: 15px;
+  background: url('../../../../images/icn_delete.svg') no-repeat right center;
+  background: url('../../../../images/icn_delete.png') no-repeat right center\9;
+  cursor: pointer;
+}
+.btn-delete2:hover {
+  background: url('../../../../images/icn_delete_active.svg') no-repeat right
+    center;
+  background: url('../../../../images/icn_delete_active.png') no-repeat right
+    center\9;
+}
+
+.ht95 {
+  height: 95px;
+}
+.ht380 {
+  height: 380px;
+}
+.ht420 {
+  height: 420px;
+}
+
+.wt175 {
+  width: 175px;
+}
+
+.wt320 {
+  width: 320px;
+}
+
+.wt330 {
+  width: 330px;
+}
+
+.wt525 {
+  width: 525px;
+}
+
+.info {
+  color: #1e9ce6;
+  float: right;
+  cursor: pointer;
+}

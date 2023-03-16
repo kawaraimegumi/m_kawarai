@@ -1,0 +1,143 @@
+<div id="ca_MDCMV1080_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>商品リスト</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		
+		<!-- /#title -->
+			
+		<div id="content">
+			
+			<div id="selected" class="ca_MDCMV1080_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control">
+				<span class="delete" id="ca_MDCMV1080_edit_del_all">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_MDCMV1080_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+			
+			<div class="fieldgroup">
+				<div id="ca_MDCMV1080_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">商品分類種別</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft" id="ca_MDCMV1080_elem_func">
+		          				</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName">商品分類階層</p>
+							<div class="fieldBox" id="ca_MDCMV1080_elem_lvl_div">
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">商品リスト名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" data-limit="len:32" id="ca_MDCMV1080_name"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">公開区分</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft" id="ca_MDCMV1080_f_open">
+		          				</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_MDCMV1080_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button class="btn btn-default wt140" id="ca_MDCMV1080_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV1080_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV1080_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_MDCMV1080_tbl">
+			<tr>
+				<th width="40px">
+					<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_MDCMV1080_chkall"></label>
+				</th>
+				<th width="" class="ca_th_sort" key="NAME"><span>商品リスト名</span></th>
+				<th width="" class="ca_th_sort" key="FOPEN"><span>公開区分</span></th>
+				<th width="" class="ca_th_sort" key="UPDTIME"><span>変更日時</span></th>
+				<th width="" class="ca_th_sort" key="CRENAME"><span>作成者</span></th>
+				<th width="" class="ca_th_sort" key="ELEMNUM"><span>要素数</span></th>
+			</tr>
+			<tbody id="ca_MDCMV1080_tbody">
+			</tbody>
+		</table>
+		<script id="ca_MDCMV1080_tbody_tmp" type="text/x-jquery-tmpl">
+			<tr id="${genlist_id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1080_chk"></label></td>
+				<td>${name}</td>
+				<td>${f_open_name}</td>
+				<td>${upd_iymd_disp} ${upd_time_disp}</td>
+				<td>${cre_staff_name}</td>
+				<td class="td_right">${elem_num}</td>
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+		
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV1080_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV1080_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_MDCMV1080_multi" id="ca_MDCMV1080_add">チェックしたものを選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_MDCMV1080_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_MDCMV1080_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

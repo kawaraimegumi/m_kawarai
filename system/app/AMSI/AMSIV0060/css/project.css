@@ -1,0 +1,890 @@
+@charset "UTF-8";
+/*
+for This Project Only
+----------------------------------------------------------------
+プロジェクト固有のスタイル定義用
+htmlの<head> ~ </head>内で読み込んでください
+*/
+/*
+Local Font
+----------------------------------------------------------------
+*/
+body {
+  font-feature-settings: "palt" 1;
+}
+
+@font-face {
+  font-family: SpicaNeueP-Regular;
+  src: url("../fonts/spicaneue/SpicaNeueP-Regular.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: SpicaNeueP-Bold;
+  src: url("../fonts/spicaneue/SpicaNeueP-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url("../fonts/lato/lato-black.eot");
+  src: url("../fonts/lato/lato-black.eot?#iefix") format("embedded-opentype"), url("../fonts/lato/lato-black.woff") format("woff"), url("../fonts/lato/lato-black.ttf") format("truetype"), url("../fonts/lato/lato-black.svg#latoblack") format("svg");
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url("../fonts/lato/lato-bold.eot");
+  src: url("../fonts/lato/lato-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/lato/lato-bold.woff") format("woff"), url("../fonts/lato/lato-bold.ttf") format("truetype"), url("../fonts/lato/lato-bold.svg#latobold") format("svg");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url("../fonts/lato/lato-bolditalic.eot");
+  src: url("../fonts/lato/lato-bolditalic.eot?#iefix") format("embedded-opentype"), url("../fonts/lato/lato-bolditalic.woff") format("woff"), url("../fonts/lato/lato-bolditalic.ttf") format("truetype"), url("../fonts/lato/lato-bolditalic.svg#latobold-italic") format("svg");
+  font-weight: bold;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url("../fonts/lato/lato-italic.eot");
+  src: url("../fonts/lato/lato-italic.eot?#iefix") format("embedded-opentype"), url("../fonts/lato/lato-italic.woff") format("woff"), url("../fonts/lato/lato-italic.ttf") format("truetype"), url("../fonts/lato/lato-italic.svg#latoitalic") format("svg");
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url("../fonts/lato/lato-light.eot");
+  src: url("../fonts/lato/lato-light.eot?#iefix") format("embedded-opentype"), url("../fonts/lato/lato-light.woff") format("woff"), url("../fonts/lato/lato-light.ttf") format("truetype"), url("../fonts/lato/lato-light.svg#latolight") format("svg");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url("../fonts/lato/lato-regular.eot");
+  src: url("../fonts/lato/lato-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/lato/lato-regular.woff") format("woff"), url("../fonts/lato/lato-regular.ttf") format("truetype"), url("../fonts/lato/lato-regular.svg#latoregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: SF-UI-Text-Regular;
+  src: url("../fonts/sanfrancisco/SF-UI-Text-Regular.otf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: SF-UI-Text-Bold;
+  src: url("../fonts/sanfrancisco/SF-UI-Text-Regular.otf") format("truetype");
+  font-weight: bold;
+}
+/*
+Glyphicon
+----------------------------------------------------------------
+*/
+@font-face {
+  font-family: 'ABUI-icons';
+  src: url("../fonts/abui-icons-regular.eot");
+  src: url("../fonts/abui-icons-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/abui-icons-regular.woff") format("woff"), url("../fonts/abui-icons-regular.ttf") format("truetype"), url("../fonts/abui-icons-regular.svg#") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+  font-family: 'ABUI-icons';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="icon-abui-"] {
+*/
+[class^="icon-abui-"], [class*=" icon-abui-"] {
+  font-family: 'ABUI-icons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-abui-plus:before {
+  content: "\2b";
+}
+
+.icon-abui-minus:before {
+  content: "\2212";
+}
+
+.icon-abui-pencil:before {
+  content: "\270f";
+}
+
+.icon-abui-mail:before {
+  content: "\2709";
+}
+
+.icon-abui-search:before {
+  content: "\e003";
+}
+
+.icon-abui-heart:before {
+  content: "\e005";
+}
+
+.icon-abui-star:before {
+  content: "\e006";
+}
+
+.icon-abui-user:before {
+  content: "\e008";
+}
+
+.icon-abui-matrix:before {
+  content: "\e011";
+}
+
+.icon-abui-thlist:before {
+  content: "\e012";
+}
+
+.icon-abui-check:before {
+  content: "\e013";
+}
+
+.icon-abui-cross:before {
+  content: "\e014";
+}
+
+.icon-abui-zoomin:before {
+  content: "\e015";
+}
+
+.icon-abui-zoomout:before {
+  content: "\e016";
+}
+
+.icon-abui-gear:before {
+  content: "\e019";
+}
+
+.icon-abui-home:before {
+  content: "\e021";
+}
+
+.icon-abui-file:before {
+  content: "\e022";
+}
+
+.icon-abui-time:before {
+  content: "\e023";
+}
+
+.icon-abui-data:before {
+  content: "\e025";
+}
+
+.icon-abui-download:before {
+  content: "\e026";
+}
+
+.icon-abui-upload:before {
+  content: "\e027";
+}
+
+.icon-abui-repeat:before {
+  content: "\e030";
+}
+
+.icon-abui-reload:before {
+  content: "\e031";
+}
+
+.icon-abui-lock:before {
+  content: "\e033";
+}
+
+.icon-abui-volume:before {
+  content: "\e038";
+}
+
+.icon-abui-addressbook:before {
+  content: "\e043";
+}
+
+.icon-abui-bookmark:before {
+  content: "\e044";
+}
+
+.icon-abui-photo:before {
+  content: "\e046";
+}
+
+.icon-abui-list:before {
+  content: "\e056";
+}
+
+.icon-abui-video:before {
+  content: "\e059";
+}
+
+.icon-abui-picture:before {
+  content: "\e060";
+}
+
+.icon-abui-location:before {
+  content: "\e062";
+}
+
+.icon-abui-pen:before {
+  content: "\e065";
+}
+
+.icon-abui-checkbox-checked:before {
+  content: "\e067";
+}
+
+.icon-abui-play:before {
+  content: "\e072";
+}
+
+.icon-abui-pause:before {
+  content: "\e073";
+}
+
+.icon-abui-arrow-left:before {
+  content: "\e079";
+}
+
+.icon-abui-arrow-right:before {
+  content: "\e080";
+}
+
+.icon-abui-check-inverted:before {
+  content: "\e084";
+}
+
+.icon-abui-guide:before {
+  content: "\e085";
+}
+
+.icon-abui-info:before {
+  content: "\e086";
+}
+
+.icon-abui-expand:before {
+  content: "\e096";
+}
+
+.icon-abui-contract:before {
+  content: "\e097";
+}
+
+.icon-abui-allert:before {
+  content: "\e101";
+}
+
+.icon-abui-currentlocaiton:before {
+  content: "\e103";
+}
+
+.icon-abui-eye:before {
+  content: "\e105";
+}
+
+.icon-abui-calendar-solid:before {
+  content: "\e109";
+}
+
+.icon-abui-chat:before {
+  content: "\e111";
+}
+
+.icon-abui-arrow-up:before {
+  content: "\e113";
+}
+
+.icon-abui-arrow-down:before {
+  content: "\e114";
+}
+
+.icon-abui-folder:before {
+  content: "\e117";
+}
+
+.icon-abui-bullhorn:before {
+  content: "\e122";
+}
+
+.icon-abui-circle-arrow-right:before {
+  content: "\e131";
+}
+
+.icon-abui-circle-arrow-left:before {
+  content: "\e132";
+}
+
+.icon-abui-circle-arrow-up:before {
+  content: "\e133";
+}
+
+.icon-abui-circle-arrow-down:before {
+  content: "\e134";
+}
+
+.icon-abui-gear-alt:before {
+  content: "\e136";
+}
+
+.icon-abui-filter:before {
+  content: "\e138";
+}
+
+.icon-abui-maximize:before {
+  content: "\e140";
+}
+
+.icon-abui-clip:before {
+  content: "\e142";
+}
+
+.icon-abui-radio-unchecked:before {
+  content: "\e148";
+}
+
+.icon-abui-radio-checked:before {
+  content: "\e149";
+}
+
+.icon-abui-checkbox-unchecked:before {
+  content: "\e157";
+}
+
+.icon-abui-outside:before {
+  content: "\e164";
+}
+
+.icon-abui-card:before {
+  content: "\e177";
+}
+
+.icon-abui-organization:before {
+  content: "\e180";
+}
+
+.icon-abui-map:before {
+  content: "\e184";
+}
+
+.icon-abui-linechart:before {
+  content: "\e185";
+}
+
+.icon-abui-astrolablogo-mark:before {
+  content: "\e197";
+}
+
+.icon-abui-astrolablogo-type:before {
+  content: "\e200";
+}
+
+.icon-abui-clipboard:before {
+  content: "\e205";
+}
+
+.icon-abui-population:before {
+  content: "\e211";
+}
+
+.icon-abui-bell:before {
+  content: "\e213";
+}
+
+.icon-abui-blackboard:before {
+  content: "\e218";
+}
+
+.icon-abui-threedots:before {
+  content: "\e234";
+}
+
+.icon-abui-threedots-vertical:before {
+  content: "\e235";
+}
+
+.icon-abui-smile:before {
+  content: "\e240";
+}
+
+.icon-abui-microphone:before {
+  content: "\e600";
+}
+
+.icon-abui-minimize:before {
+  content: "\e601";
+}
+
+.icon-abui-cols:before {
+  content: "\e901";
+}
+
+.icon-abui-rows:before {
+  content: "\e902";
+}
+
+/*
+Variables
+----------------------------------------------------------------
+*/
+/*
+Mixins
+----------------------------------------------------------------
+*/
+/*
+Clearfix
+Source: http://nicolasgallagher.com/micro-clearfix-hack/
+
+For modern browsers
+1. The space content is one way to avoid an Opera bug when the
+   contenteditable attribute is included anywhere else in the document.
+   Otherwise it causes space to appear at the top and bottom of elements
+   that are clearfixed.
+2. The use of `table` rather than `block` is only necessary if using
+   `:before` to contain the top-margins of child elements.
+*/
+/*
+Scaffolding
+----------------------------------------------------------------
+*/
+body {
+  font-family: "Lato", "SpicaNeueP-Regular", "メイリオ", "ＭＳ Ｐゴシック", sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #2d383c;
+  background-color: #fff;
+}
+
+a {
+  color: #029df4;
+  text-decoration: none;
+  -moz-transition: 0.25s;
+  -o-transition: 0.25s;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
+}
+a:hover, a:focus {
+  color: #2cb2fd;
+  text-decoration: none;
+}
+a:focus {
+  outline: none;
+}
+
+/*
+Spaces
+----------------------------------------------------------------
+*/
+.last-col {
+  overflow: hidden;
+}
+
+.ptn, .pvn, .pan {
+  padding-top: 0 !important;
+}
+
+.ptx, .pvx, .pax {
+  padding-top: 4px !important;
+}
+
+.pts, .pvs, .pas {
+  padding-top: 8px !important;
+}
+
+.ptm, .pvm, .pam {
+  padding-top: 12px !important;
+}
+
+.ptl, .pvl, .pal {
+  padding-top: 16px !important;
+}
+
+.prn, .phn, .pan {
+  padding-right: 0 !important;
+}
+
+.prx, .phx, .pax {
+  padding-right: 4px !important;
+}
+
+.prs, .phs, .pas {
+  padding-right: 8px !important;
+}
+
+.prm, .phm, .pam {
+  padding-right: 12px !important;
+}
+
+.prl, .phl, .pal {
+  padding-right: 16px !important;
+}
+
+.pbn, .pvn, .pan {
+  padding-bottom: 0 !important;
+}
+
+.pbx, .pvx, .pax {
+  padding-bottom: 4px !important;
+}
+
+.pbs, .pvs, .pas {
+  padding-bottom: 8px !important;
+}
+
+.pbm, .pvm, .pam {
+  padding-bottom: 12px !important;
+}
+
+.pbl, .pvl, .pal {
+  padding-bottom: 16px !important;
+}
+
+.pln, .phn, .pan {
+  padding-left: 0 !important;
+}
+
+.plx, .phx, .pax {
+  padding-left: 4px !important;
+}
+
+.pls, .phs, .pas {
+  padding-left: 8px !important;
+}
+
+.plm, .phm, .pam {
+  padding-left: 12px !important;
+}
+
+.pll, .phl, .pal {
+  padding-left: 16px !important;
+}
+
+.mtn, .mvn, .man {
+  margin-top: 0px !important;
+}
+
+.mtx, .mvx, .max {
+  margin-top: 4px !important;
+}
+
+.mts, .mvs, .mas {
+  margin-top: 8px !important;
+}
+
+.mtm, .mvm, .mam {
+  margin-top: 12px !important;
+}
+
+.mtl, .mvl, .mal {
+  margin-top: 16px !important;
+}
+
+.mrn, .mhn, .man {
+  margin-right: 0px !important;
+}
+
+.mrx, .mhx, .max {
+  margin-right: 4px !important;
+}
+
+.mrs, .mhs, .mas {
+  margin-right: 8px !important;
+}
+
+.mrm, .mhm, .mam {
+  margin-right: 12px !important;
+}
+
+.mrl, .mhl, .mal {
+  margin-right: 16px !important;
+}
+
+.mbn, .mvn, .man {
+  margin-bottom: 0px !important;
+}
+
+.mbx, .mvx, .max {
+  margin-bottom: 4px !important;
+}
+
+.mbs, .mvs, .mas {
+  margin-bottom: 8px !important;
+}
+
+.mbm, .mvm, .mam {
+  margin-bottom: 12px !important;
+}
+
+.mbl, .mvl, .mal {
+  margin-bottom: 16px !important;
+}
+
+.mln, .mhn, .man {
+  margin-left: 0px !important;
+}
+
+.mlx, .mhx, .max {
+  margin-left: 4px !important;
+}
+
+.mls, .mhs, .mas {
+  margin-left: 8px !important;
+}
+
+.mlm, .mhm, .mam {
+  margin-left: 12px !important;
+}
+
+.mll, .mhl, .mal {
+  margin-left: 16px !important;
+}
+
+@media (max-width: 768px) {
+  .gfb-mtx {
+    margin-top: 4px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mts {
+    margin-top: 8px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mtm {
+    margin-top: 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mtl {
+    margin-top: 16px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mrx {
+    margin-right: 4px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mrs {
+    margin-right: 8px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mrm {
+    margin-right: 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mrl {
+    margin-right: 16px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mbx {
+    margin-bottom: 4px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mbs {
+    margin-bottom: 8px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mbm {
+    margin-bottom: 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mbl {
+    margin-bottom: 16px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mlx {
+    margin-left: 4px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mls {
+    margin-left: 8px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mlm {
+    margin-left: 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gfb-mll {
+    margin-left: 16px !important;
+  }
+}
+
+.acordion-btn {
+  display: block;
+  text-align: left !important;
+  font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .row--narrow {
+    margin: -8px;
+  }
+  .row--narrow > div {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.table--stock thead > tr.text-danger .stock--num,
+.table--stock tbody > tr.text-danger .stock--num,
+.table--stock tfoot > tr.text-danger .stock--num {
+  color: #f55361;
+}
+.table--stock thead > tr > th,
+.table--stock tbody > tr > th,
+.table--stock tfoot > tr > th {
+  background-color: white;
+  color: #98a9b0;
+  padding-top: 16px;
+  padding-left: 0;
+}
+.table--stock thead > tr > td,
+.table--stock tbody > tr > td,
+.table--stock tfoot > tr > td {
+  padding-left: 0;
+}
+.table--stock thead > tr > td.stock--num,
+.table--stock tbody > tr > td.stock--num,
+.table--stock tfoot > tr > td.stock--num {
+  text-align: right;
+  font-weight: bold;
+  color: #029df4;
+}
+.table--stock thead > tr > td {
+  color: #98a9b0;
+}
+
+.table--stock--self {
+  border-top: 1px solid #e4e9ea;
+  border-bottom: 1px solid #e4e9ea;
+  padding: 8px 0;
+  margin-bottom: 8px;
+}
+.table--stock--self table thead > tr > td,
+.table--stock--self table tbody > tr > td,
+.table--stock--self table tfoot > tr > td {
+  font-size: 18px;
+  padding-left: 0;
+  font-weight: bold;
+}
+.table--stock--self table thead > tr > td.stock--num,
+.table--stock--self table tbody > tr > td.stock--num,
+.table--stock--self table tfoot > tr > td.stock--num {
+  color: #2d383c;
+  font-size: 24px;
+}
+
+.modal--diaglog--text .stocknum {
+  display: block;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1;
+  padding-bottom: 16px;
+}
+.modal--diaglog--text .telnum {
+  font-size: 28px;
+  color: #029df4;
+}
+
+.currentitem--code {
+  font-size: 18px;
+}
+
+.stock-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e4e9ea;
+}
+.stock-list.current {
+  border: 1px solid #e4e9ea;
+}
+.stock-list.current li {
+  padding: 4px 8px;
+  border: none;
+  background-color: #f2f4f5;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 1px;
+}
+.stock-list.current li .stock--code {
+  color: #657a84;
+}
+.stock-list li {
+  border-bottom: 1px solid #e4e9ea;
+  padding: 8px 0;
+}
+.stock-list li span.stock--category {
+  font-size: 14px;
+}
+.stock-list li span.stock--code {
+  color: #029df4;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.modal-header--title span {
+  display: block;
+}
+.modal-header--title span.stock--category {
+  font-size: 16px;
+}
+.modal-header--title span.stock--code {
+  color: #657a84;
+  font-size: 20px;
+  font-weight: bold;
+}
+.modal-header--title span.stock--name {
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.col-left label {
+  display: block;
+  width: 100%;
+}
+

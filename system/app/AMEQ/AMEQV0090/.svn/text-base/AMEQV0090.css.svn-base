@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+    height:530px;
+}
+.wt520 {
+  width: 520px;
+}
+.select.wt520 .btn {
+  width: 520px;
+}
+.bootstrap-select.wt520 .btn {
+  width: 520px;
+}
+.bootstrap-select.wt520 {
+  width: 520px;
+}
+

@@ -1,0 +1,137 @@
+<div id="ca_CACMV0130_CACMV0020_dialog" class="cl_dialog"></div>
+<div id="ca_CACMV0130_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>会員リスト</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		
+		<!-- /#title -->
+			
+		<div id="content">
+			
+			<div id="selected" class="ca_CACMV0130_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control">
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_CACMV0130_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+			
+			<div class="fieldgroup">
+				<div id="ca_CACMV0130_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName bl2">会員<br/>リスト名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" data-limit="len:32" id="ca_CACMV0130_name"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">公開区分</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft" id="ca_CACMV0130_f_open">
+		          				</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName bl2">リスト<br/>利用区分</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft" id="ca_CACMV0130_f_listuse">
+		          				</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_CACMV0130_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button class="btn btn-default wt140" id="ca_CACMV0130_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_CACMV0130_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_CACMV0130_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_CACMV0130_tbl">
+			<tr>
+				<th width="40px"></th>
+				<th width="" class="ca_th_sort" key="NAME"><span>会員リスト名</span></th>
+				<th width="" class="ca_th_sort" key="FOPEN"><span>公開区分</span></th>
+				<th width="" class="ca_th_sort" key="FLISTUSE"><span>リスト利用区分</span></th>
+				<th width="" class="ca_th_sort" key="UPDTIME"><span>変更日時</span></th>
+				<th width="" class="ca_th_sort" key="CRENAME"><span>作成者</span></th>
+				<th width="" class="ca_th_sort" key="ELEMNUM"><span>要素数</span></th>
+			</tr>
+			<tbody id="ca_CACMV0130_tbody">
+			</tbody>
+		</table>
+		<script id="ca_CACMV0130_tbody_tmp" type="text/x-jquery-tmpl">
+			<tr id="${genlist_id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_CACMV0130_chk"></label></td>
+				<td>${name}</td>
+				<td>${f_open_name}</td>
+				<td>${f_listuse_name}</td>
+				<td>${upd_iymd_disp} ${upd_time_disp}</td>
+				<td>${cre_staff_name}</td>
+				<td class="td_right">${elem_num}</td>
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+		
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_CACMV0130_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_CACMV0130_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_CACMV0130_multi" id="ca_CACMV0130_add">チェックしたものを選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_CACMV0130_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0130_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

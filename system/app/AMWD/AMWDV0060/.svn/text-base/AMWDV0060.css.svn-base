@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+table .th_qty {
+  min-width: 60px;
+}
+table .th_amt {
+  min-width: 80px;
+}
+
+/* 指マーク */
+.ca_cursor {
+    cursor: pointer;
+}

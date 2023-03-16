@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>メニューマスタ一覧</title>
+    <meta charset="utf-8">
+    <!-- Bootstrap -->
+    <link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../js/bootstrap.js"></script>
+
+    <script type="text/javascript" src="../../../js/jquery.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="../../../js/underscore.js"></script>
+    <script type="text/javascript" src="../../../js/backbone.js"></script>
+    <script type="text/javascript" src="../../../js/json2.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+
+    <!-- pager -->
+    <script type="text/javascript" src="../../js/simplePagination.js"></script>
+    <!-- datepicker -->
+    <script type="text/javascript" src="../../../js/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ui.datepicker_ja.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.dragtable.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+
+    <!-- App -->
+    <script type="text/javascript" src="../../js/clcom.js"></script>
+    <script type="text/javascript" src="../../js/messages_ja.js"></script>
+    <script type="text/javascript" src="tablesorter.js"></script>
+
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <table id="table1" class="table table-striped table-borderd">
+          <thead>
+            <tr>
+              <th data-column="a">チェック</th>
+              <th data-column="b">NO.</th>
+              <th >性</th>
+              <th data-column="d">名</th>
+            </tr>
+          </thead>
+          <tbody id="ca_tbody_div">
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>1</td>
+              <td>suzuki</td>
+              <td>ichiro</td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>2</td>
+              <td>ito</td>
+              <td>jiro</td>
+            </tr
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>3</td>
+              <td>sasaki</td>
+              <td>saburo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.wt500 {
+    width: 100%;
+    min-width: 500px;
+}
+.wt480 {
+    width :480px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}

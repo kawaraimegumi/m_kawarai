@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+.wt480 {
+    width : 480px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.termBox{
+    padding : 10px;
+}
+.txtInFieldUnit.help {
+    margin-top: 2px;
+    margin-left: 10px;
+}
+.mrgl360 {
+	margin-left: 360px;
+}

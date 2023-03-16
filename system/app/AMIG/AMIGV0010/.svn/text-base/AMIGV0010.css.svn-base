@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.unit {
+	font-size: 82%;
+	color: #323a45;
+	margin-left: 8px;
+	margin-right: 4px;
+}
+
+.txtInFieldUnit.help {
+    margin-top: 2px;
+}

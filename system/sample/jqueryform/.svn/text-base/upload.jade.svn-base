@@ -1,0 +1,64 @@
+extends ../../src/jade/layout/sample
+include ../../src/jade/mixins/mixins
+
+append scripts
+  script#source
+    $(function () {
+      var fileInput = clutil.fileInput({
+        files: [],
+        fileInput: '#torikomi1'
+      });
+
+      fileInput
+        .on('success', function (file) {
+          // 一時サーバーにアップロード成功したときに呼ばれる。
+          console.log('成功', file);
+          // サーバーに送信するデータ
+          // サーバーがアップロードしたファイルの処理に必要なfile.idを含める。
+          // ※ あくまで例なので、データ形式は各APごとに定めてください。
+          var request = {
+            fileId: file.id
+          };
+
+          // これをサーバーAPに送信する。ここのインターフェイスは各画面とサーバー間で決める
+          /* コメントを外して画面ごとの処理をいれる
+          clutil.postJSON('serverName', request, _.bind(function(data, dataType) {
+            // 何か処理をする。
+          }));
+          */
+        });
+    });
+
+block pageHeader
+  h1 ファイル取込
+
+block pageContent
+  p
+    | 画面からファイルをアップロード。
+    | サーバAPはその内容を読み取るが、ファイルの保存は不要の場合。
+  pre
+    code
+      | 1.  画面からサーバへファイルをアップロードして識別子取得。
+      | 2.  識別子を送信してサーバAPを起動。
+      | 3.  サーバAP処理終了後はファイルを消しておく。
+
+  p clutil.fileInput が行なうのは、1.のみです。
+    | 2. 3. は、それぞれの画面とサーバーAP開発者が行う。
+
+  .form-horizontal
+    +bsControlGroup('取込')#torikomi1
+      +clFileInput()
+      +clFileAttach('とりこみ')
+
+  hr
+  h3 ソースコード
+  h4 HTML
+  pre
+    code#htmlSource
+  script
+    $('#htmlSource').text($('.form-horizontal')[0].outerHTML);
+  h4 JavaScript
+  pre
+    code#jsSource
+  script
+    $('#jsSource').text($('#source').text());

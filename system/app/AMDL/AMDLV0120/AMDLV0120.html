@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>入出荷・返品</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMDLV0120.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+
+
+<!-- 動作疑似再現用 -->
+<script>
+
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+
+<script src="AMDLV0120.js"></script>
+
+<div id="ca_main">
+
+<!-- ----------------//店舗検索画面---------------- -->
+
+<!-- 共通ヘッダは MDBaseView によって置き換えるので、設置不要。
+<div id="header">
+	<p class="back"></p>
+	<h1 class="contextmenu">入出荷・返品</h1>
+	<div class="rightBox">
+		<span class="logo"></span>
+		<span class="logout"><a href="javascript:void(0);">ログアウト</a></span>
+		<span class="user">Username</span>
+
+	</div>
+</div><!-- /#header -->
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- タイトル部は MDBaseView によって置き換えるので、設置不要。
+		<div id="title">
+			<h2>返品依頼<span class="divider">|</span>登録</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+
+		<div id="content">
+
+
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox setaddr">
+						<input type="hidden" id="ca_recno">
+						<input type="hidden" id="ca_state">
+						<input type="hidden" id="ca_retID">
+					<div id="ca_srchUnitIDArea" class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">返品依頼番号</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280" id="ca_retCode" disabled />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_stditgrp" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">取引先</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_vendor" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">送り先</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 flleft cl_valid cl_required" id="ca_retAddrTypeID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- [特別]を選択時のみ表示 & 自動でfocus -->
+					<div class="fieldUnit mrgb10 half flleft dispn required" id="div_postal">
+						<p class="fieldName">郵便番号</p>
+						<div class="fieldBox">
+							<input class="form-control wt120 flleft cl_valid" type="text" id="ca_postalNo" data-validator="len:7,7 digit"/>
+						</div>
+					</div>
+					<div class="fieldUnit mrgb10 flleft required dispn required" id="div_center">
+					<div class="clear"></div>
+						<p class="fieldName">倉庫</p>
+						<div class="fieldBox ca_readOnly" id="ca_centerArea">
+							<input type="text" class="form-control wt280 flleft cl_valid cl_store" id="ca_center" />
+							<button class="btn btn-default wt140 flleft mrgl10 ca_btn_store ca_upd_mode" id="ca_btn_store" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+						<p class="fieldName">発送方法</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 flleft cl_valid cl_required" id="ca_payTypeID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- [特別]を選択時のみ表示 & 自動でfocus -->
+					<div class="fieldUnit mrgb10 half flleft dispn required" id="div_address">
+						<p class="fieldName">住所</p>
+						<div class="fieldBox">
+							<span class="limit wt180 mrgl_98" id="pa_addr"></span>
+							<textarea name="" id="ca_addr" rows="2" class="form-control wt450 ime-active cl_valid" data-tflimit="48" data-validator="maxlen:48"></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div><br/>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft required">
+						<p class="fieldName">店舗出力日</p>
+						<div class="fieldBox required">
+							<p class="txtInFieldUnit flright help" style="margin-right:60px;" id="tp_code" title="店舗出力日前日が承認期限日となります。"><span>?</span></p>
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_releaseDate"  data-validator="maxlen:13" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">返品期限</p>
+						<div class="fieldBox required">
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_limitDate"  data-validator="maxlen:13" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit flleft mrgb10 hta wt70pct required">
+						<p class="fieldName bl2">返品理由 </p>
+						<div class="fieldBox">
+							<span class="limit wt30 mrgr_5" id="pa_reason"></span>
+							<textarea rows="3" class="form-control wt100pct cl_valid cl_textarea cl_required" id="ca_reason" data-tflimit="50" data-validator="maxlen:50 zenkaku_cr"/></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit flleft mrgb10 hta wt70pct">
+						<p class="fieldName bl2">店舗<br/>依頼内容</p>
+						<div class="fieldBox">
+							<span class="limit wt30 mrgr_5" id="pa_comment"></span>
+							<textarea rows="1" class="form-control wt100pct cl_valid cl_textarea" id="ca_comment" data-tflimit="60" data-validator="maxlen:60 zenkaku_cr"/></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 mrgr20 half flleft required">
+						<p class="fieldName bl3">承認済み<br/>メーカー<br/>担当者名</p>
+						<div class="fieldBox flleft">
+							<input type="text" class="form-control wt280 cl_valid cl_required" id="ca_makerStaffName" data-validator="maxlen:15">
+						</div>
+					</div>
+					<div class="fieldUnit mrgb10 mrgr20 half flleft required">
+						<div class="flleft makerComment"><br/>様承認済み</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div><br/>
+					<div class="fieldUnit mrgb10 flleft wt1200">
+						<p class="fieldName">添付ファイル</p>
+						<div class="fieldBox ca_torikomi_div">
+							<span id="ca_label" class="choose form-control wt280 flleft"></span>
+							<input type="hidden" id="ca_attachedFileID"/>
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200 flleft" id="ca_fileUp_btn">添付ファイルを選択</button>
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200 flleft" id="ca_fileDel_btn">添付ファイルを削除</button>
+						</div>
+
+					</div>
+					<div class="clear"></div>
+
+				</div>
+			</div>
+
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="fieldUnit mrgb20 flright ">
+						<div class="fieldBox noName flleft " id="ca_csvinput2">
+							<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_sample_download">Excelサンプルダウンロード</button>
+						</div>
+						<div class="fieldBox noName flright">
+							<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="table">
+						<table class="hilight drilldown" id="ca_table">
+						<thead>
+							<tr>
+								<th width="200px">メーカー品番</th>
+								<th>商品名</th>
+								<th width="100px">色</th>
+								<th width="200px">サブクラス１</th>
+								<th width="200px">サブクラス２</th>
+								<th width="30px"></th>
+							</tr>
+						</thead>
+
+						<tbody id="ca_table_tbody">
+							<!-- ここにテーブル中身ができる -->
+						</tbody>
+						<tfoot>
+							<tr class="addRow">
+								<td colspan="6"><span class="btn-add"></span></td>
+							</tr>
+						</tfoot>
+						</table>
+					</div>
+					<div class="clear"></div>
+
+
+
+				</div>
+
+			</div>
+
+
+
+			<div class="fieldgroup mrgb10" id="ca_rejectListInfo">
+				<p class="gtitle">差戻し理由</p>
+				<div class="fieldgroupInBox">
+					<div class="fieldUnit mrgb20 flleft mrgr20 wt100pct">
+						<p class="fieldName">コメント</p>
+						<div class="fieldBox" id="ca_rejectArea">
+							<span class="limit wt40 mrgr_5 pa_storeComment"></span>
+							<input type="text" class="form-control wt100pct" id="ca_reject" data-tflimit="100" data-validator="maxlen:100" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+		            <div class="table" style="padding-left:100px;margin-bottom:0">
+		 			    <table class="hilightRow list" id="ca_table_reject">
+						    <thead id="ca_table_reject_thead">
+							    <tr>
+								    <th width="30">No</th>
+								    <th>コメント</th>
+							    </tr>
+						    </thead>
+						    <tbody id="ca_table_reject_tbody"></tbody>
+					    </table>
+
+
+					    <script id="ca_reject_tbody_template" type="text/x-jquery-tmpl">
+							<tr class="deletable">
+								<td class="ca_c_link txtar"><span class="ca_rejectNum" name="rejectNum">${rejectNum}</span></td>
+								<td class="ca_c_link"><span class="ca_reject" name="reject">${reject}</span></td>
+							</tr>
+						</script>
+
+		            </div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+			<p class="apply"><a href="#">一時保存</a></p>
+			<p class="apply"><a href="#">最終承認申請</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+
+
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+
+
+
+</div><!-- / #container -->
+		<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+			<tr class="deletable addRow" name="ca_table_tr" id="${orglevelID}_${fromDate}">
+				<td class="editable pdg0"><input type="text" name="makerCode" id="ca_makerCode2" value="${makerCode}" class="form-control" data-validator="maxlen:10 hankaku" /></td>
+				<!--td class="editable pdg0"><div name="productName" id="ca_productName">${productName}</div></td-->
+				<td class="editable pdg0"><input type="text" name="productName" id="ca_productName" class="form-control" value="${productName}" readonly /></td>
+				<!--td class="editable pdg0"><input type="text" name="colorID" id="ca_colorID" value="${colorID}" class="form-control" data-validator="maxlen:5" /></td-->
+				<td class="editable pdg0 ca_colorIDArea">
+					<select class="ca_editableArea mbn wt120 cl_valid ca_colorID" name="colorID"></select>
+				</td>
+				<!--td class="editable pdg0"><div name="subClass1DispName" id="ca_subClass1DispName">${subClass1DispName}</div></td>
+				<td class="editable pdg0"><div name="subClass2DispName" id="ca_subClass2DispName">${subClass2DispName}</div></td-->
+				<td class="editable pdg0"><input type="text" name="subClass1DispName" id="ca_subClass1DispName" class="form-control" value="${subClass1DispName}" readonly /></td>
+				<td class="editable pdg0"><input type="text" name="subClass2DispName" id="ca_subClass2DispName" class="form-control" value="${subClass2DispName}" readonly /></td>
+				<td><span class="btn-delete flright"></span></td>
+				<input type="hidden" id="ca_itemID" name="itemID" value="${itemID}">
+				<input type="hidden" id="ca_retID" name="retID" value="${retID}">
+				<input type="hidden" id="ca_colorItemID" name="colorItemID" value="${colorItemID}">
+				<input type="hidden" id="ca_colorCode" name="colorCode" value="${colorCode}">
+				<input type="hidden" id="ca_colorName" name="colorName" value="${colorName}">
+				<input type="hidden" id="ca_unitID" name="unitID" value="${unitID}">
+			</tr>
+		</script>
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

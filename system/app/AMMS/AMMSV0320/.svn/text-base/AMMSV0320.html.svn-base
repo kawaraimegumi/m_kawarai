@@ -1,0 +1,826 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>取引先</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMMSV0320.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+<style>
+#ca_tp_code + .tooltip .tooltip-inner {
+   text-align: left;
+   width: 300px;
+}
+</style>
+
+</head>
+
+<body class="cl_body_hidden">
+
+<script src="AMMSV0320.js"></script>
+
+<div id="ca_main">
+<!--
+<div id="header">
+	<p class="back"></p>
+	<h1>取引先</h1>
+	<div class="rightBox">
+		<span class="logo"></span>
+		<span class="logout"><a href="javascript:void(0);">ログアウト</a></span>
+		<span class="user">Username</span>
+	</div>
+</div><!-- /#header -->
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!--
+		<div id="title">
+			<h2>取引先マスタ<span class="divider">|</span>登録・修正</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+
+
+		<div id="content">
+
+			<div id="ca_base_form">
+
+				<div class="fieldgroup">
+					<div id="ca_term_form" class="fieldgroupInBox setaddr mrgb10">
+						<div class="fieldUnit flleft required ca_afterIn mrgb10">
+							<p class="fieldName">適用期間</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap ca_fromDate_div"><input type="text" class="cl_date cl_valid cl_required" id="ca_fromDate"/></div>
+								<p class="txtInFieldUnit pdg flleft deldspn">〜</p>
+								<div class="datepicker_wrap ca_toDate_div deldspn"><input type="text" class="cl_date cl_valid cl_required" id="ca_toDate" readonly/></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<div class="fieldgroup" style="min-width: 1100px;">
+					<p class="gtitle">取引先マスタ設定</p>
+					<div id="ca_vendor_form" class="fieldgroupInBox">
+						<input type="hidden" id="ca_id"/>
+						<div class="fieldUnit mrgb10 mrgr20 flleft required">
+							<p class="fieldName bl2">事業<br />ユニット</p>
+							<div class="fieldBox" id="ca_unitID_div">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_unitID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft required">
+							<p class="fieldName bl2">取引先<br />区分</p>
+							<div class="fieldBox" id="ca_vendorTypeID_div">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_vendorTypeID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 mrgr20 flleft required">
+							<p class="fieldName">取引先コード</p>
+							<div class="fieldBox">
+								<!-- ツールチップでヘルプを表示 -->
+								<p class="txtInFieldUnit flright help" id="ca_tp_code" title="取引先区分=補正業者: 先頭1桁が7<br />その他: 先頭1桁が0"><span>?</span></p>
+								<span class="limit wt40 flright mrgl240" length="4"></span>
+								<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_code" data-tflimit="4" data-validator="maxlen:4,4 digit"/>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName bl2">会計用<br />コード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280" id="ca_accCode" readonly/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft mrgr20 required">
+							<p class="fieldName bl2">取引先<br />名称</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl340"></span>
+								<input type="text" placeholder="" class="form-control wt380 cl_valid cl_required ime-active" data-tflimit="20 zenkaku" data-validator="maxlen:20 zenkaku"id="ca_name"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 flleft">
+							<div class="fieldBox noName">
+								<span class="limit wt40 flright mrgl410" length="30"></span>
+								<input type="text" placeholder="カナ" class="form-control wt450 cl_valid cl_required" data-tflimit="30 hankaku" data-validator="maxlen:30 hankaku" id="ca_nameKana"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName bl2">取引先<br />略称</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240"></span>
+								<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="7 zenkaku" data-validator="maxlen:7 zenkaku" id="ca_shortName"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<div class="fieldBox noName">
+								<span class="limit wt40 flright mrgl240" length="10"></span>
+								<input type="text" placeholder="カナ" class="form-control wt280 cl_valid" data-tflimit="10" data-validator="maxlen:10 hankaku"id="ca_shortNameKana"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<!-- <div class="fieldUnit flleft mrgr20 wt500 required">
+							<p class="fieldName">適用日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap ca_fromDate_div"><input type="text" class="cl_date cl_valid cl_required" id="ca_fromDate" /></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap ca_toDate_div"><input type="text" class="cl_date cl_valid" id="ca_toDate" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div> -->
+
+					</div>
+				</div>
+
+				<!-- 住所設定 -->
+				<p class="expandFieldUnits mrgb20" id="expand_addr"><span class="expand">住所設定</span><span class="unexpand dispn">閉じる</span></p>
+
+				<div class="fieldUnitsHidden dispn" id="addr_info">
+
+					<div class="fieldgroupInBox" id="ca_addr_form">
+
+						<div class="fieldgroup">
+							<p class="gtitle">営業住所</p>
+							<div class="fieldgroupInBox" id="ca_oper_form">
+								<input type="hidden" id="ca_addrSeq"/>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">郵便番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt40 flright mrgl240"></span> -->
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-disabled" data-validator="maxlen:7 digit" id="ca_postalNo"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">住所1</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr1"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">住所2</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr2"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">住所3</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft mrgr20">
+									<p class="fieldName">電話番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt30 flright mrgl70"></span> -->
+										<input type="text" class="form-control wt100 flleft cl_valid ime-disabled" data-validator="maxlen:5 digit" id="ca_telNo1"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft cl_valid ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo2"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft cl_valid ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">部署名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_divName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">担当者名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="15" data-validator="maxlen:15" id="ca_operName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup">
+							<p class="gtitle">経理住所</p>
+							<div class="fieldgroupInBox" id="ca_act_form">
+								<input type="hidden" id="ca_addrSeq"/>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">郵便番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt40 flright mrgl240"></span> -->
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-disabled" data-validator="maxlen:7 digit" id="ca_postalNo"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">住所1</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr1"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">住所2</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr2"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">住所3</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft mrgr20">
+									<p class="fieldName">電話番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt30 flright mrgl70"></span> -->
+										<input type="text" class="form-control wt100 flleft ime-disabled" data-validator="maxlen:5 digit" id="ca_telNo1"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo2"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">部署名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="16" data-validator="maxlen:16"id="ca_divName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">担当者名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid ime-active" data-tflimit="15" data-validator="maxlen:15" id="ca_operName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<!-- 返品先住所設定 -->
+				<p class="expandFieldUnits mrgb20" id="expand_rtnaddr"><span class="expand">返品先住所設定</span><span class="unexpand dispn">閉じる</span></p>
+
+				<div class="fieldUnitsHidden dispn" id="rtnaddr_info">
+
+					<div class="fieldgroupInBox" id="ca_rtnaddr_form">
+
+						<div class="fieldgroup">
+							<p class="gtitle">返品先住所１</p>
+							<div class="fieldgroupInBox" id="ca_rtn1_form">
+								<input type="hidden" id="ca_addrSeq"/>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">郵便番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt40 flright mrgl240"></span> -->
+										<input type="text" placeholder="" class="form-control wt280 ime-disabled" data-validator="maxlen:7 digit" id="ca_postalNo"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">住所1</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr1"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">住所2</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr2"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">住所3</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft mrgr20">
+									<p class="fieldName">電話番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt30 flright mrgl70"></span> -->
+										<input type="text" class="form-control wt100 flleft ime-disabled" data-validator="maxlen:5 digit" id="ca_telNo1"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo2"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">会社名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_corpName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="mrgb10 flleft half mrgr10" id='div_table'>
+									<p class="fieldName">品種</p>
+									<div class="fieldBox table">
+										<table class="hilightRow drilldown" id="ca_table1">
+											<thead id="ca_table_thead">
+												<tr>
+													<th width="160px">部門</th>
+													<th width="160px">品種</th>
+													<th width="40px"></th>
+												</tr>
+											</thead>
+											<tbody id="ca_table_tbody1">
+												<!-- ca_table_tbody_template -->
+											</tbody>
+											<tfoot id="ca_table_tfoot1">
+												<tr class="addRow">
+													<td colspan="3">
+														<span class="btn-add"></span>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup">
+							<p class="gtitle">返品先住所２</p>
+							<div class="fieldgroupInBox" id="ca_rtn2_form">
+								<input type="hidden" id="ca_addrSeq"/>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">郵便番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt40 flright mrgl240"></span> -->
+										<input type="text" placeholder="" class="form-control wt280 ime-disabled" data-validator="maxlen:7 digit" id="ca_postalNo"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">住所1</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr1"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">住所2</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr2"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">住所3</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft mrgr20">
+									<p class="fieldName">電話番号</p>
+									<div class="fieldBox">
+										<!-- <span class="limit wt30 flright mrgl70"></span> -->
+										<input type="text" class="form-control wt100 flleft ime-disabled" data-validator="maxlen:5 digit" id="ca_telNo1"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo2"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<!-- <span class="limit wt30 flright mrgl50"></span> -->
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">会社名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_corpName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="mrgb10 flleft half mrgr10" id='div_table'>
+									<p class="fieldName">品種</p>
+									<div class="fieldBox table">
+										<table class="hilightRow drilldown" id="ca_table2">
+											<thead id="ca_table_thead">
+												<tr>
+													<th width="160px">部門</th>
+													<th width="160px">品種</th>
+													<th width="40px"></th>
+												</tr>
+											</thead>
+											<tbody id="ca_table_tbody2">
+												<!-- ca_table_tbody_template -->
+											</tbody>
+											<tfoot id="ca_table_tfoot2">
+												<tr class="addRow">
+													<td colspan="3">
+														<span class="btn-add"></span>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+						<div class="fieldgroup">
+							<p class="gtitle">返品先住所３</p>
+							<div class="fieldgroupInBox" id="ca_rtn3_form">
+								<input type="hidden" id="ca_addrSeq"/>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">郵便番号</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-disabled" data-validator="maxlen:7 digit" id="ca_postalNo"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">住所1</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr1"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">住所2</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr2"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft ">
+									<p class="fieldName">住所3</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_addr3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 flleft mrgr20">
+									<p class="fieldName">電話番号</p>
+									<div class="fieldBox">
+										<span class="limit wt30 flright mrgl70"></span>
+										<input type="text" class="form-control wt100 flleft ime-disabled" data-validator="maxlen:5 digit" id="ca_telNo1"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<span class="limit wt30 flright mrgl50"></span>
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo2"/>
+										<p class="txtInFieldUnit pdg flleft">‐</p>
+										<span class="limit wt30 flright mrgl50"></span>
+										<input type="text" class="form-control wt80 flleft ime-disabled" data-validator="maxlen:4 digit" id="ca_telNo3"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName">会社名</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 ime-active" data-tflimit="16" data-validator="maxlen:16" id="ca_corpName"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+								<div class="mrgb10 flleft half mrgr10" id='div_table'>
+									<p class="fieldName">品種</p>
+									<div class="fieldBox table">
+										<table class="hilightRow drilldown" id="ca_table3">
+											<thead id="ca_table_thead">
+												<tr>
+													<th width="160px">部門</th>
+													<th width="160px">品種</th>
+													<th width="40px"></th>
+												</tr>
+											</thead>
+											<tbody id="ca_table_tbody3">
+												<!-- ca_table_tbody_template -->
+											</tbody>
+											<tfoot id="ca_table_tfoot3">
+												<tr class="addRow">
+													<td colspan="3">
+														<span class="btn-add"></span>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<!-- タグ送付先設定 -->
+				<p class="expandFieldUnits mrgb20" id="expand_tag"><span class="expand">タグ送付先設定</span><span class="unexpand dispn">閉じる</span></p>
+
+				<div class="fieldUnitsHidden dispn" id="tag_info">
+
+					<div class="fieldgroupInBox" id="ca_tag_form">
+						<div class="mrgb10 flleft mrgr10" id='div_table'>
+							<div class="fieldBox noName table">
+								<table class="hilightRow drilldown" id="ca_tagtable">
+									<thead id="ca_tagtable_thead">
+										<tr>
+											<th width="110px">タグ送付先番号</th>
+											<th width="800px">タグ送付先</th>
+											<th width="40px"></th>
+										</tr>
+									</thead>
+									<tbody id="ca_tagtable_tbody">
+										<!-- ca_table_tbody_template -->
+									</tbody>
+									<tfoot id="ca_tagtable_tfoot">
+										<tr class="addRow">
+											<td colspan="3">
+												<span class="btn-add"></span>
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+					</div>
+
+				</div>
+
+				<!-- メーカー設定 -->
+				<p class="expandFieldUnits mrgb20" id="expand_maker"><span class="expand">メーカー設定</span><span class="unexpand dispn">閉じる</span></p>
+
+				<div class="fieldUnitsHidden dispn" id="maker_info">
+
+					<div class="fieldgroupInBox" id="ca_maker_form">
+						<!-- div class="fieldUnit mrgb10 half flleft mrgr20" id="ca_bscTypeID_div">
+							<p class="fieldName">BSC区分</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_bscTypeID"></select>
+							</div>
+							<div class="clear"></div>
+						</div-->
+						<div class="fieldUnit mrgb10 half flleft" id="ca_tagsendTypeID_div">
+							<p class="fieldName bl2">タグデータ<br />送信先</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_tagsendTypeID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft mrgr20" id="ca_basicchargeTypeID_div">
+							<p class="fieldName">基本料課金</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_basicchargeTypeID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName bl2">発注明細<br />送付フラグ</p>
+							<div class="fieldBox">
+								<label class="checkbox ib" for="check1" id="ca_sendOrdDtlFlag_label"><input type="checkbox" value="" name="sendOrdDtlFlag" id="ca_sendOrdDtlFlag" data-toggle="checkbox"></label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName bl2">JCA納品検収<br />対象フラグ</p>
+							<div class="fieldBox">
+								<label class="checkbox ib" for="check1" id="ca_jcaAcceptFlag_label"><input type="checkbox" value="" name="jcaAcceptFlag" id="ca_jcaAcceptFlag" data-toggle="checkbox"></label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName bl3">売上・<br />在庫照会<br />(オプション)</p>
+							<div class="fieldBox">
+								<label class="checkbox ib" for="check1" id="ca_dataSvcFlag_label"><input type="checkbox" value="" name="dataSvcFlag" id="ca_dataSvcFlag" data-toggle="checkbox"></label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft" id="ca_svcPayVendorID_div">
+							<p class="fieldName">課金先コード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid ime-disabled" id="ca_svcPayVendorID"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<!-- <br />
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">JCA用コード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" data-limit="len:16 digit" id="ca_jcaCode"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName bl2">送信先<br />JCA用コード</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240"></span>
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" data-limit="len:16 digit" id="ca_destJcaCode"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div> -->
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		<!--
+			<p class="cancel"><a href="javascript:void(0)" id="cl_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a href="javascript:void(0)" id="cl_submit">登録</a></p>
+			<p class="flleft"><a href="javascript:void(0)" id="cl_prev">前へ</a></p>
+			<p class="flright"><a href="javascript:void(0)" id="cl_next">次へ</a></p>
+			<div class="clear"></div>
+		 -->
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+
+
+
+
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+
+<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+<script id="ca_rec_template" type="text/template">
+	<tr name="<%- no %>" class="deletable">
+		<td class="ca_c_link editable pdg0">
+			<input type="text" class="form-control cl_valid cl_required" name="ca_divID"/>
+		</td>
+		<td class="ca_c_link editable pdg0">
+			<input type="text" class="form-control cl_valid cl_required" name="ca_itgrpID"/>
+		</td>
+		<td class="ca_c_link"><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+
+<script id="ca_tag_template" type="text/template">
+	<tr name="" class="deletable">
+		<td class="ca_c_link editable pdg0">
+			<input type="text" class="form-control txtar cl_tagSeq cl_valid" name="tagSeq" value="<%- tagSeq %>" data-validator="min:1 max:99 uint"/>
+		</td>
+		<td class="ca_c_link editable pdg0">
+			<input type="text" class="form-control cl_tagAddr cl_valid ime-active" name="tagAddr" value="<%- tagAddr %>" data-validator="maxlen:20 zenkaku"/>
+		</td>
+		<td class="ca_c_link"><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+
+</body>
+</html>

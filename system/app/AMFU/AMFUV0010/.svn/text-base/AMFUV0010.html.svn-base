@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>ファンド</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script src="../../../../js/jquery.js"></script>
+<script src="../../../../js/jquery-ui.custom.js"></script>
+<script src="../../../../js/jquery.csv.js"></script>
+
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="./AMFUV0010.css">
+
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script src="../../../../js/underscore.js"></script>
+<script src="../../../../js/backbone.js"></script>
+<script src="../../../../js/json2.js"></script>
+<script src="../../../../js/jquery.tmpl.min.js"></script>
+<script src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script src="../../../../js/backbone.syphon.js"></script>
+<script src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<script src="./AMFUV0010.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+	<div id="container">
+		<div id="mainColumn">
+			<div id="mainColumninBox" class="noLeftColumn">
+
+				<div id="content">
+					<div class="fieldgroup">
+						<div id="searchArea" class="fieldgroupInBox search">
+							<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+								<p class="fieldName">事業ユニット</p>
+								<div class="fieldBox">
+									<select name="info" class="mbn wt280 selectpicker cl_valid cl_required" id="ca_srchUnitID">
+									</select>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgb10 half flleft mrgr20">
+								<p class="fieldName bl2">ファンド<br />番号</p>
+								<div class="fieldBox">
+									<input type="text" class="form-control wt280 ime-disabled cl_valid" data-validator="maxlen:10 digit" id="ca_srchFundCode"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="fieldUnit mrgb10 half flleft">
+								<p class="fieldName">ファンド名称</p>
+								<div class="fieldBox">
+									<input type="text" class="form-control wt280 ime-active cl_valid" data-validator="maxlen:20" id="ca_srchFundName"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgb10">
+								<p class="fieldName">ファンド期間</p>
+								<div class="fieldBox">
+									<div class="datepicker_wrap"><input class="cl_date cl_valid" type="text" id="ca_srchFromDate"/></div>
+									<p class="txtInFieldUnit pdg flleft">〜</p>
+									<div class="datepicker_wrap"><input class="cl_date cl_valid" type="text" id="ca_srchToDate"/></div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit mrgb10 half flleft mrgr20">
+								<p class="fieldName">最終更新者</p>
+								<div class="fieldBox">
+									<input type="text" placeholder="" class="form-control wt280 ime-disabled cl_valid" data-validator="maxlen:6,6 digit" id="ca_srchLupdPerson"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="fieldUnit">
+								<div class="fieldBox mrgt20 noName btnCenter">
+									<button id="ca_srch" class="btn btn-info wt280">検索</button>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+					</div>
+
+
+					<div id="result" class="dispn">
+
+						<div class="pagination-wrapper">
+						</div>
+
+						<div class="table">
+							<table class="hilightRow" id="ca_table">
+							<thead id="ca_table_thead">
+								<tr>
+									<th width="40px" class="cl_checkbox_selectall"></th>
+									<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+									<th width="120px">ファンド番号</th>
+									<th width="120px">ファンド名称</th>
+									<th width="120px">ファンド期間(開始)</th>
+									<th width="120px">ファンド期間(終了)</th>
+									<th width="120px">最終更新者</th>
+									<th width="120px">初回登録日</th>
+									<th width="120px">状態</th>
+									<th width="80px">遡及登録</th>
+								</tr>
+							</thead>
+							<tbody id="ca_table_tbody">
+							</tbody>
+							</table>
+						</div>
+
+						<div class="pagination-wrapper">
+						</div>
+
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMFUV0010">
+								<button id="cl_edit" class="btn btn-primary wt280 flleft mrgr20">編集</button>
+								<button id="cl_copy" class="btn btn-primary wt280 flleft">複製</button>
+								<button id="cl_delete" class="btn btn-default wt140 flright mrgl20 delete">削除</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div><!-- /#content -->
+			</div><!-- /#mainColumninBox -->
+		</div><!-- /#mainColumn -->
+	</div><!-- / #container -->
+
+
+	<script id="ca_tbody_template" type="text/template">
+		<tr class="csptr" name="ca_table_tr" id="<%- fundID %>">
+			<td class="cl_checkbox_selectrec"></td>
+			<td><%- fundCode %></td>
+			<td><%- fundName %></td>
+			<td><%- clutil.dateFormat(fromDate, "yyyy/mm/dd(w)") %></td>
+			<td><%- clutil.dateFormat(toDate, "yyyy/mm/dd(w)") %></td>
+			<td><%- lupdPersonName %></td>
+			<td><%- clutil.dateFormat(insDate, "yyyy/mm/dd(w)") %></td>
+			<td><%- state %></td>
+			<td><% if (fAfter===1){ %>○<% } %></td>
+		</tr>
+	</script>
+
+	<div class="clear"></div>
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<div id="ca_CACMV0260_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>DM企画グループ</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+			
+		<div id="content">
+			<div id="selected" class="ca_CACMV0260_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control">
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_CACMV0260_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_CACMV0260_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName bl2">DM企画グループコード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" id="ca_CACMV0260_code" data-limit="len:20 digit"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						
+						<div class="fieldUnit mrgb10 half flleft">
+							<p class="fieldName bl2">DM企画グループ名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_CACMV0260_name" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						
+						<div class="fieldUnit mrgb10 required">
+							<p class="fieldName">事業区分</p>
+							<div class="fieldBox" id="ca_CACMV0260_bu_id_div">
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_CACMV0260_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button class="btn btn-default wt140" id="ca_CACMV0260_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_CACMV0260_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_CACMV0260_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_CACMV0260_tbl">
+			<tr>
+				<th width="40px">
+					<!-- <label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_CACMV0260_chkall"></label> -->
+				</th>
+				<th width="180px" class="ca_th_sort" key="CODE"><span>DM企画グループコード</span></th>
+				<th width="" class="ca_th_sort" key="NAME"><span>DM企画グループ名</span></th>
+				<th width="180px" class="ca_th_sort" key="BUNAME"><span>事業区分名</span></th>
+				<th width="180px" class="ca_th_sort" key="SENDYMD"><span>データ送信日</span></th>
+				<th width="180px" class="ca_th_sort" key="POSTYMD"><span>投函日</span></th>
+				<th width="240px" class="ca_th_sort" key="PERIOD"><span>利用期間</span></th>
+			</tr>
+			<tbody id="ca_CACMV0260_tbody">
+			</tbody>
+		</table>
+		<script id="ca_CACMV0260_tbody_single_tmp" type="text/x-jquery-tmpl">
+			<tr id="${id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_CACMV0260_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${bu_name}</td>
+				<td>${send_date_disp}</td>
+				<td>${post_date_disp}</td>
+				<td>${st_date_disp}～${ed_date_disp}</td>
+			</tr>
+		</script>
+		<script id="ca_CACMV0260_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+			<tr id="${id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_CACMV0260_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${bu_name}</td>
+				<td>${send_date_disp}</td>
+				<td>${post_date_disp}</td>
+				<td>${st_date_disp}～${ed_date_disp}</td>
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+		
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_CACMV0260_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_CACMV0260_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_CACMV0260_multi" id="ca_CACMV0260_add">チェックしたものを選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_CACMV0260_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0260_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

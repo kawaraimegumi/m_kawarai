@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <meta charset="UTF-8">
+    <title>分析項目</title>
+
+    <link rel="stylesheet" href="../../../css/jquery-ui.css">
+    <link rel="stylesheet" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../../js/jquery.js"></script>
+    <script src="../../../js/jquery-ui.js"></script>
+    <script src="../../../js/underscore.js"></script>
+    <script src="../../../js/backbone.js"></script>
+    <script src="../../../js/bootstrap.js"></script>
+    <script src="../../js/clcom.js"></script>
+    <style>
+      #table1.table td, #table1.table th {
+      border-width: 0;
+      }
+    </style>
+    <script>
+     $(function () {
+      new HeaderView();
+      console.log($('[type="checkbox"]:checked'));
+      $('[type="checkbox"]').live('change', function () {
+      console.log($('[type="checkbox"]:checked'));
+      $select = $('#select1');
+      $select.find(':gt(0)').remove();
+      _.each($('[type="checkbox"]:checked'), function (value) {
+      $select.append('<option>' + $(value).parent('label').text().trim() + '</option>');
+      });
+      });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="cl_header"></div>
+
+    <div class="container">
+      <h3 class="pageTitle"></h3>
+      <div class="row-fluid">
+        <div class="span12">
+          <form class="form-horizontal ">
+            <label class="checkbox">
+              <input type="checkbox" name="売上金額">売上金額
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="売上数量">売上数量
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="ロス金額">ロス金額
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="ロス数量">ロス数量
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="粗利金額">粗利金額
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="粗利率">粗利率
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="仕入金額">仕入金額
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="仕入数量">仕入数量
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="発注金額">発注金額
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="発注数量">発注数量
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="在庫金額">在庫金額
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="在庫数量">在庫数量
+            </label>
+
+            <div class="control-group">
+              <label class="control-label align-left">ソート条件</label>
+              <div class="controls controls-row">
+                <label class="checkbox span1">
+                  <input type="checkbox" name="降順" checked>降順
+                </label>
+                <label class="checkbox span1">
+                  <input type="checkbox" name="昇順" >昇順
+                </label>
+                <select id="select1" class="span3">
+                  <option>未選択</option>
+                </select>
+
+              </div>
+              <div class="controls controls-row">
+                <select id="select2"  class="offset2 span3">
+                  <option>なし</option>
+                  <option>累積値を表示</option>
+                  <option>累積比を表示</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="controls">
+              <button class="btn pull-right" type="button">確定</button>
+              <button class="btn pull-right" type="button">もどる</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span12">
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

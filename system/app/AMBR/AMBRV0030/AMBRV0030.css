@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+.indent4 {
+    width:400px;
+    height:40px;
+}
+
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+}
+
+.unit {
+	font-size: 82%;
+	color: #323a45;
+	margin-left: 8px;
+	margin-right: 4px;
+}

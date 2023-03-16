@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+
+.frwkComment {
+  color: #667180;
+  font-size: 88%;
+  padding-top: 12px;
+  line-height: 1.3;
+}

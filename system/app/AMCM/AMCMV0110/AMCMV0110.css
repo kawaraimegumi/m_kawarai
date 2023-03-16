@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+.txtInFieldUnit.help {
+    margin-top: 2px;
+}
+
+.btn.ca_btn_inTable {
+    padding: 0px 5px 0px 5px;
+}
+
+.icn-new {
+  font-size: 69%;
+  background: #1e9ce6;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  color: white;
+  display: inline-block;
+  margin-right: 6px;
+  height: 14px;
+  line-height: 14px;
+  padding: 0 3px;
+}
+
+.p-new {
+    font-weight : bold;
+}
+
+#container {
+    min-width:1400px;
+}
+
+/* ?マークの折り返し対応 */
+.ca_detail_td .txtInFieldUnit{
+	display: inline;
+	float: none;
+}
+.ca_detail_td .txtInFieldUnit > span {
+	display: inline-block;
+	float: none;
+}

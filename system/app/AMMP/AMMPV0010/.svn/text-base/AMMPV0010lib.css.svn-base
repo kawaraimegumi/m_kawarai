@@ -1,0 +1,83 @@
+.changeInside {
+	display: block;
+	font-size: 12px;
+	min-width: 0;
+	background: #1E9CE6;
+	color: white;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+	padding: 8px 10px;
+	position: absolute;
+	margin-top: -24px;
+	margin-left: -10px;
+	z-index: 1000;
+	height: 28px;
+	line-height: 12px;
+}
+
+span.noteMsg {
+    margin-left: 10px;
+}
+
+.versionTable thead th {
+	/* text-align: center; */
+}
+.versionTable.table {
+	padding: 1px;
+	margin: 0;
+}
+.versionTable table.table {
+	table-layout: fixed;
+}
+.versionTable .col1 {
+	width: 120px;
+}
+
+.versionTable .col2 {
+	width: 180px;
+	/* text-align: center; */
+}
+
+.versionTable .col3 {
+	/* text-align: center; */
+}
+.versionTable .col3 a {
+	display: block;
+}
+
+.versionTable tbody .col1 {
+	text-align: right;
+}
+
+/* .modalBody { */
+/* 	width: 560px; */
+/* } */
+
+.dlUpView1 thead th {
+	/* text-align: center; */
+}
+
+.dlUpView1 tbody .col2 {
+	text-align: right;
+}
+
+.dlUpView1 .col4 a,
+.dlUpView1 .col5 a {
+	display: block;
+}
+
+
+.versionTable .table-body {
+	padding: 0;
+	margin: 0;
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.table-header table.table {
+	margin: 0;
+	padding: 0;
+}

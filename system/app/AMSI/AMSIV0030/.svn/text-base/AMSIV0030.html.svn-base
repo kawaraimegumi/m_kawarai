@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>商品・在庫照会</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMSIV0030.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+ 	<script src="../../AMPA/AMPAV0030/AMPAV0030.js"></script>
+	<script src="../../AMPA/AMPAV0040/AMPAV0040.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+    <script src="../AMSIV0010/AMSIV0010lib.js"></script>
+    <script src="AMSIV0030.js"></script>
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<div id="container">
+	<!-- 店舗検索画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft required">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" data-validator="required" class="form-control cl_valid wt280 flleft" id="ca_srchOrgID">
+							<!-- <input type="hidden" id="ca_srchOrgID"> -->
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control cl_valid wt280 flleft" id="ca_srchItgrpID" data-validator="required" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+                    <div class="fieldUnit mrgb10">
+						<p class="fieldName">表示</p>
+						<div class="fieldBox">
+							<ul>
+							    <li><label class="radio"><input type="radio" name="ca_srchDispItem" value="1" data-toggle="radio" checked>基準在庫・納品予定数</label></li>
+							    <li><label class="radio"><input type="radio" name="ca_srchDispItem" value="2" data-toggle="radio">基準在庫のみ</label></li>
+							    <li><label class="radio"><input type="radio" name="ca_srchDispItem" value="3" data-toggle="radio">納品予定数のみ</label></li>
+						    </ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 flleft">
+						<p class="fieldName"></p>
+						<div class="fieldBox">
+							<label class="checkbox ib flleft" for="ca_showDelFlag" ><input type="checkbox" value="" id="ca_srchFlagZero" data-toggle="checkbox">数量0のサイズは表示しない</label>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">期間</p>
+						<div class="fieldBox">
+							<select id="ca_srchDelivTermTypeID" class="mbn wt280 flleft"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+                    <!-- メーカー品番 商品名 -->
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">メーカー品番</p>
+						<div class="fieldBox">
+							<input type="text" data-xlimit="hankaku len:10" data-validator="hankaku:10" class="form-control cl_valid wt280 flleft" id="ca_srchMakerHinban"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">商品名</p>
+						<div class="fieldBox">
+							<input id="srchItemName" type="text" data-xlimit="len:15 zenhan" data-validator="zenhan:25" placeholder="" class="form-control wt280 flleft cl_valid" id="ca_item_maker"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+                    <div class="clear"></div>
+
+                    <!-- メーカー タグコード -->
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">メーカー</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control cl_valid wt280 flleft" id="ca_srchMakerID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgb20 half mrgr20 flleft">
+						<p class="fieldName">タグコード</p>
+						<div class="fieldBox">
+							<!-- focusするとプルダウンで履歴を表示 -->
+							<input type="text" placeholder="" class="form-control cl_valid wt280 flleft ime-disabled"  data-xlimit="len:15 digit" data-validator="maxlen:15 digit" id="ca_srchTagCode"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+                    <div class="clear"></div>
+
+                    <!-- 商品展開年 シーズン-->
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="bl2 fieldName">商品展開年</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280" id="ca_srchYear"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">シーズン</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280" id="ca_srchSeasonID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+                    <!-- サブクラス1、サブクラス2 -->
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">サブクラス1</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control cl_valid wt280 flleft" id="ca_srchSub1ID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">サブクラス2</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control cl_valid wt280 flleft" id="ca_srchSub2ID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+                    <!-- プライスライン カラー -->
+					<div class="fieldUnit mrgb10 mrgr20 half flleft">
+						<p class="bl2 fieldName">プライス<br>ライン</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280" id="ca_srchPriceline"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">カラー</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control cl_valid wt280 flleft" id="ca_srchColorID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button id="searchStock" class="btn btn-info wt280">表示</button>
+						</div>
+
+						<div class="clear"></div>
+					</div>
+
+				</div>
+				<p id="searchAgain" class="dispn btn">検索条件を再指定</p>
+				<div class="clear"></div>
+			</div>
+
+            <div id="resultArea">
+            	<!-- p class="txtDanger">納品予定通りに入荷されない場合があります。（出荷前の不良品の発見等によります。）</p -->
+            </div>
+
+            <!-- 検索結果 -->
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+<div class="clear"></div>
+</div>	<!-- ca_main -->
+
+<div id="pagerArea" class="dispn">
+	<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+	<div class="pagination-wrapper"></div>
+	<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+	<div class="pagination-wrapper"></div>
+</div>
+
+<!-- ================================================================ -->
+<!-- ここからテンプレート -->
+<script id="ResultLayout" type="text/template">
+    <div class="pager1"></div>
+    <div class="itemList"></div>
+    <div class="pager2"></div>
+</script>
+
+
+<!-- 商品リスト -->
+<script id="ItemListView" type="text/template">
+	<div id="x_data_area" class="table drilldownWrapper">
+        <% var colspan = it.srchDispItem == 1 ? 2 : 1; %>
+        <% var width1 = it.srchDispItem == 1 ? 40 : 45; %>
+        <% var width2 = it.srchDispItem == 1 ? 80 : 45; %>
+		<!-- 固定ヘッダ -->
+		<table class="fixTable" id="fix_header">
+			<tr>
+				<th class="th_top th_term" width="">期<br>間</th>
+				<th class="th_top th_weekNo" width="">週番</th>
+				<th class="th_top th_sub1Name" width="">サブクラス１</th>
+				<th class="th_top th_sub2Name" width="">サブクラス２</th>
+				<th class="th_top th_makerHinban" width="">メーカー品番</th>
+				<th class="th_top th_itemName" width="">商品名</th>
+				<th class="th_top th_colorName" width="">カラー</th>
+				<th class="th_price" width="">指定上代<br>(税込)</th>
+				<th class="th_total" colspan="<%- colspan %>" style="width:80px">合計</th>
+			</tr>
+		</table>
+
+		<!-- 水平ヘッダ -->
+		<div id="header_h">
+			<table class="fixTable" id="h_fix_header">
+				<tr style="height:51px;">
+					<% it.model.sizeList.each(function(model) { %>
+					<th class="th_num" style="width:<%- width2 %>px"><%- model.get('sizeName') %></th>
+					<% }); %>
+				</tr>
+			</table>
+		</div>
+
+		<!-- 垂直ヘッダ -->
+		<div id="header_v">
+			<table class="fixTable" id="v_fix_tbl">
+				<% it.model.itemList.each(function(model){ %>
+				<% var item = model.attributes; %>
+				<tr id="<%- model.cid %>">
+ 					<td class="td_term"><%- item.term %></td>
+ 					<td class="td_weekNo"><%- item.weekNo %>週 (<%- it.dateFormat(item.edWeekDate, 'yyyy/mm/dd') %>)</td>
+ 					<td class="td_sub1Name"><%- item.sub1Name %></td>
+ 					<td class="td_sub2Name"><%- item.sub2Name %></td>
+ 					<td class="td_makerHinban"><%- item.makerHinban %></td>
+ 					<td class="td_itemName"><%- item.itemName %> </td>
+ 					<td class="td_colorName"><%- item.colorName %></td>
+					<td class="txtar td_price"><%- clutil.comma(item.price) %></td>
+					<% if (it.srchDispItem == 1){ %>
+						<!-- 基準在庫・納品予定数 -->
+						<td class="txtar td_total" style="width:<%- width1 %>px" ><%= clutil.comma(it.getTotalStockQy(item.delivList) || '') || '&nbsp;' %></td>
+						<td style="cursor: pointer; width:<%- width1 %>px;" class="txtar td_total2" data-cl-errmsg="移動:<%- clutil.comma(it.getTotalIdouQy(item.delivList)) %>, 入荷:<%- clutil.comma(it.getTotalNyukaQy(item.delivList)) %>"><%= clutil.comma(it.getTotalDelivQy(item.delivList) || '') || '&nbsp;' %></td>
+					<% }else if(it.srchDispItem == 2){ %>
+						<!-- 基準在庫のみ -->
+						<td class="txtar td_total" style="width:80px"><%= clutil.comma(it.getTotalStockQy(item.delivList) || '') || '&nbsp;' %></td>
+					<% }else{ %>
+						<!-- 納品予定数のみ -->
+						<td style="cursor: pointer; width:80px;" class="txtar td_total" data-cl-errmsg="移動:<%- clutil.comma(it.getTotalIdouQy(item.delivList)) %>, 入荷:<%- clutil.comma(it.getTotalNyukaQy(item.delivList)) %>"><%= clutil.comma(it.getTotalDelivQy(item.delivList) || '') || '&nbsp;' %></td>
+					<% } %>
+				</tr>
+				<% }); %>
+			</table>
+		</div>
+
+		<!-- スクロールデータ -->
+		<div id="data" class="div_scroll">
+			<table class="fixTable" id="h_fix_tbl">
+				<% it.model.itemList.each(function(model){ %>
+				<% var item = model.attributes; %>
+				<tr id="<%- model.cid %>">
+
+
+					<% _.each(item.delivList, function(deliv){ %>
+					<% if (it.srchDispItem == 1){ %>
+						<!-- 基準在庫・納品予定数 -->
+						<td class="txtar td_num" style="width:<%- width1 %>px"><%= clutil.comma(deliv.stockQy || '') || "&nbsp;" %></td>
+						<td style="cursor: pointer; width:<%- width1 %>px;" class="txtar td_num" data-cl-errmsg="移動:<%- clutil.comma(deliv.idouQy) %>, 入荷:<%- clutil.comma(deliv.nyukaQy) %>"><%= clutil.comma(deliv.delivQy || '') || "&nbsp;" %></td>
+					<% }else if(it.srchDispItem == 2){ %>
+						<!-- 基準在庫のみ -->
+						<td class="txtar td_num" style="width:<%- width1 %>px"><%= clutil.comma(deliv.stockQy || '') || "&nbsp;" %></td>
+					<% }else{ %>
+						<!-- 納品予定数のみ -->
+						<td style="cursor: pointer; width:<%- width1 %>px;" class="txtar td_num" data-cl-errmsg="移動:<%- clutil.comma(deliv.idouQy) %>, 入荷:<%- clutil.comma(deliv.nyukaQy) %>"><%= clutil.comma(deliv.delivQy || '') || "&nbsp;" %></td>
+					<% } %>
+					<% }); %>
+				</tr>
+				<% }); %>
+			</table>
+		</div>
+	</div>
+</script>
+
+<!-- ================================================================ -->
+
+</body>
+</html>
+

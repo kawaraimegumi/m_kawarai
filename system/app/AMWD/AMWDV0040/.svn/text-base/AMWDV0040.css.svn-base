@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+.ul_v {
+  list-style:none;
+  width:200px;
+  margin-left:0px;
+  padding-left:0px;
+}
+
+#mainColumnFooter>p.pdf_center {
+  //font-size: 88%;
+  //padding: 0 20px;
+  line-height: 60px;
+  color: #667180;
+  display: block;
+  height: 60px;
+  cursor: pointer;
+  text-align: center;
+}
+#mainColumnFooter>p.pdf_center:hover {
+  color: #1e9ce6;
+}
+

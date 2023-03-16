@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>評価減</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css?rev=0" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css?rev=0" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css?rev=0" />
+	<script type="text/javascript" src="../../../../js/jquery.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js?rev=0"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMWDV0020.css?rev=0">
+
+	<script src="../../../js/function.js?rev=0"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js?rev=0"></script>
+	<script src="../../../js/bootstrap.min.js?rev=0"></script>
+	<script src="../../../js/bootstrap-select.js?rev=0"></script>
+	<script src="../../../js/bootstrap-switch.js?rev=0"></script>
+	<script src="../../../js/flatui-checkbox.js?rev=0"></script>
+	<script src="../../../js/flatui-radio.js?rev=0"></script>
+	<script src="../../../js/jquery.tagsinput.js?rev=0"></script>
+	<script src="../../../js/jquery.placeholder.js?rev=0"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js?rev=0"></script>
+	<script src="../../../js/application.js?rev=0"></script>
+	<script src="../../../js/jquery.skOuterClick.js?rev=0"></script>
+	<script src="../../../js/jquery.tablesorter.js?rev=0"></script>
+	<script src="../../../js/tsort.js?rev=0"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js?rev=0"></script>
+	<script src="../../../../js/jquery.contextmenu.js?rev=0"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js?rev=0"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js?rev=0"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js?rev=0"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/json2.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js?rev=0"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js?rev=0"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js?rev=0"></script>
+
+	<link href="/css/slickgrid.css?rev=0" rel="stylesheet">
+	<script type="text/javascript" src="/js/slickgrid.js?rev=0"></script>
+	<script src="../../../js/clcom.js?rev=0"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js?rev=0"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css?rev=0" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css?rev=0" type="text/css">
+	<script src="AMWDV0020.js?rev=0"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+
+<div id="ca_main">
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_search" class="fieldgroupInBox">
+
+					<!-- 指示ID,評価減基準年令 -->
+					<input type="hidden" id="ca_instrcutID"/>
+					<input type="hidden" id="ca_wd_age">
+
+					<div id="ca_srchUnitIDArea" class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<input type="text" class="form-control wt280 cl_valid cl_required" id="ca_itgrpID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+					<div class="fieldUnit mrgr20 mrgb10 flleft required">
+						<p class="fieldName">店舗出力日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_releaseDate"  data-validator="maxlen:13"/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgr20 mrgb10 flleft required">
+						<p class="fieldName">評価減実施日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_execDate"  data-validator="maxlen:13"/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">経準反映</p>
+						<div class="fieldBox">
+							<ul>
+							<li><label class="radio ca_radio"><input type="radio" class="ca_radio" name="ca_divideType" value="1" data-toggle="radio" checked>店舗反映</label></li>
+							<li><label class="radio ca_radio"><input type="radio" class="ca_radio" name="ca_divideType" value="2" data-toggle="radio">本部反映</label></li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+
+					<div class="fieldUnit flleft mrgb10 hta wt100pct">
+						<p class="fieldName">店舗通知欄</p>
+						<div class="fieldBox">
+							<span class="limit wt40 mrgr_5 pa_storeComment"></span>
+							<textarea rows="3" class="form-control wt100pct cl_valid cl_textarea ca_limitInput" id="ca_storeComment" data-tflimit="60" data-validator="maxlen:60 zenkaku_cr"/></textarea>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+					<div class="fieldUnit mrgb10 flleft wt1200">
+						<p class="fieldName">添付ファイル</p>
+
+
+						<div id="ca_fileDiv" class="fieldBox fleft ca_torikomi_div">
+
+							<span id="ca_label" class="choose form-control wt280 flleft ca_fileSpan"></span>
+							<input type="hidden" id="ca_attachedFileID"/>
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileUp_btn">添付ファイルを選択</button>
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileDel_btn">添付ファイルを削除</button>
+						</div>
+
+					</div>
+					<div class="clear"></div>
+
+
+
+				</div>
+			</div>
+
+
+
+			<div class="fieldgroup">
+				<div id="ca_tblArea" class="fieldgroupInBox ca_pdgb_60">
+
+					<div class="fieldUnit mrgb20 flright">
+							<div class="fieldBox noName flleft " id="ca_csvinput2">
+								<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_sample_download">Excelサンプルダウンロード</button>
+							</div>
+
+							<div class="fieldBox noName flleft" id="ca_upld">
+								<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+							</div>
+							<div class="clear"></div>
+					<div class="clear"></div>
+					</div>
+
+					<div class="clear"></div>
+
+
+					<p class="flright gtitle">円単位</p>
+					<div class="clear"></div>
+					<!-- テーブルグリッド領域 -->
+					<div class="cl_datagrid_container" id="ca_datagrid"></div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+
+#myGrid .reference {
+	background: #E6F7F6;
+}
+
+#myGrid .align-left {
+	text-align: left;
+}
+
+#myGrid .align-right {
+	text-align: right;
+}
+
+
+#myGrid .bdrTpColor {
+	border-top-color: #a2a9b3;
+}
+
+#myGrid .lgFnt {
+  font-size: 125%;
+}
+
+
+#myGrid .darken {
+  background: #868f9c;
+}
+
+#myGrid .errorCell {
+  background-color: #fde3e5;
+  color: #f2555f;
+}
+
+#myGrid .alertCell {
+  background-color: #feeed6;
+  color: #fcae3f;
+}
+
+#myGrid .csptr {
+	cursor: pointer;
+}
+
+.csptr > .slick-cell {
+	cursor: pointer;
+}

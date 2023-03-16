@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>法人選択</title>
+<meta charset="utf-8">
+</head>
+
+<body>
+	<div id="cs_header"></div>
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<!--ミニボタン　一部ページ下部機能がかぶっています。-->
+			<div class="span12">
+				<button class="btn btn-mini" type="button">HOMEへ戻る</button>
+				<div class="pull-right">
+					<button class="btn btn-mini" type="button">全クリア</button>
+					<button class="btn btn-mini" type="button">CSV保存</button>
+					<button class="btn btn-mini" type="button">登録</button>
+				</div>
+			</div>
+			<!--ミニボタンここまで-->
+			<h3 class="pageTitle">法人選択</h3>
+
+			<!-- ここにエラーメッセージが表示される -->
+			<div class="notice_red_large cl_selector_echoback"></div>
+			<!--検索エリア-->
+			<div class="searchArea">
+				<div class="form-inline" id="ca_cm330_search_form">
+					<table class="search">
+						<tr>
+							<th>コード</th>
+							<td><input type="text" id="ca_cm330_code"></td>
+							<td><span> </span></td>
+							<th><label for="ca_cm330_search_ymd">検索日</label></th>
+							<td>
+							<span class="datepicker_wrap">
+								<input type="text" id="ca_cm330_search_ymd" class="cl_valid cl_date">
+							</span>
+							</td>
+							<td>
+								<ul cl_valid_sticker_for="ca_cm330_search_ymd"></ul>
+							</td>
+						</tr>
+						<tr>
+							<th>名称</th>
+							<td colspan="3"><input type="text" id="ca_cm330_name"></td>
+						</tr>
+						<tr>
+							<th>法人区分</th>
+							<td colspan="3"><select id="ca_cm330_houjin_type">
+							</select></td>
+						</tr>
+						<tr>
+							<th>業態</th>
+							<td colspan="3"><select id="ca_cm330_gyotai_type">
+							</select></td>
+						</tr>
+
+					</table>
+					<input class="btn btn-success" type="submit" value="検索"
+						style="width: 100px;" id="ca_cm330_search">
+				</div>
+			</div>
+
+			<!--表示エリア-->
+			<div class="row-fluid" style="margin-bottom: 10px;">
+				<div class="pagination_span">
+					<!--////////////　開始　ページャー　////////////-->
+					<div class="pagination pagination-centered" style="margin: 0;">
+						<ul id="ca_cm330_pager">
+						</ul>
+					</div>
+					<div id="ca_cm330_pager_displaypanel"></div>
+					<!--////////////　終了　ページャー　////////////-->
+				</div>
+			</div>
+			
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>チェック</th>
+						<th>NO.</th>
+						<th>コード</th>
+						<th>名称</th>
+						<th>法人</th>
+					</tr>
+				</thead>
+				<tbody id="ca_cm330_tbody_div">
+					<!--ここにテンプレート入る-->
+				</tbody>
+				<script id="ca_cm330_tbody_template" type="text/x-jquery-tmpl">
+				<tr id="${hojin_id}">
+					<td><input type="radio" value="" name="ca_cm330_check"></td>
+					<td>${no}</td>
+					<td>${hojin_cd}</td>
+					<td>${hojin_name}</td>
+					<td>${hojin}</td>
+				</tr>
+				</script>
+			</table>
+
+			<div class="row-fluid" style="margin-bottom: 10px;">
+				<div class="span4">
+					<button class="btn btn-info" type="button" id="ca_cm330_cancel">キャンセル</button>
+				</div>
+				<div class="span4 offset4" style="text-align: right;">
+					<button class="btn btn-primary" type="button" id="ca_cm330_commit">確定</button>
+
+				</div>
+			</div>
+
+			<div id="cs_footer"></div>
+
+		</div>
+	</div>
+	<script>
+		$('table').dragtable();
+	</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<div id="ca_AMPAV0010_AMPAV0020_dialog" class="cl_dialog"></div>
+<div id="ca_AMPAV0010_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>店舗</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div id="selected" class="ca_AMPAV0010_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_AMPAV0010_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_AMPAV0010_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_AMPAV0010_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName">店舗コード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-disabled" id="ca_AMPAV0010_code" data-limit="len:20 digit"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">店舗名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" id="ca_AMPAV0010_name" data-limit="len:32"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">組織</p>
+							<div class="fieldBox">
+								<input type="hidden" id="ca_AMPAV0010_func_id" />
+								<input type="hidden" id="ca_AMPAV0010_org_id" />
+								<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_AMPAV0010_orgname" disabled/>
+								<button class="btn btn-default wt160 flleft mrgl10" id="ca_AMPAV0010_show_AMPAV0020">参照...</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">開店日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_open_iymd_from" type="text" placeholder=""
+										class="flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_open_iymd_to" type="text" placeholder=""
+										class="flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">閉店日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_close_iymd_from" type="text" placeholder=""
+										class="flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_close_iymd_to" type="text" placeholder=""
+										class="flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- <p class="expandFieldUnits mrgb10"><span class="expand">もっと詳しく</span><span class="unexpand dispn">閉じる</span></p>
+						<div class="fieldUnitsHidden dispn">
+						<hr>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">開店日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_open_iymd_from" type="text" placeholder=""
+										class="form-control flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_open_iymd_to" type="text" placeholder=""
+										class="form-control flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">閉店日</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_close_iymd_from" type="text" placeholder=""
+										class="form-control flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap">
+									<input id="ca_AMPAV0010_close_iymd_to" type="text" placeholder=""
+										class="form-control flleft cl_date cl_valid ime-disabled" data-limit="len:10">
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						</div><!-- / .fieldUnitsHidden -->
+
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button class="btn btn-default wt140 mrgr20" id="ca_AMPAV0010_clear">クリア</button>
+								<button id="ca_AMPAV0010_search" class="btn btn-info wt280">検索</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+
+					<div class="pagination-wrapper">
+						<div class="displaypanel" id="ca_AMPAV0010_pager_displaypanel1"></div>
+						<div class="pagination">
+							<ul id="ca_AMPAV0010_pager1">
+							</ul>
+						</div>
+					</div>
+
+					<div class="table fieldUnit hta">
+					<table class="hilightRow" id="ca_AMPAV0010_tbl">
+						<tr>
+							<th width="40px">
+								<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_AMPAV0010_chkall"></label>
+							</th>
+			<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+							<th width="180px">店舗コード</th>
+							<th width="">店舗名</th>
+						</tr>
+						<tbody id="ca_AMPAV0010_tbody">
+						</tbody>
+					</table>
+					<script id="ca_AMPAV0010_tbody_single_tmp" type="text/x-jquery-tmpl">
+					<tr id="${store_id}">
+						<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_AMPAV0010_chk"></label></td>
+						<td>${code}</td>
+						<td>${name}</td>
+					</tr>
+					</script>
+					<script id="ca_AMPAV0010_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+					<tr id="${store_id}">
+						<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_AMPAV0010_chk"></label></td>
+						<td>${code}</td>
+						<td>${name}</td>
+					</tr>
+					</script>
+					</div>
+					<div class="mrgb20"></div>
+
+					<div class="pagination-wrapper">
+						<div class="displaypanel" id="ca_AMPAV0010_pager_displaypanel2"></div>
+						<div class="pagination">
+							<ul id="ca_AMPAV0010_pager2">
+							</ul>
+						</div>
+					</div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+							<button class="btn btn-primary wt280 ca_AMPAV0010_multi" id="ca_AMPAV0010_add">チェックしたものを選択内容に追加</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_AMPAV0010_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_AMPAV0010_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

@@ -1,0 +1,278 @@
+@CHARSET "UTF-8";
+
+#ca_table {
+	border-collapse: separate;
+}
+
+.th_checkbox {
+	position:sticky;
+	top: 0;
+	left: 0;
+	min-width:40px;
+	max-width:40px;
+	z-index: 11;
+}
+.th_itgrp {
+	position:sticky;
+	top: 0;
+	left:40px;
+	min-width:130px;
+	max-width:130px;
+	z-index: 11;
+}
+.th_maker {
+	position:sticky;
+	top: 0;
+	left:170px;
+	min-width:150px;
+	max-width:150px;
+	z-index: 11;
+}
+.th_itemCode {
+	position:sticky;
+	top: 0;
+	left:320px;
+	min-width:95px;
+	max-width:95px;
+	z-index: 11;
+}
+.th_name {
+	position:sticky;
+	top: 0;
+	left:415px;
+	min-width:200px;
+	max-width:200px;
+	z-index: 11;
+}
+.th_color {
+	position:sticky;
+	top: 0;
+	left:615px;
+	min-width:55px;
+	max-width:55px;
+	z-index: 11;
+}
+.th_year {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:85px;
+	z-index: 10;
+}
+.th_season {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:105px;
+	z-index: 10;
+}
+.th_subcls {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:120px;
+	max-width:120px;
+	z-index: 10;
+}
+.th_style {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:65px;
+	z-index: 10;
+}
+.th_followdate {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:120px;
+	z-index: 10;
+}
+.th_setup {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:105px;
+	z-index: 10;
+}
+.th_datelong {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:120px;
+	z-index: 10;
+}
+.th_date {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:120px;
+	z-index: 10;
+}
+.th_uplimit {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:160px;
+	z-index: 10;
+}
+.th_autotype {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:145px;
+	z-index: 10;
+}
+.th_batchflag {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:125px;
+	z-index: 10;
+}
+.th_distlimit {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:125px;
+	z-index: 10;
+}
+.th_user {
+	position: sticky;
+	top: 0;
+	table-layout: fixed;
+	min-width:280px;
+	z-index: 10;
+}
+
+.td_checkbox {
+	position:sticky;
+	left: 0;
+	min-width:40px;
+	z-index: 9;
+	background-color: #f0f1f2;
+}
+.td_itgrp {
+	position:sticky;
+	left:40px;
+	min-width:130px;
+	z-index: 9;
+	background-color: #f0f1f2;
+}
+.td_maker {
+	position:sticky;
+	left:170px;
+	min-width:150px;
+	min-width:150px;
+	z-index: 9;
+	background-color: #f0f1f2;
+}
+.td_itemCode {
+	position:sticky;
+	left:320px;
+	min-width:95px;
+	z-index: 9;
+	background-color: #f0f1f2;
+}
+.td_name {
+	position:sticky;
+	left:415px;
+	min-width:200px;
+	max-width:200px;
+	z-index: 9;
+	background-color: #f0f1f2;
+}
+.td_color {
+	position:sticky;
+	left:615px;
+	min-width:55px;
+	z-index: 9;
+	background-color: #f0f1f2;
+}
+
+.table_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  max-height: 400px;
+}
+
+/*
+ * outer/inner CSS
+ */
+ /*
+.table_outer {position:relative}
+.table_inner {
+  overflow-x:auto;
+  overflow-y:auto;
+  width:58%;
+  margin-left:670px;
+}
+*/
+.pdt14 {
+	padding-top: 14px;
+}
+.pdtb4 {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+table.noborder {
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	background: inherit;
+	font-size: 14px;
+}
+table.noborder tr {
+	background: inherit;
+}
+table.noborder td {
+	border: none;
+	padding: 10px;
+}
+table.noborder .radio {
+	margin-top: 10px;
+	margin-bottom: 12px;
+	margin-left: 20px;
+	padding: 3px 24px 12px 20px;
+}
+.fieldUnit.ht20 {
+	height: 20px;
+}
+.fieldUnit.ht24 {
+	height: 24px;
+}
+.fieldUnit.ht30 {
+	height: 30px;
+}
+.fieldUnit.htauto {
+	height: auto;
+}
+.pl40 {
+	padding-left: 40px;
+}
+.pl60 {
+	padding-left: 60px;
+}
+.pl80 {
+	padding-left: 80px;
+}
+.pl120 {
+	padding-left: 120px;
+}
+.mrgl40 {
+  margin-left: 40px;
+}
+.wdhalf {
+	width: 50%;
+}
+.lh20 {
+	line-height: 20px;
+}
+
+.fieldgroup .fieldgroupInBox hr {
+	border-color: #808080;
+}
+.ta_noresize {
+	resize: none;
+}

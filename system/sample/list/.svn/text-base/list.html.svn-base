@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>FC法人マスタ管理　＞　ＦＣ法人マスタ一覧</title>
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+
+<!-- pager -->
+<script type="text/javascript" src="../../js/simplePagination.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker_ja.js"></script>
+<script type="text/javascript" src="../../../js/jquery.dragtable.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+
+<!-- App -->
+<script type="text/javascript" src="../../js/clcom.js"></script>
+<script type="text/javascript" src="../../js/messages_ja.js"></script>
+<script type="text/javascript" src="../../app/cm330/cm330.js"></script>
+<script type="text/javascript" src="list.js"></script>
+
+</head>
+<body>
+	<!-- 選択画面配置 -->
+	<div id="hojinSelectorArea"></div>
+	
+	<div id="ca_main">
+	
+	<div id="cs_header"></div>
+	
+	<div class="container-fluid">
+	<div class="row-fluid">
+
+	<div class="span12">
+		<button class="btn btn-mini" type="button">HOMEへ戻る</button>
+		<div class="pull-right">
+			<button class="btn btn-mini" type="button">全クリア</button>　<button class="btn btn-mini" type="button">CSV保存</button>　<button class="btn btn-mini" type="button">登録</button>
+		</div>
+	</div>
+	<h3 class="pageTitle">FC法人マスタ管理　＞　ＦＣ法人マスタ一覧</h3>
+	
+	<!-- ここにエラーメッセージが表示される -->
+	<div class="notice_red_large cl_echoback" ></div>
+
+	<div class="searchArea">
+		<div class="form-inline" id="ca_search_form">
+			<table class="search">
+				<tr>
+					<th>期間</th>
+					<td>
+					<span class="datepicker_wrap" >
+                      <input type="text" id="ca_st_iymd" class="cl_valid cl_date">
+                    </span>
+                    </td>
+                    <td>
+                    <span>　～　</span>
+                    </td>
+                    <td>
+					<span class="datepicker_wrap" >
+                      <input type="text" id="ca_ed_iymd" class="cl_valid cl_date">
+                    </span>
+                    
+                    <label for="ca_st_iymd" style="display:none">開始期間</label>
+                    <label for="ca_ed_iymd" style="display:none">終了期間</label>
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+					
+                    <ul cl_valid_sticker_for="ca_st_iymd"></ul>
+                    </td><td></td><td>
+                    <ul cl_valid_sticker_for="ca_ed_iymd"></ul>
+                    
+					</td>
+				</tr>
+				<tr>
+					<th>法人</th>
+					<td colspan="3">
+						<input type="text" id="ca_hojin_name" readonly="readonly">
+						<button class="btn btn-mini" id="ca_hojin_select">選択</button>
+					</td>
+				</tr>
+				<tr>
+					<th>法人コード</th>
+					<td colspan="3">
+						<input type="text" id="ca_hojin_cd">
+					</td>
+				</tr>
+				<tr>
+					<th>法人名称</th>
+					<td colspan="3">
+						<select id="ca_hojin_name">
+						</select>
+						<span style="font-weight:bold;">電話番号</span>　<input class="input-mini" type="text" id="ca_telno1"> - <input class="input-mini" type="text" id="ca_telno2"> - <input class="input-mini" type="text" id="ca_telno3">
+					</td>
+				</tr>
+			</table>
+			<input class="btn btn-success" type="submit" value="検索" style="width:100px;" id="ca_search">
+		</div>  
+	</div>
+
+
+
+	<div class="row-fluid" style="margin-bottom: 10px;">
+		<div class="span4"><p><button class="btn btn-primary" type="button">新規追加登録</button></p></div>
+		
+		<div class="pagination_span">
+			<!--////////////　開始　ページャー　////////////-->
+            <div class="pagination pagination-centered" style="margin:0;">
+                <ul id="ca_pager"></ul>
+            </div>
+            <div id="ca_pager_displaypanel"></div>
+            <!--////////////　終了　ページャー　////////////-->
+			
+		</div>
+		
+	</div>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>チェック</th>
+			<th>NO.</th>
+			<th>法人コード</th>
+			<th>法人名称</th>
+			<th>電話番号</th>
+			<th>FAX</th>
+			<th>表示</th>
+			<th>更新</th>
+		</tr>
+	</thead>
+	<tbody id="ca_tbody_div">
+	</tbody>
+	<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+		<tr id="${hojin_id}">
+			<td><input type="checkbox" value="" name="ca_del_chk"></td>
+			<td>${no}</td>
+			<td>${hojin_cd}</td>
+			<td>${hojin_name}</td>
+			<td>${telno}</td>
+			<td>${faxno}</td>
+			<td><a href="#" class="ca_detail">表示</a></td>
+			<td><a href="#" class="ca_edit">更新</a></td>
+		</tr>
+	</script>
+</table>
+
+<p><button class="btn btn-danger" type="button" id="ca_delete">削除</button> <span style="font-weight:bold">チェックをつけた項目を削除する</span></p>
+	
+<div id="cs_footer"></div>
+
+</div>
+</div>
+</div><!-- ca_main -->
+</body>
+</html>

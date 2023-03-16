@@ -1,0 +1,236 @@
+@CHARSET "utf-8";
+
+/*
+ * 分析画面ポーティングにに伴うスタイル微調整などをここに記す。
+ */
+
+/* 「サイズ名で集約」が折れ曲がらないよう調整 */
+/* 「サイズMAX部門 または KTサイズ」が３行にならないように調整 #20160913 */
+.fieldName {
+	/*width: 112px;*/
+	width: 127px;
+}
+.fieldBox {
+	/*padding-left: 112px;*/
+	padding-left: 127px;
+}
+
+/*
+.ui-widget-header .ui-icon {
+	background-image: url(../images/icn_arrowdp.svg);
+}
+*/
+.ui-icon-circle-triangle-w { background-position: -80px -192px; }
+.ui-icon-circle-triangle-e { background-position: -48px -192px; }
+.ui-widget-header .ui-icon {
+	background-image: url(themes/base/images/ui-icons_222222_256x240.png);
+}
+
+/* --- ダイアログ関連 - チューニング --- */
+#cl_dialog_area .modal {
+	opacity: 0;
+	display: block;
+}
+/*背景ボカシしないようスタイル上書き*/
+body.dialogIsOpen #page-wrap {
+  /* Blur and de-color */
+  -webkit-filter: initial;
+  /* Recede */
+  -webkit-transform: initial;
+  -moz-transform: initial;
+  -ms-transform: initial;
+  -o-transform: initial;
+  transform: initial;
+}
+body.dialogIsOpen #cl_dialog_area .modal {
+	opacity: 1;
+	transition:opacity 0.5s linear;
+}
+
+/* エラーメッセージエコーバックエリアを固定 */
+.cl_echoback.msgBox {
+  position: fixed
+}
+
+/* 入力残数カウンター */
+.cltxtFieldLimitWrapper > span.limit {
+  color: #a2a9b3;
+  font-size: 75%;
+  position: absolute;
+  z-index: 500;
+  line-height: 40px;
+  text-align: right;
+  margin: 0;
+  padding: 0 10px 0 0;
+  right: 0;
+  bottom: 0;
+}
+.cltxtFieldLimitWrapper > textarea+span.limit {
+  padding: 0;
+  right: 10px;
+}
+.cltxtFieldLimitWrapper > span.limit.alert {
+  color: #f2555f;
+}
+
+/* SelectPicker のフォーカス保持しているときのスタイル */
+.btn.btn-input:focus {
+  border: 2px solid #1e9ce6;
+}
+
+.pdgr10 {
+  padding-right: 10px;
+}
+.fieldBox.pdg.pdgl0 {
+  padding-left: 0px;
+}
+
+/* 軸選択の注意喚起テキストスタイル */
+#ca_CACMV0180_main #title .titleInBoxRight .attentionText {
+  color: #667180;
+  font-size: 82%;
+  font-weight: bold;
+  padding-right: 20px;
+}
+
+/* スケジュールアイコン */
+table span.icon-abui-time {
+	display:table-cell;
+	width: 15px;
+	height: 15px;
+	margin-left: 5px;
+	background-color: #A2A9B3;
+	-webkit-mask: url("../../public/icon/e023_abui-time.svg") no-repeat;
+	-webkit-mask-size: cover;
+}
+
+/* 商品選択 */
+#selected .control .sortUp, #selected .control .sortDown {
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-top: -1px;
+	text-indent: -9999px;
+	background: url("../images/icn_up.svg") no-repeat left top;
+	background: url("../images/icn_up.png") no-repeat left top\9;
+	cursor: pointer;
+}
+#selected .control .sortUp:hover, #selected .control .sortDown:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
+  opacity: 0.7;
+}
+
+#selected .control .sortDown {
+	background: url("../images/icn_down.svg") no-repeat left top;
+	background: url("../images/icn_down.png") no-repeat left top\9;
+}
+
+.select--color .btn.dropdown-toggle {
+  padding-right: 15px;
+  /* border: 0; */
+}
+.select--color .btn.dropdown-toggle:after {
+  content: "■";
+  font-size: large;
+  display: inline-block;
+  width: 2em;
+  text-align: center;
+  line-height: 1;
+  font-family: 'CSUI-icons';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: absolute;
+  left: 0;
+  margin-top: 4px;
+}
+.select--color .btn.dropdown-toggle .filter-option {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
+.select--color .btn.dropdown-toggle.blue:after {
+  color: #029df4;
+}
+.select--color .btn.dropdown-toggle.bluegreen:after {
+  color: #0AAACE;
+}
+.select--color .btn.dropdown-toggle.green:after {
+  color: #11b7a8;
+}
+.select--color .btn.dropdown-toggle.greenyellow:after {
+  color: #65C15E;
+}
+.select--color .btn.dropdown-toggle.yellow:after {
+  color: #b9ca14;
+}
+.select--color .btn.dropdown-toggle.yelloworange:after {
+  color: #DCB823;
+}
+.select--color .btn.dropdown-toggle.orange:after {
+  color: #ffa531;
+}
+.select--color .btn.dropdown-toggle.orangered:after {
+  color: #f55361;
+}
+.select--color .btn.dropdown-toggle.red:after {
+  color: #f55361;
+}
+.select--color .btn.dropdown-toggle.redpurple:after {
+  color: #BC5F9A;
+}
+.select--color .btn.dropdown-toggle.purple:after {
+  color: #826bd3;
+}
+.select--color .btn.dropdown-toggle.purpleblue:after {
+  color: #4284E4;
+}
+.select--color li a:after {
+  content: "■";
+  font-size: large;
+  display: inline-block;
+  width: 2em;
+  text-align: center;
+  line-height: 1;
+  padding: 4px 0;
+  font-family: 'CSUI-icons';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.select--color li:nth-child(1) a:after {
+  color: #45545b;
+}
+.select--color li:nth-child(2) a:after {
+  color: #029df4;
+}
+.select--color li:nth-child(3) a:after {
+  color: #0AAACE;
+}
+.select--color li:nth-child(4) a:after {
+  color: #11b7a8;
+}
+.select--color li:nth-child(5) a:after {
+  color: #65C15E;
+}
+.select--color li:nth-child(6) a:after {
+  color: #b9ca14;
+}
+.select--color li:nth-child(7) a:after {
+  color: #DCB823;
+}
+.select--color li:nth-child(8) a:after {
+  color: #ffa531;
+}
+.select--color li:nth-child(9) a:after {
+  color: #FA7C49;
+}
+.select--color li:nth-child(10) a:after {
+  color: #f55361;
+}
+.select--color li:nth-child(11) a:after {
+  color: #BC5F9A;
+}
+.select--color li:nth-child(12) a:after {
+  color: #826bd3;
+}
+.select--color li:nth-child(13) a:after {
+  color: #4284E4;
+}

@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>マスタメンテ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMMSV0370.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script src="../../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script src="AMMSV0370.js"></script>
+
+</head>
+
+<body>
+<div id="ca_main">
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+
+			<div id="content">
+				<div class="fieldgroup">
+					<div id="ca_srchArea" class="fieldgroupInBox">
+						<div class="fieldUnit mrgb10 half flleft required">
+							<p class="fieldName bl2">サイズ<br />グループ</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchID">
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_srch" class="btn btn-info wt280">表示</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+					<div class="clear"></div>
+				</div>
+
+				<div id="ca_result" class="dispn">
+					<input type="hidden" id="ca_ID">
+					<input type="hidden" id="ca_code">
+					<input type="hidden" id="ca_name">
+					<div class="fieldgroup">
+						<p class="gtitle">サイズパターン</p>
+						<div class="fieldgroupInBox view">
+							<div class="wt980" style="margin-left:auto;margin-right:auto;text-align:justify;">
+								<!-- <div class="fieldUnit mrgb10 wid120 flleft mrgl20">
+									<p class="fieldName nameLong">サイズパターン</p>
+									<div class="fieldBox nameLong">
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div> -->
+								<div class="fieldUnit hta mrgb10 flleft mrgr30 pdgt10">
+									<div class="table">
+										<table class="hilightRow list flleft" id="ca_table_ptn">
+											<thead>
+												<tr>
+													<th class="">サイズパターンコード</th>
+													<th class="">サイズパターン名称</th>
+													<th class=""></th>
+												</tr>
+											</thead>
+											<tbody id="ca_tbody_ptn">
+											</tbody>
+											<tfoot>
+												<tr class="addRow">
+													<td colspan="3"><span class="btn-add"></span></td>
+												</tr>
+											</tfoot>
+										</table>
+										<div class="clear"></div>
+									</div>
+								</div>
+								<div class="fieldUnit hta flleft mrgb10 pdgt10">
+									<div class="table">
+										<table class="hilightRow list flleft" id="ca_table_itgrp">
+											<thead>
+												<tr>
+													<th>事業ユニット</th>
+													<th>対象品種</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody id="ca_tbody_itgrp">
+											</tbody>
+											<tfoot>
+												<tr class="addRow">
+													<td colspan="3"><span class="btn-add"></span></td>
+												</tr>
+											</tfoot>
+										</table>
+										<div class="clear"></div>
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div><!--wt1200-->
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- /#content -->
+
+			<div id="mainColumnFooter" class="noLeftColumn">
+				<p class="cancel"><a href="#">キャンセル</a></p>
+				<p class="apply mrgCancel"><a href="#">登録</a></p>
+				<div class="clear"></div>
+			</div>
+			<!-- /#mainColumnFooter -->
+		</div>
+		<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+
+<script id="ca_tmpl_ptn" type="text/x-jquery-tmpl">
+	<tr class="deletable addRow" name="ca_table_tr">
+		<td class="editable pdg0"><input type="text" class="form-control cl_valid cl_required" name="sizePtnCode" value="${sizePtnCode}" data-validator="len:2,2 alnum" {{if ikouFlag}}readonly{{/if}}/></td>
+		<td class="editable pdg0"><input type="text" class="form-control cl_valid cl_required" name="sizePtnName" value="${sizePtnName}" data-validator="maxlen:20 zenkaku" {{if ikouFlag}}readonly{{/if}}/></td>
+		<td>{{if ikouFlag}} {{else}}<span class="btn-delete flright">{{/if}}</span></td>
+		<input type="hidden" name="ikouFlag" value="${ikouFlag}">
+		<input type="hidden" name="sizePtnID" value="${sizePtnID}">
+	</tr>
+</script>
+
+<script id="ca_tmpl_itgrp" type="text/x-jquery-tmpl">
+	<tr class="deletable addRow" name="ca_table_tr">
+		<td class="editable pdg0"><select class="mbn wt280 cl_valid cl_required" name="unitID" value="${unitID}"></select></td>
+		<td class="editable pdg0"><input type="text" class="form-control cl_valid cl_required" name="itgrpID" value="${itgrpID}" data-validator="maxlen:24" {{if unitID == 0}}readonly{{/if}}></td>
+		<td><span class="btn-delete flright"></span></td>
+	</tr>
+</script>
+
+
+<div class="clear"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.ca_red {
+	color : red;
+}
+
+.ca_yellow {
+	color : #ffd400;
+}

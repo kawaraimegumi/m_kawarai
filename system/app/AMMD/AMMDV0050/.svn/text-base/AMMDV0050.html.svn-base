@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>マークダウン</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMMDV0050.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+
+	<link href="/css/slickgrid.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/slickgrid.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="AMMDV0050.js"></script>
+
+</head>
+
+<body class="cl_body_hidden">
+
+<div id="ca_main">
+
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_search" class="fieldgroupInBox">
+
+					<!-- 指示ID -->
+					<input type="hidden" id="ca_ID"/>
+					<input type="hidden" id="ca_recno"/>
+					<input type="hidden" id="ca_state"/>
+
+					<div id="ca_srchUnitIDArea" class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_unitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 flleft" id="ca_storeSel">
+						<p class="fieldName ">店舗</p>
+						<div class="fieldBox" id="ca_readOnly">
+							<input class="form-control wt280 flleft cl_valid" type="text"  id="ca_orgID" readonly/>
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">品種</p>
+						<div class="fieldBox">
+							<!--  <span class="limit wt40 flright mrgl_60 pa_storeComment"></span>	-->
+							<input type="text" class="form-control wt280 cl_valid cl_required" id="ca_itgrpID" data-validator="maxlen:24"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+					
+					<div class="fieldUnit mrgb20 required">
+						<p class="fieldName">期間値下名称</p>
+						<div class="fieldBox">
+							<span class="limit wt40 flright mrgl400"></span>
+							<input type="text" class="cl_valid cl_required form-control wt450" id="ca_Name" data-tflimit="30" data-validator="maxlen:30"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">期間値下番号</p>
+						<div class="fieldBox" id="ca_CodeArea">
+							<input type="text" class="form-control wt280 cl_valid" id="ca_Code" readonly/>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="fieldUnit mrgr20 mrgb10 flleft required wt500">
+						<p class="fieldName">値下期間</p>
+						<div class="fieldBox">
+							<p class="txtInFieldUnit flright help" id="tp_code" title="値下開始日前日が承認期限日となります。"><span>?</span></p>
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_fromDate"  data-validator="maxlen:13"/></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap"><input class="cl_date cl_valid cl_required" type="text" id="ca_toDate"  data-validator="maxlen:13"/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+						<p class="fieldName">値下指定区分</p>
+						<div class="fieldBox">
+							<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_disctypeID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 flleft wt1200">
+						<p class="fieldName">添付ファイル</p>
+						<div id="ca_fileDiv"  class="fieldBox fleft ca_torikomi_div">
+
+							<span id="ca_label" class="choose form-control wt280 flleft"></span>
+							<input type="hidden" id="ca_attachfileID"/>
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileUp_btn">添付ファイルを選択</button>
+							<button class="btn btn-default  mrgl10 cl-file-attach wt200" id="ca_fileDel_btn">添付ファイルを削除</button>
+						</div>
+
+					</div>
+					<div class="clear"></div>
+				</div>
+				<!--p id="searchAgain" class="dispn">検索条件を再指定</p-->
+			</div>
+
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox ca_pdgb_60">
+
+					<div class="fieldUnit mrgb20 flright ">						
+							<div class="fieldBox noName flleft " id="ca_csvinput2">
+									<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_sample_download">Excelサンプルダウンロード</button>
+								</div>
+							
+							<div class="fieldBox noName flleft" id="ca_upld">
+								<button class="btn btn-default wt280 mrgl10 cl-file-attach" id="ca_csv_uptake">Excelデータアップロード</button>
+							</div>
+							<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="flright"><p class="gtitle">円単位</p></div>
+					<div class="clear"></div>
+
+					<!-- グリッド領域 -->
+					<div class="" id="ca_datagrid"></div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			
+			
+			<div class="fieldgroup mrgb10" id="ca_rejectListInfo">
+				<p class="gtitle">差戻し理由</p>
+				<div class="fieldgroupInBox">
+					<div class="fieldUnit mrgb20 flleft mrgr20 wt100pct">
+						<p class="fieldName">コメント</p>
+						<div class="fieldBox" id="ca_rejectArea">
+							<span class="limit wt40 mrgr_5 pa_storeComment"></span>
+							<input type="text" class="form-control wt100pct" id="ca_reject" data-tflimit="100" data-validator="maxlen:100" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+		            <div class="table" style="padding-left:100px;margin-bottom:0">
+		 			    <table class="hilightRow list" id="ca_table_reject">
+						    <thead id="ca_table_reject_thead">
+							    <tr>
+								    <th width="30">No</th>
+								    <th>コメント</th>
+							    </tr>
+						    </thead>
+						    <tbody id="ca_table_reject_tbody"></tbody>
+					    </table>
+					    
+					    
+					    <script id="ca_tbody_template" type="text/x-jquery-tmpl">
+							<tr class="deletable">
+								<td class="ca_c_link txtar"><span class="ca_rejectNum" name="rejectNum">${rejectNum}</span></td>
+								<td class="ca_c_link"><span class="ca_reject" name="reject">${reject}</span></td>
+							</tr>
+						</script>
+					    
+		            </div>
+				</div>
+			</div>
+			
+
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+			<p class="apply"><a href="#">一時保存</a></p>
+			<p class="apply"><a href="#">最終承認申請</a></p>
+		</div>
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

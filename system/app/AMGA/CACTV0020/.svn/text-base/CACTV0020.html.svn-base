@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>分析カタログ照会</title>
+
+<link href="../../AMGA/public/css/bootstrap.css" rel="stylesheet">
+<link href="../../AMGA/public/css/prettify.css" rel="stylesheet">
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style-AMGAV.css">
+
+<script src="../../AMGA/public/js/jquery-1.8.3.min.js"></script>
+<script src="../../AMGA/public/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../AMGA/public/js/jquery.ui.touch-punch.min.js"></script>
+
+<!-- Loading ui-folder -->
+<script type="text/javascript" src="../../AMGA/private/js/ui-folder.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/jquery.easing-1.3.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/underscore.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/backbone.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/json2.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.exchangeselect.0.1.0.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.fixedheadertable.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.skOuterClick.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../AMGA/public/js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.form.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="../../AMGA/private/js/aman.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/messages2-ana_ja.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana-fix.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/ana-testdata.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style-AMGAV.css">
+
+<script type="text/javascript" src="CACTV0020.js"></script>
+
+</head>
+
+<body id="ca_body">
+
+<div id="cl_dialog_area" class="cl_dialog"></div>
+<div id="page-wrap">
+<div id="cl_header"></div><!-- /#header -->
+<div class="cl_echoback msgBox error"></div>
+
+<div id="ca_main">
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<div id="title">
+			<h2>分析カタログ照会</h2>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div id="ca_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName wt120">分析カタログ名</p>
+							<div class="fieldBox" style="padding-left: 120px;">
+								<input type="text" placeholder="" class="form-control wt280 ime-active" data-limit="len:32" id="ca_name"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+							<div class="fieldUnit mrgb10">
+							<p class="fieldName wt120">公開区分</p>
+							<div class="fieldBox" style="padding-left: 120px;" id="ca_f_open_div">
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName wt120">作成者</p>
+							<div class="fieldBox" style="padding-left: 120px;">
+								<input type="text" class="form-control wt280 ime-active" data-limit="len:32" id="ca_cre_staff_name"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="fieldUnit mrgb10 half flleft mrgr20">
+							<p class="fieldName wt120">　</p>
+							<div class="fieldBox flleft">
+								<label class="checkbox ib" for="check1"><input type="checkbox" value="" id="ca_f_schedule" data-toggle="checkbox">スケジュール登録済のみ表示</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
+						<input type="hidden" id="ca_f_exclude_anakind" value="11"/>
+
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button id="ca_clear" class="btn btn-default wt140">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_tbl">
+			<tr>
+				<th width="40px"></th>
+				<th width="" class="ca_th_sort" key="NAME"><span>分析カタログ名</span></th>
+				<th width="" class="ca_th_sort" key="CRETIME"><span>作成日</span></th>
+				<th width="" class="ca_th_sort" key="CRENAME"><span>作成者</span></th>
+				<th width="" class="ca_th_sort" key="FOPEN"><span>公開区分</span></th>
+			</tr>
+			<tbody id="ca_tbody">
+			</tbody>
+		</table>
+		<script id="ca_tbody_tmp" type="text/x-jquery-tmpl">
+			<tr id="${catalog_id}" class="contextmenu" is_upd="${is_upd}" f_scheduled="${f_scheduled}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_chk"></label></td>
+				<td><span>${catalog_name}</span>{{if f_scheduled}}<span class="icon-abui-time"></span>{{/if}}</td>
+				<td>${cre_iymd_disp} ${cre_hhmm_disp}</td>
+				<td>${cre_staff_name}</td>
+				<td>${f_open_name}</td>
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName">
+				<button id="ca_edit" class="btn btn-primary wt140 flleft">編集</button>
+				<button id="ca_anaproc" class="btn btn-primary wt180 flleft mrgl20">分析を実行</button>
+				<button id="ca_anaproc_xls" class="btn btn-primary wt180 flleft mrgl20">分析を実行してXLS出力</button>
+				<button id="ca_anaproc_csv" class="btn btn-primary wt180 flleft mrgl20">分析を実行してCSV出力</button>
+				<button id="ca_sch" class="btn btn-primary wt180 flleft mrgl20">スケジュール登録・修正</button>
+				<button id="ca_del" class="btn btn-default wt140 flright mrgl20 delete">削除</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+		</div>
+
+		</div>
+		<!-- /#content -->
+	</div>
+	<!-- /#mainColumninBox -->
+	</div>
+	<!-- /#mainColumn -->
+</div><!-- / #container -->
+</div><!-- /#ca_main -->
+<div class="clear"></div>
+</div>
+</body>
+</html>

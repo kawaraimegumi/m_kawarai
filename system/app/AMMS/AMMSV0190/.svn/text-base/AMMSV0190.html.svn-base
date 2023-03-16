@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>商品マスタ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+<script>
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMMSV0190.js"></script>
+
+<div id="container">
+
+	<div id="mainColumn">
+		<div id="mainColumninBox" class="noLeftColumn">
+
+			<div id="content">
+
+				<div class="fieldgroup">
+					<div id="ca_srchArea" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+							<p class="fieldName">事業ユニット</p>
+							<div class="fieldBox required">
+								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 mrgr20 flleft">
+							<p class="fieldName bl2">セットアップ<br />コード</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-validator="maxlen:6 digit" id="ca_srchCode" />
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit flleft half mrgr20 ">
+							<p class="fieldName bl2">セットアップ<br />名称</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-validator="maxlen:20 zenkaku" id="ca_srchName" />
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<hr>
+						<div class="fieldUnit flleft mrgr20 mrgb10">
+							<p class="fieldName">検索日</p>
+							<div class="fieldBox" style="z-index:1000;">
+								<div class="datepicker_wrap"><input type="text" id="ca_srchDate" class="cl_date cl_valid" /></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit" style="z-index:100;">
+							<div class="fieldBox noName flleft">
+								<label class="checkbox ib" for="check1"><input type="checkbox" value="" id="ca_allHistFlag" data-toggle="checkbox">検索日以降全履歴を表示</label>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 flleft">
+							<p class="fieldName"></p>
+							<div class="fieldBox">
+								<label class="checkbox ib flleft" for="ca_showDelFlag" style="width:155px;"><input type="checkbox" value="" id="ca_showDelFlag" data-toggle="checkbox">削除レコードを表示</label>
+								<!-- ツールチップでヘルプを表示 -->
+								<p class="txtInFieldUnit flright help" title="削除レコードが背景赤の行で表示されます。"><span>?</span></p>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_srch" class="btn btn-info wt280">検索</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+				</div>
+
+
+				<div id="result" class="dispn">
+
+					<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+					<div class="pagination-wrapper"></div>
+
+					<div class="table">
+						<table class="hilightRow" id="ca_table">
+						<thead id="ca_table_thead">
+							<tr>
+								<!-- １番目の要素は全選択チェックボックス用に予約 -->
+								<th width="40px" class="cl_checkbox_selectall">☑全選択</th>
+								<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+								<th width="140px">セットアップコード</th>
+								<th width="300px">セットアップ名称</th>
+								<th width="">適用開始日</th>
+								<th width="">適用終了日</th>
+							</tr>
+						</thead>
+						<tbody id="ca_table_tbody">
+							<!-- ca_table_tbody_template -->
+						</tbody>
+						</table>
+						<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+						<script id="ca_rec_template" type="text/template">
+							<tr class="csptr" id="id">
+								<td class="cl_checkbox_selectrec">☑行選択</td>
+								<td class="ca_c_link"><%- code %></td>
+								<td class="ca_c_link"><%- name %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(fromDate, 'yyyy/mm/dd(w)') %></td>
+								<td class="ca_c_link"><%- clutil.dateFormat(toDate, 'yyyy/mm/dd(w)') %></td>
+							</tr>
+						</script>
+					</div>
+
+					<!-- ページネーション＃２：div.pagination-wrapper だけ設置してください -->
+					<div class="pagination-wrapper"></div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMMSV0190">
+							<button class="btn btn-primary wt280 flleft mrgr10" id="cl_edit">編集</button>
+							<div class="flright">
+								<button class="btn btn-default wt140 flleft mrgl20 delete" id="cl_rsvcancel">予約取消</button>
+								<button class="btn btn-default wt140 flleft mrgl20 delete" id="cl_delete">削除</button>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- /#content -->
+
+		</div>
+		<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

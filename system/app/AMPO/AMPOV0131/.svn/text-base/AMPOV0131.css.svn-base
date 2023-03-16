@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+.wt480 {
+    width : 480px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.termBox{
+    padding : 10px;
+}
+
+
+/* SAT */
+#ca_table > tbody .wday6 {
+	color: #1e9ce6;
+}
+/* SUN */
+#ca_table > tbody .wday7 {
+	color: red;
+}

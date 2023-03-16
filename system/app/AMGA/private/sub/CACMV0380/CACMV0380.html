@@ -1,0 +1,97 @@
+<div id="ca_CACMV0380_CACMV0050_dialog" class="cl_dialog"></div>
+<div id="ca_CACMV0380_CACMV0060_dialog" class="cl_dialog"></div>
+<div id="ca_CACMV0380_CACMV0070_dialog" class="cl_dialog"></div>
+<div id="ca_CACMV0380_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>比較対象</h2>
+			<div class="titleInBoxRight">
+				<p class="attentionText"></p>
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+
+			<div class="fieldgroup ca_CACMV0380_v">
+				<p class="gtitle">比較対象</p>
+				<div class="fieldgroupInBox">
+					<div class="fieldUnit mrgb10 flleft mrgr10 ca_CACMV0380_v1">
+						<p class="fieldName">比較対象</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 flleft ca_CACMV0380_axis_kind">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 flleft ca_CACMV0380_v1">
+						<!-- div class="fieldBox noName dispn ca_CACMV0380_axis_attr" axis-type="v1">
+						</div -->
+						<!-- div class="fieldBox noName dispn ca_CACMV0380_axis_attr" axis-type="v1_m" >
+						</div -->
+						<div class="fieldBox noName dispn ca_CACMV0380_axis_attr" axis-type="v1_i" >
+							<button class="btn btn-default wt160 flleft button_CACMV0380_show_CACMV0370" axis-type="v1">選択...</button>
+							<input type="text" class="form-control wt280 flleft mrgl10 input_CACNV0380_mastitem" disabled />
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- プルダウンから期間最終来店店舗を選択したときのみ表示。 -->
+					<div class="ca_CACMV0380_v1_laststore_div dispn ca_CACMV0380_v1">
+						<div class="clear"></div>
+						<div id="ca_CACMV0380_v1_laststore" class="ca_CACMV0380_laststore" axis-type="v1">
+						</div>
+					</div>
+					<div class="clear"></div>
+
+				</div>
+			</div>
+
+			<script id="ca_CACMV0380_fromto_tmp" type="text/x-jquery-tmpl">
+			<div class="fieldUnit mrgb10">
+				<p class="fieldName">${no}</p>
+				<div class="fieldBox ca_CACMV0380_${axis_type}_fromto_elem">
+					<input type="text" placeholder="" class="form-control wt140 flleft txtar ca_CACMV0380_val cl_valid ime-disabled"
+						name="val" value="${val}" data-limit="len:${max_len} digit" data-filter="comma">
+					<p class="txtInFieldUnit pdg flleft">以上</p>
+					<input type="text" placeholder="" class="form-control wt140 flleft txtar cl_valid ime-disabled"
+						name="val2" value="${val2}" data-limit="len:13 digit" data-filter="comma" disabled>
+					<p class="txtInFieldUnit pdg flleft">以下</p>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			</script>
+			<script id="ca_CACMV0380_laststore_tmp" type="text/x-jquery-tmpl">
+			<div class="fieldUnit mrgb10">
+				<div class="fieldBox ca_CACMV0380_${axis_type}_laststore_elem">
+					<div class="datepicker_wrap">
+						<input type="text" placeholder="" class="flleft cl_date cl_valid cl_required ime-disabled"
+						data-required2="group1" data-limit="len:10" name="val" value="${val}">
+					</div>
+					<p class="txtInFieldUnit pdg flleft">～</p>
+					<div class="datepicker_wrap">
+						<input type="text" placeholder="" class="flleft cl_date cl_valid cl_required ime-disabled"
+						data-required2="group1" data-limit="len:10" name="val2" value="${val2}">
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			</script>
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACMV0380_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0380_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+</div>
+<!-- /#mainColumn -->
+</div>

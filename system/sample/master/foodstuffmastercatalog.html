@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>食材マスタ一覧</title>
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link href="../../../css/bootstrap.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery.exchangeselect.0.1.0.js"></script>
+
+<!-- pager -->
+<script type="text/javascript" src="../../js/simplePagination.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="../../../js/jquery.ui.datepicker_ja.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css">
+
+<!-- App -->
+<script type="text/javascript" src="../../js/clcom.js"></script>
+<script type="text/javascript" src="../../js/messages_ja.js"></script>
+<script type="text/javascript" src="foodstuffmastercatalog.js"></script>
+
+</head>
+
+<body>
+	<div id="cs_header">
+	</div>
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+<!--ミニボタン　一部ページ下部機能がかぶっています。-->
+			<div class="span12">
+				<button class="btn btn-mini" type="button">HOMEへ戻る</button>
+				<div class="pull-right">
+					<button class="btn btn-mini" type="button">全クリア</button>　<button class="btn btn-mini" type="button">CSV保存</button>　<button class="btn btn-mini" type="button">登録</button>
+				</div>
+			</div>
+<!--ミニボタンここまで-->
+			<h3 class="pageTitle">食材マスタ一覧</h3>
+			
+			<!-- ここにエラーメッセージが表示される -->
+			<div class="notice_red_large cl_echoback" >
+			</div>
+<!--検索エリア-->
+			<div class="searchArea">
+				<div class="form-inline" id="ca_search_form">
+					<table class="search">
+						<tr>
+							<th>適用期間</th>
+							<td>
+							<span class="datepicker_wrap" >
+		                      <input type="text" id="ca_st_iymd" class="cl_valid cl_date">
+		                    </span>
+		                    </td>
+		                    <td>
+		                    <span>　～　</span>
+		                    </td>
+		                    <td>
+							<span class="datepicker_wrap" >
+		                      <input type="text" id="ca_ed_iymd" class="cl_valid cl_date">
+		                    </span>
+		                    
+		                    <label for="ca_st_iymd" style="display:none">開始期間</label>
+		                    <label for="ca_ed_iymd" style="display:none">終了期間</label>
+							</td>
+						</tr>
+						<tr>
+							<th>
+							</th>
+							<td>
+								<ul cl_valid_sticker_for="ca_st_iymd">
+								</ul>
+							</td>
+							<td>
+							</td>
+							<td>
+								<ul cl_valid_sticker_for="ca_ed_iymd">
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<th>業態</th>
+							<td colspan="3">
+								<select id="ca_business_category">
+									<option value="all">全て表示</option>
+									<option value="dummy1">ダミー</option>
+									<option value="dummy2">ダミー</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>食材区分</th>
+							<td colspan="3">
+								<label class="checkbox inline">
+									<input type="checkbox" id="inlineCheckbox1" value="option1"> 仕掛品
+								</label>
+								<label class="checkbox inline">
+									<input type="checkbox" id="inlineCheckbox2" value="option2"> 発注食材
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th>食材コード</th>
+							<td colspan="3">
+								<input type="text" id="ca_foodstuff_cd">
+							</td>
+						</tr>
+						<tr>
+							<th>食材名</th>
+							<td colspan="3">
+								<input class="input-large" type="text" id="ca_foodstuff_name">
+							</td>
+						</tr>
+						<tr>
+							<th>レシピ単位</th>
+							<td colspan="3">
+								<select id="ca_recipe_unit">
+									<option value="gram">g</option>
+									<option value="dummy1">ダミー</option>
+									<option value="dummy2">ダミー</option>
+								</select>
+							</td>
+						</tr>
+											</table>
+					<input class="btn btn-success" type="submit" value="検索" style="width:100px;" id="ca_search">
+				</div>  
+			</div>
+<!--表示エリア-->
+			<div class="row-fluid" style="margin-bottom: 10px;">
+				<div class="span4">
+					<!--<p><button class="btn btn-primary" type="button">新規追加登録</button></p>-->
+				</div>
+				
+				<div class="pagination_span">
+					<!--////////////　開始　ページャー　////////////-->
+		            <div class="pagination pagination-centered" style="margin:0;">
+		                <ul id="ca_pager">
+		                </ul>
+		            </div>
+		            <div id="ca_pager_displaypanel">
+		            </div>
+		            <!--////////////　終了　ページャー　////////////-->
+				</div>
+			</div>
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>チェック</th>
+						<th>NO.</th>
+						<th>食材区分</th>
+						<th>食材名</th>
+						<th>レシピ単位</th>
+						<th>歩溜り率</th>
+						<th>単価</th>
+						<th>適用期間</th>
+					</tr>
+				</thead>
+				<tbody id="ca_tbody_div">
+					<!--ここにテンプレート入る-->
+				</tbody>
+
+				<!--表テンプレート-->
+				<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+					<tr id="${foodstuff_id}">
+						<td><input type="checkbox" value="" name="ca_del_chk"></td>
+						<td>${no}</td>
+						<td>${foodstuff_part}</td>
+						<td>${foodstuff_name}</td>
+						<td>${recipe_unit}</td>
+						<td>${yield_rate}</td>
+						<td>${unit_price}</td>
+						<td>${applicable_period}</td>
+					</tr>
+				</script>
+				<!--表テンプレートここまで-->
+
+			</table>
+			
+			<div class="row-fluid" style="margin-bottom: 10px;">
+				<div class="span4">
+					<button class="btn btn-primary" type="button" id="ca_back">戻る</button>
+					<button class="btn btn-info" type="button" id="ca_history">履歴表示</button>
+					<button class="btn btn-success" type="button" id="ca_output">CSV出力</button>
+				</div>
+				<div class="span4 offset4" style="text-align:right;">
+					<button class="btn btn-primary" type="button" id="ca_entry">新規登録</button>
+					<button class="btn btn-warning" type="button" id="ca_edit">編集</button>
+					<button class="btn btn-danger" type="button" id="ca_delete">削除</button>
+				</div	
+			</div>
+		
+			<div id="cs_footer">
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

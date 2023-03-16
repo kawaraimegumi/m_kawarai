@@ -1,0 +1,95 @@
+<div id="ca_AMCPV0021_AMPAV0020_dialog" class="cl_dialog"></div>
+<div id="ca_AMCPV0021_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>HTローディング結果</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+		<div id="result" class="dispnXX">
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+
+<!--
+					<div class="pagination-wrapper">
+						<div class="displaypanel" id="ca_AMCPV0021_pager_displaypanel1"></div>
+						<div class="pagination">
+							<ul id="ca_AMCPV0021_pager1">
+							</ul>
+						</div>
+					</div>
+-->
+					<div class="table fieldUnit hta">
+					<table class="hilightRow" id="ca_AMCPV0021_tbl">
+						<tr>
+							<th width="40px">
+								<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_AMCPV0021_chkall"></label>
+							</th>
+							<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+							<th class="wt120">ローディング日</th>
+							<th class="wt120">ローディング時刻</th>
+							<th class="wt120">HT-ID</th>
+						</tr>
+						<tbody id="ca_AMCPV0021_tbody">
+						</tbody>
+					</table>
+
+					<script id="ca_AMCPV0021_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+					<tr id="${accessLogID}">
+						<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_AMCPV0021_chk"></label></td>
+						<td>
+							${cntPrcDateDisp}
+						</td>
+						<td>
+							${cntPrcTimeDisp}
+						</td>
+						<td>
+							${htid}
+						</td>
+					</tr>
+					</script>
+
+					</div>
+					<div class="mrgb20"></div>
+<!--
+					<div class="pagination-wrapper">
+						<div class="displaypanel" id="ca_AMCPV0021_pager_displaypanel2"></div>
+						<div class="pagination">
+							<ul id="ca_AMCPV0021_pager2">
+							</ul>
+						</div>
+					</div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+							<button class="btn btn-primary wt280 ca_AMCPV0021_multi" id="ca_AMCPV0021_add">チェックしたものを選択内容に追加</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+-->
+				</div>
+			</div>
+
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_AMCPV0021_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_AMCPV0021_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

@@ -1,0 +1,168 @@
+table {
+  margin-bottom: 15px;
+}
+th {
+  z-index: 1;
+}
+.name {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+
+  padding-top: 7.5px;
+}
+.column0 {
+  width: 112px;
+}
+.columnName1 {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+}
+.columnName2 {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+}
+.item {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(102, 113, 128, 1);
+}
+.rankButton {
+  display: flex;
+}
+.rankButton:not(.disabled) {
+  cursor: pointer;
+}
+.rankName {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 1);
+
+  background-color: rgba(162, 169, 179, 1);
+}
+.rank {
+  text-align: right;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(50, 58, 69, 1);
+
+  border: rgba(162, 169, 179, 1) solid 1px;
+  min-width: 45px;
+}
+.avgName {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+
+  padding: 1px;
+  padding-left: 5px;
+}
+.val {
+  text-align: center;
+  font-family: Microsoft PhagsPa;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(50, 58, 69, 1);
+}
+.lydfVal {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+}
+.lyrtVal {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+}
+.avgVal {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+}
+.sumrtVal {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+}
+.man {
+  color: rgba(52, 73, 94, 1);
+}
+.slash {
+  color: rgba(29, 11, 189, 1);
+}
+.woman {
+  color: rgba(107, 133, 150, 1);
+}
+.textLeft {
+  text-align: left;
+}
+.textCenter {
+  text-align: center;
+}
+.textRight {
+  text-align: right;
+}
+.row0 {
+  height: 15px;
+}
+.row1 {
+  height: 25px;
+}
+.row2 {
+  height: 15px;
+}
+.row3 {
+  height: 15px;
+}
+.row3 td {
+  border-bottom: rgba(209, 213, 217, 1) solid 2px;
+}
+.green {
+  color: rgba(15, 184, 170, 1);
+}
+.yellow {
+  color: rgba(252, 174, 63, 1);
+}
+.red {
+  color: rgba(242, 85, 95, 1);
+}
+#market table,
+#memb table,
+#rrdr table {
+  width: auto;
+}

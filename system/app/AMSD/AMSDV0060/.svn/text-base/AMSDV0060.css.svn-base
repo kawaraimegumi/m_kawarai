@@ -1,0 +1,35 @@
+.pdt14 {
+	padding-top: 14px;
+}
+.pdtb4 {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+table.noborder {
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	background: inherit;
+	font-size: 14px;
+}
+table.noborder tr {
+	background: inherit;
+}
+table.noborder td {
+	border: none;
+	padding: 10px;
+}
+table.noborder .radio {
+	margin-top: 10px;
+	margin-bottom: 12px;
+	margin-left: 20px;
+	padding: 3px 24px 12px 20px;
+}
+
+.pdl120 {
+	padding-left: 120px;
+}
+.pdr14 {
+	padding-right: 14px;
+}

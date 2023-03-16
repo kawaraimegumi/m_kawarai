@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>経費計画</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="AMEPV0020.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+
+<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+
+<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+<link rel='stylesheet' type='text/css' href='../../../../css/perfect-scrollbar.min.css'>
+
+<link href="/css/slickgrid.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/slickgrid.js"></script>
+<script type="text/javascript" src="/system/js/clgrid.js"></script>
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+
+		<script src="AMEPV0020.js"></script>
+
+		<div id="container">
+			<!-- 店舗選択補助画面 -->
+			<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+			<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup">
+							<div id="ca_srchArea" class="fieldgroupInBox search">
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required" id="div_ca_unitID">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox" id="div_ca_srchUnitID">
+										<select class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID" name="srchUnitID"></select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 flleft half required">
+									<p class="fieldName">年度</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 cl_valid cl_required" id="ca_srchYear" name="srchYear"></select>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 flleft half required">
+									<p class="fieldName">対象期</p>
+									<div class="fieldBox">
+										<select class="mbn wt280 cl_valid cl_required" name="info" id="ca_srchPeriodType"></select>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 required">
+									<p class="fieldName">組織</p>
+									<div class="fieldBox" id="div_ca_org">
+										<input type="hidden" id="ca_AMPAV0010_func_id" />
+										<input type="hidden" id="ca_AMPAV0010_org_id" />
+										<input type="hidden" id="ca_AMPAV0010_attr" />
+										<input class="form-control wt280 flleft cl_required cl_valid" type="text" placeholder="" id="ca_AMPAV0010_orgname" />
+										<button class="btn btn-default wt160 flleft mrgl10" id="ca_AMPAV0010_show_AMPAV0020" tabindex="-1">参照...</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half" id="div_ca_srchStoreType">
+									<div class="fieldBox">
+										<ul>
+											<li>
+												<label class="radio"><input type="radio" id="ca_srchStoreType" name="srchStoreType" value="1" data-toggle="radio">全店</label>
+											</li>
+											<li>
+												<label class="radio"><input type="radio" id="ca_srchStoreType" name="srchStoreType" value="2" data-toggle="radio">既存店のみ</label>
+											</li>
+										</ul>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit">
+									<div class="fieldBox noName" id="div_ca_validNumberFlag">
+										<label class="checkbox ib" for="check1"><input type="checkbox" value="" name="validNumberFlag" id="ca_validNumberFlag" data-toggle="checkbox">目標入力</label>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button class="btn btn-info wt280" id="ca_srch">表示</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<!-- /#ca_srchArea -->
+
+							<button id="searchAgain" class="dispn btn">検索条件を開く</button>
+						</div>
+
+						<div id="result" class="dispn">
+
+
+							<a href="javascript:void(0);" id="ca_meisai_1" class="cl_meisai" target="_blank">販促費明細確認（チラシ）</a>
+							<a href="javascript:void(0);" id="ca_meisai_2" class="cl_meisai" target="_blank">販促費明細確認（DM）</a>
+							<a href="javascript:void(0);" id="ca_meisai_3" class="cl_meisai" target="_blank">販促費明細確認（TVCF）</a>
+
+
+							<div class="flright">
+								<a href="javascript:void(0);" id="ca_monthlink_13"  class="cl_monthlink" target="_blank" data-month="13"  style="display: none;"> 上半期計</a>
+								<a href="javascript:void(0);" id="ca_monthlink_14"  class="cl_monthlink" target="_blank" data-month="14"  style="display: none;"> 下半期計</a>
+								<a href="javascript:void(0);" id="ca_monthlink_4"  class="cl_monthlink" target="_blank" data-month="4"  style="display: none;"> 4月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_5"  class="cl_monthlink" target="_blank" data-month="5"  style="display: none;"> 5月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_6"  class="cl_monthlink" target="_blank" data-month="6"  style="display: none;"> 6月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_7"  class="cl_monthlink" target="_blank" data-month="7"  style="display: none;"> 7月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_8"  class="cl_monthlink" target="_blank" data-month="8"  style="display: none;"> 8月度 </a>
+								<a href="javascript:void(0);" id="ca_monthlink_9"  class="cl_monthlink" target="_blank" data-month="9"  style="display: none;"> 9月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_10" class="cl_monthlink" target="_blank" data-month="10" style="display: none;"> 10月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_11" class="cl_monthlink" target="_blank" data-month="11" style="display: none;"> 11月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_12" class="cl_monthlink" target="_blank" data-month="12" style="display: none;"> 12月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_1"  class="cl_monthlink" target="_blank" data-month="1"  style="display: none;"> 1月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_2"  class="cl_monthlink" target="_blank" data-month="2"  style="display: none;"> 2月度</a>
+								<a href="javascript:void(0);" id="ca_monthlink_3"  class="cl_monthlink" target="_blank" data-month="3"  style="display: none;"> 3月度</a>
+							</div>
+							<div class="clear"></div>
+
+
+							<div class="fieldgroup">
+								<div class="fieldgroupInBox">
+									<div class="flright">
+										<span>千円単位(税抜)</span>
+									</div>
+									<div class="clear"></div>
+
+									<div id="myGrid">
+										<div class="cl_datagrid_container" id="ca_datagrid" style="height: 750px;"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- /#result -->
+
+					</div>
+					<!-- /#content -->
+
+					<div id="mainColumnFooter" class="noLeftColumn"></div>
+
+				</div>
+				<!-- /#mainColumnFooter -->
+
+			</div>
+			<!-- /#mainColumninBox -->
+
+		</div>
+		<!-- /#mainColumn -->
+
+	</div>
+	<!-- / #container -->
+
+	<div class="clear"></div>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<div id="ca_MDCMV1340_MDCMV1050_dialog" class="cl_dialog"></div>
+<div id="ca_MDCMV1340_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>集約商品</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div id="selected" class="ca_MDCMV1340_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_MDCMV1340_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_MDCMV1340_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_MDCMV1340_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">商品分類</p>
+							<div class="fieldBox">
+								<input type="hidden" id="ca_MDCMV1340_itgrpfunc_id" />
+								<input type="hidden" id="ca_MDCMV1340_itgrplvl_id" />
+								<input type="hidden" id="ca_MDCMV1340_itgrp_id" />
+								<input class="form-control wt280 flleft" type="text" placeholder="" id="ca_MDCMV1340_itgrpname" disabled/>
+								<button class="btn btn-default wt160 flleft mrgl10" id="ca_MDCMV1340_show_MDCMV1050">参照...</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit half flleft mrgr20">
+							<p class="fieldName ">集約品番</p>
+							<div class="fieldBox" >
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-validator="maxlen:10 hankaku" id="ca_MDCMV1340_code"/>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt20 noName btnCenter">
+								<button id="ca_MDCMV1340_search" class="btn btn-info wt280 mrgr20">検索</button>
+								<button class="btn btn-default wt140" id="ca_MDCMV1340_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+		<div id="result" class="dispn">
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV1340_pager_displaypanel1"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV1340_pager1">
+				</ul>
+			</div>
+		</div>
+
+		<div class="table">
+		<table class="hilightRow" id="ca_MDCMV1340_tbl">
+			<tr>
+				<th width="40px">
+					<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_MDCMV1340_chkall"></label>
+				</th>
+<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+				<th width="120px" class="ca_th_sort" key="CODE"><span>集約品番</span></th>
+				<th width="120px" class="ca_th_sort" key="NAME"><span>集約商品名称</span></th>
+				<th width="120px" class="ca_th_sort" key="ITEMNUM"><span>商品数</span></th>
+			</tr>
+			<tbody id="ca_MDCMV1340_tbody">
+			</tbody>
+		</table>
+		<script id="ca_MDCMV1340_tbody_single_tmp" type="text/x-jquery-tmpl">
+			<tr id="${packitem_id}">
+				<td><label class="radio" for=""><input type="radio" data-toggle="radio" name="ca_MDCMV1340_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${clutil.comma(item_num)}</td> <!-- <td>${item_num}</td> -->
+			</tr>
+		</script>
+		<script id="ca_MDCMV1340_tbody_multiple_tmp" type="text/x-jquery-tmpl">
+			<tr id="${packitem_id}">
+				<td><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_MDCMV1340_chk"></label></td>
+				<td>${code}</td>
+				<td>${name}</td>
+				<td>${clutil.comma(item_num)}</td> <!-- <td>${item_num}</td> -->
+			</tr>
+		</script>
+		</div>
+		<div class="mrgb20"></div>
+
+		<div class="pagination-wrapper">
+			<div class="count" id="ca_MDCMV1340_pager_displaypanel2"></div>
+			<div class="pagination">
+				<ul id="ca_MDCMV1340_pager2">
+				</ul>
+			</div>
+		</div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_MDCMV1340_multi" id="ca_MDCMV1340_add">チェックしたものを選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_MDCMV1340_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_MDCMV1340_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

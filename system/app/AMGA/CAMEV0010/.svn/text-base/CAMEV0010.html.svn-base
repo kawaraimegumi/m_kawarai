@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+<title>店舗リスト照会</title>
+
+<link href="../../AMGA/public/css/bootstrap.css" rel="stylesheet">
+<link href="../../AMGA/public/css/prettify.css" rel="stylesheet">
+
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style.css">
+<link media="screen" rel="stylesheet" type="text/css" href="../../AMGA/private/css/style-AMGAV.css">
+
+<script src="../../AMGA/public/js/jquery-1.8.3.min.js"></script>
+<script src="../../AMGA/public/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../AMGA/public/js/jquery.ui.touch-punch.min.js"></script>
+
+<!-- Loading ui-folder -->
+<script type="text/javascript" src="../../AMGA/private/js/ui-folder.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/jquery.easing-1.3.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/underscore.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/backbone.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/json2.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.exchangeselect.0.1.0.js"></script>
+
+<script type="text/javascript" src="../../AMGA/public/js/backbone.syphon.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.fixedheadertable.js"></script>
+<!-- datepicker -->
+<script type="text/javascript" src="../../AMGA/public/js/jquery-ui.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/jquery.form.js"></script>
+<script type="text/javascript" src="../../AMGA/public/js/perfect-scrollbar.with-mousewheel.min.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="../../AMGA/private/js/aman.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/messages2-ana_ja.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/clcom-ana-fix.js"></script>
+<script type="text/javascript" src="../../AMGA/private/js/ana-testdata.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css" href="../private/css/style-AMGAV.css">
+
+<script type="text/javascript" src="CAMEV0010.js"></script>
+
+
+</head>
+<body id="ca_body">
+
+<div id="cl_dialog_area" class="cl_dialog"></div>
+<div id="page-wrap">
+<div id="cl_header"></div><!-- /#header -->
+
+<!-- ダイアログ設定 -->
+<div class="cl_echoback msgBox error"></div>
+
+<div id="ca_main">
+	<div id="container">
+		<div id="mainColumn">
+			<div id="mainColumninBox" class="noLeftColumn">
+
+				<div id="title">
+					<h2>店舗リスト照会</h2>
+					<div class="titleInBoxRight">
+						<p><a id="ca_entry">新規作成</a></p>
+					</div>
+				</div>
+				<!-- /#title -->
+
+				<div id="content">
+
+					<div class="fieldgroup">
+						<div id="ca_searchArea">
+							<div id="search" class="fieldgroupInBox search">
+
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">組織種別</p>
+									<div class="fieldBox" id="ca_div_elem_func"></div>
+									<div class="clear"></div>
+								</div>
+
+
+								<div class="fieldUnit mrgb10 half flleft">
+									<p class="fieldName">組織階層</p>
+									<div class="fieldBox" id="ca_div_elem_lvl"></div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit mrgb10 half flleft mrgr20">
+									<p class="fieldName bl2">店舗<br>リスト名</p>
+										<div class="fieldBox">
+											<input type="text" placeholder="" x-data-limit="len:32" class="ime-active form-control wt280" id="ca_name"/>
+										</div>
+										<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+
+								<div class="fieldUnit mrgb10">
+									<p class="fieldName">公開区分</p>
+									<div class="fieldBox" id="ca_div_f_open">
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button id="ca_search" class="btn btn-info wt280 mrgr20">検索</button>
+										<button id="ca_clear" class="btn btn-default wt140">クリア</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div><!--  ここまで class="saerch" -->
+
+						</div><!--  ここまで class="ca_saerchArea" -->
+
+					<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+					</div><!--  ここまで class="fieldgroup" -->
+
+
+					<div id="result" class="dispn">
+
+						<div class="pagination-wrapper">
+							<div class="count" id="ca_pager_displaypanel1"></div>
+							<div class="pagination">
+								<ul id="ca_pager1">
+								</ul>
+							</div>
+						</div>
+
+						<div class="table">
+							<table class="hilightRow" id="ca_tbl">
+								<tr>
+									<th width="40px"></th>
+									<th width="" class="ca_th_sort" key="NAME"><span>店舗リスト名</span></th>
+									<th width="" class="ca_th_sort" key="FOPEN"><span>公開区分</span></th>
+									<th width="" class="ca_th_sort" key="UPDTIME"><span>変更日時</span></th>
+									<th width="" class="ca_th_sort" key="CRENAME"><span>作成者</span></th>
+									<th width="" class="ca_th_sort" key="ELEMNUM"><span>要素数</span></th>
+								</tr>
+
+								<tbody id="ca_tbody">
+									<!-- ここにテンプレ -->
+								</tbody>
+							</table>
+
+
+							<input type="hidden" id="ca_chk_name">	<!-- 名前変更の有無確認用 -->
+
+							<script id="ca_tbody_tmpl" type="text/x-jquery-tmpl">
+							<tr id="${genlist_id}" class="contextmenu" is_upd="${is_upd}">
+								<td>
+									<label class="radio" for="${genlist_id}">
+										<input type="radio" name="ca_chk" value="${genlist_id}" id="" data-toggle="radio">
+									</label>
+									<input type="hidden" name="genlist_id" value="${genlist_id}">
+									<input type="hidden" name="is_upd" value="${is_upd}">
+								</td>
+								<td class="editable">
+									<span class="data">${name}</span>
+									<span class="edit">編集</span>
+									<input type="text" name="name" x-data-limit="len:32" value="${name}" placeholder="" class="ca_after_name cl_noEnterFocus form-control dispn" />
+								</td>
+								<td>${f_open_name}
+									<input type="hidden" name="f_open_name" value="${f_open_name}">
+								</td>
+								<td>${upd_iymd}
+									<input type="hidden" name="upd_iymd" value="${upd_iymd}">
+									${upd_time}
+									<input type="hidden" name="upd_time" value="${upd_time}">
+								</td>
+								<td>${cre_staff_name}
+									<input type="hidden" name="cre_staff_name" value="${cre_staff_name}">
+									<input type="hidden" name="upd_staff_name" value="${upd_staff_name}">
+								</td>
+								<td align="right">${elem_num}
+									<input type="hidden" name="elem_num" value="${elem_num}">
+								</td>
+							</tr>
+						</script>
+						</div><!-- tableここまで -->
+
+						<div class="mrgb20"></div>
+
+						<div class="pagination-wrapper">
+							<div class="count" id="ca_pager_displaypanel2"></div>
+							<div class="pagination">
+								<ul id="ca_pager2"></ul>
+							</div>
+						</div>
+
+
+						<div class="fieldUnit">
+							<div class="fieldBox mrgt30 mrgb30 noName">
+								<button id="ca_edit" class="ca_edit2 btn btn-primary wt280 flleft">編集</button>
+								<div class="flright">
+									<button id="ca_copy" class="btn btn-default wt140">複製</button>
+									<button id="ca_del" class="btn btn-default wt140 mrgl20 delete">削除</button>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div><!-- resultここまで -->
+
+
+				</div>
+				<!-- /#content -->
+			</div>
+			<!-- /#mainColumninBox -->
+		</div>
+		<!-- /#mainColumn -->
+	</div>
+	<!-- / #container -->
+</div>
+<!-- / #ca_main -->
+
+<div class="clear"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>入出荷・返品</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+	<script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
+
+
+
+<script>
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMDLV0010.js"></script>
+
+<!-- 共通ヘッダは MDBaseView によって置き換えるので、設置不要。
+<div id="header">
+	<p class="back"></p>
+	<h1>入出荷・返品</h1>
+	<div class="rightBox">
+		<span class="logo"></span>
+		<span class="logout"><a href="">ログアウト</a></span>
+		<span class="user">Username</span>
+
+	</div>
+</div><!-- /#header -->
+
+<!-- エコーバックエリアは MDBaseView によって置き換えるので、設置不要。
+<div class="cl_echoback msgBox error"></div>
+<!--  -->
+
+<!-- ダイアログ設定 -->
+<!--
+<div id="cl_dialog_area" class="cl_dialog"></div>
+<!--  -->
+
+<div id="container">
+	<!-- 店舗選択補助画面 -->
+	<div id="ca_AMPAV0010_dialog" class="cl_dialog"></div>
+	<div id="ca_AMPAV0020_dialog" class="cl_dialog"></div>
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- タイトル部は MDBaseView によって置き換えるので、設置不要。
+		<div id="title">
+			<h2>仕入・返品伝票<span class="divider">|</span>一覧</h2>
+			<div class="titleInBoxRight">
+				<p class="addNew"><a>新規登録</a></p>
+			</div>
+		</div>
+		<!-- /#title -->
+
+
+		<div id="content">
+
+
+			<div class="fieldgroup">
+				<!--div id="ca_AMDLV0010_searchArea" class="fieldgroupInBox search"-->
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 half mrgr20">
+						<p class="fieldName">伝票区分</p>
+						<div class="fieldBox">
+							<ul>
+							<li><label class="radio" id="type1"><input type="radio" name="srchSlipTypeID" id="ca_srchSlipTypeID" value="10" data-toggle="radio" checked>仕入</label></li>
+							<li><label class="radio" id="type2"><input type="radio" name="srchSlipTypeID" id="ca_srchSlipTypeID" value="20" data-toggle="radio">返品</label></li>
+						</ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">店舗</p>
+						<div class="fieldBox">
+							<!--input type="text" placeholder="" data-limit="len:15" class="form-control wt280 flleft cl_valid cl_store" id="ca_srchStoreID" /-->
+							<input type="text" class="form-control wt280 flleft cl_valid cl_store" id="ca_srchStoreID" />
+							<button class="btn btn-default wt140 flleft mrgl10" id="ca_btn_store_select" tabindex="-1">参照...</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName">取引先</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid" name="srchVendorID" id="ca_srchVendorID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName" id="ca_recInspectDate_label">検収日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_date cl_valid ime-disabled" type="text" name="srchRecInspectFromDate" id="ca_srchRecInspectFromDate" /></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap"><input class="cl_date cl_valid ime-disabled" type="text" name="srchRecInspectToDate" id="ca_srchRecInspectToDate" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10">
+						<p class="fieldName">勘定日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap"><input class="cl_date cl_valid ime-disabled" type="text" name="srchCountFromDate" id="ca_srchCountFromDate" /></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap"><input class="cl_date cl_valid ime-disabled" type="text" name="srchCountToDate" id="ca_srchCountToDate" /></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">伝票番号</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid" name="srchDeliverNo" id="ca_srchDeliverNo" data-validator="maxlen:10 digit" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">担当者</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_srchStaffID" data-validator="maxlen:6,6 digit" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">入力区分</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280" name="srchRegistTypeID" id="ca_srchRegistTypeID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName" id="ca_dlvwapTypeID_label">納品形態</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280" name="srchDlvwayTypeID" id="ca_srchDlvwayTypeID">
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">赤黒表示</p>
+						<div class="fieldBox">
+							<!--label class="checkbox ib" for="check1"><input type="checkbox" value="" name="srchRedBlack" id="ca_srchRedBlack" data-toggle="checkbox" ></label-->
+							<label class="checkbox ib <% if(srchRedBlack){ %>checked<% } %>"><input type="checkbox" id="ca_srchRedBlack" data-toggle="checkbox" {{if srchRedBlack}}checked{{/if}}></label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn btn-info wt280" id="ca_srch">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+
+			<div id="result" class="dispn">
+
+			<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<div class="pagination-wrapper"></div>
+
+			<div class="table">
+				<table class="hilightRow" id="ca_table">
+				<thead>
+					<tr>
+						<!-- １番目の要素は全選択チェックボックス用に予約 -->
+						<th width="40px" class="cl_checkbox_selectall">?全選択</th>
+						<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+						<th width="120px">店舗</th>
+						<th width="120px">取引先</th>
+						<th width="160px">検収日</th>
+						<th width="120px">勘定日</th>
+						<th width="120px">伝票番号</th>
+						<th width="120px" id="ca_am_label">仕入金額（円）</th>
+						<th width="120px">担当者</th>
+						<th width="100px">入力区分</th>
+						<th width="100px" id="ca_dlvwayTypeID_label">納品形態</th>
+						<th width="100px">赤黒表示</th>
+						<th width="100px">在庫への反映</th>
+						<th width="200px">処理日時</th>
+						<th width="100px"></th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				</table>
+				<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+				<script id="ca_rec_template" type="text/template">
+				<!--script id="ca_AMDLV0010_table_tbody_template" type="text/x-jquery-tmpl"-->
+					<!--tr-->
+ 					<tr class="csptr" id="<%- deliverID %>" slipDate="<%- recInspectDate %>">
+						<td class="cl_checkbox_selectrec">?行選択</td>
+						<td class="ca_c_link"><%- storeDispName %></td>
+						<td class="ca_c_link"><%- vendorDispName %></td>
+						<td class="ca_c_link"><%- clutil.dateFormat(recInspectDate, 'yyyy/mm/dd(w)') %></td>
+						<td class="ca_c_link"><%- clutil.dateFormat(countDate, 'yyyy/mm/dd(w)') %></td>
+						<td class="ca_c_link"><%- deliverNo %></td>
+						<td class="ca_c_link txtar"><%- clutil.comma(am) %></td>
+						<td class="ca_c_link"><%- staffName %></td>
+						<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_DATA_ENTRY_TYPE, registTypeID) %></td>
+ 						<!--td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_DLV_ROUTE, dlvwayTypeID) %></td-->
+ 						<td class="ca_c_link"><%if (slipTypeID == amcm_type.AMCM_VAL_SLIP_DELIVER) {%><%- clutil.gettypename(amcm_type.AMCM_TYPE_DLV_ROUTE, dlvwayTypeID) %><%}else{%><%- clutil.gettypename(amcm_type.AMCM_TYPE_REQ_STATUS_TYPE, dlvwayTypeID) %><%}%></td>
+ 						<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_REDBLACK, redBlack) %></td>
+						<td class="ca_c_link"><% if (reflectStock === 0){ %>なし<% } else { %>あり<% } %></td>
+						<td class="ca_c_link"><%- clutil.dateFormat(opeDate, 'yyyy/mm/dd(w)') %> <%- clutil.timeFormat(opeTime, "hh:mm") %></td>
+						<td class="ca_dl_td"><% if (redBlack !== amcm_type.AMCM_VAL_REDBLACK_RED && firstDeliverID !== 0 && slipTypeID !== amcm_type.AMCM_VAL_SLIP_DELIVER){ %><a href="javascript:void(0)" name="a_pdf">伝票出力</a><% } %></td>
+					</tr>
+				</script>
+			</div>
+
+			<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<div class="pagination-wrapper"></div>
+
+			<div class="fieldUnit">
+				<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMDLV0010">
+					<button class="btn btn-primary wt280 flleft mrgr10" id="cl_edit">編集</button>
+					<button class="btn btn-default wt140 flright mrgl20 delete" id="cl_delete">削除</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			</div>
+
+
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<div id="mainColumnFooter" class="noLeftColumn">
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

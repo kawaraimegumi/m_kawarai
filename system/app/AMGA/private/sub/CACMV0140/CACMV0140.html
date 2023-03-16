@@ -1,0 +1,188 @@
+<div id="ca_CACMV0140_CACMV0030_dialog" class="cl_dialog"></div>
+<div id="ca_CACMV0140_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>会員属性</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+			
+		<div id="content">
+			
+			<div id="selected" class="ca_CACMV0140_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_CACMV0140_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_CACMV0140_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div id="ca_CACMV0140_searchArea">
+					<div id="search" class="fieldgroupInBox search">
+						<div class="fieldUnit half mrgr20">
+							<p class="fieldName">会員属性</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft" id="ca_CACMV0140_anaattr">
+		          				</select>
+		          			</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<div id="fieldgroup">
+			<div class="fieldgroupInBox">
+				<div id="ca_CACMV0140_result" class="fieldUnitsOption"></div>
+			</div>
+		</div>
+		
+		
+		
+		<script id="ca_CACMV0140_text_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<div class="">
+				<input type="text" placeholder="" class="form-control wt280 flleft cl_valid cl_required" id="ca_CACMV0140_val">
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_CACMV0140_text_fromto_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<div class="">
+				<input type="text" placeholder="" class="form-control wt280 flleft cl_valid ime-disabled txtar"
+					data-required2="group1" data-limit="len:${maxlen} digit" data-filter="comma" id="ca_CACMV0140_val">
+				<span class="txtInFieldUnitblk">～</span>
+				<input type="text" placeholder="" class="form-control wt280 flleft cl_valid ime-disabled txtar"
+					data-required2="group1" data-limit="len:${maxlen} digit" data-filter="comma" id="ca_CACMV0140_val2">
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_CACMV0140_date_fromto_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<div class="">
+				<div class="datepicker_wrap">
+					<input type="text" placeholder="" class="flleft cl_date cl_valid ime-disabled"
+					data-required2="group1" data-limit="len:10" id="ca_CACMV0140_val">
+				</div>
+				<span class="txtInFieldUnitblk">～</span>
+				<div class="datepicker_wrap">
+					<input type="text" placeholder="" class="flleft cl_date cl_valid ime-disabled"
+					data-required2="group1" data-limit="len:10" id="ca_CACMV0140_val2">
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_CACMV0140_onoff_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<ul>
+				<li><label class="radio flleft"><input type="radio" name="ca_CACMV0140_val" value="1" data-toggle="radio" checked>${on_name}</label></li>
+				<li><label class="radio flleft"><input type="radio" name="ca_CACMV0140_val" value="0" data-toggle="radio">${off_name}</label></li>
+			</ul>
+		</div>
+		</script>
+		<script id="ca_CACMV0140_CACMV0030_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit">
+			<p class="fieldName">店舗</p>
+			<div class="fieldBox">
+				<input class="form-control wt280 flleft cl_valid cl_required" type="text" placeholder="" id="ca_CACMV0140_dispname" disabled>
+				<button class="btn btn-default wt160 flleft mrgl10" id="ca_CACMV0140_show_CACMV0030">参照...</button>
+				<input type="hidden" id="ca_CACMV0140_val">
+				<input type="hidden" id="ca_CACMV0140_name">
+				<input type="hidden" id="ca_CACMV0140_code">
+			</div>
+			<div class="clear"></div>
+		</div>
+		</script>
+		<script id="ca_CACMV0140_table_template" type="text/x-jquery-tmpl">
+		<div class="table fieldUnit hta">
+		<table class="hilightRow ca_CACMV0140_tbl">
+			<tr>
+				<th width="40px">
+					<label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" id="ca_CACMV0140_chkall"></label>
+				</th>
+				<th width="150px">コード</th>
+				<th width="">名称</th>
+			</tr>
+		</table>
+		<div class="ht340 yScroll ca_tbody">
+			<table class="hilightRow ca_CACMV0140_tbl">
+				<tbody id="ca_CACMV0140_tbody">
+				</tbody>
+			</table>
+		</div>
+		</div>
+		</script>
+		<script id="ca_CACMV0140_tbody_type_tmp" type="text/x-jquery-tmpl">
+			<tr id="${type_id}">
+				<td width="40px"><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_CACMV0140_chk"></label></td>
+				<td width="150px">${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		<script id="ca_CACMV0140_tbody_cdname_tmp" type="text/x-jquery-tmpl">
+			<tr id="${cn_id}">
+				<td width="40px"><label class="checkbox" for=""><input type="checkbox" data-toggle="checkbox" name="ca_CACMV0140_chk"></label></td>
+				<td width="150px">${code}</td>
+				<td>${name}</td>
+			</tr>
+		</script>
+		<script id="ca_CACMV0140_birth_month_template" type="text/x-jquery-tmpl">
+		<div class="fieldUnit" id="ca_CACMV0140_birth_month_chkall">
+			<p class="checkall">すべて選択</p>
+			<p class="uncheckall dispn">すべて選択をはずす</p>
+			<ul id="ca_CACMV0140_birth_month_chk">
+				<li><label class="checkbox flleft" for="ca_CACMV0140_1"><input type="checkbox" value="" id="ca_CACMV0140_1" data-toggle="checkbox">1</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_2"><input type="checkbox" value="" id="ca_CACMV0140_2" data-toggle="checkbox">2</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_3"><input type="checkbox" value="" id="ca_CACMV0140_3" data-toggle="checkbox">3</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_4"><input type="checkbox" value="" id="ca_CACMV0140_4" data-toggle="checkbox">4</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_5"><input type="checkbox" value="" id="ca_CACMV0140_5" data-toggle="checkbox">5</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_6"><input type="checkbox" value="" id="ca_CACMV0140_6" data-toggle="checkbox">6</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_7"><input type="checkbox" value="" id="ca_CACMV0140_7" data-toggle="checkbox">7</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_8"><input type="checkbox" value="" id="ca_CACMV0140_8" data-toggle="checkbox">8</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_9"><input type="checkbox" value="" id="ca_CACMV0140_9" data-toggle="checkbox">9</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_10"><input type="checkbox" value="" id="ca_CACMV0140_10" data-toggle="checkbox">10</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_11"><input type="checkbox" value="" id="ca_CACMV0140_11" data-toggle="checkbox">11</label></li>
+				<li><label class="checkbox flleft" for="ca_CACMV0140_12"><input type="checkbox" value="" id="ca_CACMV0140_12" data-toggle="checkbox">12</label></li>
+			</ul>
+			<div class="clear"></div>
+		</div>
+		</script>
+		
+		
+		<div class="mrgb20"></div>
+		
+		<div class="clear"></div>
+
+		<div class="fieldUnit">
+			<div class="fieldBox mrgt30 mrgb30 noName btnCenter">
+				<button class="btn btn-primary wt280 ca_CACMV0140_multi" id="ca_CACMV0140_add">選択内容に追加</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_CACMV0140_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0140_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

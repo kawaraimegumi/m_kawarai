@@ -1,0 +1,46 @@
+<div id="ca_CACTV0040_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>分析カタログメニュー選択</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div class="cl_selector_echoback ca_CACTV0040_echoback msgBox error"></div>
+		
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div class="table">
+					<table class="hilightRow tree drilldown selectable" id="ca_CACTV0040_tbl">
+						<tr id="ca_CACTV0040_expandAll">
+							<th colspan="10">
+								<span class="expandAll dispn">すべて開く</span>
+								<span class="unexpandAll">すべて閉じる</span>
+							</th>
+						</tr>
+						<tbody id="ca_CACTV0040_tbody">
+						</tbody>
+					</table>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_CACTV0040_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACTV0040_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+</div>
+<!-- /#mainColumn -->
+</div>

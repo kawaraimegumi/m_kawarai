@@ -1,0 +1,296 @@
+@CHARSET "UTF-8";
+
+.wt30 {
+    width : 30px;
+}
+.wt480 {
+    width : 480px;
+}
+.wt430 {
+    width : 430px;
+}
+.wt400 {
+    width : 400px;
+}
+.wt390 {
+    width : 390px;
+}
+.mrgl30 {
+    margin-left: 30px;
+}
+.mrgl40 {
+    margin-left: 40px;
+}
+.mrgl85 {
+    margin-left: 85px;
+}
+.mrgl140 {
+    margin-left: 140px;
+}
+.mrgl160 {
+    margin-left: 160px;
+}
+.mrgl200 {
+    margin-left: 200px;
+}
+.mrgl770 {
+    margin-left: 770px;
+}
+.termBox{
+    padding : 10px;
+}
+.three_quarters {
+  width: 60%;
+}
+.wt580 {
+    width : 580px;
+}
+.wt520 {
+    width : 520px;
+}
+.wt80 {
+    width : 80px;
+}
+.wt200 {
+    width : 200px;
+}
+textarea.wt820 {
+    width : 820px;
+    resize:vertical;
+}
+
+.wt780 {
+    width : 780px;
+}
+
+.fix--slider--price{
+	font-size: 88%;
+  	margin-bottom: 15px;
+}
+.fix--slider--price2{
+	font-size: 88%;
+  	margin-top: 5px;
+}
+.fix--slider--price3{
+	font-size: 88%;
+  	margin-top: 12px;
+}
+
+.cm_input {
+  padding-right: 35px !important;
+}
+.limit_input {
+  padding-right: 50px;
+}
+button.selectpicker[data-id="ca_brandID"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkSleeveButton"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkChangePocket"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkCuffs"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkAmfStitch"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkChangeButton"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkOdaiba"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkChangeLining"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_jkSummerType"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_slAdjuster"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_slSpareAdjuster"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_slChangeButton"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_veChangeButton"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_veChangeLining"] {
+	width: 100%;
+}
+button.selectpicker[data-id="ca_veOptAmfStitch"] {
+	width: 100%;
+}
+.detailtext {
+    color: #f2555f;
+    font-size: 82%;
+    padding-top: 0px;
+    line-height: 1.3;
+    padding-right: 20px;
+	padding-left: 100px;
+}
+.detailtext2 {
+    color: #f2555f;
+    font-size: 82%;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    line-height: 1.3;
+    padding-right: 20px;
+	padding-left: 10px;
+}
+.detailtext3 {
+    color: #f2555f;
+    font-size: 82%;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    line-height: 1.3;
+    padding-right: 0px;
+	padding-left: 0px;
+}
+.detailtext4 {
+    color: #f2555f;
+    font-size: 82%;
+    line-height: 1.3;
+    padding-right: 20px;
+	padding-left: 100px;
+}
+.detailtext5 {
+    color: #f2555f;
+    font-size: 82%;
+    padding-top: 0px;
+    line-height: 1.3;
+}
+.dialog-content {
+    padding: 20px;
+}
+#innerScroll {
+    position: relative;
+    overflow:hidden;
+    height:200px;
+}
+
+/* 参照モード：スタイル調整 */
+.cl_readonly .txtInFieldUnit.inner.cm {
+	top: 19px;
+}
+.cl_counter
+{
+	position: absolute;
+	bottom: -5px;
+	right: 5px;
+}
+.cl_textarea
+{
+	resize: vertical;
+}
+
+/* プルダウンの△をとる */
+
+#ca_brandID_div .combobox-wrap .combobox-input {
+	width: 385px;
+}
+#ca_brandID_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+#ca_clothIDID_div .combobox-wrap .combobox-input {
+	width: 275px;
+}
+#ca_clothIDID_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+#ca_jkStyle_div .combobox-wrap .combobox-input {
+	width: 275px;
+}
+#ca_jkStyle_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+#ca_jkSize_div .combobox-wrap .combobox-input {
+	width: 275px;
+}
+#ca_jkSize_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+#ca_slStyle_div .combobox-wrap .combobox-input {
+	width: 275px;
+}
+#ca_slStyle_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+#ca_slSize_div .combobox-wrap .combobox-input {
+	width: 275px;
+}
+#ca_slSize_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+#ca_veStyle_div .combobox-wrap .combobox-input {
+	width: 275px;
+}
+#ca_veStyle_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+#ca_veSize_div .combobox-wrap .combobox-input {
+	width: 275px;
+}
+#ca_veSize_div .combobox-wrap .combobox-btn {
+	cursor: initial;
+}
+
+.fieldgroup.po--ordertiming {
+  margin: -20px -20px 20px;
+  box-sizing: border-box;
+  border: none;
+}
+.fieldgroup.po--ordertiming.past .fieldgroupInBox {
+  background: #bbe1f7;
+}
+.fieldgroup.po--ordertiming.new .fieldgroupInBox {
+  background: #fee6c5;
+}
+.fieldgroup.po--ordertiming .fieldgroupInBox {
+  border-bottom: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: #fafafb;
+}
+
+.ui-slider-handle2 {
+    background-color: #e4e6eb;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 18px;
+    margin-left: -9px;
+    position: absolute;
+    top: -3px;
+    width: 18px;
+    z-index: 2;
+    -webkit-transition: background 0.25s;
+    -moz-transition: background 0.25s;
+    -o-transition: background 0.25s;
+    transition: background 0.25s;
+    -webkit-backface-visibility: hidden;
+}
+
+.ca_untouchDot{
+	cursor: default;
+	opacity:0.3;
+	filter:alpha(opacity=30);
+	-ms-filter: "alpha( opacity=30 )";
+}
+.ca_untouchDot:hover{
+	cursor: default;
+    opacity:0.3;
+	filter:alpha(opacity=30);
+	-ms-filter: "alpha( opacity=30 )";
+}
+.ca_untouchDot:active {
+	cursor: default;
+   opacity:0.3;
+	filter:alpha(opacity=30);
+	-ms-filter: "alpha( opacity=30 )";
+}

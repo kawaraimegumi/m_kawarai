@@ -1,0 +1,161 @@
+#table {
+  margin-top: 5px;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+th {
+  z-index: 2;
+}
+th:first-child {
+  background-color: rgba(255, 255, 255, 1);
+  left: 0;
+  position: sticky;
+  z-index: 3;
+}
+td:first-child {
+  background-color: rgba(255, 255, 255, 1);
+  left: 0;
+  position: sticky;
+  z-index: 1;
+}
+.column0 {
+  width: 111.5px;
+}
+.columnName1 {
+  text-align: right;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+
+  height: 10px;
+}
+.columnName2 {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+
+  height: 10px;
+}
+.staff {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(102, 113, 128, 1);
+}
+.org {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(102, 113, 128, 1);
+}
+.rankName {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 1);
+
+  background-color: rgba(162, 169, 179, 1);
+}
+.rank {
+  text-align: right;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(50, 58, 69, 1);
+
+  border: rgba(162, 169, 179, 1) solid 1px;
+  min-width: 45px;
+}
+.avgName {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+
+  min-width: max-content;
+  padding: 1px;
+  padding-left: 5px;
+}
+.val {
+  text-align: center;
+  font-family: Microsoft PhagsPa;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(50, 58, 69, 1);
+}
+.avgVal {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+}
+.row1 {
+  height: 25px;
+}
+.row2 {
+  height: 15px;
+}
+.row3 {
+  border-bottom: rgba(209, 213, 217, 1) solid 2px;
+  height: 15px;
+}
+#pager {
+  position: relative;
+  width: fit-content;
+  left: calc(50%);
+  transform: translateX(-50%);
+}
+#modal {
+  background-color: white;
+  border: rgba(50, 58, 69, 1) solid 1px;
+  display: none;
+  left: 50%;
+  padding: 25px;
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 575px;
+  z-index: 1001;
+}
+#closeButton {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url('../../../../images/icn_delete.svg') no-repeat right center;
+  background: url('../../../../images/icn_delete.png') no-repeat right center\9;
+  cursor: pointer;
+
+  position: relative;
+  left: 100%;
+  transform: translate3d(-50%, -50%, 0);
+}
+#closeButton:hover {
+  background: url('../../../../images/icn_delete_active.svg') no-repeat right
+    center;
+  background: url('../../../../images/icn_delete_active.png') no-repeat right
+    center\9;
+}
+.key {
+  padding: 1px;
+}
+.key .mdbFieldText {
+  font-size: 14px;
+  padding-left: 25px;
+}

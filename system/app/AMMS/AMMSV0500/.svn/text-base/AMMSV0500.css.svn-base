@@ -1,0 +1,73 @@
+@CHARSET "UTF-8";
+
+.wt480 {
+    width : 480px;
+}
+
+.fieldName.bl3 {
+  margin-top: -16px;
+}
+
+.ht10 {
+    height: 10px;
+}
+
+.mrg-10 {
+    margin-top: -10px;
+}
+
+.wt960 {
+    width :960px;
+}
+.wt1000 {
+  width: 1000px;
+}
+
+.wt1200 {
+  width: 1200px;
+}
+.choose {
+    white-space : nowrap;
+    overflow: hidden;
+    text-overflow : ellipsis;
+}
+
+/* ファイル選択コンポーネント：参照モードスタイル */
+.cl_readonly .choose.form-control {
+	border: 0;
+	border-radius: 0;
+	border-bottom: 2px dotted #d0d5d9;
+	background-color: rgba(0,0,0,0);
+	color: rgb(33, 34, 38);
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	padding: 14px 8px 2px;
+	font-family: Lato, mplus-2p-regular, メイリオ, 'ＭＳ Ｐゴシック', sans-serif;
+	font-size: 14px;
+	opacity: 1;
+}
+
+/* 20180403 MD-1777 MD-899 */
+.cl_time {
+	display:inline-block;
+	width:65px;
+}
+.fieldName.bl4 {
+	width:180px;
+	margin-left:60px;
+	margin-top:-8px;
+}
+.ml150 {
+	margin-left:150px;
+}
+
+.mrgt8 {
+	width:260px;
+	margin-top:-8px;
+	text-align:left;
+}
+
+.form-control-time {
+	display:inline-block;
+}

@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=1024, initial-scale=1.0, maximum-scale=1.0">
+<title>ＰＯ</title>
+
+<!-- Loading Bootstrap -->
+<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	href="../../../../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
+<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+<link media="screen" rel="stylesheet" type="text/css"
+	href="../../../css/style.css">
+<link media="screen" rel="stylesheet" type="text/css"
+	href="AMPOV0180.css">
+<script src="../../../js/function.js"></script>
+
+<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/bootstrap-select.js"></script>
+<script src="../../../js/bootstrap-switch.js"></script>
+<script src="../../../js/flatui-checkbox.js"></script>
+<script src="../../../js/flatui-radio.js"></script>
+<script src="../../../js/jquery.tagsinput.js"></script>
+<script src="../../../js/jquery.placeholder.js"></script>
+<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+<script src="../../../js/application.js"></script>
+<script src="../../../js/jquery.skOuterClick.js"></script>
+<script src="../../../js/jquery.tablesorter.js"></script>
+<script src="../../../js/tsort.js"></script>
+<script src="../../../../js/jquery.contextmenu.js"></script>
+
+<script src="../../../../js/jquery.ui.datepicker.js"></script>
+<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+<script src="../../../../js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="../../../../js/underscore.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.js"></script>
+<script type="text/javascript" src="../../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript"
+	src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+<script type="text/javascript"
+	src="../../../../js/backbone.syphon.fix.js"></script>
+<script src="../../../js/clcom.js"></script>
+<link rel="stylesheet" href="../../../css/themes/blue/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/tsort/style.css"
+	type="text/css">
+<link rel='stylesheet' type='text/css'
+	href='../../../../css/perfect-scrollbar.min.css'>
+<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+<script src="AMPOV0180.js"></script>
+</head>
+
+<body class="cl_body_hidden">
+	<div id="ca_main">
+		<div id="container">
+
+			<div id="mainColumn">
+				<div id="mainColumninBox" class="noLeftColumn">
+
+					<div id="content">
+						<div class="fieldgroup">
+							<div id="ca_srchArea" class="fieldgroupInBox search">
+								<!-- 事業ユニット -->
+								<div class="fieldUnit mrgb10 flleft half mrgr20 required">
+									<p class="fieldName">事業ユニット</p>
+									<div class="fieldBox ca_unitID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="unitID" id="ca_unitID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+								<!-- ＰＯ種別 -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">ＰＯ種別</p>
+									<div class="fieldBox ca_poTypeID_div">
+										<select name="info" class="mbn wt280 cl_valid cl_required"
+											name="poTypeID" id="ca_poTypeID">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- 年月 -->
+								<div class="fieldUnit mrgb10 half flleft mrgr20 required">
+									<p class="fieldName ">年月</p>
+									<div class="fieldBox">
+										<input type="text" placeholder=""
+											class="form-control wt280 cl_valid cl_required" name="ym"
+											id="ca_ym" data-limit="len:6 digit" />
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+
+								<!-- カレンダー選択(マルチ) -->
+								<div class="fieldUnit mrgb10 half required">
+									<p class="fieldName">カレンダー</p>
+									<div class="fieldBox ca_calenIDList_div">
+										<select name="info" class="mbn wt400 cl_valid cl_required"
+											name="calenIDList" id="ca_calenIDList">
+										</select>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="clear"></div>
+								<div class="fieldUnit">
+									<div class="fieldBox mrgt20 noName btnCenter">
+										<button id="ca_srch" class="btn btn-info wt280">検索</button>
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<button id="searchAgain" class="dispn btn">検索条件を再表示</button>
+							<div class="clear"></div>
+						</div>
+
+						<div id="ca_result" class="dispn">
+							<input type="hidden" id="ca_ID"> <input type="hidden"
+								id="ca_code"> <input type="hidden" id="ca_name">
+							<div class="fieldgroup">
+								<div class="fieldgroupInBox view half">
+									<div class="fieldUnit mrgb10 flleft mrgr20">
+										<p class="fieldName">事業ユニット</p>
+										<div class="fieldBox ca_unitID2_div">
+											<input type="text" class="form-control wt280" id="ca_unitID2"
+												readonly />
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div class="fieldUnit mrgb10 flleft mrgr20">
+										<p class="fieldName bl2">カレンダー<br />コード</p>
+										<div class="fieldBox">
+											<input type="text" class="form-control wt280 flleft"
+												id="ca_calenIDList2" readonly />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 flleft mrgr20">
+										<p class="fieldName">PO種別</p>
+										<div class="fieldBox ca_poTypeID2_div">
+											<input type="text" class="form-control wt280"
+												id="ca_poTypeID2" name="calenIDList2" readonly />
+										</div>
+										<div class="clear"></div>
+									</div>
+
+									<div class="fieldUnit mrgb10 flleft mrgr20 required">
+										<p class="fieldName bl2">カレンダー<br />名称</p>
+										<div class="fieldBox  flleft" id="ca_calenIDList2_div">
+											<span class="limit wt40 flright mrgl260" length="20" id="ca_calenIDList3_span"></span>
+											<input type="text" class="form-control wt300 flleft  cl_valid cl_required"
+												id="ca_calenIDList3" name="calenIDList3" data-tflimit="20" data-validator="maxlen:20" />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="fieldUnit mrgb10 flleft mrgr20">
+										<p class="fieldName">年月</p>
+										<div class="fieldBox">
+											<input type="text" class="form-control wt280" id="ca_ym2"
+												readonly />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="wt920"
+										style="margin-left: auto; margin-right: auto; text-align: justify;">
+										<div class="table mrgb0 fieldUnit flleft  hta">
+											<!-- テーブルヘッダ用テンプレ -->
+											<script id="ca_rec_thead_template" type="text/template">
+										<tr>
+											<th width="180px">商品発注日</th>
+											<th width="180px">店舗着日</th>
+										</tr>
+									</script>
+											<!-- テーブルボディ用テンプレ -->
+											<script id="ca_rec_tbody_template" type="text/template">
+									<tr>
+										<td>
+											<span><%= clutil.dateFormat(orderDateDto.orderDate, 'yyyy/mm/dd') %></span>
+											<span class="wday<%= orderDateDto.orderDateWday %>">（<%- clutil.gettypename(amcm_type.AMCM_TYPE_DAY_OF_WEEK,orderDateDto.orderDateWday,1).substring(0,1) %>）</span>
+										</td>
+										<% for(var colIdx = 0; colIdx < calenListCount; colIdx++){ %>
+										<td>
+											<div class="datepicker_wrap">
+												<input type="text" class="cl_date cl_valid cl_required ime-disabled">
+											</div>
+										</td>
+										<% } %>
+									</tr>
+								</script>
+											<table class="hilightRow drilldown mrgt20 half" id="ca_table">
+												<thead>
+													<tr>
+														<th width="120px">商品発注日</th>
+														<th width="120px">店舗着日</th>
+													</tr>
+												</thead>
+												<tbody id="ca_table_tbody"></tbody>
+											</table>
+
+											<div class="clear"></div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- /#content -->
+					<div id="mainColumnFooter" class="noLeftColumn">
+						<div class="clear"></div>
+					</div>
+
+					<!-- /#mainColumnFooter -->
+				</div>
+				<!-- /#mainColumninBox -->
+			</div>
+			<!-- /#mainColumn -->
+		</div>
+		<!-- / #container -->
+		<div class="clear"></div>
+
+	</div>
+</body>
+</html>

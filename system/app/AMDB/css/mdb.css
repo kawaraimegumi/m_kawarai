@@ -1,0 +1,427 @@
+#mdbMain {
+  height: inherit;
+}
+#mdbContainer {
+  background-color: rgba(240, 241, 242, 1);
+  height: inherit;
+  left: 20px;
+  position: absolute;
+  min-width: calc(100% - 20px);
+}
+.cl_echoback.msgBox.error {
+  position: absolute;
+}
+#mdbHeader {
+  background-color: rgba(228, 230, 235, 1);
+  display: flex;
+  height: 30px;
+}
+#mdbHeaderPage {
+  display: flex;
+  position: absolute;
+}
+#mdbHeaderPageTitle {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: rgba(102, 113, 128, 1);
+
+  padding: 9px;
+}
+#mdbHeaderPageId {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(162, 169, 179, 1);
+
+  padding: 10px;
+}
+#mdbHeaderOpeDate {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(162, 169, 179, 1);
+
+  padding: 10px;
+}
+#mdbHeaderConfidential {
+  background: url('../img/confidential.png') no-repeat;
+  height: 20px;
+  position: relative;
+  top: 6px;
+  width: 125px;
+}
+#mdbMenu {
+  display: flex;
+  height: -webkit-fill-available;
+  left: -250px;
+  position: fixed;
+  z-index: 999;
+}
+#mdbMenuDrawer {
+  background-color: rgba(102, 113, 128, 1);
+  /* height: inherit; */
+  position: relative;
+  width: 250px;
+}
+#mdbMenuCloser {
+  cursor: pointer;
+  display: flex;
+}
+#mdbMenuUser {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 1);
+
+  padding: 12px;
+  width: 230px;
+}
+#mdbMenuCloseIcon {
+  background: url('../img/icn_folder_toggle@2x.png') no-repeat;
+  height: 40px;
+  transform: scale(-0.5);
+  width: 40px;
+}
+.mdbMenuTitleRow {
+  background-color: rgba(162, 169, 179, 1);
+  display: flex;
+  height: 40px;
+}
+.mdbMenuTitle {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 1);
+
+  padding: 13px;
+}
+#mdbMenuLogout {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  color: rgba(82, 94, 112, 1);
+
+  padding: 13px;
+}
+#mdbMenuLogout:hover {
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+}
+.mdbMenuFunc {
+  background-color: rgba(209, 213, 217, 1);
+  border: solid 1px;
+  border-color: rgba(228, 230, 235, 1);
+  height: 40px;
+
+  text-align: left;
+  font-family: Meiryo UI;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(82, 94, 112, 1);
+
+  padding: 12px;
+}
+.mdbMenuFunc:hover:not(.mdbMenuFuncDisabled) {
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+}
+#mdbMenuCatalogList {
+  max-height: calc(100% - 400px);
+  overflow-y: scroll;
+}
+#mdbMenuCatalogList::-webkit-scrollbar {
+  display: none;
+}
+.mdbMenuCatalog {
+  background-color: rgba(228, 230, 235, 1);
+  /* border: solid 1px;
+  border-color: rgba(228, 230, 235, 1); */
+  height: 40px;
+
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  color: rgba(50, 58, 69, 1);
+
+  padding: 12px;
+}
+.mdbMenuCatalog:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+#mdbMenuFormula {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: #667180;
+
+  padding: 13px;
+}
+#mdbMenuFormula:hover{
+  color: #428bca;
+  cursor: pointer;
+}
+#mdbMenuOpener {
+  background-color: rgba(102, 113, 128, 1);
+  cursor: pointer;
+  /* height: inherit; */
+  position: relative;
+  width: 20px;
+}
+#mdbMenuOpenIcon {
+  background: url('../img/icn_folder_toggle@2x.png') no-repeat;
+  height: 40px;
+  left: -10px;
+  position: relative;
+  transform: scale(0.5);
+  width: 40px;
+}
+.mdbBlocked {
+  background-color: rgba(50, 58, 69, 1);
+  height: 100%;
+  left: 0;
+  opacity: 0.9;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+.mdbFilter {
+  filter: blur(5px);
+}
+
+.mdbTabList {
+  display: flex;
+  margin: 6.5px;
+}
+.mdbTab {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(102, 113, 128, 1);
+
+  border: rgba(209, 213, 217, 1) solid 1px;
+  cursor: pointer;
+  min-width: 60px;
+}
+.mdbTabSelected {
+  background-color: rgba(228, 230, 235, 1);
+  font-weight: bold;
+}
+.mdbPeriodField {
+  background-color: #e4e6eb;
+  border: #d0d5d9 solid 1px;
+  display: none;
+  padding: 5px;
+  position: absolute;
+  width: 600px;
+  z-index: 999;
+}
+.mdbPeriodConfirmButton {
+  left: 520px;
+  position: absolute;
+}
+.mdbPager {
+  display: flex;
+  left: 50%;
+  margin-top: 5px;
+  position: relative;
+  transform: translateX(-50%);
+  width: fit-content;
+}
+.mdbPrevPage {
+  color: #a2a9b3;
+  cursor: pointer;
+  margin-right: 15px;
+}
+.mdbNextPage {
+  color: #a2a9b3;
+  cursor: pointer;
+  margin-left: 15px;
+}
+.mdbPage {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(52, 152, 219, 1);
+
+  cursor: default;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 5px;
+}
+.mdbPage:not(.mdbPageDisabled) {
+  cursor: pointer;
+}
+.mdbPageDisabled {
+  color: rgba(112, 112, 112, 1);
+}
+
+.mdbField {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 5px;
+  min-width: fit-content;
+}
+.mdbFieldText {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(130, 139, 151, 1);
+
+  padding: 7.5px;
+}
+.mdbBtn {
+  text-align: center;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 1);
+
+  height: 25px;
+  line-height: 7.5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.mdbRequest {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  color: rgba(82, 94, 112, 1);
+
+  background-color: rgba(228, 230, 235, 1);
+  display: flex;
+  padding: 6px;
+}
+.flex {
+  display: flex;
+}
+.center {
+  display: flex;
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
+  width: fit-content;
+}
+.right {
+  left: 100%;
+  min-width: fit-content;
+  position: relative;
+  transform: translateX(-100%);
+  width: fit-content;
+}
+.sortKey {
+  border-bottom: rgba(52, 152, 219, 1) solid 2px;
+}
+
+.bootstrap-select {
+  margin-bottom: 0px;
+}
+.btn-group > .btn:last-of-type,
+.btn-group
+  > .btn:last-of-type:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  color: rgba(102, 113, 128, 1);
+
+  height: 25px;
+}
+.bootstrap-select.btn-group .btn .filter-option {
+  height: unset;
+  top: 0px;
+}
+.open.bootstrap-select > .dropdown-menu {
+  min-height: inherit !important;
+  min-width: fit-content;
+}
+.bootstrap-select-searchbox,
+.bootstrap-select .bs-actionsbox {
+  display: none;
+}
+.bootstrap-select.btn-group .dropdown-menu li > a {
+  text-align: left;
+  font-family: Meiryo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+
+  height: 25px;
+}
+.checkbox,
+.radio {
+  font-size: 10px;
+  margin: 7.5px;
+  min-height: inherit;
+  padding: 0px;
+  padding-left: 15px;
+}
+.checkbox .icons,
+.radio .icons {
+  font-size: inherit;
+  height: inherit;
+  line-height: inherit;
+  width: inherit;
+}
+
+table,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+table {
+  border-bottom: none;
+}
+table tr:nth-child(even) {
+  background: none;
+}
+th {
+  background: rgba(255, 255, 255, 1);
+  border-left: none;
+  border-top: none;
+  position: sticky;
+  top: 0px;
+}
+td {
+  border-left: 1px solid rgba(255, 255, 255, 1);
+  border-top: 1px solid rgba(255, 255, 255, 1);
+}
+
+.pdg5 {
+  padding: 5px;
+}
+.webkitFillAvailable {
+  width: -webkit-fill-available;
+}

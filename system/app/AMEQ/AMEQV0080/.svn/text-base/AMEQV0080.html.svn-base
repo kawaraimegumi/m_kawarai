@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>備品管理</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+	<link media="screen" rel="stylesheet" type="text/css" href="AMEQV0080.css">
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMEQV0080.js"></script>
+
+<!-- 共通ヘッダは MDBaseView によって置き換えるので、設置不要。-->
+<!-- エコーバックエリアは MDBaseView によって置き換えるので、設置不要。-->
+<!-- ダイアログ設定：MDBaseView によって置き換えるので、設置不要。 -->
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- タイトル部は MDBaseView によって置き換えるので、設置不要。-->
+
+		<div id="content">
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft half mrgr20 required" id="div_ca_unitID">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox" id="div_ca_srchUnitID">
+							<select class="mbn wt280 cl_valid cl_required" name="srchUnitID" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">備品</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280" name="srchEquipID"  id="ca_srchEquipID"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">担当部署</p>
+						<div class="fieldBox" id="div_ca_departmentID">
+							<select class="mbn wt280" name="srchDepartmentID" id="ca_srchDepartmentID"></select>
+						</div>
+						<div class="fieldBox" id="div_ca_departmentID_ori">
+							<select class="mbn wt280" name="srchDepartmentID_ori" id="ca_srchDepartmentID_ori"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">発注締め状態</p>
+						<div class="fieldBox">
+							<select class="mbn wt280" name="srchCountStatus" id="ca_srchCountStatus"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit mrgb10 required">
+						<p class="fieldName">発注締め日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap ca_fromDate_div"><input type="text" name="fromDate" id="ca_fromDate" class="cl_date cl_valid"/></div>
+							<p class="txtInFieldUnit pdg flleft">〜</p>
+							<div class="datepicker_wrap ca_toDate_div"><input type="text" name="toDate" id="ca_toDate" class="cl_date cl_valid"/></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button class="btn btn-info wt280" id="ca_srch">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<!-- /#ca_srchArea -->
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+			</div>
+
+			<div id="result" class="dispn">
+
+			<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<div class="pagination-wrapper"></div>
+
+			<div class="table">
+				<table class="hilightRow" id="ca_table">
+				<thead>
+					<tr>
+						<!-- １番目の要素は全選択チェックボックス用に予約 -->
+						<th width="40px" class="cl_checkbox_selectall">☑全選択</th>
+						<!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+						<th width="80px">備品区分</th>
+						<th width="80px">備品</th>
+						<th width="120px">担当部署</th>
+						<th width="120px">発注締めタイミング</th>
+						<th width="80px">発注締め日</th>
+						<th width="120px">発注締め状態</th>
+						<th width="120px">総額（円）</th>
+					</tr>
+
+				</thead>
+				<tbody id="ca_table_tbody">
+				</tbody>
+				</table>
+				<!-- 行テンプレート: underscore.js テンプレートを使用 -->
+				<script id="ca_rec_template" type="text/template">
+					<tr class="csptr">
+						<td class="cl_checkbox_selectrec">☑行選択</td>
+						<td class="ca_c_link"><%- equipTypeDispName %><input type="hidden" name="equipID" id="ca_equipID" value="<%- equipID %>"></td>
+						<td class="ca_c_link"><%- equipDispName %></td>
+						<td class="ca_c_link"><%- departmentDispName %></td>
+						<td class="ca_c_link"><%- countTimingDispName %></td>
+						<td class="ca_c_link"><%- clutil.dateFormat(orderDate, 'yyyy/mm/dd(w)') %></td>
+						<td class="ca_c_link"><%- countStatusDispName %></td>
+						<td class="ca_c_link txtar"><%- clutil.comma(amount) %></td>
+					</tr>
+				</script>
+			</div>
+			<!-- /#table -->
+
+			<!-- ページネーション＃１：div.pagination-wrapper だけ設置してください -->
+			<div class="pagination-wrapper"></div>
+
+			<div class="fieldUnit">
+				<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMEQV0080">
+					<button class="btn btn-primary wt280 flleft mrgr10" id="cl_edit">編集</button>
+					<!-- <button class="btn btn-primary wt280 flleft mrgr10" id="cl_edit">編集</button> -->
+					<!-- <button class="btn btn-default wt140 flright mrgl20 delete" id="cl_delete">削除</button> -->
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			</div>
+			<!-- /#result -->
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<!-- <div id="mainColumnFooter" class="noLeftColumn"></div> -->
+
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

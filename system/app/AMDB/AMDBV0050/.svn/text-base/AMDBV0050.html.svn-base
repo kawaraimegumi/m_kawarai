@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width">
+	<title>計画達成必要額・着地見込</title>
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<script src="../../../js/function.js"></script>
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+	<script type="text/javascript" src="../js/amgbd_defs.js"></script>
+	<script type="text/javascript" src="../js/mdb.js"></script>
+	<link rel="stylesheet" href="../css/mdb.css" type="text/css">
+	<script type="text/javascript" src="AMDBV0050.js"></script>
+	<link rel="stylesheet" href="AMDBV0050.css" type="text/css">
+</head>
+<body>
+	<div id="mdbMain">
+		<div id="mdbContainer">
+			<div class="mdbField">
+				<div class="flex">
+					<div class="mdbFieldText">店舗</div>
+					<div id="orgTree"></div>
+					<button id="searchButton" class="mdbBtn btn btn-primary">表示</button>
+				</div>
+			</div>
+			<div id="request" class="mdbRequest"></div>
+			<div class="mdbField">
+				<div class="flex">
+					<div class="webkitFillAvailable">
+						<div id="weekPlan" class="pdg5"></div>
+						<div id="monthPlan" class="pdg5"></div>
+						<div id="year2Plan" class="pdg5"></div>
+						<div id="yearPlan" class="pdg5"></div>
+					</div>
+					<div class="webkitFillAvailable">
+						<div id="weekLand" class="pdg5"></div>
+						<div id="monthLand" class="pdg5"></div>
+						<div id="year2Land" class="pdg5"></div>
+						<div id="yearLand" class="pdg5"></div>
+					</div>
+				</div>
+				<script id="tableTemplate" type="text/x-jquery-tmpl">
+					<div class="remainDays">${remainDays}</div>
+					<div class="header">${name}</div>		
+					<table></table>
+				</script>
+				<script id="theadTemplate" type="text/x-jquery-tmpl">
+					<thead></thead>
+				</script>
+				<script id="tbodyTemplate" type="text/x-jquery-tmpl">
+					<tbody></tbody>
+				</script>
+				<script id="columnTemplate0" type="text/x-jquery-tmpl">
+					<th class="column0"></th>
+				</script>
+				<script id="columnTemplate" type="text/x-jquery-tmpl">
+					<th>
+						<div class="columnName2"></div>
+						<div class="center">
+							<div class="columnName1">${name}</div>
+							<div class="columnName2">${unit}</div>		
+						</div>
+					</th>
+					<th>
+						<div class="columnName2">${name1}</div>
+						<div class="columnName2">${name2}</div>
+					</th>
+				</script>
+				<script id="rowTemplate" type="text/x-jquery-tmpl">
+					<tr></tr>
+				</script>
+				<script id="dataTemplate0" type="text/x-jquery-tmpl">
+					<td class="rowName">${name}</td>
+				</script>
+				<script id="dataTemplate" type="text/x-jquery-tmpl">
+					<td class="val">${val}</td>
+					<td>
+						<div class="plandfVal">${plandfVal}</div>
+						<div class="planrtVal ${color}">(${planrtVal}%)</div>
+					</td>
+				</script>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

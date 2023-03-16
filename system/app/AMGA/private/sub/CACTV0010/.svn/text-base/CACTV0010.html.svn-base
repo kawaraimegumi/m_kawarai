@@ -1,0 +1,141 @@
+<div id="ca_CACTV0010_dialog_area" class="cl_dialog"></div>
+<div id="ca_CACTV0010_CACTV0040_dialog" class="cl_dialog"></div>
+<div id="ca_CACTV0010_CACMV0300_dialog" class="cl_dialog"></div>
+<div id="ca_CACTV0010_main">
+<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>分析カタログ登録</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+					<div id="ca_CACTV0010_base_form">
+						<div class="fieldUnit mrgb10 required">
+							<p class="fieldName bl2">分析<br/>カタログ名</p>
+							<div class="fieldBox">
+								<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required ime-active"
+								data-limit="len:32" id="ca_CACTV0010_name"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10 required">
+							<p class="fieldName">公開区分</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 flleft" id="ca_CACTV0010_f_open">
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="fieldUnit mrgb10">
+							<p class="fieldName">場所</p>
+							<div class="fieldBox">
+								<input type="hidden" id="ca_CACTV0010_anamenunode_id">
+								<input class="form-control wt280 flleft" type="text" id="ca_CACTV0010_menutree" placeholder="" readonly />
+								<button class="btn btn-default wt140 flleft mrgl10" id="ca_CACTV0010_CACTV0040_show">参照...</button>
+								<button class="btn btn-default wt140 flleft mrgl10" id="ca_CACTV0010_menutree_clear">クリア</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="fieldUnit mrgb10 ca_CACTV0010_period_area">
+						<p class="fieldName">期間</p>
+						<div class="fieldBox">
+							<select name="info" class="mbn wt280 mrgb10" id="ca_CACTV0010_ymd">
+								<option class="ca_CACTV0010_month" value="2" unit="月">月単位</option>
+								<option class="ca_CACTV0010_week" value="9" unit="週">週単位</option>
+								<option class="ca_CACTV0010_day" value="3" unit="日">日単位</option>
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- selectによって以下に表示する内容を変える -->
+					<div class="fieldUnit mrgb10 ca_CACTV0010_period_area">
+						<div class="fieldBox">
+          				<ul>
+							<li style="float: inherit;"><label class="radio flleft mrgr0"><input type="radio" name="ca_CACTV0010_catalog_period" value="1" data-toggle="radio" checked></label>
+								<div class="ca_CACTV0010_type_before_div">
+									<p class="txtInFieldUnit pdg flleft">当<span class="ca_CACTV0010_unit"></span>の</p>
+									<input type="text" placeholder="" class="form-control wt80 flleft cl_valid ime-disabled"
+										data-limit="len:2 digit" data-required3="group2" id="ca_CACTV0010_period_val1"/>
+									<p class="txtInFieldUnit pdg flleft"><span class="ca_CACTV0010_unit"></span>前から</p>
+									<input type="text" placeholder="" class="form-control wt80 flleft cl_valid ime-disabled"
+										data-limit="len:2 digit" data-required3="group2" id="ca_CACTV0010_period_val2"/>
+									<p class="txtInFieldUnit pdg flleft"><span class="ca_CACTV0010_unit"></span>前まで</p>
+								</div>
+							</li>
+						</ul>
+						<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit ca_CACTV0010_period_area">
+						<div class="fieldBox">
+          				<ul>
+							<li style="float: inherit;">
+								<label class="radio flleft mrgr0">
+								<input type="radio" name="ca_CACTV0010_catalog_period" value="0" data-toggle="radio"></label>
+
+								<div id="ca_CACTV0010_month_temp" class="ca_CACTV0010_unit_ymd_div dispn">
+									<select class="flleft ca_CACTV0010_opt wt140 mrgl10 cl_valid"
+											id="ca_CACTV0010_month_y_period_val1"></select>
+									<select class="flleft ca_CACTV0010_opt wt140 mrgl10 cl_valid"
+											id="ca_CACTV0010_month_m_period_val1"></select>
+									<p class="txtInFieldUnit pdg flleft">〜</p>
+									<select class="flleft ca_CACTV0010_opt wt140 cl_valid"
+											id="ca_CACTV0010_month_y_period_val2"></select>
+									<select class="flleft ca_CACTV0010_opt wt140 mrgl10 cl_valid"
+											id="ca_CACTV0010_month_m_period_val2"></select>
+								</div>
+								<div id="ca_CACTV0010_week_temp" class="ca_CACTV0010_unit_ymd_div dispn">
+									<select class="flleft ca_CACTV0010_opt wt140 mrgl10 cl_valid"
+											id="ca_CACTV0010_week_y_period_val1"></select>
+									<div id="ca_CACTV0010_week_w_period_val1_div"></div>
+									<p class="txtInFieldUnit pdg flleft">〜</p>
+									<select class="flleft ca_CACTV0010_opt wt140 cl_valid"
+											id="ca_CACTV0010_week_y_period_val2"></select>
+									<div id="ca_CACTV0010_week_w_period_val2_div"></div>
+								</div>
+								<div id="ca_CACTV0010_day_temp" class="ca_CACTV0010_unit_ymd_div dispn">
+									<div class="datepicker_wrap">
+										<input type="text" class="ca_CACTV0010_opt mrgl10 cl_date cl_valid ime-disabled"
+											data-required2="group1" data-limit="len:10"
+											id="ca_CACTV0010_day_period_val1">
+									</div>
+									<p class="txtInFieldUnit pdg flleft">〜</p>
+									<div class="datepicker_wrap">
+										<input type="text" placeholder="" class="ca_CACTV0010_opt cl_date cl_valid ime-disabled"
+											data-required2="group1" data-limit="len:10"
+											id="ca_CACTV0010_day_period_val2">
+									</div>
+								</div>
+
+							</li>
+						</ul>
+						<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<!-- /#content -->
+
+
+		<div id="mainColumnFooter" class="analytics">
+			<p class="cancel"><a id="ca_CACTV0010_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACTV0010_commit">登録</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+	</div>
+	<!-- /#mainColumninBox -->
+</div>
+<!-- /#mainColumn -->
+</div>

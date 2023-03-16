@@ -1,0 +1,78 @@
+<div id="ca_CACMV0110_main">
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="mainColumninBox">
+		<div id="title">
+			<h2>住所</h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div>
+		<!-- /#title -->
+		
+		<div id="content">
+
+
+			<div id="selected" class="ca_CACMV0110_multi selected">
+				<p class="title">選択した内容</p>
+				<div class="control"><span class="delete" id="ca_CACMV0110_edit_delall">すべて削除</span>
+				<div class="clear"></div>
+				</div>
+				<div id="innerScroll">
+				<ul id="ca_CACMV0110_edit_tbl">
+				</ul>
+				</div>
+			</div>
+			<!-- /#selected -->
+
+			<div class="fieldgroup">
+				<div class="fieldgroupInBox">
+
+					<div class="table drilldownWrapper ht320 ca_CACMV0110_resultArea" id="ca_CACMV0110_addrtree">
+					</div>
+					
+					<!--表テンプレート-->
+					<script id="ca_CACMV0110_box_tmp" type="text/x-jquery-tmpl">
+					<div class="drilldownItem mrgr20">
+						<input type="text" class="form-control wt220 ca_CACMV0110_srch_input" placeholder="入力して絞込み"
+							data-limit="len:30" tgt-id="ca_CACMV0110_box_${level}"/>
+						<span class="tableHead wt220">${lvl_name}</span>
+						<div class="ht220 wt220 yScroll">
+							<table class="hilightRow drilldown selectable ca_CACMV0110_resultArea"
+								id="ca_CACMV0110_box_${level}" box-level="${level}">
+							</table>
+						</div>
+					</div>
+					</script>
+					<script id="ca_CACMV0110_node_tmp" type="text/x-jquery-tmpl">
+					<tr id="${addr_id}" class="ca_CACMV0110_node" lvl-id="${lvl_id}" no="${no}" is-leaf="${is_leaf}">
+						<td>${code}:${name}</td>
+					</tr>
+					</script>
+
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 mrgb30 noName btnCenter">
+							<button class="addtoSelected btn btn-primary wt280 ca_CACMV0110_multi" id="ca_CACMV0110_add">選択内容に追加</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+				</div>
+			</div>
+
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter">
+			<p class="cancel"><a id="ca_CACMV0110_cancel">キャンセル</a></p>
+			<p class="apply mrgCancel"><a id="ca_CACMV0110_commit">確定</a></p>
+		</div>
+		<!-- /#mainColumnFooter -->
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+</div>
+<!-- /#mainColumn -->
+</div>

@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+
+.mrgl410 {
+  margin-left: 410px;
+}
+.fieldName.bl3 {
+  margin-top: -16px;
+}
+
+/* ヘッダ固定テーブルの高さ設定 */
+.tblfixhdr-container .tblfixhdr-viewport {
+	max-height: 400px;
+}
+
+.tblfixhdr-container .tblfixhdr-viewport2 {
+	overflow-y: auto;
+	max-height: 440px;
+}
+.tblfixhdr-container .tblfixhdr-viewport2 .table {
+	margin-bottom: 0;
+	border-bottom: none;
+}
+
+.tblfixhdr-container .tblfixhdr-viewport2 .table th {
+    height: 0;
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: transparent;
+    border: none;
+    white-space: nowrap;
+}
+
+.tblfixhdr-container .tblfixhdr-viewport2 .table th div {
+    position: absolute;
+    background: transparent;
+	color: #F0F1F2;
+    padding: 8px;
+    top: 0;
+    margin-left: -8px;
+    line-height: 1.428571429;
+    border-left: 1px solid #DDD;
+}
+
+.tblfixhdr-container .tblfixhdr-viewport2 .table th:first-child div {
+	width: 100%;
+	border-bottom: 2px solid #DDD;
+}
+
+.mrgbshort {
+  margin-bottom: 7px;
+}
+

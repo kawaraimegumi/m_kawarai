@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+.wt500 {
+    width : 500px;
+}
+
+.fieldName.bl3 {
+  margin-top: -16px;
+}
+
+.ht10 {
+    height: 10px;
+}
+
+.mrg-10 {
+    margin-top: -10px;
+}
+
+.mrgl40 {
+    margin-left: 40px;
+}
+.mrgr120 {
+    margin-right: 120px;
+}
+.wt0 {
+    width:0px;
+}
+.wt280 {
+    width:280px;
+}
+
+.fieldName.bl4 {
+	margin-top: -8px;
+	margin-left: 28px;
+	width: 180px;
+}
+
+.fieldBox.ml110 {
+	margin-left: 110px;
+}

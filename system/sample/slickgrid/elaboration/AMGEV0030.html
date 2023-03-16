@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>推敲</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+	<script src="../../../js/jquery.tablesorter.js"></script>
+	<script src="../../../js/tsort.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.marionette.js"></script>
+
+	<!-- SlickGrid -->
+	<link href="/css/slickgrid.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/slickgrid.js"></script>
+
+	<script src="../../../js/clcom.js"></script>
+	<script type="text/javascript" src="/system/js/clgrid.js"></script>
+
+	<link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css">
+	<link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css">
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+
+<script src="AMGEV0030.js"></script>
+
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<div id="ca_srchArea" class="fieldgroupInBox search">
+					<div class="fieldUnit mrgb10 flleft half mrgr20">
+						<p class="fieldName">取引先区分</p>
+						<div class="fieldBox">
+							<!-- <input type="text" placeholder="" class="form-control wt280" name="srchTypeID" id="ca_srchTypeID"/> -->
+							<select class="mbn wt280" name="info" name="srchTypeID" id="ca_srchTypeID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 flleft half mrgr20 ">
+						<p class="fieldName">事業ユニット</p>
+						<div class="fieldBox">
+							<select class="mbn wt280" name="info" id="ca_srchUnitID"></select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">取引先コード</p>
+						<div class="fieldBox">
+							<!-- <input type="text" placeholder="" class="form-control wt280" name="srchCode" id="ca_srchID" data-limit="len:4"/> -->
+							<input type="text" placeholder="" class="form-control wt280 cl_valid" name="srchCode" id="ca_srchID" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">取引先名称</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280" name="srchName" id="ca_srchName"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft">
+						<p class="fieldName b12">取引先名称<br />カナ</p>
+						<div class="fieldBox">
+							<input type="text" placeholder="" class="form-control wt280" name="srchKana" id="ca_srchKana"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit mrgb10 half flleft mrgr20">
+						<p class="fieldName">検索日</p>
+						<div class="fieldBox">
+							<div class="datepicker_wrap">
+								<input type="text" class="cl_date cl_valid ime-disabled" name="srchDate" id="ca_srchDate" />
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fieldUnit mrgb10 half flleft required">
+						<div class="fieldBox noName flleft">
+							<label class="checkbox ib" for="check1"><input type="checkbox" value="" name="allHistFlag" id="ca_allHistFlag" data-toggle="checkbox">検索日以降全履歴を表示</label>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="fieldUnit">
+						<div class="fieldBox mrgt20 noName btnCenter">
+							<button id="ca_srch" class="btn btn-info wt280">検索</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+
+			</div>
+
+			<div id="result" class="dispn">
+
+				<!-- データグリッド領域 -->
+				<div class="cl_datagrid_container" id="ca_datagrid">
+				</div>
+				<!-- XXXデータグリッド関連 -->
+				<!--
+				<div id="inlineFilterPanel" style="display:none;background:#dddddd;padding:3px;color:black;">
+					Show tasks with title including <input type="text" id="txtSearch2">and % at least &nbsp;
+					<div style="width:100px;display:inline-block;" id="pcSlider2"></div>
+				</div>
+				 -->
+
+				<div class="fieldUnit">
+					<div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMMSV0310">
+						<div class="flleft">
+							<button class="btn btn-primary wt280 mrgr10" id="cl_edit">編集</button>
+							<button class="btn btn-primary wt120 mrgr10 cl_selectui_multi" id="ca_action1">App1</button>
+							<button class="btn btn-primary wt120 mrgr10 cl_selectui_single" id="ca_action2">App2</button>
+						</div>
+						<div class="flright">
+							<button class="btn btn-default wt140 mrgl20 delete" id="cl_rsvcancel">予約取消</button>
+							<button class="btn btn-default wt140 mrgl20 delete" id="cl_delete">削除</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<!-- 下部ボタンパネル：中身は MDBaseView が構築します。空の div#mainVolumnFooter だけ設置してください。 -->
+		<div id="mainColumnFooter" class="noLeftColumn">
+<!--
+			<p class="center"><a href="javascript:void(0);" id="cl_csv">CSV出力</a></p>
+			<div class="clear"></div>
+<!--  -->
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+</div><!-- / #container -->
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" >
+	<title>組織マスタ</title>
+
+	<!-- Loading Bootstrap -->
+	<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../../bootstrap/css/prettify.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+	<script type="text/javascript" src="../../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+
+	<link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css">
+	<link media="screen" rel="stylesheet" type="text/css" href="AMMSV0240.css">
+
+	<script src="../../../js/function.js"></script>
+
+	<script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<script src="../../../js/bootstrap-select.js"></script>
+	<script src="../../../js/bootstrap-switch.js"></script>
+	<script src="../../../js/flatui-checkbox.js"></script>
+	<script src="../../../js/flatui-radio.js"></script>
+	<script src="../../../js/jquery.tagsinput.js"></script>
+	<script src="../../../js/jquery.placeholder.js"></script>
+	<script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+	<script src="../../../js/application.js"></script>
+	<script src="../../../js/jquery.skOuterClick.js"></script>
+	<script src="../../../../js/jquery.contextmenu.js"></script>
+
+	<script src="../../../../js/jquery.ui.datepicker.js"></script>
+	<script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+	<script type="text/javascript"
+			src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+	<script src="../../../../js/jquery.blockUI.js"></script>
+
+	<script type="text/javascript" src="../../../../js/underscore.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.js"></script>
+	<script type="text/javascript" src="../../../../js/json2.js"></script>
+	<script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+	<script type="text/javascript"
+		src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+	<script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+	<script src="../../../js/clcom.js"></script>
+
+<script>
+
+</script>
+
+
+</head>
+
+<body class="cl_body_hidden">
+<div id="ca_main">
+<script src="AMMSV0240.js"></script>
+
+<!-- <div id="header">
+	<p class="back"></p>
+	<h1>組織マスタ</h1>
+	<div class="rightBox">
+		<span class="logo"></span>
+		<span class="logout"><a href="javascript:void(0)">ログアウト</a></span>
+		<span class="user">Username</span>
+	</div>
+</div>--><!-- /#header -->
+	<!-- <div class="cl_echoback msgBox error">
+	</div> -->
+<div id="container">
+
+	<div id="mainColumn">
+	<div id="mainColumninBox" class="noLeftColumn">
+		<!-- <div id="title">
+			<h2>組織体系マスタ登録・修正<span class="divider">|</span><span id="ca_title_caption"></span></h2>
+			<div class="titleInBoxRight">
+			</div>
+		</div> -->
+		<!-- /#title -->
+
+
+
+		<div id="content">
+
+			<div class="fieldgroup">
+				<!-- <p class="gtitle">組織マスタ設定</p> -->
+				<div id="ca_headInfoArea" class="">
+					<!--
+					<div  class="fieldgroupInBox setaddr mrgb10 termBox">
+						<input type="hidden" id="ca_recno">
+						<input type="hidden" id="ca_state">
+						<div class="fieldUnit flleft  mrgr20 required wt500">
+							<p class="fieldName">適用期間</p>
+							<div class="fieldBox">
+								<div class="datepicker_wrap ca_fromDate_div"><input type="text" id="ca_fromDate" class="cl_date cl_valid cl_required" data-limit="len:10"/></div>
+								<p class="txtInFieldUnit pdg flleft">〜</p>
+								<div class="datepicker_wrap ca_toDate_div"><input type="text" id="ca_toDate" class="cl_date cl_valid cl_required" data-limit="len:10"/></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					-->
+					<div  class="fieldgroupInBox setaddr">
+						<input type="hidden" id="ca_orgfuncID">
+						<div class="fieldUnit mrgb10 half flleft required">
+							<p class="fieldName bl2">組織体系<br />コード</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl40 pa_orgfuncCode"></span>
+								<input type="text" class="form-control wt80 ime-disabled cl_valid cl_required" id="ca_orgfuncCode" data-tflimit="2" data-validator="len:2,2 digit" readonly>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit mrgb10 half flleft required">
+							<p class="fieldName">組織体系名称</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240 pa_orgfuncName"></span>
+								<input type="text" placeholder="" class="form-control wt280 ime-active cl_valid cl_required" data-tflimit="20" data-validator="maxlen:20" id="ca_orgfuncName"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<div class="fieldUnit">
+							<p class="fieldName bl2">基本組織体系<br />フラグ</p>
+							<div class="fieldBox">
+								<ul>
+								<li><label class="radio disabled"><input type="radio" name="ca_basicFlag" value="1" data-toggle="radio" disabled>基本組織体系</label></li>
+								<li><label class="radio disabled"><input type="radio" name="ca_basicFlag" value="0" data-toggle="radio" disabled>任意組織体系</label></li>
+							</ul>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="fieldgroup" id="ca_tableArea">
+				<p class="gtitle">階層定義</p>
+				<div class="fieldgroupInBox">
+					<div class="table mrgb0">
+						<!-- セルを直接編集可能に -->
+						<table class="hilight drilldown" id="ca_table">
+						<thead>
+							<tr>
+								<th width="80px">レベル</th>
+								<th width="">階層名</th>
+								<th width="120px">店舗階層フラグ</th>
+								<th width="60px"></th>
+								<th width="60px"></th>
+							</tr>
+						</thead>
+						<tbody id="ca_table_tbody">
+						</tbody>
+						<tfoot>
+							<tr class="addRow">
+								<td colspan="5">
+									<span class="btn-add"></span>
+								</td>
+							</tr>
+						</tfoot>
+						</table>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /#content -->
+
+		<div id="mainColumnFooter" class="noLeftColumn x2">
+			<!-- <p class="cancel"><a href="javascript:void(0)" id="ca_cancel">戻る</a></p>
+			<p class="apply mrgCancel" id="p_entry"><a href="javascript:void(0)" id="ca_entry">登録</a></p>
+			<p class="flleft"><a href="javascript:void(0)" id="ca_previous">前へ</a></p>
+			<p class="flright"><a href="javascript:void(0)" id="ca_next">次へ</a></p>
+			<div class="clear"></div> -->
+		</div>
+		<!-- /#mainColumnFooter -->
+
+
+
+
+
+
+
+
+	</div>
+	<!-- /#mainColumninBox -->
+
+
+
+	</div>
+	<!-- /#mainColumn -->
+
+
+
+
+</div><!-- / #container -->
+		<script id="ca_tbody_template" type="text/x-jquery-tmpl">
+			<tr class="deletable addRow" name="ca_table_tr" id="${orglevelID}">
+				<td class="editable pdg0"><input type="text" class="form-control txtar" name="levelNo"value="${levelNo}" readonly></td>
+				<td class="editable pdg0"><input type="text" class="form-control cl_valid cl_required" name="orglevelName" value="${orglevelName}" data-validator="maxlen:20" {{if disEdit}}readonly{{/if}}></td>
+				<td class="editable txtac"><label class="checkbox {{if storeLevelFlag}}checked{{/if}} {{if disChk}}disabled{{else disEdit}}disabled{{/if}}"><input type="checkbox" class="form-control" name="storeLevelFlag" data-toggle="checkbox" {{if storeLevelFlag}}checked{{/if}} {{if disChk}}disabled{{else disEdit}}disabled{{/if}}></label></td>
+				<td>{{if canAdd}}<span class="btn-add flright"></span>{{/if}}</td>
+				<td>{{if editable}}<span class="btn-delete flright"></span>{{/if}}</td>
+				<input type="hidden" name="orglevelTypeID" value="${orglevelTypeID}">
+				<input type="hidden" name="orglevelID" value="${orglevelID}">
+			</tr>
+		</script>
+
+<div class="clear"></div>
+
+</div>
+</body>
+</html>
