@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+</head>
+<body style="background:black;">
+    <div>
+        <button onclick="showtag('111')">111</button>
+        <button onclick="showtag('112')">112</button>
+        <button onclick="showtag('113')">113</button>
+        <button onclick="showtag('114')">114</button>
+        <button onclick="showtag('115')">115</button>
+        <button onclick="showtag('116')">116</button>
+        <button onclick="showtag('131')">131</button>
+        <button onclick="showtag('132')">132</button>
+        <button onclick="showtag('133')">133</button>
+        <button onclick="showtag('171')">171</button>
+        <button onclick="showtag('172')">172</button>
+        <button onclick="showtag('173')">173</button>
+        <button onclick="showtag('174')">174</button>
+        <button onclick="showtag('175')">175</button>
+        <button onclick="showtag('176')">176</button>
+        <button onclick="showtag('811')">811</button>
+        <button onclick="showtag('812')">812</button>
+        <button onclick="showtag('813')">813</button>
+        <button onclick="showtag('814')">814</button>
+        <button onclick="showtag('815')">815</button>
+        <button onclick="showtag('816')">816</button>
+        <button onclick="showtag('831')">831</button>
+        <button onclick="showtag('832')">832</button>
+        <button onclick="showtag('833')">833</button>
+    </div>
+    <img id="testimage" />
+
+    <script>
+        function toTagDataURL(dataobj, pattern) {
+            function formatprice(price) {
+                return String(price).replace( /(\d)(?=(\d\d\d)+(?!\d))/g,'$1,')
+            }
+            function getRandomArbitary(min, max) {
+                return Math.random() * (max - min) + min;
+            };
+            function barcode(ctx, x, y, height, width) {
+                var w;
+                var maxx = x + width;
+                while (x < maxx) {
+                    w = getRandomArbitary(1, 4);
+                    ctx.fillRect(x, y, w, height);
+                    x += (w + getRandomArbitary(1, 4));
+                }
+            };
+            function pattern111(ctx) {
+                var height = 0;
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.price, 90, height);
+                    ctx.fillText(dataobj.salelimit, 120, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.itemname, 5, height);
+                    ctx.fillText(dataobj.vendorcode + "-" + dataobj.kitype + dataobj.year%10 + dataobj.season, 90, height);
+                }
+                {
+                    height += 10;
+                    ctx.strokeRect(90, height, 55, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 90, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 95, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.makercode, 5, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.colorcode, 5, height);
+                    ctx.fillText(dataobj.colorname, 30, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode, 5, height);
+                    ctx.fillText(dataobj.ordertype + "(" + dataobj.setuptype + ")", 30, height);
+                }
+                {
+                    height += 20;
+                    barcode(ctx, 20, height, 35, 110);
+                }
+                {
+                    height += (30 + 20);
+                    ctx.fillText(dataobj.tagcode, 35, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.exsize1, 20, height);
+                    ctx.fillText(dataobj.exsize2, 60, height);
+                    ctx.fillText(dataobj.exsize3, 90, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.exsize4, 20, height);
+                    ctx.fillText(dataobj.exsize5, 60, height);
+                    ctx.fillText(dataobj.exsize6, 90, height);
+                }
+            };
+            function pattern112(ctx) {
+                var height = 0;
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.salelimit, 120, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.itemname, 5, height);
+                    ctx.fillText(dataobj.vendorcode + "-" + dataobj.kitype + dataobj.year%10 + dataobj.season, 90, height);
+                }
+                {
+                    height += 10;
+                    ctx.strokeRect(90, height, 55, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 90, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 95, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.makercode, 5, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.colorcode, 5, height);
+                    ctx.fillText(dataobj.colorname, 30, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode, 5, height);
+                    ctx.fillText(dataobj.ordertype + "(" + dataobj.setuptype + ")", 30, height);
+                }
+                {
+                    height += 20;
+                    barcode(ctx, 20, height, 35, 110);
+                }
+                {
+                    height += (30 + 20);
+                    ctx.fillText(dataobj.tagcode, 35, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.exsize1, 20, height);
+                    ctx.fillText(dataobj.exsize2, 60, height);
+                    ctx.fillText(dataobj.exsize3, 90, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.exsize4, 20, height);
+                    ctx.fillText(dataobj.exsize5, 60, height);
+                    ctx.fillText(dataobj.exsize6, 90, height);
+                }
+            };
+            function pattern113(ctx) {
+                var height = 0;
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.price, 90, height);
+                    ctx.fillText(dataobj.salelimit, 120, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.itemname, 5, height);
+                    ctx.fillText(dataobj.vendorcode + "-" + dataobj.kitype + dataobj.year%10 + dataobj.season, 90, height);
+                }
+                {
+                    height += 10;
+                    ctx.strokeRect(90, height, 55, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 90, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 95, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.makercode, 5, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.colorcode, 5, height);
+                    ctx.fillText(dataobj.colorname, 30, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode, 5, height);
+                    ctx.fillText(dataobj.ordertype + "(" + dataobj.setuptype + ")", 30, height);
+                    ctx.fillText(dataobj.exsize1, 90, height);
+                    ctx.fillText("・", 110, height);
+                    ctx.fillText(dataobj.exsize2.slice(0,4), 120, height);
+                }
+                {
+                    height += 20;
+                    barcode(ctx, 20, height, 35, 110);
+                }
+                {
+                    height += (30 + 20);
+                    ctx.fillText(dataobj.tagcode, 35, height);
+                }
+            };
+            function pattern114(ctx) {
+                var height = 0;
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.salelimit, 120, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.itemname, 5, height, 85);
+                    ctx.fillText(dataobj.vendorcode + "-" + dataobj.kitype + dataobj.year%10 + dataobj.season, 90, height);
+                }
+                {
+                    height += 10;
+                    ctx.strokeRect(90, height, 55, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 90, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 95, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.makercode, 5, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.colorcode, 5, height);
+                    ctx.fillText(dataobj.colorname, 30, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode, 5, height);
+                    ctx.fillText(dataobj.ordertype + "(" + dataobj.setuptype + ")", 30, height);
+                    ctx.fillText(dataobj.exsize1, 90, height);
+                    ctx.fillText("・", 110, height);
+                    ctx.fillText(dataobj.exsize2.slice(0,4), 120, height);
+                }
+                {
+                    height += 20;
+                    barcode(ctx, 20, height, 35, 110);
+                }
+                {
+                    height += (30 + 20);
+                    ctx.fillText(dataobj.tagcode, 35, height);
+                }
+                {
+                    height += 20;
+                    barcode(ctx, 50, height, 35, 50);
+                }
+                {
+                    height += 60;
+                    ctx.font = "normal 15px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("本体", 20, height);
+                    ctx.font = "bold 18px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("￥" + formatprice(dataobj.saleam), 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 15;
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 55, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+            };
+            function pattern116(ctx) {
+                var height = 0;
+                {
+                    height += 10;
+
+                    barcode(ctx, 20, height, 35, 110);
+                    ctx.fillText(dataobj.tagcode, 35, height+45);
+
+                    ctx.fillText(dataobj.salelimit, 178, height+10, 25);
+                    ctx.fillText(dataobj.vendorcode + "-" + dataobj.kitype + dataobj.year%10 + dataobj.season, 150, height+20);
+
+                    ctx.strokeRect(220, height, 60, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 220, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 225, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 60;
+                    ctx.fillText(dataobj.itemname, 50, height);
+                }
+                {
+                    height += 5;
+                    barcode(ctx, 200, height, 35, 50);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.makercode, 50, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.colorcode, 50, height);
+                    ctx.fillText(dataobj.colorname, 75, height);
+                }
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode, 50, height);
+                    ctx.fillText(dataobj.ordertype + "(" + dataobj.setuptype + ")", 75, height);
+                }
+                {
+                    height += 10;
+                    ctx.font = "normal 15px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("本体", 170, height);
+                    ctx.font = "bold 18px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("￥" + formatprice(dataobj.saleam), 220, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.exsize1, 50, height);
+                    ctx.fillText("・", 70, height, 10);
+                    ctx.fillText(dataobj.exsize2.slice(0,4), 80, height);
+                }
+                {
+                    height += 10;
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 190, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+            };
+            function pattern131(ctx) {
+                var height = 0;
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.itemname, 5, height);
+                    ctx.fillText(dataobj.salelimit, 120, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.vendorcode + "-" + dataobj.kitype + dataobj.year%10 + dataobj.season, 90, height);
+                }
+                {
+                    height += 5;
+                    ctx.strokeRect(90, height, 55, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 90, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 95, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.makercode, 5, height, 85);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.colorcode, 5, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.colorname, 5, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode, 5, height);
+                    ctx.fillText(dataobj.ordertype + "(" + dataobj.setuptype + ")", 30, height);
+                    ctx.fillText(dataobj.exsize1, 90, height);
+                    ctx.fillText("・", 110, height);
+                    ctx.fillText(dataobj.exsize2.slice(0,4), 120, height);
+                }
+                {
+                    height += 10;
+                    barcode(ctx, 20, height, 30, 110);
+                }
+                {
+                    height += 45;
+                    ctx.fillText(dataobj.tagcode, 35, height);
+                }
+                {
+                    height += 10;
+                    barcode(ctx, 50, height, 30, 50);
+                }
+                {
+                    height += 50;
+                    ctx.font = "normal 15px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("本体", 20, height);
+                    ctx.font = "bold 18px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("￥" + formatprice(dataobj.saleam), 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 15;
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 55, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+            };
+            function pattern132(ctx) {
+                var height = 0;
+                {
+                    height += 5;
+                    ctx.strokeRect(90, height, 55, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 90, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 95, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.makercode, 5, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.colorcode, 5, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.colorname, 5, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.exsize1.slice(0,4) + "-" + dataobj.exsize2.slice(0,4), 5, height);
+                }
+                {
+                    height += 5;
+                    barcode(ctx, 20, height, 30, 110);
+                }
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.tagcode, 35, height);
+                }
+            };
+            function pattern133(ctx) {
+                var height = 0;
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.itemname, 5, height);
+                    ctx.fillText(dataobj.salelimit, 120, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.vendorcode + "-" + dataobj.kitype + dataobj.year%10 + dataobj.season, 90, height);
+                }
+                {
+                    height += 5;
+                    ctx.strokeRect(90, height, 55, 40)
+                    ctx.font = "bold 10px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("サイズ", 90, height+10);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 95, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.makercode, 5, height, 85);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.colorcode, 5, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.colorname, 5, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode, 5, height);
+                    ctx.fillText(dataobj.ordertype + "(" + dataobj.setuptype + ")", 30, height);
+                    ctx.fillText(dataobj.exsize1, 90, height);
+                    ctx.fillText("・", 110, height);
+                    ctx.fillText(dataobj.exsize2.slice(0,4), 120, height);
+                }
+                {
+                    height += 10;
+                    barcode(ctx, 20, height, 30, 110);
+                }
+                {
+                    height += 45;
+                    ctx.fillText(dataobj.tagcode, 35, height);
+                }
+                {
+                    height += 10;
+                    barcode(ctx, 50, height, 30, 50);
+                }
+                {
+                    height += 50;
+                    ctx.font = "normal 15px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("本体", 20, height);
+                    ctx.font = "bold 18px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("￥" + formatprice(dataobj.saleam), 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 15;
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 55, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+			};
+            function pattern811(ctx) {
+                var height = 0;
+                {
+                    height += 30;
+                    ctx.fillText("NO.", 20, height, 20);
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.makercode, 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                {
+                    height += 20;
+                    ctx.fillText("SIZE", 20, height, 20);
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename, 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                {
+                    height += 20;
+                    ctx.font = "normal 3px sans-serif";
+                    ctx.fillText(dataobj.quality1, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality2, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality3, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality4, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality5, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality6, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality7, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality8, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality9, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality10, 50, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 20;
+                    ctx.fillText("QUAL..", 20, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                {
+                    height += 15;
+                    ctx.font = "normal 15px sans-serif";
+                    ctx.fillText(dataobj.highlighting, 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.origin, 10, height);
+                    ctx.fillText(dataobj.exsize1.slice(0,5), 100, height);
+                    ctx.fillText(dataobj.exsize2.slice(0,5), 140, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.colorcode, 10, height);
+                    ctx.fillText(dataobj.colorname, 40, height);
+                    ctx.fillText(dataobj.exsize3.slice(0,5), 100, height);
+                    ctx.fillText(dataobj.exsize4.slice(0,5), 140, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode + " " + String(dataobj.year%10) + dataobj.season + dataobj.salelimit + " " + dataobj.vendorcode, 10, height);
+                    ctx.fillText(dataobj.exsize5.slice(0,5), 100, height);
+                    ctx.fillText(dataobj.exsize6.slice(0,5), 140, height);
+                }
+                {
+                    height += 10;
+                    barcode(ctx, 30, height, 30, 110);
+                }
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.tagcode, 50, height);
+                }
+                {
+                    height += 30;
+                    ctx.font = "normal 15px sans-serif";
+                    ctx.fillText("本体", 40, height);
+                    ctx.fillText("￥" + formatprice(dataobj.saleam) + "+税", 80, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 15;
+                    ctx.fillText("PRICE", 20, height);
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 80, height);
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            };
+            function pattern812(ctx) {
+                var height = 0;
+                {
+                    height += 30;
+                    ctx.fillText("NO.", 20, height, 20);
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.makercode, 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                {
+                    height += 20;
+                    ctx.fillText("SIZE", 20, height, 20);
+                    ctx.font = "bold 13px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename, 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                {
+                    height += 20;
+                    ctx.font = "normal 3px sans-serif";
+                    ctx.fillText(dataobj.quality1, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality2, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality3, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality4, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality5, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality6, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality7, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality8, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality9, 50, height);
+                    height += 8;
+                    ctx.fillText(dataobj.quality10, 50, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 20;
+                    ctx.fillText("QUAL..", 20, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                {
+                    height += 15;
+                    ctx.font = "normal 15px sans-serif";
+                    ctx.fillText(dataobj.highlighting, 60, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.origin, 10, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.colorcode, 10, height);
+                    ctx.fillText(dataobj.colorname, 40, height);
+                    ctx.fillText(dataobj.exsize1, 100, height);
+                }
+                {
+                    height += 10;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode + " " + String(dataobj.year%10) + dataobj.season + dataobj.salelimit + " " + dataobj.vendorcode, 10, height);
+                }
+                {
+                    height += 10;
+                    barcode(ctx, 30, height, 30, 110);
+                }
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.tagcode, 50, height);
+                }
+                {
+                    height += 30;
+                    ctx.font = "normal 15px sans-serif";
+                    ctx.fillText("本体", 40, height);
+                    ctx.fillText("￥" + formatprice(dataobj.saleam) + "+税", 80, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 15;
+                    ctx.fillText("PRICE", 20, height);
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 80, height);
+                }
+                {
+                    height += 5;
+                    ctx.beginPath();
+                    ctx.moveTo(10, height);
+                    ctx.lineTo(170, height);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            };
+            function pattern815(ctx) {
+                var height = 0;
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.makercode, 80, height+10);
+
+                    ctx.strokeRect(180, height, 60, 40)
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 185, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 22;
+                    ctx.fillText(dataobj.colorcode, 80, height);
+                    ctx.fillText(dataobj.colorname, 110, height);
+                }
+                {
+                    height += 12;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode + " " + String(dataobj.year%10) + dataobj.season + dataobj.salelimit + " " + dataobj.vendorcode, 80, height);
+                }
+                {
+                    height += 16;
+                    ctx.fillText(dataobj.origin, 80, height);
+                    ctx.fillText(dataobj.exsize1, 180, height);
+                }
+                {
+                    height += 5;
+                    barcode(ctx, 80, height, 30, 140);
+                }
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.tagcode, 110, height);
+                }
+                {
+                    height += 20;
+                    ctx.font = "bold 10px sans-serif";
+                    ctx.fillText("PRICE", 40, height);
+                    ctx.font = "normal 10px sans-serif";
+                    ctx.fillText("本体" + " ￥" + formatprice(dataobj.saleam) + "+税" + "(税込　￥" + formatprice(dataobj.saleamintax) + ")", 80, height);
+                }
+            };
+            function pattern831(ctx) {
+                var height = 0;
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.makercode, 10, height+10);
+
+                    ctx.strokeRect(95, height, 95, 40)
+                    ctx.fillText("SIZE", 100, height+30);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 140, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 25;
+                    ctx.fillText(dataobj.colorcode, 10, height);
+                    ctx.fillText(dataobj.colorname, 40, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode + " " + String(dataobj.year%10) + dataobj.season + dataobj.salelimit + " " + dataobj.vendorcode, 10, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.origin, 10, height);
+                    ctx.fillText(dataobj.exsize1, 100, height);
+                }
+                {
+                    height += 5;
+                    barcode(ctx, 30, height, 30, 140);
+                }
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.tagcode, 60, height);
+                }
+                {
+                    height += 20;
+                    ctx.font = "bold 10px sans-serif";
+                    ctx.fillText("PRICE", 20, height+5);
+                    ctx.font = "normal 10px sans-serif";
+                    ctx.fillText("本体", 60, height);
+                    ctx.font = "bold 15px sans-serif";
+                    ctx.fillText("￥" + formatprice(dataobj.saleam) + "+税", 100, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 100, height);
+                }
+                {
+                    height += 20;
+                    barcode(ctx, 110, height, 30, 50);
+                }
+            };
+            function pattern832(ctx) {
+                var height = 0;
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.makercode, 10, height+10);
+
+                    ctx.strokeRect(95, height, 95, 40)
+                    ctx.fillText("SIZE", 100, height+30);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 140, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 25;
+                    ctx.fillText(dataobj.colorcode, 10, height);
+                    ctx.fillText(dataobj.colorname, 40, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode + " " + String(dataobj.year%10) + dataobj.season + dataobj.salelimit + " " + dataobj.vendorcode, 10, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.origin, 10, height);
+                    ctx.fillText(dataobj.exsize1, 100, height);
+                }
+                {
+                    height += 15;
+                    barcode(ctx, 30, height, 30, 140);
+                }
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.tagcode, 60, height);
+                }
+            };
+            function pattern833(ctx) {
+                var height = 0;
+                {
+                    height += 20;
+                    ctx.fillText(dataobj.makercode, 10, height+10);
+
+                    ctx.strokeRect(95, height, 95, 40)
+                    ctx.fillText("SIZE", 100, height+30);
+                    ctx.font = "bold 22px 'ＭＳ Ｐゴシック'";
+                    ctx.fillText(dataobj.sizename.slice(0,5), 140, height+30);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 25;
+                    ctx.fillText(dataobj.colorcode, 10, height);
+                    ctx.fillText(dataobj.colorname, 40, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.divcode.slice(-1) + dataobj.ctgcode + " " + String(dataobj.year%10) + dataobj.season + dataobj.salelimit + " " + dataobj.vendorcode, 10, height);
+                }
+                {
+                    height += 15;
+                    ctx.fillText(dataobj.origin, 10, height);
+                    ctx.fillText(dataobj.exsize1, 100, height);
+                }
+                {
+                    height += 5;
+                    barcode(ctx, 30, height, 30, 140);
+                }
+                {
+                    height += 40;
+                    ctx.fillText(dataobj.tagcode, 60, height);
+                }
+                {
+                    height += 20;
+                    ctx.font = "bold 10px sans-serif";
+                    ctx.fillText("PRICE", 20, height+5);
+                    ctx.font = "normal 10px sans-serif";
+                    ctx.fillText("本体", 60, height);
+                    ctx.font = "bold 15px sans-serif";
+                    ctx.fillText("￥" + formatprice(dataobj.saleam) + "+税", 100, height);
+                    ctx.font = "normal 10px sans-serif";
+                }
+                {
+                    height += 10;
+                    ctx.fillText("(税込　￥" + formatprice(dataobj.saleamintax) + ")", 100, height);
+                }
+                {
+                    height += 20;
+                    barcode(ctx, 110, height, 30, 50);
+                }
+            };
+            var canvas = document.createElement("canvas");
+            switch (pattern) {
+                // AOKI
+                case "111":
+                    canvas.width=150;
+                    canvas.height=300;
+                    break;
+                case "112":
+                    canvas.width=150;
+                    canvas.height=300;
+                    break;
+                case "113":
+                    canvas.width=150;
+                    canvas.height=300;
+                    break;
+                case "114":
+                case "115":
+                    canvas.width=150;
+                    canvas.height=300;
+                    break;
+                case "116":
+                    canvas.width=300;
+                    canvas.height=180;
+                    break;
+                case "131":
+                    canvas.width=150;
+                    canvas.height=230;
+                    break;
+                case "132":
+                    canvas.width=150;
+                    canvas.height=100;
+                    break;
+                case "133":
+                    canvas.width=150;
+                    canvas.height=230;
+                    break;
+                case "171":
+                case "172":
+                case "173":
+                case "174":
+                case "175":
+                case "176":
+                    canvas.width=150;
+                    canvas.height=100;
+                    break;
+                // ORIHIKA
+                case "811":
+                    canvas.width=180;
+                    canvas.height=340;
+                    break;
+                case "812":
+                case "813":
+                case "814":
+                    canvas.width=180;
+                    canvas.height=340;
+                    break;
+                case "815":
+                case "816":
+                    canvas.width=250;
+                    canvas.height=150;
+                    break;
+                case "831":
+                    canvas.width=200;
+                    canvas.height=230;
+                    break;
+                case "832":
+                    canvas.width=200;
+                    canvas.height=160;
+                    break;
+                case "833":
+                    canvas.width=200;
+                    canvas.height=230;
+                    break;
+            }
+            if (canvas.getContext){
+                var ctx = canvas.getContext('2d');
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#000000";
+                ctx.strokeRect(3, 3, canvas.width - 6, canvas.height-6)
+                ctx.font = "normal 10px sans-serif";
+                switch (pattern) {
+                    // AOKI
+                    case "111":
+                        pattern111(ctx);
+                        break;
+                    case "112":
+                        pattern112(ctx);
+                        break;
+                    case "113":
+                        pattern113(ctx);
+                        break;
+                    case "114":
+                    case "115":
+                        pattern114(ctx);
+                        break;
+                    case "116":
+                        pattern116(ctx);
+                        break;
+                    case "131":
+                        pattern131(ctx);
+                        break;
+                    case "132":
+                        pattern132(ctx);
+                        break;
+                    case "133":
+                        pattern133(ctx);
+                        break;
+                    case "171":
+                    case "172":
+                    case "173":
+                    case "174":
+                    case "175":
+                    case "176":
+                        break;
+                    // ORIHIKA
+                    case "811":
+                        pattern811(ctx);
+                        break;
+                    case "812":
+                    case "813":
+                    case "814":
+                        pattern812(ctx);
+                        break;
+                    case "815":
+                    case "816":
+                        pattern815(ctx);
+                        break;
+                    case "831":
+                        pattern831(ctx);
+                        break;
+                    case "832":
+                        pattern832(ctx);
+                        break;
+                    case "833":
+                        pattern833(ctx);
+                        break;
+                }
+            }
+            return canvas.toDataURL();
+        };
+    </script>
+
+    <script>
+        var data = {
+                recodetype: "T",
+                datatype: "06",
+                outputtype: "",
+                outputcount: 1,
+                tagcode: "2000567890123",
+                itemname: "2B3P56789012",
+                colorname: "クロ34567",
+                sizename: "AB6",
+                vendorcode: "123",
+                kitype: "K",
+                makercode: "470S407890",
+                ordertype: "T",
+                colorcode: "123",
+                saleamintax: 1296,
+                saleam: 1200,
+                year: 2014,
+                season: "1",
+                divcode: "01",
+                ctgcode: "12",
+                factorycode: "DEADBEAF",
+                exsize1: "Y3-8",
+                exsize2: "A3-8",
+                exsize3: "AB3-8",
+                exsize4: "BB3-8",
+                exsize5: "E3-8",
+                exsize6: "K3-8",
+                price: "096",
+                setuptype: "セ",
+                salelimit: "61",
+                // ORIHIKA
+                orderno: "00000024",
+                tagissuemaker: "123",
+                tagissueorderdate: 20131010,
+                tagissuecountrytype: "1",
+                styletype: "S",
+                origin: "Made in China",
+                quality1: "表地 ウール50%",
+                quality2: "       ポリエステル50%",
+                quality3: "",
+                quality4: "",
+                quality5: "",
+                quality6: "",
+                quality7: "",
+                quality8: "",
+                quality9: "",
+                quality10: "",
+                highlighting: "形態安定",
+                additionaltagno1: "",
+                additionaltagno2: "",
+                threadlox: "1"
+            };
+    </script>
+
+    <script>
+        function showtag(pattern) {
+            var img = document.getElementById("testimage");
+            img.src = toTagDataURL(data, pattern)
+        }
+    </script>
+</body>
+</html>
