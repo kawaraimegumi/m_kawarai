@@ -71,8 +71,8 @@
 
 <div id="masterHeaditem" class="dispn" style="z-index:999">
 <ul>
-	<li class="mrgb10"><span>事業ユニット:</span><span id="mhi_unitID"></span></li>
-	<li class="mrgb10"><span>品種:</span><span id="mhi_itgrpID"></span></li>
+	<li class="mrgb10"><span>業態:</span><span id="mhi_unitID"></span></li>
+	<li class="mrgb10"><span>品名(5桁):</span><span id="mhi_itgrpID"></span></li>
 	<li class="mrgb10"><span>メーカー:</span><span id="mhi_makerID"></span></li>
 	<li><span>メーカー品番:</span><span id="mhi_makerItemCode"></span></li>
 	<li><span>商品名:</span><span id="mhi_name"></span></li>
@@ -102,7 +102,7 @@
 					<div class="fieldgroupInBox mrgb10" id="ca_req">
 						<input type="hidden" id="ca_itemID"/>
 						<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect">
-							<p class="fieldName">事業ユニット</p>
+							<p class="fieldName">業態</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_unitID"></select>
 							</div>
@@ -117,7 +117,7 @@
 						</div>
 						<div class="clear"></div>
 						<div class="fieldUnit half flleft required tag mrgr20" id="div_ca_itgrpID">
-							<p class="fieldName"><span></span>品種</p>
+							<p class="fieldName"><span></span>品名(5桁)</p>
 							<div class="fieldBox">
 								<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_itgrpID"/>
 							</div>
@@ -296,9 +296,9 @@
 							</div>
 							<div class="clear"></div>
 						</div>
-						<!-- 商品区分 -->
+						<!-- 仕入・振分区分 -->
 						<div class="fieldUnit mrgb10 half flleft requiredSelect tag" id="div_ca_itemTypeID">
-							<p class="fieldName"><span></span>商品区分</p>
+							<p class="fieldName"><span></span>仕入・振分区分</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_itemTypeID"></select>
 							</div>
@@ -306,9 +306,9 @@
 						</div>
 						<div class="clear"></div>
 
-						<!-- シーズン -->
+						<!-- 季節 -->
 						<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect updateBasic" id="div_ca_seasonID">
-							<p class="fieldName"><span></span>シーズン</p>
+							<p class="fieldName"><span></span>季節</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_seasonID"></select>
 							</div>
@@ -324,9 +324,9 @@
 						</div>
 						<div class="clear"></div>
 
-						<!-- サブクラス1 -->
+						<!-- 品名(3桁) -->
 						<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect updateBasic">
-							<p class="fieldName">サブクラス1</p>
+							<p class="fieldName">品名(3桁)</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_subcls1ID"></select>
 							</div>
@@ -342,9 +342,9 @@
 						</div>
 						<div class="clear"></div>
 
-						<!-- 属性ブランド -->
+						<!-- ブランド -->
 						<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect updateEdit updateBasic">
-							<p class="fieldName">属性ブランド</p>
+							<p class="fieldName">ブランド</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_brandID"></select>
 							</div>
@@ -548,9 +548,9 @@
 						<p class="expandFieldUnits mrgb20" id="expand_spec"><span class="expand">商品仕様を入力</span><span class="unexpand dispn">商品仕様を閉じる</span></p>
 
 						<div class="fieldUnitsHidden dispn " id="spec_info">
-							<!-- 型番 -->
+							<!-- 型紙NO -->
 							<div class="fieldUnit hta updateEdit updateBasic mrgb10">
-								<p class="fieldName">型番</p>
+								<p class="fieldName">型紙NO</p>
 								<div class="fieldBox table mrgb10">
 									<table class="hilightRow list half" id="ca_table_modelno">
 									<thead id="ca_table_modelno_thead">
@@ -638,9 +638,9 @@
 						<hr />
 					</div>
 
-					<!-- タグ情報 -->
+					<!-- プライス情報 -->
 					<div class="fieldgroup mrgb10" id="ca_tagInfo">
-						<p class="gtitle">タグ情報</p>
+						<p class="gtitle">プライス情報</p>
 
 						<div class="fieldgroupInBox  ">
 							<div class="fieldUnitContainer flleft">
@@ -655,19 +655,19 @@
 									<div class="clear"></div>
 								</div>
 								<div class="clear"></div>
-								<!-- タグ発行区分 -->
+								<!-- 発行区分 -->
 								<!-- MD-3529 商品マスタ「タグ送付先」の入力制御変更_PGM開発 id追加 -->
 								<div class="fieldUnit mrgb10 mrgr20 half flleft requiredSelect updateBasic" id="div_ca_tagIssueID">
-									<p class="fieldName">タグ発行区分</p>
+									<p class="fieldName">発行区分</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_tagIssueID"></select>
 									</div>
 									<div class="clear"></div>
 								</div>
 								<div class="clear"></div>
-								<!-- タグ種別 -->
+								<!-- プライス種別 -->
 								<div class="fieldUnit mrgb10 mrgr20 half flleft updateBasic">
-									<p class="fieldName">タグ種別</p>
+									<p class="fieldName">プライス種別</p>
 									<div class="fieldBox">
 										<select multiple name="info" class="mbn wt280 cl cl_valid" id="ca_tagTypeID"></select>
 									</div>
@@ -786,7 +786,7 @@
 						<div class="clear"></div>
 					</div>
 					<div class="clear"></div>
-					<!-- /タグ情報 -->
+					<!-- /プライス情報 -->
 
 					<!-- カラー・サイズ展開 -->
 					<div class="fieldgroup mrgb10" id="ca_colorSizeInfo">
@@ -819,9 +819,9 @@
 											<table class="hilightRow list " name="ca_table_color" style="table-layout:fixed; width:496px;">
 											<thead name="ca_table_color_thead">
 												<tr>
-													<th width="280px" class="required"><span>カラー</span></th>
-													<th width="280px">サブカラー</th>
-													<th width="120px" class="required"><span>色番</span></th>
+													<th width="280px" class="required"><span>青山色</span></th>
+													<th width="280px">青山サブ色</th>
+													<th width="120px" class="required"><span>メーカー色(3桁)</span></th>
 													<th width="96px" >
 													</th>
 												</tr>
@@ -983,9 +983,9 @@
 								</div>
 								<div class="clear"></div>
 
-								<!-- 振分先センター -->
+								<!-- 発注先 -->
 								<div class="fieldUnit flleft mrgb10 updateBasic" id="div_ca_centerID">
-									<p class="fieldName bl2">振分先<br />センター</p>
+									<p class="fieldName">発注先</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 cl_valid" id="ca_centerID">
 										</select>
@@ -1024,9 +1024,9 @@
 									</div>
 									<div class="clear"></div>
 
-									<!-- 発注日 -->
+									<!-- 商談日 -->
 									<div class="fieldUnit half flleft mrgb10 mrgr20 additionalOrder orderCancel updateBasic">
-										<p class="fieldName">発注日</p>
+										<p class="fieldName">商談日</p>
 										<div class="fieldBox">
 											<div class="datepicker_wrap"><input type="text" name0="ca_orderDate" class="cl_date" disabled /></div>
 										</div>
@@ -1052,13 +1052,13 @@
 										<div class="clear"></div>
 									</div>
 
-									<!-- 仕入予定日 -->
+									<!-- 店着予定日 -->
 									<div class="fieldUnit half  flleft additionalOrder updateBasic" name="div_ca_dlvDate">
-										<p class="fieldName">仕入予定日</p>
+										<p class="fieldName">店着予定日</p>
 										<div class="fieldBox flleft">
 											<div class="datepicker_wrap"><input type="text" name0="ca_dlvDate" class="cl_date cl_valid" /></div>
 										</div>
-										<p class="txtInFieldUnit flleft help" name="help_dlvDate" title="仕入予定日以降に店舗での在庫検索が可能となります。"><span>?</span></p>
+										<p class="txtInFieldUnit flleft help" name="help_dlvDate" title="店着予定日以降に店舗での在庫検索が可能となります。"><span>?</span></p>
 										<div class="clear"></div>
 									</div>
 									<div class="clear"></div>
@@ -1172,9 +1172,9 @@
 							<div class="fieldUnitsHidden dispn" id="cost_info">
 								<hr>
 								<div id="div_import_target">
-									<!-- 通貨 -->
+									<!-- 生地通貨 -->
 									<div class="fieldUnit mrgb10 flleft half mrgr20 updateBasic" id="div_currencyID">
-										<p class="fieldName">通貨</p>
+										<p class="fieldName">生地通貨</p>
 										<div class="fieldBox">
 											<select name="info" class="mbn wt280 cl_valid" id="ca_currencyID">
 											</select>
@@ -1183,9 +1183,9 @@
 									</div>
 									<div class="clear"></div>
 
-									<!-- 為替レート -->
+									<!-- 生地為替 -->
 									<div class="fieldUnit mrgb10 flleft half mrgr10 updateBasic" id="div_exchangeRate">
-										<p class="fieldName">為替レート</p>
+										<p class="fieldName">生地為替</p>
 										<div class="fieldBox flleft">
 											<input type="text" placeholder="" class="form-control wt280 txtar flleft mrgr10 cl_valid" data-validator="decimal:3,2 min:0" id="ca_exchangeRate" />
 										</div>
@@ -1275,7 +1275,7 @@
 								<div class="clear"></div>
 							</div>
 							<div class="fieldUnit mrgb10 flleft half required" id="div_ca_price">
-								<p class="fieldName bl2"><span></span>指定上代<br />（税抜）</p>
+								<p class="fieldName"><span></span>上代（税抜）</p>
 								<div class="fieldBox">
 									<input type="text" placeholder="" class="form-control wt280 txtar cl_valid cl_required" data-validator="int:7 min:0" data-filter="comma" id="ca_price" />
 								</div>
