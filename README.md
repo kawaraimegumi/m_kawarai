@@ -1,2 +1,3 @@
 demo-client
+test
 ===============
