@@ -655,6 +655,13 @@ $(function() {
 						iagfunc_id: 'iagfunc_id7'
 					},
 				},
+				// 色
+				'clitemattrselector 色': {
+					el: "#ca_色",
+					dependSrc: {
+						iagfunc_id: 'iagfunc_id10'
+					},
+				},
 				// ベース色
 				'clitemattrselector designColor': {
 					el: "#ca_designColorID",
@@ -680,6 +687,7 @@ $(function() {
 					iagfunc_id7: iagfunc.ITEMATTRGRPFUNC_ID_SUBDESIGN,
 					iagfunc_id8: iagfunc.ITEMATTRGRPFUNC_ID_DESIGNCOLOR,
 					iagfunc_id9: iagfunc.ITEMATTRGRPFUNC_ID_USETYPE,
+					iagfunc_id10: iagfunc.ITEMATTRGRPFUNC_ID_COLOR,
 				}
 			});
 			this.fieldRelation.done(function() {

@@ -245,7 +245,7 @@
 						<input type="hidden" id="ca_id" />
 
 						<!-- 承認期限日 -->
-						<div class="fieldUnit half flleft mrgb10 mrgr20 required additionalOrder orderCancel updateBasic" id="div_ca_approveLimitDate">
+						<div class="fieldUnit half flleft mrgb10 mrgr20 required additionalOrder orderCancel updateBasic dispn" id="div_ca_approveLimitDate">
 							<p class="fieldName">承認期限日</p>
 							<div class="fieldBox">
 								<div class="datepicker_wrap"><input type="text" id="ca_approveLimitDate" class="cl_date cl_valid cl_required" /></div>
@@ -253,7 +253,7 @@
 							<div class="clear"></div>
 						</div>
 
-						<div class="fieldUnit flleft mrgb10 ">
+						<div class="fieldUnit flleft mrgb10 dispn">
 							<p class="fieldName">適用期間</p>
 							<div class="fieldBox">
 
@@ -353,7 +353,7 @@
 							<div class="clear"></div>
 						</div>
 						<!-- サブクラス2 -->
-						<div class="fieldUnit mrgb10 half flleft requiredSelect tag updateBasic">
+						<div class="fieldUnit mrgb10 half flleft requiredSelect tag updateBasic dispn">
 							<p class="fieldName bl2"><span></span>サブ<br />クラス2</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_subcls2ID"></select>
@@ -401,6 +401,17 @@
 							</div>
 							<div class="clear"></div>
 
+							<!-- 素材手入力欄 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft dispn">
+								<p class="fieldName"></p>
+								<div class="fieldBox">
+									<span class="limit wt40 flright mrgl240"></span>
+									<input type="text" placeholder="（素材手入力欄）" class="form-control wt280 cl_valid" data-tflimit="20" data-validator="maxlen:20 zenkaku" id="ca_materialText"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
 							<!-- 色 -->
 							<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
 								<p class="fieldName">色</p>
@@ -416,17 +427,6 @@
 								<p class="fieldName">サブ色</p>
 								<div class="fieldBox">
 									<select name="info" class="mbn wt280 cl_valid" id="ca_サブ色"></select>
-								</div>
-								<div class="clear"></div>
-							</div>
-							<div class="clear"></div>
-
-							<!-- 素材手入力欄 -->
-							<div class="fieldUnit mrgb10 mrgr20 half flleft ">
-								<p class="fieldName"></p>
-								<div class="fieldBox">
-									<span class="limit wt40 flright mrgl240"></span>
-									<input type="text" placeholder="（素材手入力欄）" class="form-control wt280 cl_valid" data-tflimit="20" data-validator="maxlen:20 zenkaku" id="ca_materialText"/>
 								</div>
 								<div class="clear"></div>
 							</div>
@@ -690,7 +690,7 @@
 								<div class="clear"></div>
 
 								<!-- KI区分 -->
-								<div class="fieldUnit half flleft mrgb10 mrgr20 required tag updateBasic" id="div_ca_kiTypeID">
+								<div class="fieldUnit half flleft mrgb10 mrgr20 required tag updateBasic dispn" id="div_ca_kiTypeID">
 									<p class="fieldName"><span></span>Ki区分</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_kiTypeID">
@@ -700,7 +700,7 @@
 								</div>
 
 								<!-- 発注ロット単位数 -->
-								<div class="fieldUnit half flleft mrgb10 updateBasic" id="div_ca_lotCount">
+								<div class="fieldUnit half flleft mrgb10 updateBasic dispn" id="div_ca_lotCount">
 									<p class="fieldName bl2">出荷最少<br />単位数</p>
 									<div class="fieldBox flleft">
 										<input type="text" placeholder="" class="form-control wt280 txtar cl_valid" data-filter="comma" data-validator="int:4 min:1" id="ca_lotCount"/>
@@ -752,7 +752,7 @@
 									<!-- 承認フラグ -->
 									<input type="hidden" name0="ca_approveFlag" value="<%- approveFlag %>" />
 									<!-- 発注対象 -->
-									<div class="fieldUnit half flleft mrgb10 mrgr20 additionalOrder updateBasic" name0="div_ca_orderTgtTypeID">
+									<div class="fieldUnit half flleft mrgb10 mrgr20 additionalOrder updateBasic dispn" name0="div_ca_orderTgtTypeID">
 										<p class="fieldName ">発注対象</p>
 										<div class="fieldBox">
 											<select name="info" class="mbn wt280 cl_valid" name0="ca_orderTgtTypeID">
@@ -762,7 +762,7 @@
 									</div>
 
 									<!-- タグ送付先 -->
-									<div class="fieldUnit flleft mrgb10 additionalOrder updateBasic">
+									<div class="fieldUnit flleft mrgb10 additionalOrder updateBasic dispn">
 										<p class="fieldName ">タグ送付先</p>
 										<div class="fieldBox">
 											<select name="info" class="mbn wt280 cl_valid" name0="ca_tagaddrNo">
@@ -821,7 +821,7 @@
 									</div>
 
 									<!-- タグ増産率 -->
-									<div class="fieldUnit flleft mrgb10 updateBasic" name="div_ca_tagIncRate">
+									<div class="fieldUnit flleft mrgb10 updateBasic dispn" name="div_ca_tagIncRate">
 										<p class="fieldName">タグ増産率</p>
 										<div class="fieldBox flleft">
 											<input type="text" placeholder="" class="form-control wt280 txtar cl_valid" data-validator="int:1 min:0 max:5" name0="ca_tagIncRate"/>
@@ -961,7 +961,7 @@
 								<div class="clear"></div>
 
 								<!-- 追加定形タグ番号1 -->
-								<div class="fieldUnit half flleft mrgb10 mrgr20 ">
+								<div class="fieldUnit half flleft mrgb10 mrgr20 dispn">
 									<p class="fieldName bl2">追加定形<br >タグ番号1</p>
 									<div class="fieldBox">
 										<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_fixedFormTag1Code"/>
@@ -971,7 +971,7 @@
 								<div class="clear"></div>
 
 								<!-- 追加定形タグ番号2 -->
-								<div class="fieldUnit half flleft mrgb10 mrgr20 ">
+								<div class="fieldUnit half flleft mrgb10 mrgr20 dispn">
 									<p class="fieldName bl2">追加定形<br >タグ番号2</p>
 									<div class="fieldBox">
 										<input type="text" placeholder="" class="form-control wt280 cl_valid" id="ca_fixedFormTag2Code"/>
@@ -991,7 +991,7 @@
 								<div class="clear"></div>
 
 								<!-- 生産国（タグ表示用） -->
-								<div class="fieldUnit half flleft mrgb10 mrgr20 updateBasic" id="div_ca_tagImportID">
+								<div class="fieldUnit half flleft mrgb10 mrgr20 updateBasic dispn" id="div_ca_tagImportID">
 									<p class="fieldName bl2"><span></span>生産国（タグ表示用）</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 cl_valid" id="ca_tagImportID"></select>
@@ -1480,21 +1480,21 @@
 							<hr>
 
 							<div class="">
-								<div class="fieldUnit mrgb10 flleft mrgr20 tag updateBasic" id="div_ca_year">
+								<div class="fieldUnit mrgb10 flleft mrgr20 tag updateBasic dispn" id="div_ca_year">
 									<p class="fieldName"><span></span>商品展開年</p>
 									<div class="fieldBox">
 										<input type="text" placeholder="" class="form-control wt140 txtar" disabled id="ca_year" disable/>
 									</div>
 									<div class="clear"></div>
 								</div>
-								<div class="fieldUnit mrgb10 flleft mrgr20 required updateBasic">
+								<div class="fieldUnit mrgb10 flleft mrgr20 required updateBasic dispn">
 									<p class="fieldName">販売開始日</p>
 									<div class="fieldBox">
 										<div class="datepicker_wrap"><input type="text" id="ca_salesStartDate" class="cl_date cl_valid cl_required" /></div>
 									</div>
 									<div class="clear"></div>
 								</div>
-								<div class="fieldUnit mrgb10 flleft mrgr20 required updateBasic">
+								<div class="fieldUnit mrgb10 flleft mrgr20 required updateBasic dispn">
 									<p class="fieldName">販売終了日</p>
 									<div class="fieldBox">
 										<div class="datepicker_wrap"><input type="text" id="ca_salesEndDate" class="cl_date cl_valid cl_required" /></div>
@@ -1502,7 +1502,7 @@
 									<div class="clear"></div>
 								</div>
 								<div class="clear"></div>
-								<div class="fieldUnit mrgb10 flleft mrgr20 required tag updateBasic" id="div_ca_selloutYear">
+								<div class="fieldUnit mrgb10 flleft mrgr20 required tag updateBasic dispn" id="div_ca_selloutYear">
 									<p class="fieldName"><span></span>売り切り年</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt140 cl_valid cl_required" id="ca_selloutYear">
@@ -1510,7 +1510,7 @@
 									</div>
 									<div class="clear"></div>
 								</div>
-								<div class="fieldUnit mrgb10 flleft mrgr20 required tag updateBasic">
+								<div class="fieldUnit mrgb10 flleft mrgr20 required tag updateBasic dispn">
 									<p class="fieldName bl2"><span></span>売り切り<br />シーズン</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_selloutSeasonID">
@@ -1519,7 +1519,7 @@
 									<div class="clear"></div>
 								</div>
 								<div class="clear"></div>
-								<hr />
+								<!-- <hr /> -->
 
 								<!-- セットアップフラグ -->
 								<div class="fieldUnit flleft mrgb10 tag updateBasic" id="div_ca_setupFlagg">
@@ -1618,7 +1618,7 @@
 							</div>
 							<div class="clear"></div>
 							<script id="ca_rec_template_any" type="text/template">
-								<div class="fieldUnit mrgb10 flleft mrgr20" name="div_any">
+								<div class="fieldUnit mrgb10 flleft mrgr20 dispn" name="div_any">
 									<p class="fieldName"><%- iagfuncName %></p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 ca_iagID cl_valid">

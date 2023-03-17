@@ -4024,6 +4024,10 @@ $(function() {
 			// 素材
 			$select = $("#ca_materialID");
 			this.clitemattrselector($select, iagfunc.ITEMATTRGRPFUNC_ID_MATERIAL, 0, attr.materialID, 1);
+			// 色
+			this.clitemattrselector($('#ca_色'), iagfunc.ITEMATTRGRPFUNC_ID_COLOR, 0, 0, 1);
+			// サブ色
+			this.clitemattrselector($('#ca_サブ色'), iagfunc.ITEMATTRGRPFUNC_ID_DESIGNCOLOR, 0, 0, 1);
 			// 柄
 			$select = $("#ca_designID");
 			this.clitemattrselector($select, iagfunc.ITEMATTRGRPFUNC_ID_DESIGN, 0, attr.designID, 1);
@@ -6536,7 +6540,8 @@ $(function() {
 				// 販売開始日
 				clutil.datepicker($("#ca_salesStartDate"));
 				clutil.datepicker($("#ca_salesEndDate"));
-
+				// プライス発行日
+				clutil.datepicker($('#ca_プライス発行日'));
 				if (this.opeTypeId == am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW) {
 					// 適用期間
 					clutil.inputReadonly($("#ca_fromDate"));
@@ -8130,6 +8135,28 @@ $(function() {
 
 		// 更新系のリクエストを作る
 		_buildSubmitReqFunction: function(opeTypeId, pgIndex){
+			// デモ環境要望対応(start)
+			var attrItemMap = this.attrItemMap;
+			// 承認期限日
+			$('#ca_approveLimitDate').datepicker('setIymd', clcom.getOpeDate());
+			// サブクラス2
+			$('#ca_subcls2ID').selectpicker('val', _.first(attrItemMap[iagfunc.ITEMATTRGRPFUNC_ID_SUBCLS2]).iagID);
+			// Ki区分
+			$('#ca_kiTypeID').selectpicker('val', amcm_type.AMCM_VAL_KI_PURCHASE);
+			// 出荷最小単位
+			$('#ca_lotCount').val(1);
+			// タグ増産率
+			$('#ca_tagIncRate').val(0);
+			// 販売開始日
+			$('#ca_salesStartDate').datepicker('setIymd', clcom.getOpeDate());
+			// 販売終了日
+			$('#ca_salesEndDate').datepicker('setIymd', clcom.getOpeDate() + 10000);
+			// 売り切り年
+			$('#ca_selloutYear').selectpicker('val', clutil.dateFormat(clcom.getOpeDate() + 10000, 'yyyy'));
+			// 売り切りシーズン
+			$('#ca_selloutSeasonID').selectpicker('val', amcm_type.AMCM_VAL_SEASON_ALL);
+			// デモ環境要望対応(end)
+
 			console.log('_buildGetReqFunction: opeTypeId[' + opeTypeId + '] pgIndex[' + pgIndex + ']');
 
 			this.validator.clear();
