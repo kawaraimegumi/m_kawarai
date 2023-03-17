@@ -268,6 +268,26 @@
 						</div>
 						<div class="clear"></div>
 
+						<!-- 契約番号 -->
+						<div class="fieldUnit mrgb10 mrgr20 half flleft">
+							<p class="fieldName"><span></span>契約番号</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240"></span>
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_契約番号"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!-- メーカー担当者 -->
+						<div class="fieldUnit mrgb10 mrgr20 half flleft">
+							<p class="fieldName"><span></span>メーカー担当者</p>
+							<div class="fieldBox">
+								<span class="limit wt40 flright mrgl240"></span>
+								<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_メーカー担当者"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+
 						<!-- メーカー -->
 						<div class="fieldUnit mrgb10 half flleft required tag mrgr20" id="div_ca_makerID">
 							<p class="fieldName"><span></span>メーカー</p>
@@ -360,6 +380,14 @@
 							</div>
 							<div class="clear"></div>
 						</div>
+						<!-- テイスト -->
+						<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
+							<p class="fieldName">テイスト</p>
+							<div class="fieldBox">
+								<select name="info" class="mbn wt280 cl_valid" id="ca_テイスト"></select>
+							</div>
+							<div class="clear"></div>
+						</div>
 						<div class="clear"></div>
 
 						<div class="fieldUnitContainer flleft ">
@@ -368,6 +396,26 @@
 								<p class="fieldName">素材</p>
 								<div class="fieldBox">
 									<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_materialID"></select>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- 色 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
+								<p class="fieldName">色</p>
+								<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_色"></select>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- サブ色 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
+								<p class="fieldName">サブ色</p>
+								<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_サブ色"></select>
 								</div>
 								<div class="clear"></div>
 							</div>
@@ -421,6 +469,16 @@
 								<p class="fieldName">用途区分</p>
 								<div class="fieldBox">
 									<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_usetypeID"></select>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+							<!-- 販促企画 -->
+							<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
+								<p class="fieldName">販促企画</p>
+								<div class="fieldBox">
+									<select name="info" class="mbn wt280 cl_valid" id="ca_販促企画"></select>
 								</div>
 								<div class="clear"></div>
 							</div>
@@ -670,6 +728,37 @@
 									<p class="fieldName">プライス種別</p>
 									<div class="fieldBox">
 										<select multiple name="info" class="mbn wt280 cl cl_valid" id="ca_tagTypeID"></select>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<!-- プライス発行先 -->
+								<div class="fieldUnit mrgb10 mrgr20 half flleft">
+									<p class="fieldName"><span></span>プライス発行先</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_プライス発行先"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<!-- プライス発行日 -->
+								<div class="fieldUnit half flleft mrgb10 mrgr20 additionalOrder orderCancel updateBasic">
+									<p class="fieldName">プライス発行日</p>
+									<div class="fieldBox">
+										<div class="datepicker_wrap"><input type="text" id="ca_プライス発行日" class="cl_date cl_valid" /></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<div class="clear"></div>
+
+								<!-- 袖区分 -->
+								<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
+									<p class="fieldName">袖区分</p>
+									<div class="fieldBox">
+										<select name="info" class="mbn wt280 cl_valid" id="ca_袖区分"></select>
 									</div>
 									<div class="clear"></div>
 								</div>
@@ -1090,6 +1179,17 @@
 									</div>
 									<div class="clear"></div>
 
+									<!-- 商談担当者 -->
+									<div class="fieldUnit mrgb10 mrgr20 half flleft">
+										<p class="fieldName"><span></span>商談担当者</p>
+										<div class="fieldBox">
+											<span class="limit wt40 flright mrgl240"></span>
+											<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_商談担当者"/>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+
 									<div class="fieldUnit half flleft mrgb10 mrgr20">
 										<p class="fieldName bl2"></p>
 										<div class="fieldBox">
@@ -1181,6 +1281,14 @@
 										</div>
 										<div class="clear"></div>
 									</div>
+									<!-- 工賃通貨 -->
+									<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
+										<p class="fieldName">工賃通貨</p>
+										<div class="fieldBox">
+											<select name="info" class="mbn wt280 cl_valid" id="ca_工賃通貨"></select>
+										</div>
+										<div class="clear"></div>
+									</div>
 									<div class="clear"></div>
 
 									<!-- 生地為替 -->
@@ -1190,9 +1298,20 @@
 											<input type="text" placeholder="" class="form-control wt280 txtar flleft mrgr10 cl_valid" data-validator="decimal:3,2 min:0" id="ca_exchangeRate" />
 										</div>
 									</div>
+									<div class="fieldUnit mrgb10 flleft half mrgr20" id="div_yen" style="width: 0;">
+										<p class="fieldName flleft txtal">円</p>
+									</div>
+									<!-- 工賃為替 -->
+									<div class="fieldUnit mrgb10 flleft half mrgr10 updateBasic">
+										<p class="fieldName">工賃為替</p>
+										<div class="fieldBox flleft">
+											<input type="text" placeholder="" class="form-control wt280 txtar flleft mrgr10 cl_valid" data-validator="decimal:3,2 min:0" id="ca_工賃為替" />
+										</div>
+									</div>
 									<div class="fieldUnit mrgb10 flleft half mrgr20" id="div_yen">
 										<p class="fieldName flleft txtal">円</p>
 									</div>
+									<div class="clear"></div>
 								</div>
 								<div class="clear"></div>
 
@@ -1412,6 +1531,19 @@
 									<div class="fieldBox flleft">
 										<div class="flleft wt200">
 											<label class="checkbox flleft mrgr30" for=""><input type="checkbox" id="ca_setupFlag" data-toggle="checkbox" />セットアップ</label>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								<!-- セットアップ品番 -->
+								<div class="fieldUnit mrgb10 mrgr20 half flleft">
+									<p class="fieldName"><span></span>セットアップ品番</p>
+									<div class="fieldBox">
+										<span class="limit wt40 flright mrgl240"></span>
+										<div style="display: flex;">
+											<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_セットアップ品番1"/>
+											<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_セットアップ品番2"/>
+											<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_セットアップ品番3"/>
 										</div>
 									</div>
 									<div class="clear"></div>
