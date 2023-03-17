@@ -4021,6 +4021,16 @@ $(function() {
 			// スタイル
 			$select = $("#ca_styleID");
 			this.clitemattrselector($select, iagfunc.ITEMATTRGRPFUNC_ID_STYLE, 0, attr.styleID, 1);
+			// テイスト
+			clutil.cltypeselector2(
+				this.$('#ca_テイスト'),
+				[
+					{ id: 1, code: '001', name: 'ベーシック' },
+					{ id: 2, code: '002', name: 'タウン' },
+					{ id: 3, code: '003', name: 'ヨーロピアン' },
+					{ id: 4, code: '004', name: 'モード' },
+				]
+			);
 			// 素材
 			$select = $("#ca_materialID");
 			this.clitemattrselector($select, iagfunc.ITEMATTRGRPFUNC_ID_MATERIAL, 0, attr.materialID, 1);
@@ -4040,6 +4050,15 @@ $(function() {
 			// 用途区分
 			$select = $("#ca_usetypeID");
 			this.clitemattrselector($select, iagfunc.ITEMATTRGRPFUNC_ID_USETYPE, 0, attr.usetypeID, 1);
+			// 販促企画
+			clutil.cltypeselector2(
+				this.$('#ca_販促企画'),
+				[
+					{ id: 1, code: '001', name: 'キャリア' },
+					{ id: 2, code: '002', name: '就活' },
+					{ id: 4, code: '004', name: 'セットアップ' },
+				]
+			);
 			// 糸LOX
 			$select = $("#ca_itoloxID");
 			this.clitemattrselector($select, iagfunc.ITEMATTRGRPFUNC_ID_ITOLOX, 0, attr.itoloxID, 1);
@@ -4850,7 +4869,10 @@ $(function() {
 			// 承認期限日
 			clutil.inputRemoveReadonly($("#ca_approveLimitDate"));
 			// 適用期間は入力不可のまま
-
+			// 契約番号
+			clutil.inputRemoveReadonly($("#ca_契約番号"));
+			// メーカー担当者
+			clutil.inputRemoveReadonly($("#ca_メーカー担当者"));
 			// メーカーの読取り固定を解除
 			clutil.unfixReadonly($("#ca_makerID"));
 			// メーカー
@@ -4880,11 +4902,19 @@ $(function() {
 			// スタイル
 			$div = $("#ca_styleID").parent();
 			clutil.viewRemoveReadonly($div);
+			// テイスト
+			$div = $("#ca_テイスト").parent();
+			clutil.viewRemoveReadonly($div);
 			// 素材
 			$div = $("#ca_materialID").parent();
 			clutil.viewRemoveReadonly($div);
 			// 素材手入力欄はここではいじらない
-
+			// 色
+			$div = $("#ca_色").parent();
+			clutil.viewRemoveReadonly($div);
+			// サブ色
+			$div = $("#ca_サブ色").parent();
+			clutil.viewRemoveReadonly($div);
 			// 柄
 			$div = $("#ca_designID").parent();
 			clutil.viewRemoveReadonly($div);
@@ -4896,6 +4926,9 @@ $(function() {
 			clutil.viewRemoveReadonly($div);
 			// 用途区分
 			$div = $("#ca_usetypeID").parent();
+			clutil.viewRemoveReadonly($div);
+			// 販促企画
+			$div = $("#ca_販促企画").parent();
 			clutil.viewRemoveReadonly($div);
 
 			// 画像は特になし
@@ -5189,8 +5222,13 @@ $(function() {
 			// 通貨
 			$div = $("#ca_currencyID").parent();
 			clutil.viewRemoveReadonly($div);
+			// 工賃通貨
+			$div = $("#ca_工賃通貨").parent();
+			clutil.viewRemoveReadonly($div);
 			// 為替レート
 			clutil.inputRemoveReadonly($("#ca_exchangeRate"));
+			// 工賃為替
+			clutil.inputRemoveReadonly($("#ca_工賃為替"));
 			// 下代構成テーブル
 			$table = $("#ca_table_cost_in");
 			clutil.viewRemoveReadonly($table);
@@ -5248,6 +5286,10 @@ $(function() {
 			clutil.viewRemoveReadonly($div);
 			// セットアップフラグ
 			clutil.inputRemoveReadonly($("#ca_setupFlag"));
+			// セットアップ品番
+			clutil.inputRemoveReadonly($("#ca_セットアップ品番1"));
+			clutil.inputRemoveReadonly($("#ca_セットアップ品番2"));
+			clutil.inputRemoveReadonly($("#ca_セットアップ品番3"));
 			// 組合せ販売紐付け
 			clutil.inputRemoveReadonly($("#btn_bundleView"));
 			clutil.inputRemoveReadonly($("#btn_bundleClear"));
@@ -5364,7 +5406,10 @@ $(function() {
 					clutil.inputReadonly($("#ca_approveLimitDate"));
 				}
 				// 適用期間は入力不可のまま
-
+				// 契約番号
+				clutil.inputReadonly($("#ca_契約番号"));
+				// メーカー担当者
+				clutil.inputReadonly($("#ca_メーカー担当者"));
 				// メーカー
 				clutil.inputReadonly($("#ca_makerID"));
 				// メーカーを読取り固定にする
@@ -5396,12 +5441,20 @@ $(function() {
 				// スタイル
 				$div = $("#ca_styleID").parent();
 				clutil.viewReadonly($div);
+				// テイスト
+				$div = $("#ca_テイスト").parent();
+				clutil.viewReadonly($div);
 				// 素材
 				$div = $("#ca_materialID").parent();
 				clutil.viewReadonly($div);
 				// 素材手入力欄はここではいじらない
 				clutil.inputReadonly($("#ca_materialText"));
-
+				// 色
+				$div = $("#ca_色").parent();
+				clutil.viewReadonly($div);
+				// サブ色
+				$div = $("#ca_サブ色").parent();
+				clutil.viewReadonly($div);
 				// 柄
 				$div = $("#ca_designID").parent();
 				clutil.viewReadonly($div);
@@ -5413,6 +5466,9 @@ $(function() {
 				clutil.viewReadonly($div);
 				// 用途区分
 				$div = $("#ca_usetypeID").parent();
+				clutil.viewReadonly($div);
+				// 販促企画
+				$div = $("#ca_販促企画").parent();
 				clutil.viewReadonly($div);
 
 				// 画像は特になし
@@ -5455,6 +5511,10 @@ $(function() {
 				clutil.inputReadonly($("#ca_specComment"));
 				break;
 			case 4:	// 承認不要編集
+				// 契約番号
+				clutil.inputRemoveReadonly($("#ca_契約番号"));
+				// メーカー担当者
+				clutil.inputRemoveReadonly($("#ca_メーカー担当者"));
 				// 商品名
 				clutil.inputRemoveReadonly($("#ca_name"));
 				// 商品区分
@@ -5480,8 +5540,17 @@ $(function() {
 				// スタイル
 				$div = $("#ca_styleID").parent();
 				clutil.viewRemoveReadonly($div);
+				// テイスト
+				$div = $("#ca_テイスト").parent();
+				clutil.viewRemoveReadonly($div);
 				// 素材
 				$div = $("#ca_materialID").parent();
+				clutil.viewRemoveReadonly($div);
+				// 色
+				$div = $("#ca_色").parent();
+				clutil.viewRemoveReadonly($div);
+				// サブ色
+				$div = $("#ca_サブ色").parent();
 				clutil.viewRemoveReadonly($div);
 				// 柄
 				$div = $("#ca_designID").parent();
@@ -5494,6 +5563,9 @@ $(function() {
 				clutil.viewRemoveReadonly($div);
 				// 用途区分
 				$div = $("#ca_usetypeID").parent();
+				clutil.viewRemoveReadonly($div);
+				// 販促企画
+				$div = $("#ca_販促企画").parent();
 				clutil.viewRemoveReadonly($div);
 				// 倉庫在庫開示
 				clutil.inputRemoveReadonly("#ca_centerStockFlag");
@@ -5548,6 +5620,10 @@ $(function() {
 				clutil.inputRemoveReadonly($("#ca_specComment"));
 				break;
 			case 5:	// 基本情報変更
+				// 契約番号
+				clutil.inputRemoveReadonly($("#ca_契約番号"));
+				// メーカー担当者
+				clutil.inputRemoveReadonly($("#ca_メーカー担当者"));
 				// 商品名
 				clutil.inputRemoveReadonly($("#ca_name"));
 				// 商品区分
@@ -5579,8 +5655,17 @@ $(function() {
 				// スタイル
 				$div = $("#ca_styleID").parent();
 				clutil.viewRemoveReadonly($div);
+				// テイスト
+				$div = $("#ca_テイスト").parent();
+				clutil.viewRemoveReadonly($div);
 				// 素材
 				$div = $("#ca_materialID").parent();
+				clutil.viewRemoveReadonly($div);
+				// 色
+				$div = $("#ca_色").parent();
+				clutil.viewRemoveReadonly($div);
+				// サブ色
+				$div = $("#ca_サブ色").parent();
 				clutil.viewRemoveReadonly($div);
 				// 柄
 				$div = $("#ca_designID").parent();
@@ -5593,6 +5678,9 @@ $(function() {
 				clutil.viewRemoveReadonly($div);
 				// 用途区分
 				$div = $("#ca_usetypeID").parent();
+				clutil.viewRemoveReadonly($div);
+				// 販促企画
+				$div = $("#ca_販促企画").parent();
 				clutil.viewRemoveReadonly($div);
 				// 倉庫在庫開示
 				clutil.inputRemoveReadonly("#ca_centerStockFlag");
@@ -5688,6 +5776,15 @@ $(function() {
 				clutil.viewReadonly($div);
 				// タグ種別
 				$div = $("#ca_tagTypeID").parent();
+				clutil.viewReadonly($div);
+				// プライス発行先
+				$div = $("#ca_プライス発行先").parent();
+				clutil.viewReadonly($div);
+				// プライス発行日
+				$div = $("#ca_プライス発行日").parent();
+				clutil.viewReadonly($div);
+				// 袖区分
+				$div = $("#ca_袖区分").parent();
 				clutil.viewReadonly($div);
 
 				// 追加定形タグ番号１
@@ -6098,8 +6195,13 @@ $(function() {
 				// 通貨
 				$div = $("#ca_currencyID").parent();
 				clutil.viewReadonly($div);
+				// 工賃通貨
+				$div = $("#ca_工賃通貨").parent();
+				clutil.viewReadonly($div);
 				// 為替レート
 				clutil.inputReadonly($("#ca_exchangeRate"));
+				// 工賃為替
+				clutil.inputReadonly($("#ca_工賃為替"));
 				// 下代構成テーブル
 				$table = $("#ca_table_cost_in");
 				clutil.viewReadonly($table);
@@ -6217,6 +6319,10 @@ $(function() {
 				}
 				// セットアップフラグ
 				clutil.inputReadonly($("#ca_setupFlag"));
+				// セットアップ品番
+				clutil.inputReadonly($("#ca_セットアップ品番1"));
+				clutil.inputReadonly($("#ca_セットアップ品番2"));
+				clutil.inputReadonly($("#ca_セットアップ品番3"));
 				// 組合せ販売紐付け
 				clutil.inputReadonly($("#btn_bundleView"));
 				clutil.inputReadonly($("#btn_bundleClear"));
@@ -6432,8 +6538,14 @@ $(function() {
 			// タグ種別
 			clutil.cltypeselector(this.$('#ca_tagTypeID'), amcm_type.AMCM_TYPE_TAG);
 
+			// 袖区分
+			clutil.cltypeselector(this.$("#ca_袖区分"), amcm_type.AMCM_TYPE_ARM_TYPE);
+
 			// 通貨区分
 			clutil.cltypeselector(this.$("#ca_currencyID"), amcm_type.AMCM_TYPE_CURRENCY);
+
+			// 工賃通貨
+			clutil.cltypeselector(this.$("#ca_工賃通貨"), amcm_type.AMCM_TYPE_CURRENCY);
 
 			// 商品売り切り年
 			clutil.clyearselector($("#ca_selloutYear"), 1, 2, 5);

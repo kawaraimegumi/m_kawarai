@@ -577,6 +577,27 @@ $(function() {
 			// サブシーズン
 			clutil.cltypeselector(this.$('#ca_subSeasonTypeID'), amcm_type.AMCM_TYPE_SUBSEASON);
 
+			// テイスト
+			clutil.cltypeselector2(
+				this.$('#ca_テイスト'),
+				[
+					{ id: 1, code: '001', name: 'ベーシック' },
+					{ id: 2, code: '002', name: 'タウン' },
+					{ id: 3, code: '003', name: 'ヨーロピアン' },
+					{ id: 4, code: '004', name: 'モード' },
+				]
+			);
+
+			// 販促企画
+			clutil.cltypeselector2(
+				this.$('#ca_販促企画'),
+				[
+					{ id: 1, code: '001', name: 'キャリア' },
+					{ id: 2, code: '002', name: '就活' },
+					{ id: 4, code: '004', name: 'セットアップ' },
+				]
+			);
+
 			// 商品展開年
 			clutil.clyearselector({
 				el: $("#ca_year"),
