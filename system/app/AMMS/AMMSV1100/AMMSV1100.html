@@ -776,7 +776,7 @@
 									<div class="fieldUnit half flleft mrgb10 mrgr20 additionalOrder orderCancel updateBasic">
 										<p class="fieldName">商談日</p>
 										<div class="fieldBox">
-											<div class="datepicker_wrap"><input type="text" name0="ca_orderDate" class="cl_date" disabled /></div>
+											<div class="datepicker_wrap"><input type="text" name0="ca_orderDate" class="cl_date cl_valid" /></div>
 										</div>
 										<div class="clear"></div>
 									</div>
@@ -812,7 +812,7 @@
 									<div class="clear"></div>
 
 									<!-- 発注番号 -->
-									<div class="fieldUnit half flleft mrgb10 mrgr20">
+									<div class="fieldUnit half flleft mrgb10 mrgr20 dispn">
 										<p class="fieldName ">発注書番号</p>
 										<div class="fieldBox">
 											<input type="text" placeholder="" class="form-control wt280" name0="ca_orderNo" disabled />
@@ -930,11 +930,10 @@
 								<div class="clear"></div>
 
 								<!-- プライス発行先 -->
-								<div class="fieldUnit mrgb10 mrgr20 half flleft">
-									<p class="fieldName"><span></span>プライス発行先</p>
+								<div class="fieldUnit mrgb10 mrgr20 half flleft updateEdit updateBasic">
+									<p class="fieldName">プライス発行先</p>
 									<div class="fieldBox">
-										<span class="limit wt40 flright mrgl240"></span>
-										<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="" data-validator="" id="ca_プライス発行先"/>
+										<select name="info" class="mbn wt280 cl_valid" id="ca_プライス発行先"></select>
 									</div>
 									<div class="clear"></div>
 								</div>

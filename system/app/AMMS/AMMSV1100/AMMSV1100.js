@@ -1655,7 +1655,7 @@ $(function() {
 					clutil.inputReadonly($div.find('input.cl_date'));
 				}
 			}, this));
-			clutil.inputReadonly($div.find('input[name0="ca_orderDate"]'));		// 常に操作不可
+			// clutil.inputReadonly($div.find('input[name0="ca_orderDate"]'));		// 常に操作不可
 
 			// 発注書番号
 			if (orderHeadRec.orderNo != null && orderHeadRec.orderNo != 0) {
@@ -4489,7 +4489,7 @@ $(function() {
 							this.setReadonly_commentListInfo(7);
 							m = 7;
 						}
-						clutil.inputReadonly($('input[name0="ca_orderDate"]'));
+						// clutil.inputReadonly($('input[name0="ca_orderDate"]'));
 						this.rerenderTableSpec(specChoiceList, m);
 						this.mdBaseView.setSubmitEnable(true);	// フッターを活性化
 						break;
@@ -4533,7 +4533,7 @@ $(function() {
 					clutil.inputReadonly($("#ca_fromDate"));
 					clutil.inputReadonly($("#ca_toDate"));
 
-					clutil.inputReadonly($('input[name0="ca_orderDate"]'));
+					// clutil.inputReadonly($('input[name0="ca_orderDate"]'));
 
 					var $div = $('div#ca_orderInfoFixed');
 					var $centerID = $div.find('select#ca_centerID');
@@ -5144,6 +5144,9 @@ $(function() {
 					clutil.viewRemoveReadonly($div);
 					// 発注日はいじらない
 
+					// 商談日
+					var $input = $div_o.find('input[name0="ca_orderDate"]');
+					clutil.inputRemoveReadonly($input);
 					// 製品仕上げ日
 					var $input = $div_o.find('input[name0="ca_finishDate"]');
 					clutil.inputRemoveReadonly($input);
@@ -5176,6 +5179,9 @@ $(function() {
 					clutil.viewReadonly($div);
 					// 発注日はいじらない
 
+					// 商談日
+					var $input = $div_o.find('input[name0="ca_orderDate"]');
+					clutil.inputReadonly($input);
 					// 製品仕上げ日
 					var $input = $div_o.find('input[name0="ca_finishDate"]');
 					clutil.inputReadonly($input);
@@ -5937,6 +5943,9 @@ $(function() {
 					clutil.viewReadonly($div);
 					// 発注日はいじらない
 
+					// 商談日
+					var $input = $div_o.find('input[name0="ca_orderDate"]');
+					clutil.inputReadonly($input);
 					// 製品仕上げ日
 					var $input = $div_o.find('input[name0="ca_finishDate"]');
 					clutil.inputReadonly($input);
@@ -6011,6 +6020,9 @@ $(function() {
 						clutil.viewReadonly($div);
 						// 発注日はいじらない
 
+						// 商談日
+						var $input = $div_o.find('input[name0="ca_orderDate"]');
+						clutil.inputReadonly($input);
 						// 製品仕上げ日
 						var $input = $div_o.find('input[name0="ca_finishDate"]');
 						clutil.inputReadonly($input);
@@ -6078,6 +6090,9 @@ $(function() {
 						clutil.viewReadonly($div);
 						// 発注日はいじらない
 
+						// 商談日
+						var $input = $div_o.find('input[name0="ca_orderDate"]');
+						clutil.inputReadonly($input);
 						// 製品仕上げ日
 						var $input = $div_o.find('input[name0="ca_finishDate"]');
 						clutil.inputReadonly($input);
@@ -6137,6 +6152,9 @@ $(function() {
 					clutil.viewRemoveReadonly($div);
 					// 発注日はいじらない
 
+					// 商談日
+					var $input = $div_o.find('input[name0="ca_orderDate"]');
+					clutil.inputRemoveReadonly($input);
 					// 製品仕上げ日
 					var $input = $div_o.find('input[name0="ca_finishDate"]');
 					clutil.inputRemoveReadonly($input);
@@ -6538,6 +6556,17 @@ $(function() {
 
 			// タグ種別
 			clutil.cltypeselector(this.$('#ca_tagTypeID'), amcm_type.AMCM_TYPE_TAG);
+
+			// プライス発行先
+			clutil.cltypeselector3({
+				$select: this.$('#ca_プライス発行先'),
+				list: [
+					{ id: 1, code: '00001', name: 'ジャスト(株)' },
+					{ id: 2, code: '00002', name: '服良(株)' },
+					{ id: 22, code: '00022', name: '(株)水甚' },
+				],
+				unselectedflag: true
+			});
 
 			// 袖区分
 			clutil.cltypeselector(this.$("#ca_袖区分"), amcm_type.AMCM_TYPE_ARM_TYPE);
@@ -9738,7 +9767,7 @@ $(function() {
 				// 発注情報
 				clutil.viewRemoveReadonly($("#ca_orderInfo"));
 				// 発注日は入力不可（なんかいい方法ないかな？）
-				clutil.inputReadonly($('input[name0="ca_orderDate"]'));
+				// clutil.inputReadonly($('input[name0="ca_orderDate"]'));
 
 				// 商品区分
 				clutil.viewRemoveReadonly($("#ca_itemTypeID").parent());
@@ -12457,7 +12486,7 @@ $(function() {
 				// 発注情報
 				//clutil.viewReadonly($("#ca_orderInfo"));
 				// 発注日は入力不可（なんかいい方法ないかな？）
-				clutil.inputReadonly($('input[name0="ca_orderDate"]'));
+				// clutil.inputReadonly($('input[name0="ca_orderDate"]'));
 
 				// 商品区分
 				//clutil.viewReadonly($("#ca_itemTypeID").parent());
