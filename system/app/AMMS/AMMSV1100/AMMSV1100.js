@@ -606,6 +606,7 @@ $(function() {
 			'click #expand_cost': "_onExpandCostClick",
 			'click #expand_price': "_onExpandPriceClick",
 			'click #expand_any': "_onExpandAnyClick",
+			'click #expand_法人': "_onExpand法人Click",
 
 			// タグイメージ
 			'click .viewTag': '_onViewTagClick',
@@ -6553,6 +6554,16 @@ $(function() {
 			// 売り切りシーズン
 			clutil.cltypeselector(this.$('#ca_selloutSeasonID'), amcm_type.AMCM_TYPE_SEASON);
 
+			// 売価非表示区分
+			clutil.cltypeselector3({
+				$select: this.$('#ca_売価非表示区分'),
+				list: [
+					{ id: 1, code: '1', name: '表示する' },
+					{ id: 2, code: '2', name: '表示しない' },
+				],
+				unselectedflag: false
+			});
+
 			clutil.cltxtFieldLimit($("#ca_makerItemCode"));
 			clutil.cltxtFieldLimit($("#ca_name"));
 			clutil.cltxtFieldLimit($("#ca_tagHighlight"));
@@ -6654,6 +6665,15 @@ $(function() {
 				clutil.datepicker($("#ca_salesEndDate"));
 				// プライス発行日
 				clutil.datepicker($('#ca_プライス発行日'));
+				// カタログNo掲載期間
+				clutil.datepicker($("#ca_カタログNo掲載期間_from"));
+				clutil.datepicker($("#ca_カタログNo掲載期間_to"));
+				// 先上げサンプル提出日
+				clutil.datepicker($("#ca_先上げサンプル提出日"));
+				// バルク提出日
+				clutil.datepicker($("#ca_バルク提出日"));
+				// 仕様書提出日
+				clutil.datepicker($("#ca_仕様書提出日"));
 				if (this.opeTypeId == am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW) {
 					// 適用期間
 					clutil.inputReadonly($("#ca_fromDate"));
@@ -10057,6 +10077,12 @@ $(function() {
 		_onExpandAnyClick: function(e) {
 			var $tgt = $("#expand_any");
 			var $info = $("#any_info");
+
+			this._onExpandClick($tgt, $info);
+		},
+		_onExpand法人Click: function(e) {
+			var $tgt = $("#expand_法人");
+			var $info = $("#法人_info");
 
 			this._onExpandClick($tgt, $info);
 		},
