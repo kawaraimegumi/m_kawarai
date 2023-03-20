@@ -76,7 +76,7 @@
 				<div class="fieldgroup">
 					<div id="ca_srchArea" class="fieldgroupInBox search">
 						<div class="fieldUnit mrgb10 half flleft required">
-							<p class="fieldName">事業ユニット</p>
+							<p class="fieldName">業態</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_srchUnitID"></select>
 							</div>
@@ -85,7 +85,7 @@
 						<div class="clear"></div>
 
 						<div class="fieldUnit mrgb10 flleft half mrgr20 required">
-							<p class="fieldName">品種</p>
+							<p class="fieldName">品名(5桁)</p>
 							<div class="fieldBox required">
 								<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required" id="ca_srchItgrpID"/>
 							</div>
@@ -117,7 +117,7 @@
 							<div class="clear"></div>
 						</div>
 						<div class="fieldUnit mrgb10 half flleft">
-							<p class="fieldName">シーズン</p>
+							<p class="fieldName">季節</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid" id="ca_srchSeasonID"></select>
 							</div>
@@ -126,13 +126,13 @@
 						<div class="clear"></div>
 
 						<div class="fieldUnit mrgb10 half flleft mrgr20">
-							<p class="fieldName">サブクラス1</p>
+							<p class="fieldName">品名(3桁)</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid" id="ca_srchSub1ID"></select>
 							</div>
 							<div class="clear"></div>
 						</div>
-						<div class="fieldUnit mrgb10 half flleft">
+						<div class="fieldUnit mrgb10 half flleft dispn">
 							<p class="fieldName">サブクラス2</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid" id="ca_srchSub2ID"></select>
@@ -149,7 +149,7 @@
 							<div class="clear"></div>
 						</div>
 						<div class="fieldUnit mrgb10 half flleft">
-							<p class="fieldName">タグ種別</p>
+							<p class="fieldName">プライス種別</p>
 							<div class="fieldBox">
 								<select name="info" class="mbn wt280 cl_valid" id="ca_srchTagTypeTypeID"></select>
 							</div>
@@ -269,11 +269,11 @@
 										<th class="th_maker">メーカー</th>
 										<th class="th_makerItemCode">メーカー品番</th>
 										<th class="th_name">商品名</th>
-										<th class="th_subcls">サブクラス1</th>
-										<th class="th_subcls">サブクラス2</th>
+										<th class="th_subcls">品名(3桁)</th>
+										<th class="th_subcls dispn">サブクラス2</th>
 										<th class="th_year">商品展開年</th>
-										<th class="th_season">シーズン</th>
-										<th class="th_tagtype">タグ種別</th>
+										<th class="th_season">季節</th>
+										<th class="th_tagtype">プライス種別</th>
 										<th class="th_reapprove">再承認</th>
 										<th class="th_approve">承認状態</th>
 										<th class="th_date">適用開始日</th>
@@ -296,7 +296,7 @@
 								<td class="ca_c_link td_makerItemCode"><%- makerItemCode %></td>
 								<td class="ca_c_link td_name"><%- name %></td>
 								<td class="ca_c_link"><%- subcls1Name %></td>
-								<td class="ca_c_link"><%- subcls2Name %></td>
+								<td class="ca_c_link dispn"><%- subcls2Name %></td>
 								<td class="ca_c_link"><%- year %></td>
 								<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_SEASON, seasonTypeID, 1) %></td>
 								<td class="ca_c_link"><%- clutil.gettypename(amcm_type.AMCM_TYPE_TAG, tagTypeTypeID, 1) %></td>
