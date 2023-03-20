@@ -298,7 +298,7 @@
 						</div>
 						<!-- メーカー品番 -->
 						<div class="fieldUnit mrgb10 half flleft required tag" id="div_ca_makerItemCode">
-							<p class="fieldName bl2"><span></span>メーカー<br />品番</p>
+							<p class="fieldName"><span></span>メーカー品番</p>
 							<div class="fieldBox">
 								<span class="limit wt40 flright mrgl240" id="pa_makerItemCode"></span>
 								<input type="text" placeholder="" class="form-control wt280 cl_valid cl_required save_required" data-tflimit="10" data-validator="maxlen:10 hankaku2" id="ca_makerItemCode"/>
@@ -537,7 +537,7 @@
 
 						<div class="fieldUnitsHidden dispn " id="cloth_info">
 							<!-- 品質 -->
-							<div class="fieldUnit  flleft mrgb10 mrgr40 updateBasic">
+							<div class="fieldUnit half flleft mrgb10 mrgr20 updateBasic">
 								<p class="fieldName">品質</p>
 								<div class="fieldBox flleft">
 									<span class="limit wt40 flright mrgl240" id="pa_quality"></span>
@@ -549,7 +549,7 @@
 
 							<!-- 生地メーカー名 -->
 							<div class="fieldUnit half flleft mrgb10 mrgr20 updateEdit updateBasic">
-								<p class="fieldName bl2">生地メーカー<br />名</p>
+								<p class="fieldName">生地メーカー名</p>
 								<div class="fieldBox">
 									<span class="limit wt40 flright mrgl240" id="pa_clothMaker"></span>
 									<input type="text" placeholder="" class="form-control wt280 cl_valid" data-tflimit="10" data-validator="maxlen:10 zenkaku" id="ca_clothMaker"/>
@@ -559,7 +559,7 @@
 							<div class="clear"></div>
 
 							<!-- 仮生地品番 -->
-							<div class="fieldUnit half flleft mrgb10 mrgr40 updateEdit updateBasic">
+							<div class="fieldUnit half flleft mrgb10 mrgr20 updateEdit updateBasic">
 								<p class="fieldName">仮生地品番</p>
 								<div class="fieldBox">
 									<span class="limit wt40 flright mrgl240" id="pa_tmpClothCode"></span>
@@ -580,7 +580,7 @@
 							<div class="clear"></div>
 
 							<!-- 原反発注日 -->
-							<div class="fieldUnit flleft mrgr20 updateEdit updateBasic">
+							<div class="fieldUnit half flleft mrgb10 mrgr20 updateEdit updateBasic">
 								<p class="fieldName">原反発注日</p>
 								<div class="fieldBox">
 									<div class="datepicker_wrap"><input type="text" id="ca_clothOrderDate" class="cl_date cl_valid" /></div>
@@ -589,7 +589,7 @@
 							</div>
 
 							<!-- 原反工場着日 -->
-							<div class="fieldUnit flleft mrgr20 updateEdit updateBasic">
+							<div class="fieldUnit half flleft mrgb10 mrgr20 updateEdit updateBasic">
 								<p class="fieldName">原反工場着日</p>
 								<div class="fieldBox">
 									<div class="datepicker_wrap"><input type="text" id="ca_clothDlvDate" class="cl_date cl_valid" /></div>
@@ -699,9 +699,9 @@
 									<div class="clear"></div>
 								</div>
 
-								<!-- 発注ロット単位数 -->
+								<!-- 出荷最少単位数 -->
 								<div class="fieldUnit half flleft mrgb10 updateBasic dispn" id="div_ca_lotCount">
-									<p class="fieldName bl2">出荷最少<br />単位数</p>
+									<p class="fieldName">出荷最少単位数</p>
 									<div class="fieldBox flleft">
 										<input type="text" placeholder="" class="form-control wt280 txtar cl_valid" data-filter="comma" data-validator="int:4 min:1" id="ca_lotCount"/>
 									</div>
@@ -712,7 +712,7 @@
 
 								<!-- 納品形態（初回） -->
 								<div class="fieldUnit half flleft mrgb10 mrgr20" id="div_ca_dlvroute1TypeID">
-									<p class="fieldName bl2">納品形態<br />(初回)</p>
+									<p class="fieldName">納品形態(初回)</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 cl_valid" id="ca_dlvroute1TypeID">
 										</select>
@@ -722,7 +722,7 @@
 
 								<!-- 納品形態（2回目以降） -->
 								<div class="fieldUnit flleft mrgb10 updateBasic" id="div_ca_dlvroute2TypeID">
-									<p class="fieldName bl2">納品形態<br />(2回目以降)</p>
+									<p class="fieldName">納品形態(2回目以降)</p>
 									<div class="fieldBox">
 										<select name="info" class="mbn wt280 cl_valid" id="ca_dlvroute2TypeID">
 										</select>
@@ -793,7 +793,7 @@
 
 									<!-- センター着予定日 -->
 									<div class="fieldUnit half flleft mrgb10 mrgr20 additionalOrder updateBasic">
-										<p class="fieldName bl2">センター着<br />予定日</p>
+										<p class="fieldName">センター着予定日</p>
 										<div class="fieldBox">
 											<div class="datepicker_wrap"><input type="text" name0="ca_centerDlvDate" class="cl_date cl_valid" /></div>
 										</div>
@@ -1026,7 +1026,7 @@
 						<div class="fieldgroupInBox  ">
 							<div class="fieldUnit flleft mrgb10 half hta">
 								<div class="fieldUnit mrgb10 half requiredSelect">
-									<p class="fieldName bl2" >サイズ<br />パターン</p>
+									<p class="fieldName" >サイズパターン</p>
 									<div class="fieldBox" >
 										<select name="info" class="mbn wt280 cl_valid cl_required" id="ca_sizePtnID"></select>
 									</div>
@@ -1223,7 +1223,7 @@
 
 								<!-- 商品仕様追加メモ -->
 								<div class="fieldUnit hta updateEdit updateBasic">
-									<p class="fieldName bl2">商品仕様<br />追加メモ</p>
+									<p class="fieldName">商品仕様追加メモ</p>
 									<div class="fieldBox ">
 										<span class="limit wt40 mrgr_5"></span>
 										<textarea id="ca_specComment" rows="3" data-tflimit="100" data-validator="maxlen:100" class="form-control wt100pct cl_valid" ></textarea>
@@ -1288,24 +1288,20 @@
 									<div class="clear"></div>
 
 									<!-- 生地為替 -->
-									<div class="fieldUnit mrgb10 flleft half mrgr10 updateBasic" id="div_exchangeRate">
+									<div class="fieldUnit mrgb10 flleft half mrgr20 updateBasic" id="div_exchangeRate">
 										<p class="fieldName">生地為替</p>
 										<div class="fieldBox flleft">
 											<input type="text" placeholder="" class="form-control wt280 txtar flleft mrgr10 cl_valid" data-validator="decimal:3,2 min:0" id="ca_exchangeRate" />
+											<p class="txtInFieldUnit pdg flleft">円</p>
 										</div>
-									</div>
-									<div class="fieldUnit mrgb10 flleft half mrgr20" id="div_yen" style="width: 0;">
-										<p class="fieldName flleft txtal">円</p>
 									</div>
 									<!-- 工賃為替 -->
 									<div class="fieldUnit mrgb10 flleft half mrgr10 updateBasic">
 										<p class="fieldName">工賃為替</p>
 										<div class="fieldBox flleft">
 											<input type="text" placeholder="" class="form-control wt280 txtar flleft mrgr10 cl_valid" data-validator="decimal:3,2 min:0" id="ca_工賃為替" />
+											<p class="txtInFieldUnit pdg flleft">円</p>
 										</div>
-									</div>
-									<div class="fieldUnit mrgb10 flleft half mrgr20" id="div_yen">
-										<p class="fieldName flleft txtal">円</p>
 									</div>
 									<div class="clear"></div>
 								</div>
@@ -1313,8 +1309,8 @@
 
 								<!-- 下代構成テーブル -->
 								<div class="fieldUnit hta updateBasic">
-									<p class="fieldName bl2" id="ca_cost_in">下代構成<br />（国内）</p>
-									<p class="fieldName bl2 dispn" id="ca_cost_out">下代構成<br />（海外）</p>
+									<p class="fieldName" id="ca_cost_in">下代構成（国内）</p>
+									<p class="fieldName dispn" id="ca_cost_out">下代構成（海外）</p>
 									<div class="fieldBox table">
 										<table class="hilight tree half" id="ca_table_cost_in">
 										<thead id="ca_table_cost_in_thead">
@@ -1358,7 +1354,7 @@
 						<p class="gtitle"></p>
 						<div class="fieldgroupInBox updateEdit updateBasic">
 							<div class="fieldUnit flleft mrgr20 hta wt100pct mrgb10">
-								<p class="fieldName bl2">セールス<br />ポイント</p>
+								<p class="fieldName">セールスポイント</p>
 								<div class="fieldBox ">
 									<span class="limit wt40 mrgr_5"></span>
 									<textarea name="" id="ca_salesPoint" rows="3" data-tflimit="60" data-validator="maxlen:60" class="form-control wt100pct cl_valid" ></textarea>
@@ -1547,7 +1543,7 @@
 								<div class="clear"></div>
 								<hr />
 								<div class="fieldUnit mrgb10 flleft mrgr20">
-									<p class="fieldName bl2">組合せ販売<br />紐付</p>
+									<p class="fieldName">組合せ販売紐付</p>
 									<div class="fieldBox">
 										<input type="text" placeholder="" class="form-control wt280 mrgr10 flleft" id="ca_bundleView" disabled/>
 										<button class="btn btn-default wt140 flleft mrgr10" id="btn_bundleView">参照...</button>
@@ -1602,36 +1598,6 @@
 					</div>
 					<div class="clear"></div>
 					<!-- /販売情報 -->
-
-					<!-- 任意属性 -->
-					<div class="fieldgroup mrgb10" id="ca_anyAttrInfo">
-						<p class="gtitle">任意属性</p>
-
-						<div class="fieldgroupInBox ">
-							<div class="fieldUnit flleft" style="width:100%;">
-								<p class="expandFieldUnits mrgb10" id="expand_any"><span class="expand">任意属性を入力</span><span class="unexpand dispn">任意属性を閉じる</span></p>
-							</div>
-							<div class="clear"></div>
-
-							<div class="fieldUnitsHidden mrgt10 dispn updateEdit updateBasic" id="any_info">
-								<!-- テンプレートで -->
-							</div>
-							<div class="clear"></div>
-							<script id="ca_rec_template_any" type="text/template">
-								<div class="fieldUnit mrgb10 flleft mrgr20 dispn" name="div_any">
-									<p class="fieldName"><%- iagfuncName %></p>
-									<div class="fieldBox">
-										<select name="info" class="mbn wt280 ca_iagID cl_valid">
-										</select>
-										<input type="hidden" name="ca_iagfuncID" value="<%- iagfuncID %>" />
-									</div>
-									<div class="clear"></div>
-								</div>
-							</script>
-						</div>
-					</div>
-					<div class="clear"></div>
-					<!-- /任意属性 -->
 
 					<!-- 法人情報 -->
 					<div class="fieldgroup mrgb10" id="">
@@ -1719,6 +1685,36 @@
 						</div>
 					</div>
 					<!-- /法人情報 -->
+
+					<!-- 任意属性 -->
+					<div class="fieldgroup mrgb10" id="ca_anyAttrInfo">
+						<p class="gtitle">任意属性</p>
+
+						<div class="fieldgroupInBox ">
+							<div class="fieldUnit flleft" style="width:100%;">
+								<p class="expandFieldUnits mrgb10" id="expand_any"><span class="expand">任意属性を入力</span><span class="unexpand dispn">任意属性を閉じる</span></p>
+							</div>
+							<div class="clear"></div>
+
+							<div class="fieldUnitsHidden mrgt10 dispn updateEdit updateBasic" id="any_info">
+								<!-- テンプレートで -->
+							</div>
+							<div class="clear"></div>
+							<script id="ca_rec_template_any" type="text/template">
+								<div class="fieldUnit mrgb10 flleft mrgr20 dispn" name="div_any">
+									<p class="fieldName"><%- iagfuncName %></p>
+									<div class="fieldBox">
+										<select name="info" class="mbn wt280 ca_iagID cl_valid">
+										</select>
+										<input type="hidden" name="ca_iagfuncID" value="<%- iagfuncID %>" />
+									</div>
+									<div class="clear"></div>
+								</div>
+							</script>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<!-- /任意属性 -->
 
 					<!-- 差戻し理由 -->
 					<div class="fieldgroup mrgb10" id="ca_coomentListInfo">

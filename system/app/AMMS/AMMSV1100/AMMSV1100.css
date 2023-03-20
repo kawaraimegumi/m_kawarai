@@ -121,3 +121,16 @@ table.ca_table_jan .th_jan {
    padding: 5px;
    font-size: 75%;
  }
+
+/*
+ * デモ環境要望対応
+ */
+ .fieldgroup .fieldUnit.half {
+	width: 500px;
+ }
+ .fieldName {
+	width: 175px;
+ }
+ .fieldBox {
+	padding-left: 175px;
+ }
