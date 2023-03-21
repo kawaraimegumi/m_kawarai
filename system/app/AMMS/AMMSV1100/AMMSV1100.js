@@ -5161,6 +5161,8 @@ $(function() {
 					// タグ増産率
 					var $input = $div_o.find('input[name0="ca_tagIncRate"]');
 					clutil.inputRemoveReadonly($input);
+					// 商談担当者
+					clutil.inputRemoveReadonly($("#ca_商談担当者"));
 					// 発注取消
 					var $input = $div_o.find('input[name0="ca_cancelFlag"]');
 					clutil.inputRemoveReadonly($input);
@@ -5196,6 +5198,8 @@ $(function() {
 					// タグ増産率
 					var $input = $div_o.find('input[name0="ca_tagIncRate"]');
 					clutil.inputReadonly($input);
+					// 商談担当者
+					clutil.inputReadonly($("#ca_商談担当者"));
 					// 発注取消
 					var $input = $div_o.find('input[name0="ca_cancelFlag"]');
 					clutil.inputReadonly($input);
@@ -5960,6 +5964,8 @@ $(function() {
 					// タグ増産率
 					var $input = $div_o.find('input[name0="ca_tagIncRate"]');
 					clutil.inputReadonly($input);
+					// 商談担当者
+					clutil.inputReadonly($("#ca_商談担当者"));
 					// 発注取消
 					var $input = $div_o.find('input[name0="ca_cancelFlag"]');
 					if (mode != 3) {
@@ -6037,6 +6043,8 @@ $(function() {
 						// タグ増産率
 						var $input = $div_o.find('input[name0="ca_tagIncRate"]');
 						clutil.inputReadonly($input);
+						// 商談担当者
+						clutil.inputReadonly($("#ca_商談担当者"));
 						// 発注取消
 						var $input = $div_o.find('input[name0="ca_cancelFlag"]');
 						clutil.inputRemoveReadonly($input);
@@ -6107,6 +6115,8 @@ $(function() {
 						// タグ増産率
 						var $input = $div_o.find('input[name0="ca_tagIncRate"]');
 						clutil.inputReadonly($input);
+						// 商談担当者
+						clutil.inputReadonly($("#ca_商談担当者"));
 						// 発注テーブル
 						var $table = $div_o.find('table[name="ca_table_order"]');
 						clutil.viewReadonly($table);
@@ -6169,6 +6179,8 @@ $(function() {
 					// タグ増産率
 					var $input = $div_o.find('input[name0="ca_tagIncRate"]');
 					clutil.inputRemoveReadonly($input);
+					// 商談担当者
+					clutil.inputRemoveReadonly($("#ca_商談担当者"));
 					// 発注取消
 					var $input = $div_o.find('input[name0="ca_cancelFlag"]');
 					clutil.inputReadonly($input);
