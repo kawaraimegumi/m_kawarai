@@ -8311,7 +8311,8 @@ $(function() {
 			// デモ環境要望対応(start)
 			var attrItemMap = this.attrItemMap;
 			// 承認期限日
-			$('#ca_approveLimitDate').datepicker('setIymd', clcom.getOpeDate());
+			var approveLimitDate = clutil.addDate(clutil.dateFormat($('input[name0="ca_finishDate"]').val(), 'yyyymmdd'), -1);
+			$('#ca_approveLimitDate').datepicker('setIymd', approveLimitDate);
 			// サブクラス2
 			$('#ca_subcls2ID').selectpicker('val', _.first(attrItemMap[iagfunc.ITEMATTRGRPFUNC_ID_SUBCLS2]).iagID);
 			// Ki区分
@@ -8321,13 +8322,17 @@ $(function() {
 			// タグ増産率
 			$('#ca_tagIncRate').val(0);
 			// 販売開始日
-			$('#ca_salesStartDate').datepicker('setIymd', clcom.getOpeDate());
+			var salesStartDate = clutil.addDate(clutil.dateFormat($('input[name0="ca_dlvDate"]').val(), 'yyyymmdd'), 1);
+			$('#ca_salesStartDate').datepicker('setIymd', salesStartDate);
 			// 販売終了日
-			$('#ca_salesEndDate').datepicker('setIymd', clcom.getOpeDate() + 10000);
+			var salesEndDate = clutil.addDate(salesStartDate, 1);
+			$('#ca_salesEndDate').datepicker('setIymd', salesEndDate);
 			// 売り切り年
-			$('#ca_selloutYear').selectpicker('val', clutil.dateFormat(clcom.getOpeDate() + 10000, 'yyyy'));
+			$('#ca_selloutYear').selectpicker('val', clutil.dateFormat(salesEndDate, 'yyyy'));
 			// 売り切りシーズン
 			$('#ca_selloutSeasonID').selectpicker('val', amcm_type.AMCM_VAL_SEASON_ALL);
+			// SPC不可
+			$('input[name="ca_iagfuncID"][value="' + clcom.getSysparam("PAR_AMMS_ITEMATTRGRPFUNC_ID_ITEM_SPC") + '"]').parent().children('select').selectpicker('val', 1);
 			// デモ環境要望対応(end)
 
 			console.log('_buildGetReqFunction: opeTypeId[' + opeTypeId + '] pgIndex[' + pgIndex + ']');
