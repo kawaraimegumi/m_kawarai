@@ -1628,7 +1628,8 @@ $(function() {
 
 			// 発注対象
 			var $select = $div.find('select[name0="ca_orderTgtTypeID"]');
-			clutil.cltypeselector($select, amcm_type.AMCM_TYPE_ORDERKIND, 1);
+			// clutil.cltypeselector($select, amcm_type.AMCM_TYPE_ORDERKIND, 1);
+			clutil.cltypeselector($select, amcm_type.AMCM_TYPE_ORDERKIND, 0); // デモ環境要望対応
 			$select.selectpicker('val', orderHeadRec.orderTgtTypeID);
 
 			// タグ送付先
@@ -8329,7 +8330,7 @@ $(function() {
 			var salesEndDate = clutil.addDate(salesStartDate, 1);
 			$('#ca_salesEndDate').datepicker('setIymd', salesEndDate);
 			// 売り切り年
-			$('#ca_selloutYear').selectpicker('val', clutil.dateFormat(salesEndDate, 'yyyy'));
+			$('#ca_selloutYear').selectpicker('val', clutil.dateFormat(clcom.getOpeDate(), 'yyyy'));
 			// 売り切りシーズン
 			$('#ca_selloutSeasonID').selectpicker('val', amcm_type.AMCM_VAL_SEASON_ALL);
 			// SPC不可
