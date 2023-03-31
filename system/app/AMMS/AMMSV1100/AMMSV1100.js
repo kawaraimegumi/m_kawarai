@@ -4341,6 +4341,7 @@ $(function() {
 
 				clutil.data2view(this.$("#ca_item"), ca_baseInfo);
 				clutil.data2view(this.$("#ca_tagInfo"), ca_tagInfo);
+				clutil.data2view(this.$("#ca_素材Info"), ca_tagInfo);
 				clutil.data2view(this.$("#ca_colorSizeInfo"), ca_colorSizeInfo);
 
 				// 生産国（タグ表示用）
@@ -8927,6 +8928,7 @@ $(function() {
 		_buildUpdReqAMMSV1100AttrRec: function(item) {
 			var orderInfo = clutil.view2data($("#ca_orderInfo"));
 			var tagInfo = clutil.view2data($("#ca_tagInfo"));
+			var 素材Info = clutil.view2data($("#ca_素材Info"));
 			var saleInfo = clutil.view2data($("#ca_saleInfo"));
 			var commentInfo = clutil.view2data($("#ca_commentInfo"));
 
@@ -8958,7 +8960,8 @@ $(function() {
 				fixedFormTag1Code: fixedFormTag1Code,
 				fixedFormTag2Code: fixedFormTag2Code,
 				itoloxID: tagInfo.itoloxID,
-				tagHighlight: tagInfo.tagHighlight,
+				// tagHighlight: tagInfo.tagHighlight,
+				tagHighlight: 素材Info.tagHighlight,
 				importID: orderInfo.importID,
 				tagImportID: tagInfo.tagImportID,
 				subcls1ID: item.subcls1ID,
