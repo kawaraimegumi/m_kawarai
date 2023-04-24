@@ -8311,6 +8311,7 @@ $(function() {
 		// 更新系のリクエストを作る
 		_buildSubmitReqFunction: function(opeTypeId, pgIndex){
 			// デモ環境要望対応(start)
+			var data = clutil.view2data(this.$el);
 			var attrItemMap = this.attrItemMap;
 			// 承認期限日
 			var approveLimitDate = clutil.addDate(clutil.dateFormat($('input[name0="ca_finishDate"]').val(), 'yyyymmdd'), -1);
@@ -8330,7 +8331,7 @@ $(function() {
 			var salesEndDate = clutil.addDate(salesStartDate, 1);
 			$('#ca_salesEndDate').datepicker('setIymd', salesEndDate);
 			// 売り切り年
-			$('#ca_selloutYear').selectpicker('val', clutil.dateFormat(clcom.getOpeDate(), 'yyyy'));
+			$('#ca_selloutYear').selectpicker('val', data.year);
 			// 売り切りシーズン
 			$('#ca_selloutSeasonID').selectpicker('val', amcm_type.AMCM_VAL_SEASON_ALL);
 			// SPC不可
