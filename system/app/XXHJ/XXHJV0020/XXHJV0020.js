@@ -14,7 +14,6 @@ $(function () {
     initialize: function () {
       this.baseView = new clutil.View.MDBaseView({
         opeTypeId: clcom.pageArgs.opeTypeId,
-        category: '法人販売管理',
         title: '法人',
         // buildGetReqFunction: (opeTypeId) => {
         //   return {

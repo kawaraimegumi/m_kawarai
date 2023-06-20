@@ -12,22 +12,9 @@ $(function () {
     },
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({
-        category: '法人販売管理',
-        title: '案件',
-      })
+      this.baseView = new clutil.View.MDBaseView({ title: '案件' })
         .initUIElement()
         .render();
-
-      clutil.datepicker(this.$('#契約期間from'));
-      clutil.datepicker(this.$('#契約期間to'));
-
-      this.searchArea = clutil.controlSrchArea(
-        this.$('#cond'),
-        this.$('#search'),
-        this.$('#result'),
-        this.$('#searchAgain')
-      );
 
       this.paginationViews = clutil.View.buildPaginationView(
         clcom.pageId,
@@ -44,6 +31,16 @@ $(function () {
       })
         .initUIElement()
         .render();
+
+      this.searchArea = clutil.controlSrchArea(
+        this.$('#cond'),
+        this.$('#search'),
+        this.$('#result'),
+        this.$('#searchAgain')
+      );
+
+      clutil.datepicker(this.$('#契約期間from'));
+      clutil.datepicker(this.$('#契約期間to'));
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
@@ -77,21 +74,13 @@ $(function () {
       }
     },
 
-    // [検索]ボタン押下時の処理
-    onSearchClick: function () {
-      if (!this.validate()) {
-        return;
-      }
-      return this.search({
-        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
-        reqPage: _.first(this.paginationViews).buildReqPage0(),
-        XXHJV0030GetReq: null,
-      });
+    view2data: function () {
+      const data = clutil.view2data(this.$el);
+      return data;
     },
 
-    // [検索条件を再指定]ボタン押下時の処理
-    onSearchAgainClick: function () {
-      this.searchArea.show_srch();
+    data2view: function (data) {
+      clutil.data2view(this.$el, data);
     },
 
     validate: function () {
@@ -155,29 +144,33 @@ $(function () {
             page_size: 10,
             page_num: 1,
           },
-          XXHJV0030GetRsp: {
-            list: _.times(10, (index) => {
-              index += 1;
-              return {
-                hojin: {
-                  code: ('00000' + String(index)).slice(-5),
-                  name: '法人' + String(index),
-                },
-                anken: {
-                  code: ('0000000' + String(index)).slice(-7),
-                  name: '案件' + String(index),
-                  keiyaku: { from: clcom.getOpeDate(), to: clcom.getOpeDate() },
-                },
-              };
-            }),
-          },
+          list: _.times(10, (index) => {
+            return { index: (index += 1) };
+          }),
         };
         this.searchArea.show_result();
-        this.listView.setRecs(response.XXHJV0030GetRsp.list);
+        this.listView.setRecs(response.list);
         _.extend(this, { request: request, response: response });
         clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
         clutil.unblockUI();
       });
+    },
+
+    // [検索]ボタン押下時の処理
+    onSearchClick: function () {
+      if (!this.validate()) {
+        return;
+      }
+      return this.search({
+        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
+        reqPage: _.first(this.paginationViews).buildReqPage0(),
+        XXHJV0030GetReq: null,
+      });
+    },
+
+    // [検索条件を再指定]ボタン押下時の処理
+    onSearchAgainClick: function () {
+      this.searchArea.show_srch();
     },
   });
 

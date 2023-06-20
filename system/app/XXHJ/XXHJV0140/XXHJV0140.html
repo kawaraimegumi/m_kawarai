@@ -44,7 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="XXHJV0050.js"></script>
+    <script src="XXHJV0140.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -118,16 +118,29 @@
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">受注強制完了</p>
+                    <p class="fieldName">売上状況</p>
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="受注強制完了" value="" data-toggle="radio" checked />表示する</label>
+                          <label class="radio"><input type="radio" name="売上状況" value="" data-toggle="radio" checked />未請求</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="受注強制完了" value="" data-toggle="radio" />表示しない</label>
+                          <label class="radio"><input type="radio" name="売上状況" value="" data-toggle="radio" />請求済(過去分訂正含む)</label>
                         </li>
                       </ul>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">売上日</p>
+                    <div class="fieldBox">
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="売上日from" class="cl_date cl_valid" />
+                      </div>
+                      <p class="txtInFieldUnit pdg flleft">〜</p>
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="売上日to" class="cl_date cl_valid" />
+                      </div>
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -136,7 +149,7 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" checked />受注単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" checked />売上単位</label>
                         </li>
                         <li>
                           <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />メーカー品番単位</label>
@@ -175,18 +188,24 @@
                         <th>案件名</th>
                         <th>受注番号</th>
                         <th>受注日</th>
-                        <th>受注強制完了</th>
-                        <th>受注強制完了理由</th>
-                        <th>外部倉庫分受注</th>
                         <th>希望納期</th>
                         <th>受注ステータス</th>
                         <th>売上パターン</th>
                         <th>受注担当者</th>
                         <th>受注数</th>
-                        <th>見込売上金額</th>
-                        <th>原価</th>
-                        <th>見込粗利額</th>
+                        <th>未指示数</th>
+                        <th>未売上数</th>
                         <th>受注備考</th>
+                        <th>売上</th>
+                        <th>請求先コード</th>
+                        <th>請求先名</th>
+                        <th>売上店コード</th>
+                        <th>売上店名</th>
+                        <th>売上日</th>
+                        <th>請求基準日</th>
+                        <th>請求日</th>
+                        <th>回収予定日</th>
+                        <th>売上数</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -200,24 +219,30 @@
                     	<td><%- '案件' + index %></td>
                     	<td><%- ('0000000' + index).slice(-7) %></td>
                     	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                      <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '完了' : '' %></td>
-                      <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '受注強制完了理由' + index : '' %></td>
-                      <td><%- index % 2 ? '〇' : '' %></td>
                     	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
                       <td><%- '受注済' %></td>
                       <td><%- '法人売／法人請求' %></td>
                       <td><%- '受注担当者' + index %></td>
                       <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                      <td style="text-align: right"><%- clutil.comma(10000 * index) %></td>
-                      <td style="text-align: right"><%- clutil.comma(6000 * index) %></td>
-                      <td style="text-align: right"><%- clutil.comma(4000 * index) %></td>
+                      <td style="text-align: right"><%- clutil.comma(2 * index) %></td>
+                      <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
                       <td><%- '受注備考' + index %></td>
+                    	<td><%- ('0000000000' + index).slice(-10) %></td>
+                    	<td><%- ('00' + index).slice(-2) %></td>
+                    	<td><%- '請求先' + index %></td>
+                    	<td><%- ('0000' + index).slice(-4) %></td>
+                    	<td><%- '売上店' + index %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                      <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
                     </tr>
                   </script>
                 </div>
                 <div class="pagination-wrapper"></div>
                 <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="XXHJV0050">
+                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="XXHJV0140">
                     <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
                     <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
                   </div>

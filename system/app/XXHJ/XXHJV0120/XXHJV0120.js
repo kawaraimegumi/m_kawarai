@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const XXHJV0010 = Backbone.View.extend({
+  const XXHJV0120 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
       'click #search': 'onSearchClick', // [検索]ボタン押下
@@ -12,7 +12,10 @@ $(function () {
     },
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({ title: '法人' })
+      this.baseView = new clutil.View.MDBaseView({
+        btn_new: false,
+        title: '直納分仕入',
+      })
         .initUIElement()
         .render();
 
@@ -39,22 +42,12 @@ $(function () {
         this.$('#searchAgain')
       );
 
-      _.each(
-        [this.$('#締日1'), this.$('#締日2'), this.$('#締日3')],
-        ($select) => {
-          clutil.cltypeselector3({
-            $select: $select,
-            list: [
-              { id: 0, code: '00', name: '都度' },
-              { id: 15, code: '15', name: '15日' },
-              { id: 20, code: '20', name: '20日' },
-              { id: 25, code: '25', name: '25日' },
-              { id: 99, code: '99', name: '末日' },
-            ],
-            unselectedflag: true,
-          });
-        }
-      );
+      clutil.datepicker(this.$('#契約期間from'));
+      clutil.datepicker(this.$('#契約期間to'));
+      clutil.datepicker(this.$('#受注日from'));
+      clutil.datepicker(this.$('#受注日to'));
+      clutil.datepicker(this.$('#希望納期from'));
+      clutil.datepicker(this.$('#希望納期to'));
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
@@ -65,7 +58,7 @@ $(function () {
 
       clutil.mediator.on('onOperation', (opeTypeId) => {
         const options = {
-          url: clcom.appRoot + '/XXHJ/XXHJV0020/XXHJV0020.html',
+          url: clcom.appRoot + '/XXHJ/XXHJV0130/XXHJV0130.html',
           args: { opeTypeId: opeTypeId },
           saved: null,
           newWindow: false,
@@ -99,7 +92,14 @@ $(function () {
 
     validate: function () {
       const validator = this.baseView.validator;
-      if (!validator.valid()) {
+      if (
+        !validator.valid() ||
+        !validator.validFromToObj([
+          { $stval: this.$('#契約期間from'), $edval: this.$('#契約期間to') },
+          { $stval: this.$('#受注日from'), $edval: this.$('#受注日to') },
+          { $stval: this.$('#希望納期from'), $edval: this.$('#希望納期to') },
+        ])
+      ) {
         validator.setErrorHeader(clmsg.cl_echoback);
         return false;
       }
@@ -111,7 +111,7 @@ $(function () {
       _.extend(this, { request: null, response: null });
       return clutil.postJSON(clcom.pageId, request).then(
         (response) => {
-          const list = response.XXHJV0010GetRsp.list;
+          const list = response.XXHJV0120GetRsp.list;
           if (!list.length) {
             validator.setErrorHeader(clmsg.cl_no_data);
             return;
@@ -173,7 +173,7 @@ $(function () {
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
         reqPage: _.first(this.paginationViews).buildReqPage0(),
-        XXHJV0010GetReq: null,
+        XXHJV0120GetReq: null,
       });
     },
 
@@ -185,7 +185,7 @@ $(function () {
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new XXHJV0010();
+      mainView = new XXHJV0120();
     },
     (response) => {
       clutil.View.doAbort({

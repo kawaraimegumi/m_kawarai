@@ -44,7 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="XXHJV0010.js"></script>
+    <script src="XXHJV0160.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -54,50 +54,43 @@
             <div id="content">
               <div class="fieldgroup">
                 <div id="cond" class="fieldgroupInBox search">
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">売上年月</p>
+                    <div class="fieldBox">
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="売上年月from" class="cl_date cl_valid cl_required" />
+                      </div>
+                      <p class="txtInFieldUnit pdg flleft">〜</p>
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="売上年月to" class="cl_date cl_valid cl_required" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">法人コード</p>
+                    <p class="fieldName">法人</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">請求先</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">請求先企業名</p>
                     <div class="fieldBox">
                       <input type="text" id="" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">自社担当</p>
-                    <div class="fieldBox"></div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">締日</p>
-                    <div class="fieldBox">
-                      <select id="締日1" class="wt140 cl_valid"></select>
-                      <select id="締日2" class="wt140 cl_valid"></select>
-                      <select id="締日3" class="wt140 cl_valid"></select>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">表示形式</p>
-                    <div class="fieldBox">
-                      <ul>
-                        <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" checked />法人単位</label>
-                        </li>
-                        <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />法人・請求先単位</label>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
                   <div class="fieldUnit">
                     <div class="fieldBox noName mrgt20">
-                      <div class="col-md-4" style="text-align: right">
-                        <button class="btn btn-info wt280">発行先CSV出力</button>
-                      </div>
-                      <div class="col-md-4" style="text-align: center">
+                      <div class="col-md-5" style="text-align: right">
                         <button id="search" class="btn btn-info wt280">検索</button>
                       </div>
-                      <div class="col-md-4" style="text-align: left">
+                      <div class="col-md-2"></div>
+                      <div class="col-md-5" style="text-align: left">
                         <button class="btn btn-info wt280">Excel出力</button>
                       </div>
                     </div>
@@ -111,28 +104,42 @@
                   <table id="table" class="hilightRow">
                     <thead>
                       <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>売上日</th>
                         <th>法人コード</th>
                         <th>法人名</th>
+                        <th>請求先コード</th>
+                        <th>請求先名</th>
+                        <th>請求番号</th>
+                        <th>請求年月</th>
+                        <th>売上金額(税抜)</th>
+                        <th>消費税</th>
+                        <th>売上金額(税込)</th>
+                        <th>粗利</th>
+                        <th>振込先口座</th>
+                        <th>担当者</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
                   </table>
                   <script id="template" type="text/template">
                     <tr class="csptr">
-                    	<td class="cl_checkbox_selectrec"></td>
+                      <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
                     	<td><%- ('00000' + index).slice(-5) %></td>
                     	<td><%- '法人' + index %></td>
+                    	<td><%- ('00' + index).slice(-2) %></td>
+                    	<td><%- '請求先' + index %></td>
+                    	<td><%- ('0000000' + index).slice(-7) %></td>
+                      <td><%- [String(clcom.getOpeDate()).slice(0, 4), String(clcom.getOpeDate()).slice(4, 6)].join('/') %></td>
+                      <td style="text-align: right"><%- clutil.comma(10000 * index) %></td>
+                      <td style="text-align: right"><%- clutil.comma(1000 * index) %></td>
+                      <td style="text-align: right"><%- clutil.comma(11000 * index) %></td>
+                      <td style="text-align: right"><%- clutil.comma(4000 * index) %></td>
+                      <td><%- ('0000000' + index).slice(-7) %></td>
+                      <td><%- '担当者' + index %></td>
                     </tr>
                   </script>
                 </div>
                 <div class="pagination-wrapper"></div>
-                <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="XXHJV0010">
-                    <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
-                    <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

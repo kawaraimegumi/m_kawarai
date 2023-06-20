@@ -44,7 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="XXHJV0010.js"></script>
+    <script src="XXHJV0120.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -55,24 +55,66 @@
               <div class="fieldgroup">
                 <div id="cond" class="fieldgroupInBox search">
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">法人コード</p>
+                    <p class="fieldName">法人</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">案件名</p>
                     <div class="fieldBox">
                       <input type="text" id="" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">自社担当</p>
-                    <div class="fieldBox"></div>
+                    <p class="fieldName">備考</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt280" />
+                    </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">締日</p>
+                    <p class="fieldName">契約期間</p>
                     <div class="fieldBox">
-                      <select id="締日1" class="wt140 cl_valid"></select>
-                      <select id="締日2" class="wt140 cl_valid"></select>
-                      <select id="締日3" class="wt140 cl_valid"></select>
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="契約期間from" class="cl_date cl_valid" />
+                      </div>
+                      <p class="txtInFieldUnit pdg flleft">〜</p>
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="契約期間to" class="cl_date cl_valid" />
+                      </div>
                     </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">受注日</p>
+                    <div class="fieldBox">
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="受注日from" class="cl_date cl_valid" />
+                      </div>
+                      <p class="txtInFieldUnit pdg flleft">〜</p>
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="受注日to" class="cl_date cl_valid" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">希望納期</p>
+                    <div class="fieldBox">
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="希望納期from" class="cl_date cl_valid" />
+                      </div>
+                      <p class="txtInFieldUnit pdg flleft">〜</p>
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="希望納期to" class="cl_date cl_valid" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">受注担当者</p>
+                    <div class="fieldBox"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -80,10 +122,13 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" checked />法人単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" checked />仕入伝票単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />法人・請求先単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />メーカー品番単位</label>
+                        </li>
+                        <li>
+                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />色サイズ単位</label>
                         </li>
                       </ul>
                     </div>
@@ -91,13 +136,11 @@
                   <div class="clear"></div>
                   <div class="fieldUnit">
                     <div class="fieldBox noName mrgt20">
-                      <div class="col-md-4" style="text-align: right">
-                        <button class="btn btn-info wt280">発行先CSV出力</button>
-                      </div>
-                      <div class="col-md-4" style="text-align: center">
+                      <div class="col-md-5" style="text-align: right">
                         <button id="search" class="btn btn-info wt280">検索</button>
                       </div>
-                      <div class="col-md-4" style="text-align: left">
+                      <div class="col-md-2"></div>
+                      <div class="col-md-5" style="text-align: left">
                         <button class="btn btn-info wt280">Excel出力</button>
                       </div>
                     </div>
@@ -114,6 +157,21 @@
                         <th class="cl_checkbox_selectall wt40"></th>
                         <th>法人コード</th>
                         <th>法人名</th>
+                        <th>案件番号</th>
+                        <th>案件名</th>
+                        <th>受注番号</th>
+                        <th>受注日</th>
+                        <th>希望納期</th>
+                        <th>受注ステータス</th>
+                        <th>売上パターン</th>
+                        <th>受注担当者</th>
+                        <th>受注数</th>
+                        <th>未仕入数</th>
+                        <th>メーカー</th>
+                        <th>伝票番号</th>
+                        <th>起票日</th>
+                        <th>検収日</th>
+                        <th>仕入数</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -123,12 +181,27 @@
                     	<td class="cl_checkbox_selectrec"></td>
                     	<td><%- ('00000' + index).slice(-5) %></td>
                     	<td><%- '法人' + index %></td>
+                    	<td><%- ('0000000' + index).slice(-7) %></td>
+                    	<td><%- '案件' + index %></td>
+                    	<td><%- ('0000000' + index).slice(-7) %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                      <td><%- '受注済' %></td>
+                      <td><%- '法人売／法人請求' %></td>
+                      <td><%- '受注担当者' + index %></td>
+                      <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
+                      <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
+                    	<td><%- ('000' + index).slice(-3) %></td>
+                    	<td><%- ('000000' + index).slice(-6) %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                      <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
                     </tr>
                   </script>
                 </div>
                 <div class="pagination-wrapper"></div>
                 <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="XXHJV0010">
+                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="XXHJV0120">
                     <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
                     <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
                   </div>

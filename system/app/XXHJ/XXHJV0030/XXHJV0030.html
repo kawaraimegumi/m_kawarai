@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" />
+    <title>法人販売管理</title>
     <link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet" />
     <link href="../../../bootstrap/css/prettify.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
@@ -114,7 +115,7 @@
                     </div>
                   </div>
                 </div>
-                <button id="searchAgain" class="dispn btn">検索条件を再指定</button>
+                <button id="searchAgain" class="btn dispn">検索条件を再指定</button>
               </div>
               <div id="result" class="dispn">
                 <div class="pagination-wrapper"></div>
@@ -135,11 +136,11 @@
                   <script id="template" type="text/template">
                     <tr class="csptr">
                     	<td class="cl_checkbox_selectrec"></td>
-                    	<td><%- hojin.code %></td>
-                    	<td><%- hojin.name %></td>
-                      <td><%- anken.code %></td>
-                    	<td><%- anken.name %></td>
-                    	<td><%- [clutil.dateFormat(anken.keiyaku.from, 'yyyy/mm/dd'), clutil.dateFormat(anken.keiyaku.to, 'yyyy/mm/dd')].join('～') %></td>
+                    	<td><%- ('00000' + index).slice(-5) %></td>
+                    	<td><%- '法人' + index %></td>
+                    	<td><%- ('0000000' + index).slice(-7) %></td>
+                    	<td><%- '案件' + index %></td>
+                    	<td><%- [clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd'), clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd')].join('～') %></td>
                     </tr>
                   </script>
                 </div>
