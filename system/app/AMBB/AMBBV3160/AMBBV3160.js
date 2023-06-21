@@ -7,8 +7,9 @@ $(function () {
   const AMBBV3160 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
-      'click #search': 'onSearchClick', // [検索]ボタン押下
-      'click #searchAgain': 'onSearchAgainClick', // [検索条件を再指定]ボタン押下
+      'click #search': 'onclickSearch', // [検索]ボタン押下
+      'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
+      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]ボタン押下
     },
 
     initialize: function () {
@@ -52,6 +53,14 @@ $(function () {
         }
         return this.search(_.defaults({ reqPage: reqPage }, this.request));
       });
+
+      this.data2view({
+        売上年月from: ((date) => {
+          date.setMonth(date.getMonth() - 2);
+          return clutil.dateFormat(date, 'yyyymmdd');
+        })(clutil.ymd2date(clcom.getOpeDate())),
+        売上年月to: clcom.getOpeDate(),
+      });
     },
 
     view2data: function () {
@@ -61,6 +70,20 @@ $(function () {
 
     data2view: function (data) {
       clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
+    },
+
+    postJSON: function (request, id = clcom.pageId) {
+      return clutil.postJSON(id, request).then(
+        (response) => {
+          return response;
+        },
+        (response) => {
+          const rspHead = response.rspHead;
+          this.baseView.validator.setErrorHeader(
+            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
+          );
+        }
+      );
     },
 
     validate: function () {
@@ -77,45 +100,49 @@ $(function () {
       return true;
     },
 
-    // モック用
     search: function (request) {
-      clutil.blockUI();
-      return Promise.resolve().then(() => {
-        const response = {
-          rspHead: {
-            status: 0,
-            message: '',
-            args: [],
-            exmessage: '',
-            fieldMessages: [],
-            ope_iymd: clcom.getOpeDate(),
-            uri: '',
-            recno: '',
-            state: 0,
-          },
-          rspPage: {
-            curr_record: 0,
-            total_record: 10,
-            page_record: 10,
-            page_size: 10,
-            page_num: 1,
-          },
-          AMBBV3160GetRsp: {
-            list: _.times(10, (index) => {
-              return { index: (index += 1) };
-            }),
-          },
-        };
-        this.listView.setRecs(response.AMBBV3160GetRsp.list);
-        this.searchArea.show_result();
-        _.extend(this, { request: request, response: response });
-        clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
-        clutil.unblockUI();
-      });
+      // return this.postJSON(request)
+      return Promise.resolve() // モック用
+        .then(() => {
+          // モック用
+          clutil.blockUI();
+          return {
+            rspPage: {
+              curr_record: 0,
+              total_record: 10,
+              page_record: 10,
+              page_size: 10,
+              page_num: 1,
+            },
+            AMBBV3160GetRsp: {
+              list: _.times(10, (index) => {
+                index += 1;
+                return {};
+              }),
+            },
+          };
+        })
+        .then((response) => {
+          const list = response.AMBBV3160GetRsp.list;
+          if (!list.length) {
+            this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
+            return;
+          }
+          _.extend(this, { request: request, response: response });
+          this.listView.setRecs(list);
+          this.searchArea.show_result();
+
+          return response; // モック用
+        })
+        .then((response) => {
+          // モック用
+          clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
+          clutil.unblockUI();
+        });
     },
 
     // [検索]ボタン押下時の処理
-    onSearchClick: function () {
+    onclickSearch: function () {
       if (!this.validate()) {
         return;
       }
@@ -126,8 +153,18 @@ $(function () {
       });
     },
 
+    // [Excel出力]ボタン押下時の処理
+    onclickExcel: function () {
+      return this.postJSON({
+        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
+        AMBBV3160GetReq: this.view2data(),
+      }).then((response) => {
+        // clutil.download();
+      });
+    },
+
     // [検索条件を再指定]ボタン押下時の処理
-    onSearchAgainClick: function () {
+    onclickSearchAgain: function () {
       this.searchArea.show_srch();
     },
   });

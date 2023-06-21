@@ -91,7 +91,7 @@
                       </div>
                       <div class="col-md-2"></div>
                       <div class="col-md-5" style="text-align: left">
-                        <button class="btn btn-info wt280">Excel出力</button>
+                        <button id="excel" class="btn btn-info wt280">Excel出力</button>
                       </div>
                     </div>
                   </div>
@@ -122,19 +122,19 @@
                     <tbody></tbody>
                     <script id="rowTemplate" type="text/template">
                       <tr class="csptr">
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- ('00000' + index).slice(-5) %></td>
-                        <td><%- '法人' + index %></td>
-                        <td><%- ('00' + index).slice(-2) %></td>
-                        <td><%- '請求先' + index %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- [String(clcom.getOpeDate()).slice(0, 4), String(clcom.getOpeDate()).slice(4, 6)].join('/') %></td>
-                        <td style="text-align: right"><%- clutil.comma(10000 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(1000 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(11000 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(4000 * index) %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- '担当者' + index %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                       </tr>
                     </script>
                   </table>

@@ -7,8 +7,9 @@ $(function () {
   const AMBBV3010 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
-      'click #search': 'onSearchClick', // [検索]ボタン押下
-      'click #searchAgain': 'onSearchAgainClick', // [検索条件を再指定]ボタン押下
+      'click #search': 'onclickSearch', // [検索]ボタン押下
+      'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
+      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]ボタン押下
     },
 
     initialize: function () {
@@ -31,22 +32,23 @@ $(function () {
         this.$('#searchAgain')
       );
 
-      _.each(
-        [this.$('#締日1'), this.$('#締日2'), this.$('#締日3')],
-        ($select) => {
-          clutil.cltypeselector3({
-            $select: $select,
-            list: [
-              { id: 0, code: '00', name: '都度' },
-              { id: 15, code: '15', name: '15日' },
-              { id: 20, code: '20', name: '20日' },
-              { id: 25, code: '25', name: '25日' },
-              { id: 99, code: '99', name: '末日' },
-            ],
-            unselectedflag: true,
-          });
-        }
-      );
+      _([
+        this.$('#closeday1_type'),
+        this.$('#closeday2_type'),
+        this.$('#closeday3_type'),
+      ]).each(($select) => {
+        clutil.cltypeselector3({
+          $select: $select,
+          list: [
+            { id: -1, code: '00', name: '都度' },
+            { id: 15, code: '15', name: '15日' },
+            { id: 20, code: '20', name: '20日' },
+            { id: 25, code: '25', name: '25日' },
+            { id: 99, code: '99', name: '末日' },
+          ],
+          unselectedflag: true,
+        });
+      });
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
@@ -79,18 +81,36 @@ $(function () {
         }
         clcom.pushPage(options);
       });
-
-      if (clcom.pageData) {
-      }
     },
 
     view2data: function () {
       const data = clutil.view2data(this.$el);
-      return { 表示形式: Number(data.表示形式) };
+      return {
+        code: data.code,
+        staff: { id: 0, code: '', name: '' },
+        closeday1_type: { id: Number(data.closeday1_type), code: '', name: '' },
+        closeday2_type: { id: Number(data.closeday2_type), code: '', name: '' },
+        closeday3_type: { id: Number(data.closeday3_type), code: '', name: '' },
+        format: Number(data.format),
+      };
     },
 
     data2view: function (data) {
       clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
+    },
+
+    postJSON: function (request, id = clcom.pageId) {
+      return clutil.postJSON(id, request).then(
+        (response) => {
+          return response;
+        },
+        (response) => {
+          const rspHead = response.rspHead;
+          this.baseView.validator.setErrorHeader(
+            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
+          );
+        }
+      );
     },
 
     validate: function () {
@@ -103,17 +123,50 @@ $(function () {
     },
 
     search: function (request) {
-      const validator = this.baseView.validator;
-      return clutil.postJSON(clcom.pageId, request).then(
-        (response) => {
+      // return this.postJSON(request)
+      return Promise.resolve() // モック用
+        .then(() => {
+          // モック用
+          clutil.blockUI();
+          return {
+            rspPage: {
+              curr_record: 0,
+              total_record: 10,
+              page_record: 10,
+              page_size: 10,
+              page_num: 1,
+            },
+            AMBBV3010GetRsp: {
+              list: _.times(10, (index) => {
+                index += 1;
+                return {
+                  cocust: {
+                    id: index,
+                    code: ('00000' + index).slice(-5),
+                    name: '法人' + index,
+                  },
+                  bill: {
+                    id: index,
+                    code: ('00' + index).slice(-2),
+                    name: '請求先' + index,
+                    closeday1_type: { id: -1, code: '00', name: '都度' },
+                    closeday2_type: { id: 20, code: '20', name: '20日' },
+                    closeday3_type: { id: 99, code: '99', name: '末日' },
+                  },
+                };
+              }),
+            },
+          };
+        })
+        .then((response) => {
           const list = response.AMBBV3010GetRsp.list;
           if (!list.length) {
-            validator.setErrorHeader(clmsg.cl_no_data);
+            this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
             return;
           }
           let $headerTemplate = null;
           let $rowTemplate = null;
-          switch (request.AMBBV3010GetReq.表示形式) {
+          switch (request.AMBBV3010GetReq.format) {
             case 1:
               $headerTemplate = this.$('#headerTemplate1');
               $rowTemplate = this.$('#rowTemplate1');
@@ -125,87 +178,34 @@ $(function () {
             default:
               return;
           }
-          (this.listView = new clutil.View.RowSelectListView({
-            el: this.$('#table')
-              .find('thead')
-              .html($headerTemplate.html())
-              .end(),
-            groupid: clcom.pageId,
-            template: _.template($rowTemplate.html()),
-          })
-            .initUIElement()
-            .render()).setRecs(response.AMBBV3010GetRsp.list);
+          _.extend(this, {
+            listView: new clutil.View.RowSelectListView({
+              el: this.$('#table')
+                .find('thead')
+                .html($headerTemplate.html())
+                .end(),
+              template: _.template($rowTemplate.html()),
+              groupid: clcom.pageId,
+            })
+              .initUIElement()
+              .render(),
+            request: request,
+            response: response,
+          });
+          this.listView.setRecs(list);
           this.searchArea.show_result();
-          _.extend(this, { request: request, response: response });
-        },
-        (response) => {
-          const rspHead = response.rspHead;
-          validator.setErrorHeader(
-            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
-          );
-        }
-      );
-    },
 
-    // モック用
-    search: function (request) {
-      clutil.blockUI();
-      return Promise.resolve().then(() => {
-        const response = {
-          rspHead: {
-            status: 0,
-            message: '',
-            args: [],
-            exmessage: '',
-            fieldMessages: [],
-            ope_iymd: clcom.getOpeDate(),
-            uri: '',
-            recno: '',
-            state: 0,
-          },
-          rspPage: {
-            curr_record: 0,
-            total_record: 10,
-            page_record: 10,
-            page_size: 10,
-            page_num: 1,
-          },
-          AMBBV3010GetRsp: {
-            list: _.times(10, (index) => {
-              return { index: (index += 1) };
-            }),
-          },
-        };
-        let $headerTemplate = null;
-        let $rowTemplate = null;
-        switch (request.AMBBV3010GetReq.表示形式) {
-          case 1:
-            $headerTemplate = this.$('#headerTemplate1');
-            $rowTemplate = this.$('#rowTemplate1');
-            break;
-          case 2:
-            $headerTemplate = this.$('#headerTemplate2');
-            $rowTemplate = this.$('#rowTemplate2');
-            break;
-          default:
-            return;
-        }
-        (this.listView = new clutil.View.RowSelectListView({
-          el: this.$('#table').find('thead').html($headerTemplate.html()).end(),
-          groupid: clcom.pageId,
-          template: _.template($rowTemplate.html()),
+          return response; // モック用
         })
-          .initUIElement()
-          .render()).setRecs(response.AMBBV3010GetRsp.list);
-        this.searchArea.show_result();
-        _.extend(this, { request: request, response: response });
-        clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
-        clutil.unblockUI();
-      });
+        .then((response) => {
+          // モック用
+          clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
+          clutil.unblockUI();
+        });
     },
 
     // [検索]ボタン押下時の処理
-    onSearchClick: function () {
+    onclickSearch: function () {
       if (!this.validate()) {
         return;
       }
@@ -216,8 +216,18 @@ $(function () {
       });
     },
 
+    // [Excel出力]ボタン押下時の処理
+    onclickExcel: function () {
+      return this.postJSON({
+        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
+        AMBBV3010GetReq: this.view2data(),
+      }).then((response) => {
+        // clutil.download();
+      });
+    },
+
     // [検索条件を再指定]ボタン押下時の処理
-    onSearchAgainClick: function () {
+    onclickSearchAgain: function () {
       this.searchArea.show_srch();
     },
   });

@@ -7,8 +7,9 @@ $(function () {
   const AMBBV3080 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
-      'click #search': 'onSearchClick', // [検索]ボタン押下
-      'click #searchAgain': 'onSearchAgainClick', // [検索条件を再指定]ボタン押下
+      'click #search': 'onclickSearch', // [検索]ボタン押下
+      'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
+      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]ボタン押下
     },
 
     initialize: function () {
@@ -72,18 +73,29 @@ $(function () {
         }
         clcom.pushPage(options);
       });
-
-      if (clcom.pageData) {
-      }
     },
 
     view2data: function () {
       const data = clutil.view2data(this.$el);
-      return { 表示形式: Number(data.表示形式) };
+      return { format: Number(data.format) };
     },
 
     data2view: function (data) {
       clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
+    },
+
+    postJSON: function (request, id = clcom.pageId) {
+      return clutil.postJSON(id, request).then(
+        (response) => {
+          return response;
+        },
+        (response) => {
+          const rspHead = response.rspHead;
+          this.baseView.validator.setErrorHeader(
+            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
+          );
+        }
+      );
     },
 
     validate: function () {
@@ -102,69 +114,81 @@ $(function () {
       return true;
     },
 
-    // モック用
     search: function (request) {
-      clutil.blockUI();
-      return Promise.resolve().then(() => {
-        const response = {
-          rspHead: {
-            status: 0,
-            message: '',
-            args: [],
-            exmessage: '',
-            fieldMessages: [],
-            ope_iymd: clcom.getOpeDate(),
-            uri: '',
-            recno: '',
-            state: 0,
-          },
-          rspPage: {
-            curr_record: 0,
-            total_record: 10,
-            page_record: 10,
-            page_size: 10,
-            page_num: 1,
-          },
-          AMBBV3080GetRsp: {
-            list: _.times(10, (index) => {
-              return { index: (index += 1) };
-            }),
-          },
-        };
-        let $headerTemplate = null;
-        let $rowTemplate = null;
-        switch (request.AMBBV3080GetReq.表示形式) {
-          case 1:
-            $headerTemplate = this.$('#headerTemplate1');
-            $rowTemplate = this.$('#rowTemplate1');
-            break;
-          case 2:
-            $headerTemplate = this.$('#headerTemplate2');
-            $rowTemplate = this.$('#rowTemplate2');
-            break;
-          case 3:
-            $headerTemplate = this.$('#headerTemplate3');
-            $rowTemplate = this.$('#rowTemplate3');
-            break;
-          default:
-            return;
-        }
-        (this.listView = new clutil.View.RowSelectListView({
-          el: this.$('#table').find('thead').html($headerTemplate.html()).end(),
-          groupid: clcom.pageId,
-          template: _.template($rowTemplate.html()),
+      // return this.postJSON(request)
+      return Promise.resolve() // モック用
+        .then(() => {
+          // モック用
+          clutil.blockUI();
+          return {
+            rspPage: {
+              curr_record: 0,
+              total_record: 10,
+              page_record: 10,
+              page_size: 10,
+              page_num: 1,
+            },
+            AMBBV3080GetRsp: {
+              list: _.times(10, (index) => {
+                index += 1;
+                return {};
+              }),
+            },
+          };
         })
-          .initUIElement()
-          .render()).setRecs(response.AMBBV3080GetRsp.list);
-        this.searchArea.show_result();
-        _.extend(this, { request: request, response: response });
-        clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
-        clutil.unblockUI();
-      });
+        .then((response) => {
+          const list = response.AMBBV3080GetRsp.list;
+          if (!list.length) {
+            this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
+            return;
+          }
+          let $headerTemplate = null;
+          let $rowTemplate = null;
+          switch (request.AMBBV3080GetReq.format) {
+            case 1:
+              $headerTemplate = this.$('#headerTemplate1');
+              $rowTemplate = this.$('#rowTemplate1');
+              break;
+            case 2:
+              $headerTemplate = this.$('#headerTemplate2');
+              $rowTemplate = this.$('#rowTemplate2');
+              break;
+            case 3:
+              $headerTemplate = this.$('#headerTemplate3');
+              $rowTemplate = this.$('#rowTemplate3');
+              break;
+
+            default:
+              return;
+          }
+          _.extend(this, {
+            listView: new clutil.View.RowSelectListView({
+              el: this.$('#table')
+                .find('thead')
+                .html($headerTemplate.html())
+                .end(),
+              template: _.template($rowTemplate.html()),
+              groupid: clcom.pageId,
+            })
+              .initUIElement()
+              .render(),
+            request: request,
+            response: response,
+          });
+          this.listView.setRecs(list);
+          this.searchArea.show_result();
+
+          return response; // モック用
+        })
+        .then((response) => {
+          // モック用
+          clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
+          clutil.unblockUI();
+        });
     },
 
     // [検索]ボタン押下時の処理
-    onSearchClick: function () {
+    onclickSearch: function () {
       if (!this.validate()) {
         return;
       }
@@ -175,8 +199,18 @@ $(function () {
       });
     },
 
+    // [Excel出力]ボタン押下時の処理
+    onclickExcel: function () {
+      return this.postJSON({
+        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
+        AMBBV3080GetReq: this.view2data(),
+      }).then((response) => {
+        // clutil.download();
+      });
+    },
+
     // [検索条件を再指定]ボタン押下時の処理
-    onSearchAgainClick: function () {
+    onclickSearchAgain: function () {
       this.searchArea.show_srch();
     },
   });

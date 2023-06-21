@@ -122,13 +122,13 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="1" data-toggle="radio" checked />仕入伝票単位</label>
+                          <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />仕入伝票単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="2" data-toggle="radio" />メーカー品番単位</label>
+                          <label class="radio"><input type="radio" name="format" value="2" data-toggle="radio" />メーカー品番単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="3" data-toggle="radio" />色サイズ単位</label>
+                          <label class="radio"><input type="radio" name="format" value="3" data-toggle="radio" />色サイズ単位</label>
                         </li>
                       </ul>
                     </div>
@@ -141,7 +141,7 @@
                       </div>
                       <div class="col-md-2"></div>
                       <div class="col-md-5" style="text-align: left">
-                        <button class="btn btn-info wt280">Excel出力</button>
+                        <button id="excel" class="btn btn-info wt280">Excel出力</button>
                       </div>
                     </div>
                   </div>
@@ -179,23 +179,23 @@
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%- ('00000' + index).slice(-5) %></td>
-                        <td><%- '法人' + index %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- '案件' + index %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- '受注済' %></td>
-                        <td><%- '法人売／法人請求' %></td>
-                        <td><%- '受注担当者' + index %></td>
-                        <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
-                        <td><%- ('000' + index).slice(-3) %></td>
-                        <td><%- ('000000' + index).slice(-6) %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                       </tr>
                     </script>
                     <script id="headerTemplate2" type="text/template">
@@ -217,29 +217,41 @@
                         <th>伝票番号</th>
                         <th>起票日</th>
                         <th>検収日</th>
+                        <th>品名</th>
+                        <th>メーカー</th>
+                        <th>メーカー品番枝番なし</th>
+                        <th>商品名称</th>
                         <th>仕入数</th>
+                        <th>仕入単価</th>
+                        <th>標準単価</th>
                       </tr>
                     </script>
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%- ('00000' + index).slice(-5) %></td>
-                        <td><%- '法人' + index %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- '案件' + index %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- '受注済' %></td>
-                        <td><%- '法人売／法人請求' %></td>
-                        <td><%- '受注担当者' + index %></td>
-                        <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
-                        <td><%- ('000' + index).slice(-3) %></td>
-                        <td><%- ('000000' + index).slice(-6) %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                       </tr>
                     </script>
                     <script id="headerTemplate3" type="text/template">
@@ -261,29 +273,47 @@
                         <th>伝票番号</th>
                         <th>起票日</th>
                         <th>検収日</th>
+                        <th>品名</th>
+                        <th>メーカー</th>
+                        <th>メーカー品番枝番なし</th>
+                        <th>商品名称</th>
+                        <th>メーカー色</th>
+                        <th>青山色</th>
+                        <th>サイズ</th>
                         <th>仕入数</th>
+                        <th>仕入単価</th>
+                        <th>標準単価</th>
                       </tr>
                     </script>
                     <script id="rowTemplate3" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%- ('00000' + index).slice(-5) %></td>
-                        <td><%- '法人' + index %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- '案件' + index %></td>
-                        <td><%- ('0000000' + index).slice(-7) %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- '受注済' %></td>
-                        <td><%- '法人売／法人請求' %></td>
-                        <td><%- '受注担当者' + index %></td>
-                        <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
-                        <td><%- ('000' + index).slice(-3) %></td>
-                        <td><%- ('000000' + index).slice(-6) %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                       </tr>
                     </script>
                   </table>

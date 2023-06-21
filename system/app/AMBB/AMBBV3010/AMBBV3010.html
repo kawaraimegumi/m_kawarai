@@ -57,7 +57,7 @@
                   <div class="fieldUnit flleft">
                     <p class="fieldName">法人コード</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
+                      <input type="text" id="code" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -69,9 +69,9 @@
                   <div class="fieldUnit flleft">
                     <p class="fieldName">締日</p>
                     <div class="fieldBox">
-                      <select id="締日1" class="wt140 cl_valid"></select>
-                      <select id="締日2" class="wt140 cl_valid"></select>
-                      <select id="締日3" class="wt140 cl_valid"></select>
+                      <select id="closeday1_type" class="wt140 cl_valid"></select>
+                      <select id="closeday2_type" class="wt140 cl_valid"></select>
+                      <select id="closeday3_type" class="wt140 cl_valid"></select>
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -80,10 +80,10 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="1" data-toggle="radio" checked />法人単位</label>
+                          <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />法人単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="2" data-toggle="radio" />法人・請求先単位</label>
+                          <label class="radio"><input type="radio" name="format" value="2" data-toggle="radio" />法人・請求先単位</label>
                         </li>
                       </ul>
                     </div>
@@ -98,7 +98,7 @@
                         <button id="search" class="btn btn-info wt280">検索</button>
                       </div>
                       <div class="col-md-4" style="text-align: left">
-                        <button class="btn btn-info wt280">Excel出力</button>
+                        <button id="excel" class="btn btn-info wt280">Excel出力</button>
                       </div>
                     </div>
                   </div>
@@ -121,8 +121,8 @@
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%- ('00000' + index).slice(-5) %></td>
-                        <td><%- '法人' + index %></td>
+                        <td><%= cocust.code %></td>
+                        <td><%= cocust.name %></td>
                       </tr>
                     </script>
                     <script id="headerTemplate2" type="text/template">
@@ -140,13 +140,13 @@
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%- ('00000' + index).slice(-5) %></td>
-                        <td><%- '法人' + index %></td>
-                        <td><%- ('00' + index).slice(-2) %></td>
-                        <td><%- '請求先' + index %></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= cocust.code %></td>
+                        <td><%= cocust.name %></td>
+                        <td><%= bill.code %></td>
+                        <td><%= bill.name %></td>
+                        <td><%= bill.closeday1_type.name %></td>
+                        <td><%= bill.closeday2_type.name %></td>
+                        <td><%= bill.closeday3_type.name %></td>
                       </tr>
                     </script>
                   </table>
