@@ -91,13 +91,13 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" checked />案件単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="1" data-toggle="radio" checked />案件単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />契約番号単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="2" data-toggle="radio" />契約番号単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />色サイズ単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="3" data-toggle="radio" />色サイズ単位</label>
                         </li>
                       </ul>
                     </div>
@@ -121,7 +121,9 @@
                 <div class="pagination-wrapper"></div>
                 <div class="table" style="overflow: scroll">
                   <table id="table" class="hilightRow">
-                    <thead>
+                    <thead></thead>
+                    <tbody></tbody>
+                    <script id="headerTemplate1" type="text/template">
                       <tr>
                         <th class="cl_checkbox_selectall wt40"></th>
                         <th>法人コード</th>
@@ -130,19 +132,58 @@
                         <th>案件名</th>
                         <th>契約期間</th>
                       </tr>
-                    </thead>
-                    <tbody></tbody>
+                    </script>
+                    <script id="rowTemplate1" type="text/template">
+                      <tr class="csptr">
+                        <td class="cl_checkbox_selectrec"></td>
+                        <td><%- ('00000' + index).slice(-5) %></td>
+                        <td><%- '法人' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- '案件' + index %></td>
+                        <td><%- [clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd'), clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd')].join('～') %></td>
+                      </tr>
+                    </script>
+                    <script id="headerTemplate2" type="text/template">
+                      <tr>
+                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>法人コード</th>
+                        <th>法人名</th>
+                        <th>案件番号</th>
+                        <th>案件名</th>
+                        <th>契約期間</th>
+                      </tr>
+                    </script>
+                    <script id="rowTemplate2" type="text/template">
+                      <tr class="csptr">
+                        <td class="cl_checkbox_selectrec"></td>
+                        <td><%- ('00000' + index).slice(-5) %></td>
+                        <td><%- '法人' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- '案件' + index %></td>
+                        <td><%- [clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd'), clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd')].join('～') %></td>
+                      </tr>
+                    </script>
+                    <script id="headerTemplate3" type="text/template">
+                      <tr>
+                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>法人コード</th>
+                        <th>法人名</th>
+                        <th>案件番号</th>
+                        <th>案件名</th>
+                        <th>契約期間</th>
+                      </tr>
+                    </script>
+                    <script id="rowTemplate3" type="text/template">
+                      <tr class="csptr">
+                        <td class="cl_checkbox_selectrec"></td>
+                        <td><%- ('00000' + index).slice(-5) %></td>
+                        <td><%- '法人' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- '案件' + index %></td>
+                        <td><%- [clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd'), clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd')].join('～') %></td>
+                      </tr>
+                    </script>
                   </table>
-                  <script id="template" type="text/template">
-                    <tr class="csptr">
-                    	<td class="cl_checkbox_selectrec"></td>
-                    	<td><%- ('00000' + index).slice(-5) %></td>
-                    	<td><%- '法人' + index %></td>
-                    	<td><%- ('0000000' + index).slice(-7) %></td>
-                    	<td><%- '案件' + index %></td>
-                    	<td><%- [clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd'), clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd')].join('～') %></td>
-                    </tr>
-                  </script>
                 </div>
                 <div class="pagination-wrapper"></div>
                 <div class="fieldUnit">

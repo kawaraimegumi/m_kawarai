@@ -31,7 +31,7 @@ $(function () {
       this.listView = new clutil.View.RowSelectListView({
         el: this.$('#table'),
         groupid: clcom.pageId,
-        template: _.template(this.$('#template').html()),
+        template: _.template(this.$('#rowTemplate').html()),
       })
         .initUIElement()
         .render();
@@ -56,11 +56,11 @@ $(function () {
 
     view2data: function () {
       const data = clutil.view2data(this.$el);
-      return data;
+      return {};
     },
 
     data2view: function (data) {
-      clutil.data2view(this.$el, data);
+      clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
     },
 
     validate: function () {
@@ -77,33 +77,9 @@ $(function () {
       return true;
     },
 
-    search: function (request) {
-      const validator = this.baseView.validator;
-      _.extend(this, { request: null, response: null });
-      return clutil.postJSON(clcom.pageId, request).then(
-        (response) => {
-          const list = response.XXHJV0160GetRsp.list;
-          if (!list.length) {
-            validator.setErrorHeader(clmsg.cl_no_data);
-            return;
-          }
-          this.searchArea.show_result();
-          this.listView.setRecs(list);
-          _.extend(this, { request: request, response: response });
-        },
-        (response) => {
-          const rspHead = response.rspHead;
-          validator.setErrorHeader(
-            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
-          );
-        }
-      );
-    },
-
     // モック用
     search: function (request) {
       clutil.blockUI();
-      _.extend(this, { request: null, response: null });
       return Promise.resolve().then(() => {
         const response = {
           rspHead: {
@@ -124,12 +100,14 @@ $(function () {
             page_size: 10,
             page_num: 1,
           },
-          list: _.times(10, (index) => {
-            return { index: (index += 1) };
-          }),
+          XXHJV0160GetRsp: {
+            list: _.times(10, (index) => {
+              return { index: (index += 1) };
+            }),
+          },
         };
+        this.listView.setRecs(response.XXHJV0160GetRsp.list);
         this.searchArea.show_result();
-        this.listView.setRecs(response.list);
         _.extend(this, { request: request, response: response });
         clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
         clutil.unblockUI();
@@ -144,7 +122,7 @@ $(function () {
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
         reqPage: _.first(this.paginationViews).buildReqPage0(),
-        XXHJV0160GetReq: null,
+        XXHJV0160GetReq: this.view2data(),
       });
     },
 

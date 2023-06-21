@@ -129,13 +129,13 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" checked />出荷指示単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="1" data-toggle="radio" checked />出荷指示単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />メーカー品番単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="2" data-toggle="radio" />メーカー品番単位</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="" data-toggle="radio" />色サイズ単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="3" data-toggle="radio" />色サイズ単位</label>
                         </li>
                       </ul>
                     </div>
@@ -159,7 +159,9 @@
                 <div class="pagination-wrapper"></div>
                 <div class="table" style="overflow: scroll">
                   <table id="table" class="hilightRow">
-                    <thead>
+                    <thead></thead>
+                    <tbody></tbody>
+                    <script id="headerTemplate1" type="text/template">
                       <tr>
                         <th class="cl_checkbox_selectall wt40"></th>
                         <th>法人コード</th>
@@ -182,33 +184,128 @@
                         <th>出荷数</th>
                         <th>受注備考</th>
                       </tr>
-                    </thead>
-                    <tbody></tbody>
+                    </script>
+                    <script id="rowTemplate1" type="text/template">
+                      <tr class="csptr">
+                        <td class="cl_checkbox_selectrec"></td>
+                        <td><%- ('00000' + index).slice(-5) %></td>
+                        <td><%- '法人' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- '案件' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- '受注済' %></td>
+                        <td><%- '法人売／法人請求' %></td>
+                        <td><%- '受注担当者' + index %></td>
+                        <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
+                        <td><%- ('000000000' + index).slice(-9) %></td>
+                        <td><%- '出荷指示件名' + index %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(3 * index) %></td>
+                        <td><%- '受注備考' + index %></td>
+                      </tr>
+                    </script>
+                    <script id="headerTemplate2" type="text/template">
+                      <tr>
+                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>法人コード</th>
+                        <th>法人名</th>
+                        <th>案件番号</th>
+                        <th>案件名</th>
+                        <th>受注番号</th>
+                        <th>受注日</th>
+                        <th>希望納期</th>
+                        <th>受注ステータス</th>
+                        <th>売上パターン</th>
+                        <th>受注担当者</th>
+                        <th>受注数</th>
+                        <th>未指示数</th>
+                        <th>出荷指示番号</th>
+                        <th>出荷指示件名</th>
+                        <th>発注日</th>
+                        <th>納品日</th>
+                        <th>指示数</th>
+                        <th>出荷数</th>
+                        <th>受注備考</th>
+                      </tr>
+                    </script>
+                    <script id="rowTemplate2" type="text/template">
+                      <tr class="csptr">
+                        <td class="cl_checkbox_selectrec"></td>
+                        <td><%- ('00000' + index).slice(-5) %></td>
+                        <td><%- '法人' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- '案件' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- '受注済' %></td>
+                        <td><%- '法人売／法人請求' %></td>
+                        <td><%- '受注担当者' + index %></td>
+                        <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
+                        <td><%- ('000000000' + index).slice(-9) %></td>
+                        <td><%- '出荷指示件名' + index %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(3 * index) %></td>
+                        <td><%- '受注備考' + index %></td>
+                      </tr>
+                    </script>
+                    <script id="headerTemplate3" type="text/template">
+                      <tr>
+                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>法人コード</th>
+                        <th>法人名</th>
+                        <th>案件番号</th>
+                        <th>案件名</th>
+                        <th>受注番号</th>
+                        <th>受注日</th>
+                        <th>希望納期</th>
+                        <th>受注ステータス</th>
+                        <th>売上パターン</th>
+                        <th>受注担当者</th>
+                        <th>受注数</th>
+                        <th>未指示数</th>
+                        <th>出荷指示番号</th>
+                        <th>出荷指示件名</th>
+                        <th>発注日</th>
+                        <th>納品日</th>
+                        <th>指示数</th>
+                        <th>出荷数</th>
+                        <th>受注備考</th>
+                      </tr>
+                    </script>
+                    <script id="rowTemplate3" type="text/template">
+                      <tr class="csptr">
+                        <td class="cl_checkbox_selectrec"></td>
+                        <td><%- ('00000' + index).slice(-5) %></td>
+                        <td><%- '法人' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- '案件' + index %></td>
+                        <td><%- ('0000000' + index).slice(-7) %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- '受注済' %></td>
+                        <td><%- '法人売／法人請求' %></td>
+                        <td><%- '受注担当者' + index %></td>
+                        <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
+                        <td><%- ('000000000' + index).slice(-9) %></td>
+                        <td><%- '出荷指示件名' + index %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(3 * index) %></td>
+                        <td><%- '受注備考' + index %></td>
+                      </tr>
+                    </script>
                   </table>
-                  <script id="template" type="text/template">
-                    <tr class="csptr">
-                    	<td class="cl_checkbox_selectrec"></td>
-                    	<td><%- ('00000' + index).slice(-5) %></td>
-                    	<td><%- '法人' + index %></td>
-                    	<td><%- ('0000000' + index).slice(-7) %></td>
-                    	<td><%- '案件' + index %></td>
-                    	<td><%- ('0000000' + index).slice(-7) %></td>
-                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                      <td><%- '受注済' %></td>
-                      <td><%- '法人売／法人請求' %></td>
-                      <td><%- '受注担当者' + index %></td>
-                      <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                      <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
-                    	<td><%- ('000000000' + index).slice(-9) %></td>
-                    	<td><%- '出荷指示件名' + index %></td>
-                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                    	<td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                      <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
-                      <td style="text-align: right"><%- clutil.comma(3 * index) %></td>
-                      <td><%- '受注備考' + index %></td>
-                    </tr>
-                  </script>
                 </div>
                 <div class="pagination-wrapper"></div>
                 <div class="fieldUnit">

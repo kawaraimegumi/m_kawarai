@@ -27,7 +27,7 @@ $(function () {
       this.listView = new clutil.View.RowSelectListView({
         el: this.$('#table'),
         groupid: clcom.pageId,
-        template: _.template(this.$('#template').html()),
+        template: '',
       })
         .initUIElement()
         .render();
@@ -90,11 +90,11 @@ $(function () {
 
     view2data: function () {
       const data = clutil.view2data(this.$el);
-      return data;
+      return { 表示形式: Number(data.表示形式) };
     },
 
     data2view: function (data) {
-      clutil.data2view(this.$el, data);
+      clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
     },
 
     validate: function () {
@@ -108,7 +108,6 @@ $(function () {
 
     search: function (request) {
       const validator = this.baseView.validator;
-      _.extend(this, { request: null, response: null });
       return clutil.postJSON(clcom.pageId, request).then(
         (response) => {
           const list = response.XXHJV0010GetRsp.list;
@@ -116,8 +115,26 @@ $(function () {
             validator.setErrorHeader(clmsg.cl_no_data);
             return;
           }
-          this.searchArea.show_result();
+          let $headerTemplate = null;
+          let $rowTemplate = null;
+          switch (request.XXHJV0010GetReq.表示形式) {
+            case 1:
+              $headerTemplate = this.$('#headerTemplate1');
+              $rowTemplate = this.$('#rowTemplate1');
+              break;
+            case 2:
+              $headerTemplate = this.$('#headerTemplate2');
+              $rowTemplate = this.$('#rowTemplate2');
+              break;
+            default:
+              return;
+          }
+          const listView = _.extend(this.listView, {
+            template: _.template($rowTemplate.html()),
+          });
+          listView.$el.find('thead').html($headerTemplate.html());
           this.listView.setRecs(list);
+          this.searchArea.show_result();
           _.extend(this, { request: request, response: response });
         },
         (response) => {
@@ -132,7 +149,6 @@ $(function () {
     // モック用
     search: function (request) {
       clutil.blockUI();
-      _.extend(this, { request: null, response: null });
       return Promise.resolve().then(() => {
         const response = {
           rspHead: {
@@ -153,12 +169,32 @@ $(function () {
             page_size: 10,
             page_num: 1,
           },
-          list: _.times(10, (index) => {
-            return { index: (index += 1) };
-          }),
+          XXHJV0010GetRsp: {
+            list: _.times(10, (index) => {
+              return { index: (index += 1) };
+            }),
+          },
         };
+        let $headerTemplate = null;
+        let $rowTemplate = null;
+        switch (request.XXHJV0010GetReq.表示形式) {
+          case 1:
+            $headerTemplate = this.$('#headerTemplate1');
+            $rowTemplate = this.$('#rowTemplate1');
+            break;
+          case 2:
+            $headerTemplate = this.$('#headerTemplate2');
+            $rowTemplate = this.$('#rowTemplate2');
+            break;
+          default:
+            return;
+        }
+        const listView = _.extend(this.listView, {
+          template: _.template($rowTemplate.html()),
+        });
+        listView.$el.find('thead').html($headerTemplate.html());
+        listView.setRecs(response.XXHJV0010GetRsp.list);
         this.searchArea.show_result();
-        this.listView.setRecs(response.list);
         _.extend(this, { request: request, response: response });
         clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
         clutil.unblockUI();
@@ -173,7 +209,7 @@ $(function () {
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
         reqPage: _.first(this.paginationViews).buildReqPage0(),
-        XXHJV0010GetReq: null,
+        XXHJV0010GetReq: this.view2data(),
       });
     },
 
