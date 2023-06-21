@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const XXHJV0050 = Backbone.View.extend({
+  const AMBBV3160 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
       'click #search': 'onSearchClick', // [検索]ボタン押下
@@ -12,7 +12,11 @@ $(function () {
     },
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({ title: '受注' })
+      this.baseView = new clutil.View.MDBaseView({
+        btn_new: false,
+        title: '売上照会',
+        subtitle: '',
+      })
         .initUIElement()
         .render();
 
@@ -27,7 +31,7 @@ $(function () {
       this.listView = new clutil.View.RowSelectListView({
         el: this.$('#table'),
         groupid: clcom.pageId,
-        template: '',
+        template: _.template(this.$('#rowTemplate').html()),
       })
         .initUIElement()
         .render();
@@ -39,12 +43,8 @@ $(function () {
         this.$('#searchAgain')
       );
 
-      clutil.datepicker(this.$('#契約期間from'));
-      clutil.datepicker(this.$('#契約期間to'));
-      clutil.datepicker(this.$('#受注日from'));
-      clutil.datepicker(this.$('#受注日to'));
-      clutil.datepicker(this.$('#希望納期from'));
-      clutil.datepicker(this.$('#希望納期to'));
+      clutil.datepicker(this.$('#売上年月from'));
+      clutil.datepicker(this.$('#売上年月to'));
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
@@ -52,35 +52,11 @@ $(function () {
         }
         return this.search(_.defaults({ reqPage: reqPage }, this.request));
       });
-
-      clutil.mediator.on('onOperation', (opeTypeId) => {
-        const options = {
-          url: clcom.appRoot + '/XXHJ/XXHJV0060/XXHJV0060.html',
-          args: { opeTypeId: opeTypeId },
-          saved: null,
-          newWindow: false,
-        };
-        switch (opeTypeId) {
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-            break;
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
-            _.extend(options, { newWindow: true });
-            break;
-          default:
-            return;
-        }
-        clcom.pushPage(options);
-      });
-
-      if (clcom.pageData) {
-      }
     },
 
     view2data: function () {
       const data = clutil.view2data(this.$el);
-      return { 表示形式: Number(data.表示形式) };
+      return {};
     },
 
     data2view: function (data) {
@@ -92,9 +68,7 @@ $(function () {
       if (
         !validator.valid() ||
         !validator.validFromToObj([
-          { $stval: this.$('#契約期間from'), $edval: this.$('#契約期間to') },
-          { $stval: this.$('#受注日from'), $edval: this.$('#受注日to') },
-          { $stval: this.$('#希望納期from'), $edval: this.$('#希望納期to') },
+          { $stval: this.$('#売上年月from'), $edval: this.$('#売上年月to') },
         ])
       ) {
         validator.setErrorHeader(clmsg.cl_echoback);
@@ -126,35 +100,13 @@ $(function () {
             page_size: 10,
             page_num: 1,
           },
-          XXHJV0050GetRsp: {
+          AMBBV3160GetRsp: {
             list: _.times(10, (index) => {
               return { index: (index += 1) };
             }),
           },
         };
-        let $headerTemplate = null;
-        let $rowTemplate = null;
-        switch (request.XXHJV0050GetReq.表示形式) {
-          case 1:
-            $headerTemplate = this.$('#headerTemplate1');
-            $rowTemplate = this.$('#rowTemplate1');
-            break;
-          case 2:
-            $headerTemplate = this.$('#headerTemplate2');
-            $rowTemplate = this.$('#rowTemplate2');
-            break;
-          case 3:
-            $headerTemplate = this.$('#headerTemplate3');
-            $rowTemplate = this.$('#rowTemplate3');
-            break;
-          default:
-            return;
-        }
-        const listView = _.extend(this.listView, {
-          template: _.template($rowTemplate.html()),
-        });
-        listView.$el.find('thead').html($headerTemplate.html());
-        listView.setRecs(response.XXHJV0050GetRsp.list);
+        this.listView.setRecs(response.AMBBV3160GetRsp.list);
         this.searchArea.show_result();
         _.extend(this, { request: request, response: response });
         clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
@@ -170,7 +122,7 @@ $(function () {
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
         reqPage: _.first(this.paginationViews).buildReqPage0(),
-        XXHJV0050GetReq: this.view2data(),
+        AMBBV3160GetReq: this.view2data(),
       });
     },
 
@@ -182,7 +134,7 @@ $(function () {
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new XXHJV0050();
+      mainView = new AMBBV3160();
     },
     (response) => {
       clutil.View.doAbort({

@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const XXHJV0120 = Backbone.View.extend({
+  const AMBBV3050 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
       'click #search': 'onSearchClick', // [検索]ボタン押下
@@ -12,10 +12,7 @@ $(function () {
     },
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({
-        btn_new: false,
-        title: '直納分仕入',
-      })
+      this.baseView = new clutil.View.MDBaseView({ title: '受注' })
         .initUIElement()
         .render();
 
@@ -26,14 +23,6 @@ $(function () {
       _.each(this.paginationViews, (paginationView) => {
         paginationView.render();
       });
-
-      this.listView = new clutil.View.RowSelectListView({
-        el: this.$('#table'),
-        groupid: clcom.pageId,
-        template: '',
-      })
-        .initUIElement()
-        .render();
 
       this.searchArea = clutil.controlSrchArea(
         this.$('#cond'),
@@ -58,7 +47,11 @@ $(function () {
 
       clutil.mediator.on('onOperation', (opeTypeId) => {
         const options = {
-          url: clcom.appRoot + '/XXHJ/XXHJV0130/XXHJV0130.html',
+          url: ((code) => {
+            return [clcom.appRoot, code.slice(0, 4), code, code + '.html'].join(
+              '/'
+            );
+          })('AMBBV3060'),
           args: { opeTypeId: opeTypeId },
           saved: null,
           newWindow: false,
@@ -129,7 +122,7 @@ $(function () {
             page_size: 10,
             page_num: 1,
           },
-          XXHJV0120GetRsp: {
+          AMBBV3050GetRsp: {
             list: _.times(10, (index) => {
               return { index: (index += 1) };
             }),
@@ -137,7 +130,7 @@ $(function () {
         };
         let $headerTemplate = null;
         let $rowTemplate = null;
-        switch (request.XXHJV0120GetReq.表示形式) {
+        switch (request.AMBBV3050GetReq.表示形式) {
           case 1:
             $headerTemplate = this.$('#headerTemplate1');
             $rowTemplate = this.$('#rowTemplate1');
@@ -153,11 +146,13 @@ $(function () {
           default:
             return;
         }
-        const listView = _.extend(this.listView, {
+        (this.listView = new clutil.View.RowSelectListView({
+          el: this.$('#table').find('thead').html($headerTemplate.html()).end(),
+          groupid: clcom.pageId,
           template: _.template($rowTemplate.html()),
-        });
-        listView.$el.find('thead').html($headerTemplate.html());
-        listView.setRecs(response.XXHJV0120GetRsp.list);
+        })
+          .initUIElement()
+          .render()).setRecs(response.AMBBV3050GetRsp.list);
         this.searchArea.show_result();
         _.extend(this, { request: request, response: response });
         clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
@@ -173,7 +168,7 @@ $(function () {
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
         reqPage: _.first(this.paginationViews).buildReqPage0(),
-        XXHJV0120GetReq: this.view2data(),
+        AMBBV3050GetReq: this.view2data(),
       });
     },
 
@@ -185,7 +180,7 @@ $(function () {
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new XXHJV0120();
+      mainView = new AMBBV3050();
     },
     (response) => {
       clutil.View.doAbort({

@@ -44,7 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="XXHJV0080.js"></script>
+    <script src="AMBBV3050.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -118,9 +118,16 @@
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">出荷指示番号</p>
+                    <p class="fieldName">受注強制完了</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
+                      <ul>
+                        <li>
+                          <label class="radio"><input type="radio" name="受注強制完了" value="" data-toggle="radio" checked />表示する</label>
+                        </li>
+                        <li>
+                          <label class="radio"><input type="radio" name="受注強制完了" value="" data-toggle="radio" />表示しない</label>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -129,7 +136,7 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="表示形式" value="1" data-toggle="radio" checked />出荷指示単位</label>
+                          <label class="radio"><input type="radio" name="表示形式" value="1" data-toggle="radio" checked />受注単位</label>
                         </li>
                         <li>
                           <label class="radio"><input type="radio" name="表示形式" value="2" data-toggle="radio" />メーカー品番単位</label>
@@ -170,18 +177,17 @@
                         <th>案件名</th>
                         <th>受注番号</th>
                         <th>受注日</th>
+                        <th>受注強制完了</th>
+                        <th>受注強制完了理由</th>
+                        <th>外部倉庫分受注</th>
                         <th>希望納期</th>
                         <th>受注ステータス</th>
                         <th>売上パターン</th>
                         <th>受注担当者</th>
                         <th>受注数</th>
-                        <th>未指示数</th>
-                        <th>出荷指示番号</th>
-                        <th>出荷指示件名</th>
-                        <th>発注日</th>
-                        <th>納品日</th>
-                        <th>指示数</th>
-                        <th>出荷数</th>
+                        <th>見込売上金額</th>
+                        <th>原価</th>
+                        <th>見込粗利額</th>
                         <th>受注備考</th>
                       </tr>
                     </script>
@@ -194,18 +200,17 @@
                         <td><%- '案件' + index %></td>
                         <td><%- ('0000000' + index).slice(-7) %></td>
                         <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '完了' : '' %></td>
+                        <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '受注強制完了理由' + index : '' %></td>
+                        <td><%- index % 2 ? '〇' : '' %></td>
                         <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
                         <td><%- '受注済' %></td>
                         <td><%- '法人売／法人請求' %></td>
                         <td><%- '受注担当者' + index %></td>
                         <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
-                        <td><%- ('000000000' + index).slice(-9) %></td>
-                        <td><%- '出荷指示件名' + index %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(3 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(10000 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(6000 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(4000 * index) %></td>
                         <td><%- '受注備考' + index %></td>
                       </tr>
                     </script>
@@ -218,18 +223,17 @@
                         <th>案件名</th>
                         <th>受注番号</th>
                         <th>受注日</th>
+                        <th>受注強制完了</th>
+                        <th>受注強制完了理由</th>
+                        <th>外部倉庫分受注</th>
                         <th>希望納期</th>
                         <th>受注ステータス</th>
                         <th>売上パターン</th>
                         <th>受注担当者</th>
                         <th>受注数</th>
-                        <th>未指示数</th>
-                        <th>出荷指示番号</th>
-                        <th>出荷指示件名</th>
-                        <th>発注日</th>
-                        <th>納品日</th>
-                        <th>指示数</th>
-                        <th>出荷数</th>
+                        <th>見込売上金額</th>
+                        <th>原価</th>
+                        <th>見込粗利額</th>
                         <th>受注備考</th>
                       </tr>
                     </script>
@@ -242,18 +246,17 @@
                         <td><%- '案件' + index %></td>
                         <td><%- ('0000000' + index).slice(-7) %></td>
                         <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '完了' : '' %></td>
+                        <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '受注強制完了理由' + index : '' %></td>
+                        <td><%- index % 2 ? '〇' : '' %></td>
                         <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
                         <td><%- '受注済' %></td>
                         <td><%- '法人売／法人請求' %></td>
                         <td><%- '受注担当者' + index %></td>
                         <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
-                        <td><%- ('000000000' + index).slice(-9) %></td>
-                        <td><%- '出荷指示件名' + index %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(3 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(10000 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(6000 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(4000 * index) %></td>
                         <td><%- '受注備考' + index %></td>
                       </tr>
                     </script>
@@ -266,18 +269,17 @@
                         <th>案件名</th>
                         <th>受注番号</th>
                         <th>受注日</th>
+                        <th>受注強制完了</th>
+                        <th>受注強制完了理由</th>
+                        <th>外部倉庫分受注</th>
                         <th>希望納期</th>
                         <th>受注ステータス</th>
                         <th>売上パターン</th>
                         <th>受注担当者</th>
                         <th>受注数</th>
-                        <th>未指示数</th>
-                        <th>出荷指示番号</th>
-                        <th>出荷指示件名</th>
-                        <th>発注日</th>
-                        <th>納品日</th>
-                        <th>指示数</th>
-                        <th>出荷数</th>
+                        <th>見込売上金額</th>
+                        <th>原価</th>
+                        <th>見込粗利額</th>
                         <th>受注備考</th>
                       </tr>
                     </script>
@@ -290,18 +292,17 @@
                         <td><%- '案件' + index %></td>
                         <td><%- ('0000000' + index).slice(-7) %></td>
                         <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
+                        <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '完了' : '' %></td>
+                        <td><%- index == 2 || index == 3 || index == 5 || index == 7 ? '受注強制完了理由' + index : '' %></td>
+                        <td><%- index % 2 ? '〇' : '' %></td>
                         <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
                         <td><%- '受注済' %></td>
                         <td><%- '法人売／法人請求' %></td>
                         <td><%- '受注担当者' + index %></td>
                         <td style="text-align: right"><%- clutil.comma(10 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(4 * index) %></td>
-                        <td><%- ('000000000' + index).slice(-9) %></td>
-                        <td><%- '出荷指示件名' + index %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td><%- clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd') %></td>
-                        <td style="text-align: right"><%- clutil.comma(6 * index) %></td>
-                        <td style="text-align: right"><%- clutil.comma(3 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(10000 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(6000 * index) %></td>
+                        <td style="text-align: right"><%- clutil.comma(4000 * index) %></td>
                         <td><%- '受注備考' + index %></td>
                       </tr>
                     </script>
@@ -309,7 +310,7 @@
                 </div>
                 <div class="pagination-wrapper"></div>
                 <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="XXHJV0080">
+                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="AMBBV3050">
                     <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
                     <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
                   </div>

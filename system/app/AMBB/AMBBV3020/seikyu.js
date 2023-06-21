@@ -6,14 +6,21 @@ $(function () {
     },
 
     initialize: function (options) {
-      clutil.loadHtml(clcom.appRoot + '/XXHJ/XXHJV0020/seikyu.html', (html) => {
-        _.defaults(_.extend(this, options), {
-          validator: clutil.validator(this.$el, {
-            echoback: $('.cl_echoback'),
-          }),
-          html: html,
-        });
-      });
+      clutil.loadHtml(
+        ((code) => {
+          return [clcom.appRoot, code.slice(0, 4), code, 'seikyu.html'].join(
+            '/'
+          );
+        })(clcom.pageId),
+        (html) => {
+          _.defaults(_.extend(this, options), {
+            validator: clutil.validator(this.$el, {
+              echoback: $('.cl_echoback'),
+            }),
+            html: html,
+          });
+        }
+      );
     },
 
     show: function () {
