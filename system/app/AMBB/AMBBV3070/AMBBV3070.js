@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3030 = Backbone.View.extend({
+  const AMBBV3070 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
       'click #search': 'onclickSearch', // [検索]ボタン押下
@@ -13,7 +13,10 @@ $(function () {
     },
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({ title: '案件' })
+      this.baseView = new clutil.View.MDBaseView({
+        btn_new: false,
+        title: '受注進捗',
+      })
         .initUIElement()
         .render();
 
@@ -32,8 +35,49 @@ $(function () {
         this.$('#searchAgain')
       );
 
-      clutil.datepicker(this.$('#契約期間from'));
-      clutil.datepicker(this.$('#契約期間to'));
+      clutil.cltypeselector3({
+        $select: this.$('#締日'),
+        list: [
+          { id: -1, code: '00', name: '都度' },
+          { id: 15, code: '15', name: '15日' },
+          { id: 20, code: '20', name: '20日' },
+          { id: 25, code: '25', name: '25日' },
+          { id: 99, code: '99', name: '末日' },
+        ],
+      });
+      clutil.datepicker(this.$('#受注日from'));
+      clutil.datepicker(this.$('#受注日to'));
+      clutil.cltypeselector3({
+        $select: this.$('#売上パターン'),
+        list: [
+          { id: 1, code: '1', name: '法人売／法人請求' },
+          { id: 2, code: '2', name: '店売／法人請求' },
+          { id: 3, code: '3', name: '店売／店請求' },
+        ],
+      });
+      _([this.$('#受注ステータスfrom'), this.$('#受注ステータスto')]).each(
+        ($select) => {
+          clutil.cltypeselector3({
+            $select: $select,
+            list: [
+              { id: 1, code: '01', name: '受注済' },
+              { id: 2, code: '02', name: '出荷指示済（受注残あり）' },
+              { id: 3, code: '03', name: '出荷指示済' },
+              { id: 4, code: '04', name: '一部出荷済' },
+              { id: 5, code: '05', name: '出荷済' },
+              { id: 6, code: '06', name: '一部仕入済' },
+              { id: 7, code: '07', name: '仕入済' },
+              { id: 8, code: '08', name: '一部売上済' },
+              { id: 9, code: '09', name: '売上済' },
+              { id: 10, code: '10', name: '一部請求済' },
+              { id: 11, code: '11', name: '請求済' },
+              { id: 12, code: '12', name: '一部訂正請求済' },
+              { id: 13, code: '13', name: '訂正請求済' },
+            ],
+            unselectedflag: true,
+          });
+        }
+      );
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
@@ -43,28 +87,16 @@ $(function () {
       });
 
       clutil.mediator.on('onOperation', (opeTypeId) => {
-        const options = {
+        clcom.pushPage({
           url: ((code) => {
-            return [clcom.appRoot, code.slice(0, 4), code, code + '.html'].join(
+            return [clcom.appRoot, code.slice(0, 4), code, 'todo.html'].join(
               '/'
             );
-          })('AMBBV3040'),
+          })(clcom.pageId),
           args: { opeTypeId: opeTypeId },
           saved: null,
-          newWindow: false,
-        };
-        switch (opeTypeId) {
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-            break;
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
-            _.extend(options, { newWindow: true });
-            break;
-          default:
-            return;
-        }
-        clcom.pushPage(options);
+          newWindow: true,
+        });
       });
     },
 
@@ -96,7 +128,11 @@ $(function () {
       if (
         !validator.valid() ||
         !validator.validFromToObj([
-          { $stval: this.$('#契約期間from'), $edval: this.$('#契約期間to') },
+          { $stval: this.$('#受注日from'), $edval: this.$('#受注日to') },
+          {
+            $stval: this.$('#受注ステータスfrom'),
+            $edval: this.$('#受注ステータスto'),
+          },
         ])
       ) {
         validator.setErrorHeader(clmsg.cl_echoback);
@@ -119,7 +155,7 @@ $(function () {
               page_size: 10,
               page_num: 1,
             },
-            AMBBV3030GetRsp: {
+            AMBBV3070GetRsp: {
               list: _.times(10, (index) => {
                 index += 1;
                 return {};
@@ -128,14 +164,14 @@ $(function () {
           };
         })
         .then((response) => {
-          const list = response.AMBBV3030GetRsp.list;
+          const list = response.AMBBV3070GetRsp.list;
           if (!list.length) {
             this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
             return;
           }
           let $headerTemplate = null;
           let $rowTemplate = null;
-          switch (request.AMBBV3030GetReq.format) {
+          switch (request.AMBBV3070GetReq.format) {
             case 1:
               $headerTemplate = this.$('#headerTemplate1');
               $rowTemplate = this.$('#rowTemplate1');
@@ -143,10 +179,6 @@ $(function () {
             case 2:
               $headerTemplate = this.$('#headerTemplate2');
               $rowTemplate = this.$('#rowTemplate2');
-              break;
-            case 3:
-              $headerTemplate = this.$('#headerTemplate3');
-              $rowTemplate = this.$('#rowTemplate3');
               break;
             default:
               return;
@@ -185,7 +217,7 @@ $(function () {
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
         reqPage: _.first(this.paginationViews).buildReqPage0(),
-        AMBBV3030GetReq: this.view2data(),
+        AMBBV3070GetReq: this.view2data(),
       });
     },
 
@@ -193,7 +225,7 @@ $(function () {
     onclickExcel: function () {
       return this.postJSON({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
-        AMBBV3030GetReq: this.view2data(),
+        AMBBV3070GetReq: this.view2data(),
       }).then((response) => {
         // clutil.download();
       });
@@ -207,7 +239,7 @@ $(function () {
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3030();
+      mainView = new AMBBV3070();
     },
     (response) => {
       clutil.View.doAbort({

@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3030 = Backbone.View.extend({
+  const AMBBV3190 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
       'click #search': 'onclickSearch', // [検索]ボタン押下
@@ -13,7 +13,10 @@ $(function () {
     },
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({ title: '案件' })
+      this.baseView = new clutil.View.MDBaseView({
+        btn_new: false,
+        title: '売掛金',
+      })
         .initUIElement()
         .render();
 
@@ -25,6 +28,14 @@ $(function () {
         paginationView.render();
       });
 
+      this.listView = new clutil.View.RowSelectListView({
+        el: this.$('#table'),
+        groupid: clcom.pageId,
+        template: _.template(this.$('#rowTemplate').html()),
+      })
+        .initUIElement()
+        .render();
+
       this.searchArea = clutil.controlSrchArea(
         this.$('#cond'),
         this.$('#search'),
@@ -32,8 +43,18 @@ $(function () {
         this.$('#searchAgain')
       );
 
-      clutil.datepicker(this.$('#契約期間from'));
-      clutil.datepicker(this.$('#契約期間to'));
+      clutil.cltypeselector3({
+        $select: this.$('#締日'),
+        list: [
+          { id: -1, code: '00', name: '都度' },
+          { id: 15, code: '15', name: '15日' },
+          { id: 20, code: '20', name: '20日' },
+          { id: 25, code: '25', name: '25日' },
+          { id: 99, code: '99', name: '末日' },
+        ],
+      });
+      clutil.datepicker(this.$('#請求年月from'));
+      clutil.datepicker(this.$('#請求年月to'));
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
@@ -43,34 +64,30 @@ $(function () {
       });
 
       clutil.mediator.on('onOperation', (opeTypeId) => {
-        const options = {
+        clcom.pushPage({
           url: ((code) => {
-            return [clcom.appRoot, code.slice(0, 4), code, code + '.html'].join(
+            return [clcom.appRoot, code.slice(0, 4), code, 'todo.html'].join(
               '/'
             );
-          })('AMBBV3040'),
+          })(clcom.pageId),
           args: { opeTypeId: opeTypeId },
           saved: null,
-          newWindow: false,
-        };
-        switch (opeTypeId) {
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-            break;
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
-            _.extend(options, { newWindow: true });
-            break;
-          default:
-            return;
-        }
-        clcom.pushPage(options);
+          newWindow: true,
+        });
+      });
+
+      this.data2view({
+        請求年月from: ((date) => {
+          date.setMonth(date.getMonth() - 2);
+          return clutil.dateFormat(date, 'yyyymmdd');
+        })(clutil.ymd2date(clcom.getOpeDate())),
+        請求年月to: clcom.getOpeDate(),
       });
     },
 
     view2data: function () {
       const data = clutil.view2data(this.$el);
-      return { format: Number(data.format) };
+      return {};
     },
 
     data2view: function (data) {
@@ -96,7 +113,7 @@ $(function () {
       if (
         !validator.valid() ||
         !validator.validFromToObj([
-          { $stval: this.$('#契約期間from'), $edval: this.$('#契約期間to') },
+          { $stval: this.$('#請求年月from'), $edval: this.$('#請求年月to') },
         ])
       ) {
         validator.setErrorHeader(clmsg.cl_echoback);
@@ -119,7 +136,7 @@ $(function () {
               page_size: 10,
               page_num: 1,
             },
-            AMBBV3030GetRsp: {
+            AMBBV3190GetRsp: {
               list: _.times(10, (index) => {
                 index += 1;
                 return {};
@@ -128,43 +145,12 @@ $(function () {
           };
         })
         .then((response) => {
-          const list = response.AMBBV3030GetRsp.list;
+          const list = response.AMBBV3190GetRsp.list;
           if (!list.length) {
             this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
             return;
           }
-          let $headerTemplate = null;
-          let $rowTemplate = null;
-          switch (request.AMBBV3030GetReq.format) {
-            case 1:
-              $headerTemplate = this.$('#headerTemplate1');
-              $rowTemplate = this.$('#rowTemplate1');
-              break;
-            case 2:
-              $headerTemplate = this.$('#headerTemplate2');
-              $rowTemplate = this.$('#rowTemplate2');
-              break;
-            case 3:
-              $headerTemplate = this.$('#headerTemplate3');
-              $rowTemplate = this.$('#rowTemplate3');
-              break;
-            default:
-              return;
-          }
-          _.extend(this, {
-            listView: new clutil.View.RowSelectListView({
-              el: this.$('#table')
-                .find('thead')
-                .html($headerTemplate.html())
-                .end(),
-              template: _.template($rowTemplate.html()),
-              groupid: clcom.pageId,
-            })
-              .initUIElement()
-              .render(),
-            request: request,
-            response: response,
-          });
+          _.extend(this, { request: request, response: response });
           this.listView.setRecs(list);
           this.searchArea.show_result();
 
@@ -185,7 +171,7 @@ $(function () {
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
         reqPage: _.first(this.paginationViews).buildReqPage0(),
-        AMBBV3030GetReq: this.view2data(),
+        AMBBV3190GetReq: this.view2data(),
       });
     },
 
@@ -193,7 +179,7 @@ $(function () {
     onclickExcel: function () {
       return this.postJSON({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
-        AMBBV3030GetReq: this.view2data(),
+        AMBBV3190GetReq: this.view2data(),
       }).then((response) => {
         // clutil.download();
       });
@@ -207,7 +193,7 @@ $(function () {
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3030();
+      mainView = new AMBBV3190();
     },
     (response) => {
       clutil.View.doAbort({

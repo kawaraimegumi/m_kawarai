@@ -7,6 +7,7 @@ $(function () {
   const AMBBV3010 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
+      'click #csv': 'onclickCsv', // [発行先CSV出力]ボタン押下
       'click #search': 'onclickSearch', // [検索]ボタン押下
       'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
       'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]ボタン押下
@@ -32,23 +33,21 @@ $(function () {
         this.$('#searchAgain')
       );
 
-      _([
-        this.$('#closeday1_type'),
-        this.$('#closeday2_type'),
-        this.$('#closeday3_type'),
-      ]).each(($select) => {
-        clutil.cltypeselector3({
-          $select: $select,
-          list: [
-            { id: -1, code: '00', name: '都度' },
-            { id: 15, code: '15', name: '15日' },
-            { id: 20, code: '20', name: '20日' },
-            { id: 25, code: '25', name: '25日' },
-            { id: 99, code: '99', name: '末日' },
-          ],
-          unselectedflag: true,
-        });
-      });
+      _([this.$('#締日1'), this.$('#締日2'), this.$('#締日3')]).each(
+        ($select) => {
+          clutil.cltypeselector3({
+            $select: $select,
+            list: [
+              { id: -1, code: '00', name: '都度' },
+              { id: 15, code: '15', name: '15日' },
+              { id: 20, code: '20', name: '20日' },
+              { id: 25, code: '25', name: '25日' },
+              { id: 99, code: '99', name: '末日' },
+            ],
+            unselectedflag: true,
+          });
+        }
+      );
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
@@ -86,11 +85,13 @@ $(function () {
     view2data: function () {
       const data = clutil.view2data(this.$el);
       return {
-        code: data.code,
-        staff: { id: 0, code: '', name: '' },
-        closeday1_type: { id: Number(data.closeday1_type), code: '', name: '' },
-        closeday2_type: { id: Number(data.closeday2_type), code: '', name: '' },
-        closeday3_type: { id: Number(data.closeday3_type), code: '', name: '' },
+        bbcust: { code: '' },
+        bbcustbill: {
+          staff: { id: 0, code: '', name: '' },
+          closeday1_type: { id: 0, code: '', name: '' },
+          closeday2_type: { id: 0, code: '', name: '' },
+          closeday3_type: { id: 0, code: '', name: '' },
+        },
         format: Number(data.format),
       };
     },
@@ -140,12 +141,12 @@ $(function () {
               list: _.times(10, (index) => {
                 index += 1;
                 return {
-                  cocust: {
+                  bbcust: {
                     id: index,
                     code: ('00000' + index).slice(-5),
                     name: '法人' + index,
                   },
-                  bill: {
+                  bbcustbill: {
                     id: index,
                     code: ('00' + index).slice(-2),
                     name: '請求先' + index,
@@ -202,6 +203,15 @@ $(function () {
           clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
           clutil.unblockUI();
         });
+    },
+
+    // [発行先CSV出力]ボタン押下時の処理
+    onclickCsv: function () {
+      return this.postJSON({
+        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
+      }).then((response) => {
+        // clutil.download();
+      });
     },
 
     // [検索]ボタン押下時の処理

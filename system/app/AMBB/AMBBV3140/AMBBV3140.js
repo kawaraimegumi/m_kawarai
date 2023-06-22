@@ -160,7 +160,6 @@ $(function () {
               $headerTemplate = this.$('#headerTemplate3');
               $rowTemplate = this.$('#rowTemplate3');
               break;
-
             default:
               return;
           }

@@ -57,7 +57,7 @@
                   <div class="fieldUnit flleft">
                     <p class="fieldName">法人コード</p>
                     <div class="fieldBox">
-                      <input type="text" id="code" class="form-control cl_valid wt280" />
+                      <input type="text" id="" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -69,9 +69,9 @@
                   <div class="fieldUnit flleft">
                     <p class="fieldName">締日</p>
                     <div class="fieldBox">
-                      <select id="closeday1_type" class="wt140 cl_valid"></select>
-                      <select id="closeday2_type" class="wt140 cl_valid"></select>
-                      <select id="closeday3_type" class="wt140 cl_valid"></select>
+                      <select id="締日1" class="cl_valid wt140"></select>
+                      <select id="締日2" class="cl_valid wt140"></select>
+                      <select id="締日3" class="cl_valid wt140"></select>
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -89,10 +89,10 @@
                     </div>
                   </div>
                   <div class="clear"></div>
-                  <div class="fieldUnit">
-                    <div class="fieldBox noName mrgt20">
+                  <div class="fieldUnit mrgt10">
+                    <div class="fieldBox noName">
                       <div class="col-md-4" style="text-align: right">
-                        <button class="btn btn-info wt280">発行先CSV出力</button>
+                        <button id="csv" class="btn btn-info wt280">発行先CSV出力</button>
                       </div>
                       <div class="col-md-4" style="text-align: center">
                         <button id="search" class="btn btn-info wt280">検索</button>
@@ -102,6 +102,7 @@
                       </div>
                     </div>
                   </div>
+                  <div class="clear"></div>
                 </div>
                 <button id="searchAgain" class="btn dispn">検索条件を再指定</button>
               </div>
@@ -121,8 +122,8 @@
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= cocust.code %></td>
-                        <td><%= cocust.name %></td>
+                        <td><%= bbcust.code %></td>
+                        <td><%= bbcust.name %></td>
                       </tr>
                     </script>
                     <script id="headerTemplate2" type="text/template">
@@ -140,13 +141,13 @@
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= cocust.code %></td>
-                        <td><%= cocust.name %></td>
-                        <td><%= bill.code %></td>
-                        <td><%= bill.name %></td>
-                        <td><%= bill.closeday1_type.name %></td>
-                        <td><%= bill.closeday2_type.name %></td>
-                        <td><%= bill.closeday3_type.name %></td>
+                        <td><%= bbcust.code %></td>
+                        <td><%= bbcust.name %></td>
+                        <td><%= bbcustbill.code %></td>
+                        <td><%= bbcustbill.name %></td>
+                        <td><%= bbcustbill.closeday1_type.name %></td>
+                        <td><%= bbcustbill.closeday2_type.name %></td>
+                        <td><%= bbcustbill.closeday3_type.name %></td>
                       </tr>
                     </script>
                   </table>
@@ -158,6 +159,7 @@
                     <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
                   </div>
                 </div>
+                <div class="clear"></div>
               </div>
             </div>
           </div>

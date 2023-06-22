@@ -44,7 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="AMBBV3080.js"></script>
+    <script src="AMBBV3070.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -60,29 +60,16 @@
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
+                    <p class="fieldName">締日</p>
+                    <div class="fieldBox">
+                      <select id="締日" class="cl_valid wt280" multiple></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
                     <p class="fieldName">案件名</p>
                     <div class="fieldBox">
                       <input type="text" id="" class="form-control cl_valid wt280" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">備考</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">契約期間</p>
-                    <div class="fieldBox">
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="契約期間from" class="cl_date cl_valid" />
-                      </div>
-                      <p class="txtInFieldUnit pdg flleft">〜</p>
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="契約期間to" class="cl_date cl_valid" />
-                      </div>
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -100,27 +87,33 @@
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">希望納期</p>
-                    <div class="fieldBox">
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="希望納期from" class="cl_date cl_valid" />
-                      </div>
-                      <p class="txtInFieldUnit pdg flleft">〜</p>
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="希望納期to" class="cl_date cl_valid" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
                     <p class="fieldName">受注担当者</p>
                     <div class="fieldBox"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">出荷指示番号</p>
+                    <p class="fieldName">売上パターン</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
+                      <select id="売上パターン" class="cl_valid wt280" multiple></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">受注ステータス</p>
+                    <div class="fieldBox">
+                      <div class="flleft">
+                        <select id="受注ステータスfrom" class="cl_valid wt280"></select>
+                      </div>
+                      <p class="txtInFieldUnit pdg flleft">〜</p>
+                      <div class="flleft">
+                        <select id="受注ステータスto" class="cl_valid wt280"></select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <div class="fieldBox">
+                      <label class="checkbox"><input type="checkbox" id="" data-toggle="checkbox" />未完の受注のみ表示する(受注条件は無視する)</label>
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -129,13 +122,10 @@
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />出荷指示単位</label>
+                          <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />受注単位</label>
                         </li>
                         <li>
                           <label class="radio"><input type="radio" name="format" value="2" data-toggle="radio" />メーカー品番単位</label>
-                        </li>
-                        <li>
-                          <label class="radio"><input type="radio" name="format" value="3" data-toggle="radio" />色サイズ単位</label>
                         </li>
                       </ul>
                     </div>
@@ -164,32 +154,28 @@
                     <tbody></tbody>
                     <script id="headerTemplate1" type="text/template">
                       <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
                         <th>法人コード</th>
                         <th>法人名</th>
                         <th>案件番号</th>
                         <th>案件名</th>
                         <th>受注番号</th>
                         <th>受注日</th>
-                        <th>希望納期</th>
-                        <th>受注ステータス</th>
                         <th>売上パターン</th>
                         <th>受注担当者</th>
+                        <th>受注ステータス</th>
+                        <th>完了</th>
+                        <th>強制完了理由</th>
+                        <th>希望納期</th>
                         <th>受注数</th>
-                        <th>未指示数</th>
-                        <th>出荷指示番号</th>
-                        <th>出荷指示件名</th>
-                        <th>発注日</th>
-                        <th>納品日</th>
-                        <th>指示数</th>
-                        <th>出荷数</th>
-                        <th>受注備考</th>
+                        <th>出荷指示</th>
+                        <th>センター出荷</th>
+                        <th>直納仕入</th>
+                        <th>売上</th>
+                        <th>請求</th>
                       </tr>
                     </script>
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
-                        <td class="cl_checkbox_selectrec"></td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -212,107 +198,31 @@
                     </script>
                     <script id="headerTemplate2" type="text/template">
                       <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
                         <th>法人コード</th>
                         <th>法人名</th>
                         <th>案件番号</th>
                         <th>案件名</th>
                         <th>受注番号</th>
                         <th>受注日</th>
-                        <th>希望納期</th>
-                        <th>受注ステータス</th>
                         <th>売上パターン</th>
                         <th>受注担当者</th>
-                        <th>受注数</th>
-                        <th>未指示数</th>
-                        <th>出荷指示番号</th>
-                        <th>出荷指示件名</th>
-                        <th>発注日</th>
-                        <th>納品日</th>
+                        <th>受注ステータス</th>
+                        <th>完了</th>
+                        <th>強制完了理由</th>
+                        <th>希望納期</th>
                         <th>品名</th>
                         <th>メーカー</th>
-                        <th>メーカー品番枝番なし</th>
-                        <th>商品名称</th>
-                        <th>指示数</th>
-                        <th>出荷数</th>
-                        <th>仕入単価</th>
-                        <th>標準単価</th>
-                        <th>受注備考</th>
+                        <th>メーカー品番</th>
+                        <th>受注数</th>
+                        <th>出荷指示</th>
+                        <th>センター出荷</th>
+                        <th>直納仕入</th>
+                        <th>売上</th>
+                        <th>請求</th>
                       </tr>
                     </script>
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
-                        <td class="cl_checkbox_selectrec"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    </script>
-                    <script id="headerTemplate3" type="text/template">
-                      <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
-                        <th>法人コード</th>
-                        <th>法人名</th>
-                        <th>案件番号</th>
-                        <th>案件名</th>
-                        <th>受注番号</th>
-                        <th>受注日</th>
-                        <th>希望納期</th>
-                        <th>受注ステータス</th>
-                        <th>売上パターン</th>
-                        <th>受注担当者</th>
-                        <th>受注数</th>
-                        <th>未指示数</th>
-                        <th>出荷指示番号</th>
-                        <th>出荷指示件名</th>
-                        <th>発注日</th>
-                        <th>納品日</th>
-                        <th>品名</th>
-                        <th>メーカー</th>
-                        <th>メーカー品番枝番なし</th>
-                        <th>商品名称</th>
-                        <th>メーカー色</th>
-                        <th>青山色</th>
-                        <th>サイズ</th>
-                        <th>指示数</th>
-                        <th>出荷数</th>
-                        <th>仕入単価</th>
-                        <th>標準単価</th>
-                        <th>受注備考</th>
-                      </tr>
-                    </script>
-                    <script id="rowTemplate3" type="text/template">
-                      <tr class="csptr">
-                        <td class="cl_checkbox_selectrec"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -339,13 +249,6 @@
                   </table>
                 </div>
                 <div class="pagination-wrapper"></div>
-                <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="AMBBV3080">
-                    <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
-                    <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
-                  </div>
-                </div>
-                <div class="clear"></div>
               </div>
             </div>
           </div>

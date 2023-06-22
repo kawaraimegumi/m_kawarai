@@ -44,7 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="AMBBV3030.js"></script>
+    <script src="AMBBV3190.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -60,44 +60,66 @@
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">案件名</p>
+                    <p class="fieldName">請求先</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">請求先企業名</p>
                     <div class="fieldBox">
                       <input type="text" id="" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">備考</p>
+                    <p class="fieldName">締日</p>
+                    <div class="fieldBox">
+                      <select id="締日" class="cl_valid wt280" multiple></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">振込先口座番号</p>
                     <div class="fieldBox">
                       <input type="text" id="" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">契約期間</p>
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">請求年月</p>
                     <div class="fieldBox">
                       <div class="datepicker_wrap flleft">
-                        <input type="text" id="契約期間from" class="cl_date cl_valid" />
+                        <input type="text" id="請求年月from" class="cl_date cl_valid cl_required" />
                       </div>
                       <p class="txtInFieldUnit pdg flleft">〜</p>
                       <div class="datepicker_wrap flleft">
-                        <input type="text" id="契約期間to" class="cl_date cl_valid" />
+                        <input type="text" id="請求年月to" class="cl_date cl_valid cl_required" />
                       </div>
                     </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">表示形式</p>
+                    <p class="fieldName">請求番号</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt280" />
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">売掛状況</p>
                     <div class="fieldBox">
                       <ul>
                         <li>
-                          <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />案件単位</label>
+                          <label class="radio"><input type="radio" name="売掛状況" value="1" data-toggle="radio" checked />全て</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="format" value="2" data-toggle="radio" />契約番号単位</label>
+                          <label class="radio"><input type="radio" name="売掛状況" value="2" data-toggle="radio" />未請求</label>
                         </li>
                         <li>
-                          <label class="radio"><input type="radio" name="format" value="3" data-toggle="radio" />色サイズ単位</label>
+                          <label class="radio"><input type="radio" name="売掛状況" value="3" data-toggle="radio" />入金過不足分</label>
+                        </li>
+                        <li>
+                          <label class="radio"><input type="radio" name="売掛状況" value="4" data-toggle="radio" />入金完了</label>
                         </li>
                       </ul>
                     </div>
@@ -122,92 +144,31 @@
                 <div class="pagination-wrapper"></div>
                 <div class="table" style="overflow: scroll">
                   <table id="table" class="hilightRow">
-                    <thead></thead>
+                    <thead>
+                      <tr>
+                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>法人コード</th>
+                        <th>法人名</th>
+                        <th>請求先コード</th>
+                        <th>請求先名</th>
+                        <th>請求取消</th>
+                        <th>請求番号</th>
+                        <th>請求年月</th>
+                        <th>締日</th>
+                        <th>売上金額(税抜)</th>
+                        <th>消費税</th>
+                        <th>売上金額(税込)</th>
+                        <th>粗利</th>
+                        <th>入金予定日</th>
+                        <th>入金日</th>
+                        <th>入金金額</th>
+                        <th>売掛残高</th>
+                        <th>振込先口座</th>
+                        <th>担当者</th>
+                      </tr>
+                    </thead>
                     <tbody></tbody>
-                    <script id="headerTemplate1" type="text/template">
-                      <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
-                        <th>法人コード</th>
-                        <th>法人名</th>
-                        <th>案件番号</th>
-                        <th>案件名</th>
-                        <th>契約期間</th>
-                      </tr>
-                    </script>
-                    <script id="rowTemplate1" type="text/template">
-                      <tr class="csptr">
-                        <td class="cl_checkbox_selectrec"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    </script>
-                    <script id="headerTemplate2" type="text/template">
-                      <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
-                        <th>法人コード</th>
-                        <th>法人名</th>
-                        <th>案件番号</th>
-                        <th>案件名</th>
-                        <th>契約期間</th>
-                        <th>品名</th>
-                        <th>メーカー</th>
-                        <th>メーカー品番枝番なし</th>
-                        <th>商品名称</th>
-                        <th>契約番号</th>
-                        <th>契約数</th>
-                        <th>仕入単価</th>
-                        <th>標準単価</th>
-                        <th>契約ステータス</th>
-                        <th>商品登録書発行日</th>
-                      </tr>
-                    </script>
-                    <script id="rowTemplate2" type="text/template">
-                      <tr class="csptr">
-                        <td class="cl_checkbox_selectrec"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    </script>
-                    <script id="headerTemplate3" type="text/template">
-                      <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
-                        <th>法人コード</th>
-                        <th>法人名</th>
-                        <th>案件番号</th>
-                        <th>案件名</th>
-                        <th>契約期間</th>
-                        <th>品名</th>
-                        <th>メーカー</th>
-                        <th>メーカー品番枝番なし</th>
-                        <th>商品名称</th>
-                        <th>契約番号</th>
-                        <th>メーカー色</th>
-                        <th>青山色</th>
-                        <th>サイズ</th>
-                        <th>契約数</th>
-                        <th>仕入単価</th>
-                        <th>標準単価</th>
-                        <th>契約ステータス</th>
-                        <th>商品登録書発行日</th>
-                      </tr>
-                    </script>
-                    <script id="rowTemplate3" type="text/template">
+                    <script id="rowTemplate" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
                         <td></td>
@@ -233,13 +194,6 @@
                   </table>
                 </div>
                 <div class="pagination-wrapper"></div>
-                <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="AMBBV3030">
-                    <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
-                    <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
-                  </div>
-                </div>
-                <div class="clear"></div>
               </div>
             </div>
           </div>
