@@ -1,0 +1,45 @@
+<div id="mainColumn">
+  <div id="mainColumninBox" class="noLeftColumn">
+    <div id="title">
+      <h2>案件商品検索</h2>
+      <div class="titleInBoxRight"></div>
+    </div>
+    <div id="content">
+      <div class="fieldgroup">
+        <div id="cond" class="fieldgroupInBox search">
+          <div class="fieldUnit mrgt10">
+            <div class="fieldBox noName btnCenter">
+              <button id="search" class="btn btn-info wt280">検索</button>
+            </div>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <button id="searchAgain" class="btn dispn">検索条件を再指定</button>
+      </div>
+      <div id="result" class="dispn">
+        <div class="pagination-wrapper"></div>
+        <div class="table" style="overflow: scroll">
+          <table id="table" class="hilightRow">
+            <thead></thead>
+            <tbody></tbody>
+            <script id="headerTemplate" type="text/template">
+              <tr>
+                <th class="cl_checkbox_selectall wt40"></th>
+              </tr>
+            </script>
+            <script id="rowTemplate" type="text/template">
+              <tr class="csptr">
+                <td class="cl_checkbox_selectrec"></td>
+              </tr>
+            </script>
+          </table>
+        </div>
+        <div class="pagination-wrapper"></div>
+      </div>
+    </div>
+    <div id="mainColumnFooter" class="noLeftColumn">
+      <p class="cancel"><a id="cancel">キャンセル</a></p>
+      <p class="apply mrgCancel"><a id="commit">確定</a></p>
+    </div>
+  </div>
+</div>

@@ -7,35 +7,34 @@ $(function () {
   const AMBBV3020 = Backbone.View.extend({
     el: $('#ca_main'),
     events: {
-      'click #seikyu': 'onclickSeikyu',
-      'click #nohin': 'onclickNohin',
+      'click #bbcustbill': 'onclickBBcustbill',
+      'click #bbcustdlv': 'onclickBBcustdlv',
     },
 
     initialize: function () {
       this.baseView = new clutil.View.MDBaseView({
         opeTypeId: clcom.pageArgs.opeTypeId,
         title: '法人',
-        // buildGetReqFunction: (opeTypeId) => {
-        //   return {
-        //     resId: clcom.pageId,
-        //     data: {
-        //       reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
-        //       AMGAV2010GetReq: {},
-        //     },
-        //   };
-        // },
+        buildGetReqFunction: (opeTypeId) => {
+          return {
+            resId: clcom.pageId,
+            data: {
+              reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
+              AMBBV3020GetReq: {},
+            },
+          };
+        },
         buildSubmitReqFunction: (opeTypeId) => {
           if (!this.validate()) {
             return;
           }
-          // return {
-          //   resId: clcom.pageId,
-          //   data: {
-          //     reqHead: { opeTypeId: opeTypeId },
-          //     AMGAV2010UpdReq: {},
-          //   },
-          // };
-          return;
+          return {
+            resId: clcom.pageId,
+            data: {
+              reqHead: { opeTypeId: opeTypeId },
+              AMBBV3020UpdReq: {},
+            },
+          };
         },
       })
         .initUIElement()
@@ -77,12 +76,12 @@ $(function () {
       // }
 
       const $parent = this.$('#container');
-      this.seikyuView = new SeikyuView({
-        el: '#seikyuContainer',
+      this.bbcustbillView = new BBcustbillView({
+        el: '#bbcustbillContainer',
         $parent: $parent,
       });
-      this.nohinView = new NohinView({
-        el: '#nohinContainer',
+      this.bbcustdlvView = new BBcustdlvView({
+        el: '#bbcustdlvContainer',
         $parent: $parent,
       });
     },
@@ -96,12 +95,12 @@ $(function () {
       return true;
     },
 
-    onclickSeikyu: function () {
-      this.seikyuView.show();
+    onclickBBcustbill: function () {
+      this.bbcustbillView.show();
     },
 
-    onclickNohin: function () {
-      this.nohinView.show();
+    onclickBBcustdlv: function () {
+      this.bbcustdlvView.show();
     },
   });
   return clutil.getIniJSON().then(

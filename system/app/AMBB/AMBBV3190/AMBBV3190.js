@@ -56,6 +56,11 @@ $(function () {
       clutil.datepicker(this.$('#請求年月from'));
       clutil.datepicker(this.$('#請求年月to'));
 
+      this.detailView = new DetailView({
+        el: '#detailContainer',
+        $parent: this.$('#container'),
+      });
+
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
           return;
@@ -64,16 +69,7 @@ $(function () {
       });
 
       clutil.mediator.on('onOperation', (opeTypeId) => {
-        clcom.pushPage({
-          url: ((code) => {
-            return [clcom.appRoot, code.slice(0, 4), code, 'todo.html'].join(
-              '/'
-            );
-          })(clcom.pageId),
-          args: { opeTypeId: opeTypeId },
-          saved: null,
-          newWindow: true,
-        });
+        this.detailView.show();
       });
 
       this.data2view({

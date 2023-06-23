@@ -1,5 +1,5 @@
 $(function () {
-  NohinView = Backbone.View.extend({
+  DetailView = Backbone.View.extend({
     events: {
       'click #cancel': 'onclickCancel', // [キャンセル]押下
       'click #commit': 'onclickCommit', // [確定]押下
@@ -8,7 +8,7 @@ $(function () {
     initialize: function (options) {
       clutil.loadHtml(
         ((code) => {
-          return [clcom.appRoot, code.slice(0, 4), code, 'nohin.html'].join(
+          return [clcom.appRoot, code.slice(0, 4), code, 'detail.html'].join(
             '/'
           );
         })(clcom.pageId),
@@ -26,23 +26,6 @@ $(function () {
     show: function () {
       this.$el.html(this.html);
       this.$parent.hide();
-
-      clutil.cltypeselector3({
-        $select: this.$('#敬称'),
-        list: [
-          { id: 1, code: '1', name: '御中' },
-          { id: 2, code: '2', name: '様' },
-        ],
-      });
-      clutil.cltypeselector3({
-        $select: this.$('#県コード'),
-        list: [
-          { id: 1, code: '01', name: '北海道' },
-          { id: 13, code: '13', name: '東京都' },
-          { id: 27, code: '27', name: '大阪府' },
-          { id: 47, code: '47', name: '沖縄県' },
-        ],
-      });
     },
 
     hide: function () {

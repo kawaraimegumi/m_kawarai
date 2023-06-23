@@ -79,6 +79,11 @@ $(function () {
         }
       );
 
+      this.detailView = new DetailView({
+        el: '#detailContainer',
+        $parent: this.$('#container'),
+      });
+
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {
           return;
@@ -86,17 +91,8 @@ $(function () {
         return this.search(_.defaults({ reqPage: reqPage }, this.request));
       });
 
-      clutil.mediator.on('onOperation', (opeTypeId) => {
-        clcom.pushPage({
-          url: ((code) => {
-            return [clcom.appRoot, code.slice(0, 4), code, 'todo.html'].join(
-              '/'
-            );
-          })(clcom.pageId),
-          args: { opeTypeId: opeTypeId },
-          saved: null,
-          newWindow: true,
-        });
+      clutil.mediator.on('onOperation', () => {
+        this.detailView.show();
       });
     },
 

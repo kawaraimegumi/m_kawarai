@@ -1,5 +1,5 @@
 $(function () {
-  SeikyuView = Backbone.View.extend({
+  BBcustbillView = Backbone.View.extend({
     events: {
       'click #cancel': 'onclickCancel', // [キャンセル]押下
       'click #commit': 'onclickCommit', // [確定]押下
@@ -8,9 +8,12 @@ $(function () {
     initialize: function (options) {
       clutil.loadHtml(
         ((code) => {
-          return [clcom.appRoot, code.slice(0, 4), code, 'seikyu.html'].join(
-            '/'
-          );
+          return [
+            clcom.appRoot,
+            code.slice(0, 4),
+            code,
+            'bbcustbill.html',
+          ].join('/');
         })(clcom.pageId),
         (html) => {
           _.defaults(_.extend(this, options), {
