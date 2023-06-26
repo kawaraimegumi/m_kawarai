@@ -4,32 +4,55 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3040 = Backbone.View.extend({
+  const AMBBV3110 = Backbone.View.extend({
     el: $('#container'),
     events: {
       'click #search': 'onclickSearch', // [検索]ボタン押下
-      'click #bbprojitem': 'onclickBBprojitem',
+      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]ボタン押下
     },
 
     initialize: function () {
       this.baseView = new clutil.View.MDBaseView({
-        opeTypeId: clcom.pageArgs.opeTypeId,
-        title: '案件',
+        title: '納品書出力',
+        subtitle: '',
       })
         .initUIElement()
         .render();
 
-      clutil.datepicker(this.$('#契約期間from'));
-      clutil.datepicker(this.$('#契約期間to'));
+      this.paginationViews = clutil.View.buildPaginationView(
+        clcom.pageId,
+        this.$el
+      );
+      _.each(this.paginationViews, (paginationView) => {
+        paginationView.render();
+      });
+
+      this.searchArea = clutil.controlSrchArea(
+        this.$('#cond'),
+        this.$('#search'),
+        this.$('#result'),
+        this.$('#searchAgain')
+      );
+
+      clutil.datepicker(this.$('#発行日from'));
+      clutil.datepicker(this.$('#発行日to'));
+      clutil.datepicker(this.$('#納品日from'));
+      clutil.datepicker(this.$('#納品日to'));
       clutil.cltypeselector3({
-        $select: this.$('#センター在庫'),
+        $select: this.$('#発行状態'),
         list: [
-          { id: 978, code: '0978', name: '井原商品センター法人部' },
-          { id: 9999, code: '9999', name: 'テストセンター' },
+          { id: 1, code: '01', name: '未発行' },
+          { id: 2, code: '02', name: '一部発行済' },
+          { id: 3, code: '03', name: '発行済' },
         ],
       });
 
-      this.bbprojitemView = new BBprojitemView({ el: '#bbprojitemContainer' });
+      clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
+        if (!this.request) {
+          return;
+        }
+        return this.search(_.defaults({ reqPage: reqPage }, this.request));
+      });
     },
 
     view2data: function () {
@@ -60,7 +83,8 @@ $(function () {
       if (
         !validator.valid() ||
         !validator.validFromToObj([
-          { $stval: this.$('#契約期間from'), $edval: this.$('#契約期間to') },
+          { $stval: this.$('#発行日from'), $edval: this.$('#発行日to') },
+          { $stval: this.$('#納品日from'), $edval: this.$('#納品日to') },
         ])
       ) {
         validator.setErrorHeader(clmsg.cl_echoback);
@@ -83,7 +107,7 @@ $(function () {
               page_size: 10,
               page_num: 1,
             },
-            AMBBV3040GetRsp: {
+            AMBBV3110GetRsp: {
               list: _.times(10, (index) => {
                 index += 1;
                 return {};
@@ -92,14 +116,14 @@ $(function () {
           };
         })
         .then((response) => {
-          const list = response.AMBBV3040GetRsp.list;
+          const list = response.AMBBV3110GetRsp.list;
           if (!list.length) {
             this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
             return;
           }
           let $headerTemplate = null;
           let $rowTemplate = null;
-          switch (request.AMBBV3040GetReq.format) {
+          switch (request.AMBBV3110GetReq.format) {
             case 1:
               $headerTemplate = this.$('#headerTemplate1');
               $rowTemplate = this.$('#rowTemplate1');
@@ -126,6 +150,7 @@ $(function () {
             response: response,
           });
           this.listView.setRecs(list);
+          this.searchArea.show_result();
 
           return response; // モック用
         })
@@ -143,17 +168,20 @@ $(function () {
       }
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
-        AMBBV3040GetReq: this.view2data(),
+        reqPage: _.first(this.paginationViews).buildReqPage0(),
+        AMBBV3110GetReq: this.view2data(),
       });
     },
 
-    onclickBBprojitem: function () {
-      this.bbprojitemView.show();
+    // [検索条件を再指定]ボタン押下時の処理
+    onclickSearchAgain: function () {
+      this.searchArea.show_srch();
     },
   });
+
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3040();
+      mainView = new AMBBV3110();
     },
     (response) => {
       clutil.View.doAbort({

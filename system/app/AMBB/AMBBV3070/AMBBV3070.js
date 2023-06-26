@@ -5,7 +5,7 @@ $(function () {
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
   const AMBBV3070 = Backbone.View.extend({
-    el: $('#ca_main'),
+    el: $('#container'),
     events: {
       'click #search': 'onclickSearch', // [検索]ボタン押下
       'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
@@ -79,10 +79,7 @@ $(function () {
         }
       );
 
-      this.detailView = new DetailView({
-        el: '#detailContainer',
-        $parent: this.$('#container'),
-      });
+      this.detailView = new DetailView({ el: '#detailContainer' });
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (!this.request) {

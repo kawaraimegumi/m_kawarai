@@ -24,8 +24,7 @@ $(function () {
     },
 
     show: function () {
-      this.$el.html(this.html);
-      this.$parent.hide();
+      this.$el.nextAll().hide().end().html(this.html);
 
       clutil.cltypeselector3({
         $select: this.$('#敬称'),
@@ -46,8 +45,16 @@ $(function () {
     },
 
     hide: function () {
-      this.$el.html('');
-      this.$parent.show();
+      this.$el.nextAll().show().end().html('');
+    },
+
+    validate: function () {
+      const validator = this.validator;
+      if (!validator.valid()) {
+        validator.setErrorHeader(clmsg.cl_echoback);
+        return false;
+      }
+      return true;
     },
 
     // [キャンセル]押下時の処理
@@ -61,15 +68,6 @@ $(function () {
         return;
       }
       this.hide();
-    },
-
-    validate: function () {
-      const validator = this.validator;
-      if (!validator.valid()) {
-        validator.setErrorHeader(clmsg.cl_echoback);
-        return false;
-      }
-      return true;
     },
   });
 });

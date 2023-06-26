@@ -7,6 +7,81 @@
     <div id="content">
       <div class="fieldgroup">
         <div id="cond" class="fieldgroupInBox search">
+          <div class="fieldUnit flleft">
+            <p class="fieldName">法人</p>
+            <div class="fieldBox"></div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">仕入形態</p>
+            <div class="fieldBox">
+              <select id="仕入形態" class="cl_valid wt280" multiple></select>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">品名</p>
+            <div class="fieldBox"></div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">メーカー品番枝番なし</p>
+            <div class="fieldBox">
+              <input type="text" id="" class="form-control cl_valid wt280" />
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">アイテム</p>
+            <div class="fieldBox"></div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">商品名称</p>
+            <div class="fieldBox">
+              <input type="text" id="" class="form-control cl_valid wt280" />
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">年度</p>
+            <div class="fieldBox">
+              <input type="text" id="" class="form-control cl_valid wt280" />
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">契約番号</p>
+            <div class="fieldBox">
+              <input type="text" id="" class="form-control cl_valid wt280" />
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">メーカー</p>
+            <div class="fieldBox"></div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">商談担当者</p>
+            <div class="fieldBox">
+              <input type="text" id="" class="form-control cl_valid wt280" />
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">商談日</p>
+            <div class="fieldBox">
+              <div class="datepicker_wrap flleft">
+                <input type="text" id="商談日from" class="cl_date cl_valid" />
+              </div>
+              <p class="txtInFieldUnit pdg flleft">〜</p>
+              <div class="datepicker_wrap flleft">
+                <input type="text" id="商談日to" class="cl_date cl_valid" />
+              </div>
+            </div>
+          </div>
+          <div class="clear"></div>
           <div class="fieldUnit mrgt10">
             <div class="fieldBox noName btnCenter">
               <button id="search" class="btn btn-info wt280">検索</button>
@@ -20,16 +95,39 @@
         <div class="pagination-wrapper"></div>
         <div class="table" style="overflow: scroll">
           <table id="table" class="hilightRow">
-            <thead></thead>
-            <tbody></tbody>
-            <script id="headerTemplate" type="text/template">
+            <thead>
               <tr>
                 <th class="cl_checkbox_selectall wt40"></th>
+                <th>品名</th>
+                <th>メーカー</th>
+                <th>メーカー品番枝番なし</th>
+                <th>商品名称</th>
+                <th>契約番号</th>
+                <th>法人</th>
+                <th>センターリアル在庫</th>
+                <th>店舗在庫</th>
+                <th>仕入単価</th>
+                <th>標準単価</th>
+                <th>契約ステータス</th>
+                <th>商品登録書発行日</th>
               </tr>
-            </script>
+            </thead>
+            <tbody></tbody>
             <script id="rowTemplate" type="text/template">
               <tr class="csptr">
                 <td class="cl_checkbox_selectrec"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
             </script>
           </table>

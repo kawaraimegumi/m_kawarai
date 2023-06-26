@@ -53,7 +53,195 @@
       <div id="container">
         <div id="mainColumn">
           <div id="mainColumninBox" class="noLeftColumn">
-            <div id="content"></div>
+            <div id="content">
+              <div class="fieldgroup">
+                <div class="fieldgroupInBox">
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">法人</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">案件番号</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt280" disabled />
+                    </div>
+                  </div>
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">案件名</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt280 cl_required" />
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">契約期間</p>
+                    <div class="fieldBox">
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="契約期間from" class="cl_date cl_valid cl_required" />
+                      </div>
+                      <p class="txtInFieldUnit pdg flleft">〜</p>
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="契約期間to" class="cl_date cl_valid cl_required" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">備考</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt660" />
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <div class="fieldgroup">
+                <div class="fieldgroupInBox">
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">表示形式</p>
+                    <div class="fieldBox">
+                      <ul>
+                        <li>
+                          <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />契約番号単位</label>
+                        </li>
+                        <li>
+                          <label class="radio"><input type="radio" name="format" value="2" data-toggle="radio" />色サイズ単位</label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <div class="fieldBox">
+                      <ul>
+                        <li>
+                          <label class="radio"><input type="radio" name="" value="1" data-toggle="radio" checked />表示分のみ</label>
+                        </li>
+                        <li>
+                          <label class="radio"><input type="radio" name="" value="2" data-toggle="radio" />非表示分含む</label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">センター在庫</p>
+                    <div class="fieldBox">
+                      <select id="センター在庫" class="cl_valid wt280"></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit mrgt10 mrgb10">
+                    <div class="fieldBox noName btnCenter">
+                      <button id="search" class="btn btn-info wt280">検索</button>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="table" style="overflow: scroll">
+                    <table id="table" class="hilightRow list">
+                      <thead></thead>
+                      <tbody></tbody>
+                      <tfoot>
+                        <tr class="addRow">
+                          <td id="bbprojitem"><span class="btn-add"></span></td>
+                        </tr>
+                      </tfoot>
+                      <script id="headerTemplate1" type="text/template">
+                        <tr>
+                          <th>削除</th>
+                          <th>非表示</th>
+                          <th>品名</th>
+                          <th>メーカー</th>
+                          <th>メーカー品番枝番なし</th>
+                          <th>商品名称</th>
+                          <th>商品名称印刷用</th>
+                          <th>契約番号</th>
+                          <th>契約数</th>
+                          <th>センターリアル在庫</th>
+                          <th>店舗在庫</th>
+                          <th>仕入単価</th>
+                          <th>標準単価</th>
+                          <th>販売単価</th>
+                          <th>契約ステータス</th>
+                          <th>商品登録書発行日</th>
+                        </tr>
+                      </script>
+                      <script id="rowTemplate1" type="text/template">
+                        <tr class="csptr">
+                          <td class="cl_checkbox_selectrec"></td>
+                          <td class="cl_checkbox_selectrec"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <input type="text" class="form-control cl_valid cl_required" />
+                          </td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </script>
+                      <script id="headerTemplate2" type="text/template">
+                        <tr>
+                          <th>削除</th>
+                          <th>非表示</th>
+                          <th>品名</th>
+                          <th>メーカー</th>
+                          <th>メーカー品番枝番なし</th>
+                          <th>商品名称</th>
+                          <th>商品名称印刷用</th>
+                          <th>契約番号</th>
+                          <th>メーカー色</th>
+                          <th>青山色</th>
+                          <th>サイズ</th>
+                          <th>契約数</th>
+                          <th>センターリアル在庫</th>
+                          <th>店舗在庫</th>
+                          <th>仕入単価</th>
+                          <th>標準単価</th>
+                          <th>販売単価</th>
+                          <th>契約ステータス</th>
+                          <th>商品登録書発行日</th>
+                        </tr>
+                      </script>
+                      <script id="rowTemplate2" type="text/template">
+                        <tr class="csptr">
+                          <td class="cl_checkbox_selectrec"></td>
+                          <td class="cl_checkbox_selectrec"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <input type="text" class="form-control cl_valid cl_required" />
+                          </td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </script>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div id="mainColumnFooter" class="noLeftColumn"></div>
           </div>
         </div>

@@ -24,13 +24,11 @@ $(function () {
     },
 
     show: function () {
-      this.$el.html(this.html);
-      this.$parent.hide();
+      this.$el.nextAll().hide().end().html(this.html);
     },
 
     hide: function () {
-      this.$el.html('');
-      this.$parent.show();
+      this.$el.nextAll().show().end().html('');
     },
 
     // [キャンセル]押下時の処理

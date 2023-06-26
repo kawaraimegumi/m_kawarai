@@ -44,176 +44,143 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="bbcustbill.js"></script>
-    <script src="bbcustdlv.js"></script>
-    <script src="AMBBV3020.js"></script>
+    <script src="AMBBV3150.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
-      <div id="bbcustbillContainer" class="cl_dialog"></div>
-      <div id="bbcustdlvContainer" class="cl_dialog"></div>
       <div id="container">
         <div id="mainColumn">
           <div id="mainColumninBox" class="noLeftColumn">
             <div id="content">
               <div class="fieldgroup">
-                <p class="gtitle">基本情報</p>
                 <div class="fieldgroupInBox">
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">法人</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">案件</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">受注日</p>
+                    <div class="fieldBox">
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="受注日" class="cl_date cl_valid" readonly />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">売上パターン</p>
+                    <div class="fieldBox">
+                      <select id="売上パターン" class="cl_valid wt280" disabled></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
                   <div class="fieldUnit flleft required">
-                    <p class="fieldName">法人コード</p>
+                    <p class="fieldName">請求先</p>
+                    <div class="fieldBox"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">締日</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid cl_required wt280" />
+                      <select id="締日1" class="cl_valid wt140"></select>
+                      <select id="締日2" class="cl_valid wt140"></select>
+                      <select id="締日3" class="cl_valid wt140"></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">基準額</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt280" />
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">入金サイト日数</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt280" />
+                    </div>
+                  </div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">入金サイト日数2</p>
+                    <div class="fieldBox">
+                      <input type="text" id="" class="form-control cl_valid wt280" />
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">売上日</p>
+                    <div class="fieldBox">
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="売上日" class="cl_date cl_valid cl_required" />
+                      </div>
                     </div>
                   </div>
                   <div class="fieldUnit flleft required">
-                    <p class="fieldName">法人名</p>
+                    <p class="fieldName">請求基準日</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid cl_required wt280" />
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="請求基準日" class="cl_date cl_valid cl_required" />
+                      </div>
                     </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">フリガナ</p>
+                    <p class="fieldName">回収予定日</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="回収予定日" class="cl_date cl_valid" />
+                      </div>
                     </div>
                   </div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">略称</p>
+                    <p class="fieldName">標準の回収予定日</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="標準の回収予定日" class="cl_date cl_valid" />
+                      </div>
                     </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <div class="fieldBox">
-                      <label class="checkbox"><input type="checkbox" id="" data-toggle="checkbox" />法人システムの納品書を同梱する</label>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                </div>
-              </div>
-              <div class="fieldgroup">
-                <p class="gtitle">住所情報</p>
-                <div class="fieldgroupInBox">
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">郵便番号</p>
-                    <div class="fieldBox" style="display: flex">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
-                      <button class="btn">住所反映</button>
+                      <label class="checkbox"><input type="checkbox" id="" data-toggle="checkbox" />未売上のみ表示する</label>
                     </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">住所1</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt660" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">住所2</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt660" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">住所3</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt660" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">電話番号</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
-                    </div>
+                    <p class="fieldName">振分先店</p>
+                    <div class="fieldBox"></div>
                   </div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">FAX番号</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                </div>
-              </div>
-              <div class="fieldgroup">
-                <p class="gtitle">担当者情報</p>
-                <div class="fieldgroupInBox">
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">部署名</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
-                    </div>
-                  </div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">役職名</p>
+                    <p class="fieldName">店担当者</p>
                     <div class="fieldBox">
                       <input type="text" id="" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">担当者名</p>
+                    <p class="fieldName">USJAN</p>
+                    <div class="fieldBox">
+                      <select id="USJAN" class="cl_valid wt280"></select>
+                    </div>
+                  </div>
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">企業JAN</p>
                     <div class="fieldBox">
                       <input type="text" id="" class="form-control cl_valid wt280" />
                     </div>
                   </div>
                   <div class="clear"></div>
-                </div>
-              </div>
-              <div class="fieldgroup">
-                <p class="gtitle">請求先情報</p>
-                <div class="fieldgroupInBox">
-                  <div class="fieldUnit flleft" style="height: auto">
-                    <div class="fieldBox noName table">
-                      <table class="list">
-                        <thead>
-                          <tr>
-                            <th class="cl_checkbox_selectall wt40"></th>
-                            <th>請求先コード</th>
-                            <th>請求先名</th>
-                            <th>電話番号</th>
-                            <th>住所</th>
-                          </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot>
-                          <tr class="addRow">
-                            <td id="bbcustbill"><span class="btn-add"></span></td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                </div>
-              </div>
-              <div class="fieldgroup">
-                <p class="gtitle">納品先情報</p>
-                <div class="fieldgroupInBox">
-                  <div class="fieldUnit flleft" style="height: auto">
-                    <div class="fieldBox noName table">
-                      <table class="list">
-                        <thead>
-                          <tr>
-                            <th class="cl_checkbox_selectall wt40"></th>
-                            <th>納品先コード</th>
-                            <th>納品先名</th>
-                            <th>電話番号</th>
-                            <th>住所</th>
-                          </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot>
-                          <tr class="addRow">
-                            <td id="bbcustdlv"><span class="btn-add"></span></td>
-                          </tr>
-                        </tfoot>
-                      </table>
+                  <div class="fieldUnit flleft">
+                    <div class="fieldBox">
+                      <label class="checkbox"><input type="checkbox" id="" data-toggle="checkbox" />継続して他店売上を入力する</label>
                     </div>
                   </div>
                   <div class="clear"></div>

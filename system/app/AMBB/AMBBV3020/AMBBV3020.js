@@ -5,7 +5,7 @@ $(function () {
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
   const AMBBV3020 = Backbone.View.extend({
-    el: $('#ca_main'),
+    el: $('#container'),
     events: {
       'click #bbcustbill': 'onclickBBcustbill',
       'click #bbcustdlv': 'onclickBBcustdlv',
@@ -40,50 +40,30 @@ $(function () {
         .initUIElement()
         .render();
 
-      // switch (this.baseView.options.opeTypeId) {
-      //   case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-      //   case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-      //   case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
-      //     clutil.mediator.on('onMDGetCompleted', (args) => {
-      //       switch (args.status) {
-      //         case 'OK':
-      //         case 'DONE':
-      //           break;
-      //         default:
-      //           break;
-      //       }
-      //     });
-      //     break;
-      //   default:
-      //     break;
-      // }
-      // switch (this.baseView.options.opeTypeId) {
-      //   case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-      //   case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-      //   case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-      //     clutil.mediator.on('onMDSubmitCompleted', (args) => {
-      //       switch (args.status) {
-      //         case 'OK':
-      //         case 'DONE':
-      //           break;
-      //         default:
-      //           break;
-      //       }
-      //     });
-      //     break;
-      //   default:
-      //     break;
-      // }
+      switch (this.baseView.options.opeTypeId) {
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
+          clutil.mediator.on('onMDGetCompleted', (args) => {
+            // data2view
+          });
+          break;
+        default:
+          break;
+      }
+      switch (this.baseView.options.opeTypeId) {
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+          clutil.mediator.on('onMDSubmitCompleted', (args) => {});
+          // viewReadonly
+          break;
+        default:
+          break;
+      }
 
-      const $parent = this.$('#container');
-      this.bbcustbillView = new BBcustbillView({
-        el: '#bbcustbillContainer',
-        $parent: $parent,
-      });
-      this.bbcustdlvView = new BBcustdlvView({
-        el: '#bbcustdlvContainer',
-        $parent: $parent,
-      });
+      this.bbcustbillView = new BBcustbillView({ el: '#bbcustbillContainer' });
+      this.bbcustdlvView = new BBcustdlvView({ el: '#bbcustdlvContainer' });
     },
 
     validate: function () {

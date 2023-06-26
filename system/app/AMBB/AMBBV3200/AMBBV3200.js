@@ -5,7 +5,7 @@ $(function () {
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
   const AMBBV3200 = Backbone.View.extend({
-    el: $('#ca_main'),
+    el: $('#container'),
     events: {
       'click #search': 'onclickSearch', // [検索]ボタン押下
       'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
