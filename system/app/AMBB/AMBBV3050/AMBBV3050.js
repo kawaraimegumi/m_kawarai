@@ -7,9 +7,9 @@ $(function () {
   const AMBBV3050 = Backbone.View.extend({
     el: $('#container'),
     events: {
-      'click #search': 'onclickSearch', // [検索]ボタン押下
-      'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
-      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]ボタン押下
+      'click #search': 'onclickSearch', // [検索]押下
+      'click #excel': 'onclickExcel', // [Excel出力]押下
+      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]押下
     },
 
     initialize: function () {
@@ -17,21 +17,9 @@ $(function () {
         .initUIElement()
         .render();
 
-      this.paginationViews = clutil.View.buildPaginationView(
-        clcom.pageId,
-        this.$el
-      );
-      _.each(this.paginationViews, (paginationView) => {
-        paginationView.render();
-      });
+      this.validator = this.baseView.validator;
 
-      this.searchArea = clutil.controlSrchArea(
-        this.$('#cond'),
-        this.$('#search'),
-        this.$('#result'),
-        this.$('#searchAgain')
-      );
-
+      this.bbcust = new BBcustView({ el: '#bbcust' });
       clutil.datepicker(this.$('#契約期間from'));
       clutil.datepicker(this.$('#契約期間to'));
       clutil.datepicker(this.$('#受注日from'));
@@ -39,37 +27,71 @@ $(function () {
       clutil.datepicker(this.$('#希望納期from'));
       clutil.datepicker(this.$('#希望納期to'));
 
-      clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
-        if (!this.request) {
-          return;
-        }
-        return this.search(_.defaults({ reqPage: reqPage }, this.request));
+      this.paginationViews = _(
+        clutil.View.buildPaginationView(this.cid, this.$el)
+      ).map((paginationView) => {
+        return paginationView.render();
       });
 
-      clutil.mediator.on('onOperation', (opeTypeId) => {
-        const options = {
-          url: ((code) => {
-            return [clcom.appRoot, code.slice(0, 4), code, code + '.html'].join(
-              '/'
-            );
-          })('AMBBV3060'),
-          args: { opeTypeId: opeTypeId },
-          saved: null,
-          newWindow: false,
-        };
-        switch (opeTypeId) {
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-            break;
-          case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
-            _.extend(options, { newWindow: true });
-            break;
-          default:
+      this.controlSrchArea = clutil.controlSrchArea(
+        this.$('#cond'),
+        this.$('#search'),
+        this.$('#result'),
+        this.$('#searchAgain')
+      );
+
+      clutil.mediator
+        .on('onPageChanged', (groupid, reqPage) => {
+          if (groupid != this.cid) {
             return;
-        }
-        clcom.pushPage(options);
-      });
+          }
+          return this.search(_.defaults({ reqPage: reqPage }, this.request));
+        })
+        .on('onRowSelectChanged', (groupid, arg) => {
+          if (groupid != this.cid) {
+            return;
+          }
+          if (!arg.selectedRecsCount || arg.selectedRecsCount > 1) {
+            clutil.inputReadonly(this.$('#AMBBV3090'), true);
+            clutil.inputReadonly(this.$('#AMBBV3130'), true);
+            clutil.inputReadonly(this.$('#AMBBV3150'), true);
+            return;
+          }
+        })
+        .on('onOperation', (opeTypeId) => {
+          const selectedRecs = this.rowSelectListView.getSelectedRecs();
+          clcom.pushPage({
+            url: ((code) => {
+              return [
+                clcom.appRoot,
+                code.slice(0, 4),
+                code,
+                code + '.html',
+              ].join('/');
+            })('AMBBV3060'),
+            args: {
+              opeTypeId: opeTypeId,
+              recs: _(selectedRecs)
+                .uniq((rec) => {
+                  return [rec.bbcust.id, rec.bbproj.id].join();
+                })
+                .map((rec) => {
+                  return _.pick(rec, 'bbcust', 'bbproj');
+                }),
+            },
+            saved: { request: this.request, selectedRecs: selectedRecs },
+            newWindow: opeTypeId == am_proto_defs.AM_PROTO_COMMON_RTYPE_REL,
+          });
+        });
+
+      if (clcom.pageData) {
+        const pageData = clcom.pageData;
+        const request = pageData.request;
+        this.data2view(request.getReq);
+        return this.search(request).then(() => {
+          this.rowSelectListView.setSelectRecs(pageData.selectedRecs, true);
+        });
+      }
     },
 
     view2data: function () {
@@ -82,21 +104,52 @@ $(function () {
     },
 
     postJSON: function (request, id = clcom.pageId) {
-      return clutil.postJSON(id, request).then(
-        (response) => {
-          return response;
-        },
-        (response) => {
-          const rspHead = response.rspHead;
-          this.baseView.validator.setErrorHeader(
-            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
-          );
-        }
-      );
+      // return clutil.postJSON(id, request).then(
+      //   (response) => {
+      //     return response;
+      //   },
+      //   (response) => {
+      //     const rspHead = response.rspHead;
+      //     this.validator.setErrorHeader(
+      //       clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
+      //     );
+      //   }
+      // );
+
+      // モック用
+      return Promise.resolve().then(() => {
+        clutil.blockUI();
+        return {
+          rspPage: {
+            curr_record: 0,
+            total_record: 10,
+            page_record: 10,
+            page_size: 10,
+            page_num: 1,
+          },
+          getRsp: {
+            list: _(10).times((index) => {
+              index += 1;
+              return {
+                bbcust: {
+                  id: index,
+                  code: ('0000000000' + index).slice(-5),
+                  name: '法人' + index,
+                },
+                bbproj: {
+                  id: index,
+                  code: ('0000000000' + index).slice(-7),
+                  name: '案件' + index,
+                },
+              };
+            }),
+          },
+        };
+      });
     },
 
     validate: function () {
-      const validator = this.baseView.validator;
+      const validator = this.validator;
       if (
         !validator.valid() ||
         !validator.validFromToObj([
@@ -112,102 +165,95 @@ $(function () {
     },
 
     search: function (request) {
-      // return this.postJSON(request)
-      return Promise.resolve() // モック用
-        .then(() => {
-          // モック用
-          clutil.blockUI();
-          return {
-            rspPage: {
-              curr_record: 0,
-              total_record: 10,
-              page_record: 10,
-              page_size: 10,
-              page_num: 1,
-            },
-            AMBBV3050GetRsp: {
-              list: _.times(10, (index) => {
-                index += 1;
-                return {};
-              }),
-            },
-          };
-        })
-        .then((response) => {
-          const list = response.AMBBV3050GetRsp.list;
-          if (!list.length) {
-            this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
-            return;
-          }
-          let $headerTemplate = null;
-          let $rowTemplate = null;
-          switch (request.AMBBV3050GetReq.format) {
-            case 1:
-              $headerTemplate = this.$('#headerTemplate1');
-              $rowTemplate = this.$('#rowTemplate1');
-              break;
-            case 2:
-              $headerTemplate = this.$('#headerTemplate2');
-              $rowTemplate = this.$('#rowTemplate2');
-              break;
-            case 3:
-              $headerTemplate = this.$('#headerTemplate3');
-              $rowTemplate = this.$('#rowTemplate3');
-              break;
-            default:
+      return (
+        this.postJSON(request)
+          .then((response) => {
+            const list = response.getRsp.list;
+            if (!list.length) {
+              this.validator.setErrorHeader(clmsg.cl_no_data);
               return;
-          }
-          _.extend(this, {
-            listView: new clutil.View.RowSelectListView({
-              el: this.$('#table')
-                .find('thead')
-                .html($headerTemplate.html())
-                .end(),
-              template: _.template($rowTemplate.html()),
-              groupid: clcom.pageId,
-            })
-              .initUIElement()
-              .render(),
-            request: request,
-            response: response,
-          });
-          this.listView.setRecs(list);
-          this.searchArea.show_result();
-
-          return response; // モック用
-        })
-        .then((response) => {
+            }
+            let $headerTemplate = null;
+            let $rowTemplate = null;
+            let uniqueId = null;
+            switch (request.getReq.format) {
+              case 1:
+                $headerTemplate = this.$('#headerTemplate1');
+                $rowTemplate = this.$('#rowTemplate1');
+                uniqueId = (rec) => {
+                  return [rec.bbcust.id, rec.bbproj.id].join();
+                };
+                break;
+              case 2:
+                $headerTemplate = this.$('#headerTemplate2');
+                $rowTemplate = this.$('#rowTemplate2');
+                uniqueId = (rec) => {
+                  return [rec.bbcust.id, rec.bbproj.id].join();
+                };
+                break;
+              case 3:
+                $headerTemplate = this.$('#headerTemplate3');
+                $rowTemplate = this.$('#rowTemplate3');
+                uniqueId = (rec) => {
+                  return [rec.bbcust.id, rec.bbproj.id].join();
+                };
+                break;
+              default:
+                return;
+            }
+            _.extend(this, {
+              rowSelectListView: new clutil.View.RowSelectListView({
+                el: this.$('#table')
+                  .find('thead')
+                  .html($headerTemplate.html())
+                  .end(),
+                template: _.template($rowTemplate.html()),
+                groupid: this.cid,
+              })
+                .initUIElement()
+                .render(),
+              request: request,
+              response: response,
+            });
+            this.rowSelectListView.setRecs(
+              _(list).map((rec) => {
+                return _.extend(rec, { id: uniqueId(rec) });
+              })
+            );
+            this.controlSrchArea.show_result();
+          })
           // モック用
-          clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
-          clutil.unblockUI();
-        });
+          .then(() => {
+            clutil.unblockUI();
+          })
+      );
     },
 
-    // [検索]ボタン押下時の処理
+    // [検索]押下時の処理
     onclickSearch: function () {
       if (!this.validate()) {
         return;
       }
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
-        reqPage: _.first(this.paginationViews).buildReqPage0(),
-        AMBBV3050GetReq: this.view2data(),
+        reqPage: _(this.paginationViews).first().buildReqPage0(),
+        getReq: this.view2data(),
       });
     },
 
-    // [Excel出力]ボタン押下時の処理
+    // [Excel出力]押下時の処理
     onclickExcel: function () {
       return this.postJSON({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
-        AMBBV3050GetReq: this.view2data(),
+        getReq: this.view2data(),
       }).then((response) => {
         // clutil.download();
       });
     },
 
-    // [検索条件を再指定]ボタン押下時の処理
+    // [検索条件を再指定]押下時の処理
     onclickSearchAgain: function () {
-      this.searchArea.show_srch();
+      this.controlSrchArea.show_srch();
     },
   });
 

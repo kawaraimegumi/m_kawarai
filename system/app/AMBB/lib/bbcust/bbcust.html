@@ -1,0 +1,85 @@
+<div id="mainColumn">
+  <div id="mainColumninBox" class="noLeftColumn">
+    <div id="title">
+      <h2>法人検索</h2>
+      <div class="titleInBoxRight"></div>
+    </div>
+    <div id="content">
+      <div id="selected" class="selected">
+        <p class="title">選択した内容</p>
+        <div class="control">
+          <span id="removeAll" class="delete">すべて削除</span>
+          <div class="clear"></div>
+        </div>
+        <div id="innerScroll">
+          <ul id="ul"></ul>
+          <script id="recTemplate" type="text/template">
+            <li>
+              <span><%= bbcust.name %></span>
+              <span class="code"><%= bbcust.code %></span>
+              <span class="remove btn-delete"></span>
+            </li>
+          </script>
+        </div>
+      </div>
+      <div class="fieldgroup">
+        <div id="cond" class="fieldgroupInBox search">
+          <div class="fieldUnit flleft">
+            <p class="fieldName">法人コード</p>
+            <div class="fieldBox">
+              <input type="text" id="" class="form-control cl_valid wt280" />
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">法人名</p>
+            <div class="fieldBox">
+              <input type="text" id="" class="form-control cl_valid wt280" />
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit mrgt10">
+            <div class="fieldBox noName btnCenter">
+              <button id="search" class="btn btn-info wt280">検索</button>
+            </div>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <button id="searchAgain" class="btn dispn">検索条件を再指定</button>
+      </div>
+      <div id="result" class="dispn">
+        <div class="pagination-wrapper"></div>
+        <div class="table" style="overflow: scroll">
+          <table id="table" class="hilightRow">
+            <thead>
+              <tr>
+                <th class="cl_checkbox_selectall wt40"></th>
+                <th>法人コード</th>
+                <th>法人名</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <script id="rowTemplate" type="text/template">
+              <tr class="csptr">
+                <td class="cl_checkbox_selectrec"></td>
+                <td><%= bbcust.code %></td>
+                <td><%= bbcust.name %></td>
+              </tr>
+            </script>
+          </table>
+        </div>
+        <div class="pagination-wrapper"></div>
+        <div class="fieldUnit">
+          <div class="fieldBox noName btnCenter">
+            <button id="add" class="btn btn-primary wt280">チェックしたものを選択内容に追加</button>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div id="mainColumnFooter" class="noLeftColumn">
+      <p class="cancel"><a id="cancel">キャンセル</a></p>
+      <p class="apply mrgCancel"><a id="commit">確定</a></p>
+    </div>
+  </div>
+</div>
