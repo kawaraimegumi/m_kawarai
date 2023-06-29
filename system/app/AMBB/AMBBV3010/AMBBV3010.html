@@ -44,6 +44,8 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
+    <script src="../lib/staff/staff.js"></script>
     <script src="AMBBV3010.js"></script>
   </head>
   <body class="cl_body_hidden">
@@ -63,7 +65,7 @@
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">自社担当</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="staff"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -122,8 +124,8 @@
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= bbcust.code %></td>
-                        <td><%= bbcust.name %></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
                       </tr>
                     </script>
                     <script id="headerTemplate2" type="text/template">
@@ -141,10 +143,10 @@
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= bbcust.code %></td>
-                        <td><%= bbcust.name %></td>
-                        <td><%= bbcustbill.code %></td>
-                        <td><%= bbcustbill.name %></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbcustbillCode %></td>
+                        <td><%= bbcustbillName %></td>
                         <td></td>
                         <td></td>
                         <td></td>

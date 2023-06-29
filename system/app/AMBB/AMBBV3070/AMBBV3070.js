@@ -7,9 +7,9 @@ $(function () {
   const AMBBV3070 = Backbone.View.extend({
     el: $('#container'),
     events: {
-      'click #search': 'onclickSearch', // [検索]ボタン押下
-      'click #excel': 'onclickExcel', // [Excel出力]ボタン押下
-      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]ボタン押下
+      'click #search': 'onclickSearch', // [検索]押下
+      'click #excel': 'onclickExcel', // [Excel出力]押下
+      'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]押下
     },
 
     initialize: function () {
@@ -20,21 +20,9 @@ $(function () {
         .initUIElement()
         .render();
 
-      this.paginationViews = clutil.View.buildPaginationView(
-        clcom.pageId,
-        this.$el
-      );
-      _.each(this.paginationViews, (paginationView) => {
-        paginationView.render();
-      });
+      this.validator = this.baseView.validator;
 
-      this.searchArea = clutil.controlSrchArea(
-        this.$('#cond'),
-        this.$('#search'),
-        this.$('#result'),
-        this.$('#searchAgain')
-      );
-
+      this.bbcust = new BBcustView({ el: '#bbcust' });
       clutil.cltypeselector3({
         $select: this.$('#締日'),
         list: [
@@ -78,19 +66,33 @@ $(function () {
           });
         }
       );
+      this.staff = new StaffView({ el: '#staff' });
 
-      this.detailView = new DetailView({ el: '#detailContainer' });
-
-      clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
-        if (!this.request) {
-          return;
-        }
-        return this.search(_.defaults({ reqPage: reqPage }, this.request));
+      this.paginationViews = _(
+        clutil.View.buildPaginationView(this.cid, this.$el)
+      ).map((paginationView) => {
+        return paginationView.render();
       });
 
-      clutil.mediator.on('onOperation', () => {
-        this.detailView.show();
-      });
+      this.detail = new DetailView();
+
+      this.controlSrchArea = clutil.controlSrchArea(
+        this.$('#cond'),
+        this.$('#search'),
+        this.$('#result'),
+        this.$('#searchAgain')
+      );
+
+      clutil.mediator
+        .on('onPageChanged', (groupid, reqPage) => {
+          if (groupid != this.cid) {
+            return;
+          }
+          return this.search(_.defaults({ reqPage: reqPage }, this.request));
+        })
+        .on('onOperation', () => {
+          this.detail.show();
+        });
     },
 
     view2data: function () {
@@ -103,30 +105,60 @@ $(function () {
     },
 
     postJSON: function (request, id = clcom.pageId) {
-      return clutil.postJSON(id, request).then(
-        (response) => {
-          return response;
-        },
-        (response) => {
-          const rspHead = response.rspHead;
-          this.baseView.validator.setErrorHeader(
-            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
-          );
-        }
-      );
+      // return clutil.postJSON(id, request).then(
+      //   (response) => {
+      //     return response;
+      //   },
+      //   (response) => {
+      //     const rspHead = response.rspHead;
+      //     this.validator.setErrorHeader(
+      //       clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
+      //     );
+      //   }
+      // );
+
+      // モック用
+      return Promise.resolve().then(() => {
+        clutil.blockUI();
+        return {
+          rspPage: {
+            curr_record: 0,
+            total_record: 10,
+            page_record: 10,
+            page_size: 10,
+            page_num: 1,
+          },
+          getRsp: {
+            list: _(10).times((index) => {
+              index += 1;
+              return {
+                bbcustId: index,
+                bbcustCode: ('0000000000' + index).slice(-5),
+                bbcustName: '法人' + index,
+                bbprojId: index,
+                bbprojCode: ('0000000000' + index).slice(-7),
+                bbprojName: '案件' + index,
+                bborderId: index,
+                bborderCode: ('0000000000' + index).slice(-7),
+              };
+            }),
+          },
+        };
+      });
     },
 
     validate: function () {
-      const validator = this.baseView.validator;
+      const validator = this.validator;
       if (
-        !validator.valid() ||
-        !validator.validFromToObj([
-          { $stval: this.$('#受注日from'), $edval: this.$('#受注日to') },
-          {
-            $stval: this.$('#受注ステータスfrom'),
-            $edval: this.$('#受注ステータスto'),
-          },
-        ])
+        !_([
+          validator.valid(),
+          validator.validFromTo([
+            { stval: '受注日from', edval: '受注日to' },
+            { stval: '受注ステータスfrom', edval: '受注ステータスto' },
+          ]),
+        ]).reduce((memo, valid) => {
+          return valid && memo;
+        }, true)
       ) {
         validator.setErrorHeader(clmsg.cl_echoback);
         return false;
@@ -135,98 +167,77 @@ $(function () {
     },
 
     search: function (request) {
-      // return this.postJSON(request)
-      return Promise.resolve() // モック用
-        .then(() => {
-          // モック用
-          clutil.blockUI();
-          return {
-            rspPage: {
-              curr_record: 0,
-              total_record: 10,
-              page_record: 10,
-              page_size: 10,
-              page_num: 1,
-            },
-            AMBBV3070GetRsp: {
-              list: _.times(10, (index) => {
-                index += 1;
-                return {};
-              }),
-            },
-          };
-        })
-        .then((response) => {
-          const list = response.AMBBV3070GetRsp.list;
-          if (!list.length) {
-            this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
-            return;
-          }
-          let $headerTemplate = null;
-          let $rowTemplate = null;
-          switch (request.AMBBV3070GetReq.format) {
-            case 1:
-              $headerTemplate = this.$('#headerTemplate1');
-              $rowTemplate = this.$('#rowTemplate1');
-              break;
-            case 2:
-              $headerTemplate = this.$('#headerTemplate2');
-              $rowTemplate = this.$('#rowTemplate2');
-              break;
-            default:
+      return (
+        this.postJSON(request)
+          .then((response) => {
+            const list = response.getRsp.list;
+            if (!list.length) {
+              this.validator.setErrorHeader(clmsg.cl_no_data);
               return;
-          }
-          _.extend(this, {
-            listView: new clutil.View.RowSelectListView({
-              el: this.$('#table')
-                .find('thead')
-                .html($headerTemplate.html())
-                .end(),
-              template: _.template($rowTemplate.html()),
-              groupid: clcom.pageId,
-            })
-              .initUIElement()
-              .render(),
-            request: request,
-            response: response,
-          });
-          this.listView.setRecs(list);
-          this.searchArea.show_result();
-
-          return response; // モック用
-        })
-        .then((response) => {
+            }
+            let $headerTemplate = null;
+            let $rowTemplate = null;
+            switch (request.getReq.format) {
+              case 1:
+                $headerTemplate = this.$('#headerTemplate1');
+                $rowTemplate = this.$('#rowTemplate1');
+                break;
+              case 2:
+                $headerTemplate = this.$('#headerTemplate2');
+                $rowTemplate = this.$('#rowTemplate2');
+                break;
+              default:
+                return;
+            }
+            _.extend(this, {
+              rowSelectListView: new clutil.View.RowSelectListView({
+                el: this.$('#table')
+                  .find('thead')
+                  .html($headerTemplate.html())
+                  .end(),
+                template: _.template($rowTemplate.html()),
+                groupid: this.cid,
+              })
+                .initUIElement()
+                .render(),
+              request: request,
+              response: response,
+            });
+            this.rowSelectListView.setRecs(list);
+            this.controlSrchArea.show_result();
+          })
           // モック用
-          clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
-          clutil.unblockUI();
-        });
+          .then(() => {
+            clutil.unblockUI();
+          })
+      );
     },
 
-    // [検索]ボタン押下時の処理
+    // [検索]押下時の処理
     onclickSearch: function () {
       if (!this.validate()) {
         return;
       }
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
-        reqPage: _.first(this.paginationViews).buildReqPage0(),
-        AMBBV3070GetReq: this.view2data(),
+        reqPage: _(this.paginationViews).first().buildReqPage0(),
+        getReq: this.view2data(),
       });
     },
 
-    // [Excel出力]ボタン押下時の処理
+    // [Excel出力]押下時の処理
     onclickExcel: function () {
       return this.postJSON({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
-        AMBBV3070GetReq: this.view2data(),
+        getReq: this.view2data(),
       }).then((response) => {
         // clutil.download();
       });
     },
 
-    // [検索条件を再指定]ボタン押下時の処理
+    // [検索条件を再指定]押下時の処理
     onclickSearchAgain: function () {
-      this.searchArea.show_srch();
+      this.controlSrchArea.show_srch();
     },
   });
 

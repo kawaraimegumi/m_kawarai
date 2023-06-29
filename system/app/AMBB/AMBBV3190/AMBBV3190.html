@@ -44,6 +44,9 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
+    <script src="../lib/bbcust/bbcust.js"></script>
+    <script src="../lib/bbcustbill/bbcustbill.js"></script>
     <script src="detail.js"></script>
     <script src="AMBBV3190.js"></script>
   </head>
@@ -58,12 +61,12 @@
                 <div id="cond" class="fieldgroupInBox search">
                   <div class="fieldUnit flleft">
                     <p class="fieldName">法人</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="bbcust"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">請求先</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="bbcustbill"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -90,12 +93,14 @@
                   <div class="fieldUnit flleft required">
                     <p class="fieldName">請求年月</p>
                     <div class="fieldBox">
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="請求年月from" class="cl_date cl_valid cl_required" />
+                      <div class="flleft">
+                        <select id="請求年from" class="cl_valid wt140"></select>
+                        <select id="請求月from" class="cl_valid wt140"></select>
                       </div>
                       <p class="txtInFieldUnit pdg flleft">〜</p>
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="請求年月to" class="cl_date cl_valid cl_required" />
+                      <div class="flleft">
+                        <select id="請求年to" class="cl_valid wt140"></select>
+                        <select id="請求月to" class="cl_valid wt140"></select>
                       </div>
                     </div>
                   </div>
@@ -173,10 +178,10 @@
                     <script id="rowTemplate" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbcustbillCode %></td>
+                        <td><%= bbcustbillName %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -196,6 +201,12 @@
                   </table>
                 </div>
                 <div class="pagination-wrapper"></div>
+                <div class="fieldUnit">
+                  <div class="fieldBox noName cl_opebtngroup">
+                    <button id="AMBBV3210" class="btn btn-primary flleft wt280">入金登録</button>
+                  </div>
+                </div>
+                <div class="clear"></div>
               </div>
             </div>
           </div>

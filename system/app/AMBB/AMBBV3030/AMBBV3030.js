@@ -44,7 +44,7 @@ $(function () {
           return this.search(_.defaults({ reqPage: reqPage }, this.request));
         })
         .on('onOperation', (opeTypeId) => {
-          const selectedRecs = this.rowSelectListView.getSelectedRecs();
+          const recs = this.rowSelectListView.getSelectedRecs();
           clcom.pushPage({
             url: ((code) => {
               return [
@@ -56,15 +56,15 @@ $(function () {
             })('AMBBV3040'),
             args: {
               opeTypeId: opeTypeId,
-              recs: _(selectedRecs)
+              recs: _(recs)
                 .uniq((rec) => {
-                  return [rec.bbcust.id, rec.bbproj.id].join();
+                  return [rec.bbcustId, rec.bbprojId].join();
                 })
                 .map((rec) => {
-                  return _.pick(rec, 'bbcust', 'bbproj');
+                  return _.pick(rec, 'bbcustId', 'bbprojId');
                 }),
             },
-            saved: { request: this.request, selectedRecs: selectedRecs },
+            saved: { request: this.request, recs: recs },
             newWindow: opeTypeId == am_proto_defs.AM_PROTO_COMMON_RTYPE_REL,
           });
         });
@@ -74,7 +74,21 @@ $(function () {
         const request = pageData.request;
         this.data2view(request.getReq);
         return this.search(request).then(() => {
-          this.rowSelectListView.setSelectRecs(pageData.selectedRecs, true);
+          let uniqKeys = null;
+          switch (request.getReq.format) {
+            case 1:
+              uniqKeys = ['bbcustId', 'bbprojId'];
+              break;
+            case 2:
+              uniqKeys = ['bbcustId', 'bbprojId'];
+              break;
+            case 3:
+              uniqKeys = ['bbcustId', 'bbprojId'];
+              break;
+            default:
+              return;
+          }
+          this.rowSelectListView.setSelectRecs(pageData.recs, true, uniqKeys);
         });
       }
     },
@@ -116,16 +130,12 @@ $(function () {
             list: _(10).times((index) => {
               index += 1;
               return {
-                bbcust: {
-                  id: index,
-                  code: ('0000000000' + index).slice(-5),
-                  name: '法人' + index,
-                },
-                bbproj: {
-                  id: index,
-                  code: ('0000000000' + index).slice(-7),
-                  name: '案件' + index,
-                },
+                bbcustId: index,
+                bbcustCode: ('0000000000' + index).slice(-5),
+                bbcustName: '法人' + index,
+                bbprojId: index,
+                bbprojCode: ('0000000000' + index).slice(-7),
+                bbprojName: '案件' + index,
               };
             }),
           },
@@ -136,10 +146,14 @@ $(function () {
     validate: function () {
       const validator = this.validator;
       if (
-        !validator.valid() ||
-        !validator.validFromToObj([
-          { $stval: this.$('#契約期間from'), $edval: this.$('#契約期間to') },
-        ])
+        !_([
+          validator.valid(),
+          validator.validFromTo([
+            { stval: '契約期間from', edval: '契約期間to' },
+          ]),
+        ]).reduce((memo, valid) => {
+          return valid && memo;
+        }, true)
       ) {
         validator.setErrorHeader(clmsg.cl_echoback);
         return false;
@@ -158,28 +172,18 @@ $(function () {
             }
             let $headerTemplate = null;
             let $rowTemplate = null;
-            let uniqueId = null;
             switch (request.getReq.format) {
               case 1:
                 $headerTemplate = this.$('#headerTemplate1');
                 $rowTemplate = this.$('#rowTemplate1');
-                uniqueId = (rec) => {
-                  return [rec.bbcust.id, rec.bbproj.id].join();
-                };
                 break;
               case 2:
                 $headerTemplate = this.$('#headerTemplate2');
                 $rowTemplate = this.$('#rowTemplate2');
-                uniqueId = (rec) => {
-                  return [rec.bbcust.id, rec.bbproj.id].join();
-                };
                 break;
               case 3:
                 $headerTemplate = this.$('#headerTemplate3');
                 $rowTemplate = this.$('#rowTemplate3');
-                uniqueId = (rec) => {
-                  return [rec.bbcust.id, rec.bbproj.id].join();
-                };
                 break;
               default:
                 return;
@@ -198,11 +202,7 @@ $(function () {
               request: request,
               response: response,
             });
-            this.rowSelectListView.setRecs(
-              _(list).map((rec) => {
-                return _.extend(rec, { id: uniqueId(rec) });
-              })
-            );
+            this.rowSelectListView.setRecs(list);
             this.controlSrchArea.show_result();
           })
           // モック用

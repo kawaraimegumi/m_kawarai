@@ -44,6 +44,9 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
+    <script src="../lib/bbcust/bbcust.js"></script>
+    <script src="../lib/staff/staff.js"></script>
     <script src="AMBBV3120.js"></script>
   </head>
   <body class="cl_body_hidden">
@@ -56,7 +59,7 @@
                 <div id="cond" class="fieldgroupInBox search">
                   <div class="fieldUnit flleft">
                     <p class="fieldName">法人</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="bbcust"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -114,7 +117,7 @@
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">受注担当者</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="staff"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -180,6 +183,11 @@
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -188,12 +196,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbdeliverCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -230,6 +233,11 @@
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -238,12 +246,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbdeliverCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -289,6 +292,11 @@
                     <script id="rowTemplate3" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -297,12 +305,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbdeliverCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -321,7 +324,7 @@
                 </div>
                 <div class="pagination-wrapper"></div>
                 <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup" data-cl_groupid="AMBBV3120">
+                  <div class="fieldBox noName cl_opebtngroup">
                     <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
                     <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
                   </div>

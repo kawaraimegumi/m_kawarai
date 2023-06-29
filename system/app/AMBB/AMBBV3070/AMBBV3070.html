@@ -44,12 +44,14 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
+    <script src="../lib/bbcust/bbcust.js"></script>
+    <script src="../lib/staff/staff.js"></script>
     <script src="detail.js"></script>
     <script src="AMBBV3070.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
-      <div id="detailContainer" class="cl_dialog"></div>
       <div id="container">
         <div id="mainColumn">
           <div id="mainColumninBox" class="noLeftColumn">
@@ -58,7 +60,7 @@
                 <div id="cond" class="fieldgroupInBox search">
                   <div class="fieldUnit flleft">
                     <p class="fieldName">法人</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="bbcust"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -90,7 +92,7 @@
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">受注担当者</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="staff"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -178,11 +180,11 @@
                     </script>
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -225,11 +227,11 @@
                     </script>
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>

@@ -243,7 +243,7 @@ $(function () {
     },
   });
 
-  BBcustView = Backbone.View.extend({
+  StaffView = Backbone.View.extend({
     events: {
       'click button': 'onclickButton', // [参照]]押下
     },

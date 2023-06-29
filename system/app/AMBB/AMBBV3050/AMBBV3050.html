@@ -44,7 +44,9 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
     <script src="../lib/bbcust/bbcust.js"></script>
+    <script src="../lib/staff/staff.js"></script>
     <script src="AMBBV3050.js"></script>
   </head>
   <body class="cl_body_hidden">
@@ -115,7 +117,7 @@
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">受注担当者</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="staff"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -188,11 +190,11 @@
                     <script id="rowTemplate1" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= bbcust.code %></td>
-                        <td><%= bbcust.name %></td>
-                        <td><%= bbproj.code %></td>
-                        <td><%= bbproj.name %></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -237,11 +239,11 @@
                     <script id="rowTemplate2" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= bbcust.code %></td>
-                        <td><%= bbcust.name %></td>
-                        <td><%= bbproj.code %></td>
-                        <td><%= bbproj.name %></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -292,11 +294,11 @@
                     <script id="rowTemplate3" type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= bbcust.code %></td>
-                        <td><%= bbcust.name %></td>
-                        <td><%= bbproj.code %></td>
-                        <td><%= bbproj.name %></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bborderCode %></td>
                         <td></td>
                         <td></td>
                         <td></td>

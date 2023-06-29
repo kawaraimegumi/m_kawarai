@@ -44,6 +44,8 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
+    <script src="../lib/bbcust/bbcust.js"></script>
     <script src="AMBBV3110.js"></script>
   </head>
   <body class="cl_body_hidden">
@@ -55,10 +57,8 @@
               <div class="fieldgroup">
                 <div id="cond" class="fieldgroupInBox search">
                   <div class="fieldUnit flleft">
-                    <p class="fieldName">法人コード</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
-                    </div>
+                    <p class="fieldName">法人</p>
+                    <div class="fieldBox" id="bbcust"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -133,7 +133,6 @@
                       <tr>
                         <th class="cl_checkbox_selectall wt40"></th>
                         <th>発行状態</th>
-                        <th>出荷指示番号</th>
                         <th>法人コード</th>
                         <th>法人名</th>
                         <th>案件番号</th>
@@ -151,13 +150,12 @@
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bbshipCode %></td>
+                        <td><%= bbshipName %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -169,7 +167,6 @@
                       <tr>
                         <th class="cl_checkbox_selectall wt40"></th>
                         <th>発行状態</th>
-                        <th>出荷指示番号</th>
                         <th>法人コード</th>
                         <th>法人名</th>
                         <th>案件番号</th>
@@ -188,13 +185,12 @@
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbprojCode %></td>
+                        <td><%= bbprojName %></td>
+                        <td><%= bbshipCode %></td>
+                        <td><%= bbshipName %></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -206,6 +202,12 @@
                   </table>
                 </div>
                 <div class="pagination-wrapper"></div>
+                <div class="fieldUnit">
+                  <div class="fieldBox noName btnCenter cl_opebtngroup">
+                    <button id="pdf" class="btn btn-primary wt280">出力</button>
+                  </div>
+                </div>
+                <div class="clear"></div>
               </div>
             </div>
           </div>
