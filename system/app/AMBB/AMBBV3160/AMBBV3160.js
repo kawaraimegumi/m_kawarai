@@ -50,9 +50,10 @@ $(function () {
         return paginationView.render();
       });
 
+      const $table = this.$('#table');
       this.rowSelectListView = new clutil.View.RowSelectListView({
-        el: this.$('#table'),
-        template: _.template(this.$('#rowTemplate').html()),
+        el: $table,
+        template: _.template($table.find('script').html()),
         groupid: this.cid,
       })
         .initUIElement()

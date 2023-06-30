@@ -43,6 +43,30 @@ $(function () {
         return paginationView.render();
       });
 
+      const $table1 = this.$('#table1');
+      this.rowSelectListView1 = _.extend(
+        new clutil.View.RowSelectListView({
+          el: $table1,
+          template: _.template($table1.find('script').html()),
+          groupid: this.cid,
+        })
+          .initUIElement()
+          .render(),
+        { uniqKeys: ['bbcustId'] }
+      );
+      const $table2 = this.$('#table2');
+      this.rowSelectListView2 = _.extend(
+        new clutil.View.RowSelectListView({
+          el: $table2,
+          template: _.template($table2.find('script').html()),
+          groupid: this.cid,
+        })
+          .initUIElement()
+          .render(),
+        { uniqKeys: ['bbcustId', 'bbcustbillId'] }
+      );
+      this.rowSelectListView = this.rowSelectListView1;
+
       this.controlSrchArea = clutil.controlSrchArea(
         this.$('#cond'),
         this.$('#search'),
@@ -88,18 +112,11 @@ $(function () {
         const request = pageData.request;
         this.data2view(request.getReq);
         return this.search(request).then(() => {
-          let uniqKeys = null;
-          switch (request.getReq.format) {
-            case 1:
-              uniqKeys = ['bbcustId'];
-              break;
-            case 2:
-              uniqKeys = ['bbcustId', 'bbcustbillId'];
-              break;
-            default:
-              return;
-          }
-          this.rowSelectListView.setSelectRecs(pageData.recs, true, uniqKeys);
+          this.rowSelectListView.setSelectRecs(
+            pageData.recs,
+            true,
+            this.rowSelectListView.uniqKeys
+          );
         });
       }
     },
@@ -172,35 +189,21 @@ $(function () {
               this.validator.setErrorHeader(clmsg.cl_no_data);
               return;
             }
-            let $headerTemplate = null;
-            let $rowTemplate = null;
+            _.extend(this, { request: request, response: response });
             switch (request.getReq.format) {
               case 1:
-                $headerTemplate = this.$('#headerTemplate1');
-                $rowTemplate = this.$('#rowTemplate1');
+                _.extend(this, { rowSelectListView: this.rowSelectListView1 });
                 break;
               case 2:
-                $headerTemplate = this.$('#headerTemplate2');
-                $rowTemplate = this.$('#rowTemplate2');
+                _.extend(this, { rowSelectListView: this.rowSelectListView2 });
                 break;
               default:
                 return;
             }
-            _.extend(this, {
-              rowSelectListView: new clutil.View.RowSelectListView({
-                el: this.$('#table')
-                  .find('thead')
-                  .html($headerTemplate.html())
-                  .end(),
-                template: _.template($rowTemplate.html()),
-                groupid: this.cid,
-              })
-                .initUIElement()
-                .render(),
-              request: request,
-              response: response,
-            });
+            this.rowSelectListView1.$el.hide();
+            this.rowSelectListView2.$el.hide();
             this.rowSelectListView.setRecs(list);
+            this.rowSelectListView.$el.show();
             this.controlSrchArea.show_result();
           })
           // モック用

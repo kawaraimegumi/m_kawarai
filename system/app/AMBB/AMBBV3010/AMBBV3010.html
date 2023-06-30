@@ -111,24 +111,25 @@
               <div id="result" class="dispn">
                 <div class="pagination-wrapper"></div>
                 <div class="table" style="overflow: scroll">
-                  <table id="table" class="hilightRow">
-                    <thead></thead>
-                    <tbody></tbody>
-                    <script id="headerTemplate1" type="text/template">
+                  <table id="table1" class="hilightRow">
+                    <thead>
                       <tr>
                         <th class="cl_checkbox_selectall wt40"></th>
                         <th>法人コード</th>
                         <th>法人名</th>
                       </tr>
-                    </script>
-                    <script id="rowTemplate1" type="text/template">
+                    </thead>
+                    <tbody></tbody>
+                    <script type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
                         <td><%= bbcustCode %></td>
                         <td><%= bbcustName %></td>
                       </tr>
                     </script>
-                    <script id="headerTemplate2" type="text/template">
+                  </table>
+                  <table id="table2" class="hilightRow">
+                    <thead>
                       <tr>
                         <th class="cl_checkbox_selectall wt40"></th>
                         <th>法人コード</th>
@@ -139,8 +140,9 @@
                         <th>締日2</th>
                         <th>締日3</th>
                       </tr>
-                    </script>
-                    <script id="rowTemplate2" type="text/template">
+                    </thead>
+                    <tbody></tbody>
+                    <script type="text/template">
                       <tr class="csptr">
                         <td class="cl_checkbox_selectrec"></td>
                         <td><%= bbcustCode %></td>

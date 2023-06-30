@@ -50,7 +50,24 @@
       <div id="result" class="dispn">
         <div class="pagination-wrapper"></div>
         <div class="table" style="overflow: scroll">
-          <table id="table" class="hilightRow">
+          <table id="table1" class="hilightRow dispn">
+            <thead>
+              <tr>
+                <th class="wt40"></th>
+                <th>法人コード</th>
+                <th>法人名</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <script type="text/template">
+              <tr class="csptr">
+                <td class="cl_radio_selectrec"></td>
+                <td><%= bbcustCode %></td>
+                <td><%= bbcustName %></td>
+              </tr>
+            </script>
+          </table>
+          <table id="table2" class="hilightRow dispn">
             <thead>
               <tr>
                 <th class="cl_checkbox_selectall wt40"></th>
@@ -59,7 +76,7 @@
               </tr>
             </thead>
             <tbody></tbody>
-            <script id="rowTemplate" type="text/template">
+            <script type="text/template">
               <tr class="csptr">
                 <td class="cl_checkbox_selectrec"></td>
                 <td><%= bbcustCode %></td>

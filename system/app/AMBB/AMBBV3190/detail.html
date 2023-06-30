@@ -7,7 +7,7 @@
     <div id="content">
       <div id="">
         <div class="table" style="overflow: scroll">
-          <table id="table" class="hilightRow">
+          <table id="headerTable" class="hilightRow">
             <thead>
               <tr>
                 <th>法人コード</th>
@@ -31,12 +31,12 @@
               </tr>
             </thead>
             <tbody></tbody>
-            <script id="rowTemplate" type="text/template">
+            <script id="headerRowTemplate" type="text/template">
               <tr class="csptr">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><%= bbcustCode %></td>
+                <td><%= bbcustName %></td>
+                <td><%= bbcustbillCode %></td>
+                <td><%= bbcustbillName %></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -99,7 +99,7 @@
       </div>
     </div>
     <div id="mainColumnFooter" class="noLeftColumn">
-      <p class="cancel"><a id="cancel">戻る</a></p>
+      <p class="cancel"><a id="cancel">キャンセル</a></p>
     </div>
   </div>
 </div>

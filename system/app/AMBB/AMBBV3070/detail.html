@@ -5,42 +5,301 @@
       <div class="titleInBoxRight"></div>
     </div>
     <div id="content">
-      <div id="">
-        <div class="table" style="overflow: scroll">
-          <table id="table" class="hilightRow">
-            <thead>
-              <tr>
-                <th>法人コード</th>
-                <th>法人名</th>
-                <th>案件番号</th>
-                <th>案件名</th>
-                <th>受注番号</th>
-                <th>受注日</th>
-                <th>売上パターン</th>
-                <th>受注担当者</th>
-                <th>受注ステータス</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-            <script id="rowTemplate" type="text/template">
-              <tr class="csptr">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </script>
-          </table>
+      <div class="fieldgroup">
+        <div class="fieldgroupInBox">
+          <div class="table" style="overflow: scroll">
+            <table id="table" class="hilightRow">
+              <thead>
+                <tr>
+                  <th>法人コード</th>
+                  <th>法人名</th>
+                  <th>案件番号</th>
+                  <th>案件名</th>
+                  <th>受注番号</th>
+                  <th>受注日</th>
+                  <th>売上パターン</th>
+                  <th>受注担当者</th>
+                  <th>受注ステータス</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td><%= bbcustCode %></td>
+                  <td><%= bbcustName %></td>
+                  <td><%= bbprojCode %></td>
+                  <td><%= bbprojName %></td>
+                  <td><%= bborderCode %></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="fieldgroup">
+        <div class="fieldgroupInBox">
+          <div class="fieldUnit flleft">
+            <p class="fieldName">表示形式</p>
+            <div class="fieldBox">
+              <ul>
+                <li>
+                  <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />メーカー品番単位</label>
+                </li>
+                <li>
+                  <label class="radio"><input type="radio" name="format" value="2" data-toggle="radio" />色サイズ単位</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">表示内容</p>
+            <div class="fieldBox">
+              <ul>
+                <li>
+                  <label class="radio"><input type="radio" name="content" value="1" data-toggle="radio" checked />出荷指示・出荷</label>
+                </li>
+                <li>
+                  <label class="radio"><input type="radio" name="content" value="2" data-toggle="radio" />直納仕入</label>
+                </li>
+                <li>
+                  <label class="radio"><input type="radio" name="content" value="3" data-toggle="radio" />売上・請求</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">受注一覧(詳細)</p>
+          </div>
+          <div class="clear"></div>
+          <div class="table" style="overflow: scroll">
+            <table id="bborderTable1" class="hilightRow">
+              <thead>
+                <tr>
+                  <th>品名</th>
+                  <th>メーカー</th>
+                  <th>メーカー品番</th>
+                  <th>受注数</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+            <table id="bborderTable2" class="hilightRow">
+              <thead>
+                <tr>
+                  <th>品名</th>
+                  <th>メーカー</th>
+                  <th>メーカー品番</th>
+                  <th>色</th>
+                  <th>サイズ</th>
+                  <th>受注数</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+          </div>
+          <div class="fieldUnit flleft">
+            <p class="fieldName">〇〇一覧(詳細)</p>
+          </div>
+          <div class="clear"></div>
+          <div class="table" style="overflow: scroll">
+            <table id="bbshipTable1" class="hilightRow">
+              <thead>
+                <tr>
+                  <th>出荷指示番号</th>
+                  <th>出荷指示件名</th>
+                  <th>発注日</th>
+                  <th>品名</th>
+                  <th>メーカー</th>
+                  <th>メーカー品番</th>
+                  <th>発注先</th>
+                  <th>納品先コード</th>
+                  <th>納品先名</th>
+                  <th>納品日</th>
+                  <th>指示数</th>
+                  <th>センター出荷数</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+            <table id="bbshipTable2" class="hilightRow">
+              <thead>
+                <tr>
+                  <th>出荷指示番号</th>
+                  <th>出荷指示件名</th>
+                  <th>発注日</th>
+                  <th>品名</th>
+                  <th>メーカー</th>
+                  <th>メーカー品番</th>
+                  <th>色</th>
+                  <th>サイズ</th>
+                  <th>発注先</th>
+                  <th>納品先コード</th>
+                  <th>納品先名</th>
+                  <th>納品日</th>
+                  <th>指示数</th>
+                  <th>センター出荷数</th>
+                  <th>センター返品数</th>
+                  <th>仕切入力</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+            <table id="bbdeliverTable1" class="hilightRow">
+              <thead>
+                <tr>
+                  <th>仕入伝票番号</th>
+                  <th>起票日</th>
+                  <th>検収日</th>
+                  <th>店コード</th>
+                  <th>品名</th>
+                  <th>メーカー</th>
+                  <th>メーカー品番</th>
+                  <th>仕入数</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+            <table id="bbdeliverTable2" class="hilightRow">
+              <thead>
+                <tr>
+                  <th>仕入伝票番号</th>
+                  <th>起票日</th>
+                  <th>検収日</th>
+                  <th>店コード</th>
+                  <th>品名</th>
+                  <th>メーカー</th>
+                  <th>メーカー品番</th>
+                  <th>色</th>
+                  <th>サイズ</th>
+                  <th>仕入数</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+            <table id="bbdeliverTable2" class="hilightRow">
+              <thead>
+                <tr>
+                  <!-- <th>売上伝票番号</th>
+                  <th>売上日</th>
+                  <th>品名</th>
+                  <th>メーカー</th>
+                  <th>メーカー品番</th>
+                  <th>仕入単価</th>
+                  <th>販売単価</th>
+                  <th>売上数</th>
+                  <th>売上金額(税込)</th>
+                  <th>商品値引額</th>
+                  <th>送料</th>
+                  <th>加工補正賃</th>
+                  <th>梱包用品代</th>
+                  <th>保管料</th>
+                  <th>入庫料</th>
+                  <th>出庫料</th>
+                  <th>請求番号</th>
+                  <th>請求日</th>
+                  <th>請求先コード</th>
+                  <th>請求先名</th> -->
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <script type="text/template">
+                <tr class="csptr">
+                  <td></td>
+                </tr>
+              </script>
+            </table>
+          </div>
         </div>
       </div>
     </div>
     <div id="mainColumnFooter" class="noLeftColumn">
-      <p class="cancel"><a id="cancel">戻る</a></p>
+      <p class="cancel"><a id="cancel">キャンセル</a></p>
     </div>
   </div>
 </div>

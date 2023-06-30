@@ -49,13 +49,17 @@ $(function () {
         return paginationView.render();
       });
 
-      this.rowSelectListView = new clutil.View.RowSelectListView({
-        el: this.$('#table'),
-        template: _.template(this.$('#rowTemplate').html()),
-        groupid: this.cid,
-      })
-        .initUIElement()
-        .render();
+      const $table = this.$('#table');
+      this.rowSelectListView = _.extend(
+        new clutil.View.RowSelectListView({
+          el: $table,
+          template: _.template($table.find('script').html()),
+          groupid: this.cid,
+        })
+          .initUIElement()
+          .render(),
+        { uniqKeys: ['bbcustId', 'bbcustbillId'] }
+      );
 
       this.controlSrchArea = clutil.controlSrchArea(
         this.$('#cond'),
@@ -110,10 +114,11 @@ $(function () {
         const request = pageData.request;
         this.data2view(request.getReq);
         return this.search(request).then(() => {
-          this.rowSelectListView.setSelectRecs(pageData.recs, true, [
-            'bbcustId',
-            'bbcustbillId',
-          ]);
+          this.rowSelectListView.setSelectRecs(
+            pageData.recs,
+            true,
+            this.rowSelectListView.uniqKeys
+          );
         });
       }
     },

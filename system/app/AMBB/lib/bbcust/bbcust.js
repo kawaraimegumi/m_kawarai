@@ -11,7 +11,7 @@ $(function () {
     },
 
     initialize: function (options) {
-      _.extend(this, options);
+      _.extend(this, { multiple: false }, options);
 
       clutil.loadHtml(
         ((code) => {
@@ -43,9 +43,10 @@ $(function () {
         return paginationView.render();
       });
 
+      const $table = this.multiple ? this.$('#table2') : this.$('#table1');
       this.rowSelectListView = new clutil.View.RowSelectListView({
-        el: this.$('#table'),
-        template: _.template(this.$('#rowTemplate').html()),
+        el: $table.show(),
+        template: _.template($table.find('script').html()),
         groupid: this.cid,
       })
         .initUIElement()
@@ -84,7 +85,10 @@ $(function () {
           },
         }
       );
-      this.$('#innerScroll').perfectScrollbar();
+      if (!this.multiple) {
+        this.$('#add').hide();
+        this.$('#selected').hide();
+      }
 
       clutil.mediator.on('onPageChanged', (groupid, reqPage) => {
         if (groupid != this.cid) {
@@ -237,7 +241,9 @@ $(function () {
       if (!this.validate()) {
         return;
       }
-      const data = this.addtoSelected.get();
+      const data = this.multiple
+        ? this.addtoSelected.get()
+        : this.rowSelectListView.getSelectedRecs();
       this.hide();
       this.callback(data);
     },

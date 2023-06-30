@@ -1,7 +1,7 @@
 $(function () {
   const _DetailView = Backbone.View.extend({
     events: {
-      'click #cancel': 'onclickCancel', // [戻る]押下
+      'click #cancel': 'onclickCancel', // [キャンセル]押下
     },
 
     initialize: function (options) {
@@ -19,9 +19,19 @@ $(function () {
       );
     },
 
-    show: function () {
+    show: function (options) {
       this.$el.html(this.html);
       this.$main.hide();
+
+      this.headerRowSelectListView = new clutil.View.RowSelectListView({
+        el: this.$('#headerTable'),
+        template: _.template(this.$('#headerRowTemplate').html()),
+        groupid: this.cid,
+      })
+        .initUIElement()
+        .render();
+
+      this.headerRowSelectListView.setRecs(options.recs);
     },
 
     hide: function () {
@@ -54,8 +64,8 @@ $(function () {
       });
     },
 
-    show: function () {
-      this.$el.data().view.show();
+    show: function (options) {
+      this.$el.data().view.show(options);
     },
   });
 });

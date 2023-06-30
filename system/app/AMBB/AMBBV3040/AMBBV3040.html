@@ -44,7 +44,8 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="bbprojitem.js"></script>
+    <script src="../lib/bb.js"></script>
+    <script src="../lib/bbcust/bbcust.js"></script>
     <script src="AMBBV3040.js"></script>
   </head>
   <body class="cl_body_hidden">
@@ -58,7 +59,7 @@
                 <div class="fieldgroupInBox">
                   <div class="fieldUnit flleft required">
                     <p class="fieldName">法人</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="bbcust"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -67,6 +68,7 @@
                       <input type="text" id="" class="form-control cl_valid wt280" disabled />
                     </div>
                   </div>
+                  <div class="clear"></div>
                   <div class="fieldUnit flleft required">
                     <p class="fieldName">案件名</p>
                     <div class="fieldBox">
@@ -94,10 +96,6 @@
                     </div>
                   </div>
                   <div class="clear"></div>
-                </div>
-              </div>
-              <div class="fieldgroup">
-                <div class="fieldgroupInBox">
                   <div class="fieldUnit flleft">
                     <p class="fieldName">表示形式</p>
                     <div class="fieldBox">
@@ -125,29 +123,27 @@
                     </div>
                   </div>
                   <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">センター在庫</p>
-                    <div class="fieldBox">
-                      <select id="センター在庫" class="cl_valid wt280"></select>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit mrgt10 mrgb10">
+                  <div class="fieldUnit mrgt10">
                     <div class="fieldBox noName btnCenter">
                       <button id="search" class="btn btn-info wt280">検索</button>
                     </div>
                   </div>
                   <div class="clear"></div>
+                </div>
+              </div>
+              <div class="fieldgroup">
+                <div class="fieldgroupInBox">
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">センター在庫</p>
+                    <div class="fieldBox">
+                      <select id="センター在庫" class="cl_valid wt280"></select>
+                      <button id="" class="btn btn-default">反映</button>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
                   <div class="table" style="overflow: scroll">
-                    <table id="table" class="hilightRow list">
-                      <thead></thead>
-                      <tbody></tbody>
-                      <tfoot>
-                        <tr class="addRow">
-                          <td id="bbprojitem"><span class="btn-add"></span></td>
-                        </tr>
-                      </tfoot>
-                      <script id="headerTemplate1" type="text/template">
+                    <table id="table1" class="hilightRow list">
+                      <thead>
                         <tr>
                           <th>削除</th>
                           <th>非表示</th>
@@ -166,8 +162,14 @@
                           <th>契約ステータス</th>
                           <th>商品登録書発行日</th>
                         </tr>
-                      </script>
-                      <script id="rowTemplate1" type="text/template">
+                      </thead>
+                      <tbody></tbody>
+                      <tfoot>
+                        <tr class="addRow">
+                          <td><span class="btn-add"></span></td>
+                        </tr>
+                      </tfoot>
+                      <script type="text/template">
                         <tr class="csptr">
                           <td class="cl_checkbox_selectrec"></td>
                           <td class="cl_checkbox_selectrec"></td>
@@ -189,7 +191,9 @@
                           <td></td>
                         </tr>
                       </script>
-                      <script id="headerTemplate2" type="text/template">
+                    </table>
+                    <table id="table2" class="hilightRow list">
+                      <thead>
                         <tr>
                           <th>削除</th>
                           <th>非表示</th>
@@ -211,8 +215,14 @@
                           <th>契約ステータス</th>
                           <th>商品登録書発行日</th>
                         </tr>
-                      </script>
-                      <script id="rowTemplate2" type="text/template">
+                      </thead>
+                      <tbody></tbody>
+                      <tfoot>
+                        <tr class="addRow">
+                          <td><span class="btn-add"></span></td>
+                        </tr>
+                      </tfoot>
+                      <script type="text/template">
                         <tr class="csptr">
                           <td class="cl_checkbox_selectrec"></td>
                           <td class="cl_checkbox_selectrec"></td>

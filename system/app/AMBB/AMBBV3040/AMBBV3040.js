@@ -7,8 +7,7 @@ $(function () {
   const AMBBV3040 = Backbone.View.extend({
     el: $('#container'),
     events: {
-      'click #search': 'onclickSearch', // [検索]ボタン押下
-      'click #bbprojitem': 'onclickBBprojitem',
+      'click #search': 'onclickSearch', // [検索]押下
     },
 
     initialize: function () {
@@ -19,6 +18,9 @@ $(function () {
         .initUIElement()
         .render();
 
+      this.validator = this.baseView.validator;
+
+      this.bbcust = new BBcustView({ el: '#bbcust' });
       clutil.datepicker(this.$('#契約期間from'));
       clutil.datepicker(this.$('#契約期間to'));
       clutil.cltypeselector3({
@@ -29,7 +31,23 @@ $(function () {
         ],
       });
 
-      this.bbprojitemView = new BBprojitemView({ el: '#bbprojitemContainer' });
+      const $table1 = this.$('#table1');
+      this.rowSelectListView1 = new clutil.View.RowSelectListView({
+        el: $table1,
+        template: _.template($table1.find('script').html()),
+        groupid: this.cid,
+      })
+        .initUIElement()
+        .render();
+
+      const $table2 = this.$('#table2');
+      this.rowSelectListView2 = new clutil.View.RowSelectListView({
+        el: $table2,
+        template: _.template($table2.find('script').html()),
+        groupid: this.cid,
+      })
+        .initUIElement()
+        .render();
     },
 
     view2data: function () {
@@ -42,26 +60,40 @@ $(function () {
     },
 
     postJSON: function (request, id = clcom.pageId) {
-      return clutil.postJSON(id, request).then(
-        (response) => {
-          return response;
-        },
-        (response) => {
-          const rspHead = response.rspHead;
-          this.baseView.validator.setErrorHeader(
-            clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
-          );
-        }
-      );
+      // return clutil.postJSON(id, request).then(
+      //   (response) => {
+      //     return response;
+      //   },
+      //   (response) => {
+      //     const rspHead = response.rspHead;
+      //     this.validator.setErrorHeader(
+      //       clutil.fmtargs(clutil.getclmsg(rspHead.message), rspHead.args)
+      //     );
+      //   }
+      // );
+
+      // モック用
+      return Promise.resolve().then(() => {
+        clutil.blockUI();
+        return {
+          rspPage: {
+            curr_record: 0,
+            total_record: 10,
+            page_record: 10,
+            page_size: 10,
+            page_num: 1,
+          },
+          getRsp: {},
+        };
+      });
     },
 
     validate: function () {
-      const validator = this.baseView.validator;
+      const validator = this.validator;
       if (
-        !validator.valid() ||
-        !validator.validFromToObj([
-          { $stval: this.$('#契約期間from'), $edval: this.$('#契約期間to') },
-        ])
+        !_([validator.valid(), validator.validFromTo([{ stval: '契約期間from', edval: '契約期間to' }])]).reduce((memo, valid) => {
+          return valid && memo;
+        }, true)
       ) {
         validator.setErrorHeader(clmsg.cl_echoback);
         return false;
@@ -70,85 +102,42 @@ $(function () {
     },
 
     search: function (request) {
-      // return this.postJSON(request)
-      return Promise.resolve() // モック用
-        .then(() => {
+      return (
+        this.postJSON(request)
+          .then((response) => {
+            const rec = response.getRsp;
+            _.extend(this, { request: request, response: response });
+            switch (request.getReq.format) {
+              case 1:
+                _.extend(this, { rowSelectListView: this.rowSelectListView1 });
+                break;
+              case 2:
+                _.extend(this, { rowSelectListView: this.rowSelectListView2 });
+                break;
+              default:
+                return;
+            }
+            this.rowSelectListView1.$el.hide();
+            this.rowSelectListView2.$el.hide();
+            this.data2view(rec);
+            this.rowSelectListView.$el.show();
+          })
           // モック用
-          clutil.blockUI();
-          return {
-            rspPage: {
-              curr_record: 0,
-              total_record: 10,
-              page_record: 10,
-              page_size: 10,
-              page_num: 1,
-            },
-            AMBBV3040GetRsp: {
-              list: _.times(10, (index) => {
-                index += 1;
-                return {};
-              }),
-            },
-          };
-        })
-        .then((response) => {
-          const list = response.AMBBV3040GetRsp.list;
-          if (!list.length) {
-            this.baseView.validator.setErrorHeader(clmsg.cl_no_data);
-            return;
-          }
-          let $headerTemplate = null;
-          let $rowTemplate = null;
-          switch (request.AMBBV3040GetReq.format) {
-            case 1:
-              $headerTemplate = this.$('#headerTemplate1');
-              $rowTemplate = this.$('#rowTemplate1');
-              break;
-            case 2:
-              $headerTemplate = this.$('#headerTemplate2');
-              $rowTemplate = this.$('#rowTemplate2');
-              break;
-            default:
-              return;
-          }
-          _.extend(this, {
-            listView: new clutil.View.RowSelectListView({
-              el: this.$('#table')
-                .find('thead')
-                .html($headerTemplate.html())
-                .end(),
-              template: _.template($rowTemplate.html()),
-              groupid: clcom.pageId,
-            })
-              .initUIElement()
-              .render(),
-            request: request,
-            response: response,
-          });
-          this.listView.setRecs(list);
-
-          return response; // モック用
-        })
-        .then((response) => {
-          // モック用
-          clutil.mediator.trigger('onRspPage', clcom.pageId, response.rspPage);
-          clutil.unblockUI();
-        });
+          .then(() => {
+            clutil.unblockUI();
+          })
+      );
     },
 
-    // [検索]ボタン押下時の処理
+    // [検索]押下時の処理
     onclickSearch: function () {
       if (!this.validate()) {
         return;
       }
       return this.search({
         reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
-        AMBBV3040GetReq: this.view2data(),
+        getReq: this.view2data(),
       });
-    },
-
-    onclickBBprojitem: function () {
-      this.bbprojitemView.show();
     },
   });
   return clutil.getIniJSON().then(
