@@ -46,64 +46,21 @@
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
     <script src="../lib/bb.js"></script>
     <script src="../lib/bbcust/bbcust.js"></script>
-    <script src="../lib/bbproj/bbproj.js"></script>
-    <script src="../lib/staff/staff.js"></script>
     <script src="../lib/bbcustbill/bbcustbill.js"></script>
-    <script src="AMBBV3060.js"></script>
+    <script src="AMBBV3170.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
+      <div id="bbprojitemContainer" class="cl_dialog"></div>
       <div id="container">
         <div id="mainColumn">
           <div id="mainColumninBox" class="noLeftColumn">
             <div id="content">
               <div class="fieldgroup">
                 <div class="fieldgroupInBox">
-                  <div class="fieldUnit flleft required">
+                  <div class="fieldUnit flleft">
                     <p class="fieldName">法人</p>
                     <div class="fieldBox" id="bbcust"></div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft required">
-                    <p class="fieldName">案件</p>
-                    <div class="fieldBox" id="bbproj"></div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">備考</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt660" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft required">
-                    <p class="fieldName">売上パターン</p>
-                    <div class="fieldBox">
-                      <select id="売上パターン" class="cl_valid wt280 cl_required"></select>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft required">
-                    <p class="fieldName">受注日</p>
-                    <div class="fieldBox">
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="受注日" class="cl_date cl_valid cl_required" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft required">
-                    <p class="fieldName">希望納期</p>
-                    <div class="fieldBox">
-                      <div class="datepicker_wrap flleft">
-                        <input type="text" id="希望納期" class="cl_date cl_valid cl_required" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft required">
-                    <p class="fieldName">受注担当者</p>
-                    <div class="fieldBox" id="staff"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -111,16 +68,28 @@
                     <div class="fieldBox" id="bbcustbill"></div>
                   </div>
                   <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">備考</p>
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">締日</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt660" />
+                      <div class="datepicker_wrap flleft">
+                        <input type="text" id="締日" class="cl_date cl_valid cl_required" />
+                      </div>
                     </div>
                   </div>
                   <div class="clear"></div>
-                  <div class="fieldUnit flleft">
+                  <div class="fieldUnit flleft required">
+                    <p class="fieldName">請求締年月</p>
                     <div class="fieldBox">
-                      <label class="checkbox"><input type="checkbox" id="" data-toggle="checkbox" />外部倉庫分受注</label>
+                      <div class="flleft">
+                        <select id="請求締年" class="cl_valid wt140"></select>
+                        <select id="請求締月" class="cl_valid wt140"></select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit mrgt10">
+                    <div class="fieldBox noName btnCenter">
+                      <button id="search" class="btn btn-info wt280">検索</button>
                     </div>
                   </div>
                   <div class="clear"></div>
