@@ -1,11 +1,13 @@
 $(function () {
-  BBcustbillView = Backbone.View.extend({
+  const _BBcustbillView = Backbone.View.extend({
     events: {
       'click #cancel': 'onclickCancel', // [キャンセル]押下
       'click #commit': 'onclickCommit', // [確定]押下
     },
 
     initialize: function (options) {
+      _.extend(this, options);
+
       clutil.loadHtml(
         ((code) => {
           return [
@@ -16,18 +18,18 @@ $(function () {
           ].join('/');
         })(clcom.pageId),
         (html) => {
-          _.defaults(_.extend(this, options), {
-            validator: clutil.validator(this.$el, {
-              echoback: $('.cl_echoback'),
-            }),
-            html: html,
-          });
+          this.html = html;
         }
       );
     },
 
     show: function () {
-      this.$el.nextAll().hide().end().html(this.html);
+      this.$el.html(this.html);
+      this.$main.hide();
+
+      this.validator = clutil.validator(this.$el, {
+        echoback: $('.cl_echoback'),
+      });
 
       clutil.cltypeselector3({
         $select: this.$('#敬称'),
@@ -128,7 +130,17 @@ $(function () {
     },
 
     hide: function () {
-      this.$el.nextAll().show().end().html('');
+      this.$el.html('');
+      this.$main.show();
+    },
+
+    view2data: function () {
+      const data = clutil.view2data(this.$el);
+      return {};
+    },
+
+    data2view: function (data) {
+      clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
     },
 
     validate: function () {
@@ -143,6 +155,7 @@ $(function () {
     // [キャンセル]押下時の処理
     onclickCancel: function () {
       this.hide();
+      this.callback(null);
     },
 
     // [確定]押下時の処理
@@ -150,7 +163,39 @@ $(function () {
       if (!this.validate()) {
         return;
       }
+      const data = this.view2data();
       this.hide();
+      this.callback(data);
+    },
+  });
+
+  BBcustbillView = Backbone.View.extend({
+    initialize: function (options) {
+      $('#ca_main').append(_.template('<div id="<%= cid %>"></div>')(this));
+      this.$el
+        .empty()
+        .append()
+        .data({
+          view: new _BBcustbillView(
+            _.defaults(
+              {
+                el: '#' + this.cid,
+                $main: $('#container'),
+                callback: (data) => {
+                  if (!data) {
+                    return;
+                  }
+                  this.set(data);
+                },
+              },
+              options
+            )
+          ),
+        });
+    },
+
+    show: function (options) {
+      this.$el.data().view.show(options);
     },
   });
 });

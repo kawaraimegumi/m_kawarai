@@ -44,14 +44,13 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
     <script src="bbcustbill.js"></script>
     <script src="bbcustdlv.js"></script>
     <script src="AMBBV3020.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
-      <div id="bbcustbillContainer" class="cl_dialog"></div>
-      <div id="bbcustdlvContainer" class="cl_dialog"></div>
       <div id="container">
         <div id="mainColumn">
           <div id="mainColumninBox" class="noLeftColumn">
@@ -167,56 +166,64 @@
               </div>
               <div class="fieldgroup">
                 <p class="gtitle">請求先情報</p>
-                <div class="fieldgroupInBox">
-                  <div class="fieldUnit flleft" style="height: auto">
-                    <div class="fieldBox noName table">
-                      <table class="list">
-                        <thead>
-                          <tr>
-                            <th class="cl_checkbox_selectall wt40"></th>
-                            <th>請求先コード</th>
-                            <th>請求先名</th>
-                            <th>電話番号</th>
-                            <th>住所</th>
-                          </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot>
-                          <tr class="addRow">
-                            <td id="bbcustbill"><span class="btn-add"></span></td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
+                <div class="table" style="overflow: scroll">
+                  <table id="bbcustbill" class="hilightRow list">
+                    <thead>
+                      <tr>
+                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>請求先コード</th>
+                        <th>請求先名</th>
+                        <th>電話番号</th>
+                        <th>住所</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                      <tr class="addRow">
+                        <td><span class="btn-add"></span></td>
+                      </tr>
+                    </tfoot>
+                    <script type="text/template">
+                      <tr class="csptr">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </script>
+                  </table>
                 </div>
               </div>
               <div class="fieldgroup">
                 <p class="gtitle">納品先情報</p>
-                <div class="fieldgroupInBox">
-                  <div class="fieldUnit flleft" style="height: auto">
-                    <div class="fieldBox noName table">
-                      <table class="list">
-                        <thead>
-                          <tr>
-                            <th class="cl_checkbox_selectall wt40"></th>
-                            <th>納品先コード</th>
-                            <th>納品先名</th>
-                            <th>電話番号</th>
-                            <th>住所</th>
-                          </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot>
-                          <tr class="addRow">
-                            <td id="bbcustdlv"><span class="btn-add"></span></td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
+                <div class="table" style="overflow: scroll">
+                  <table id="bbcustdlv" class="hilightRow list">
+                    <thead>
+                      <tr>
+                        <th class="cl_checkbox_selectall wt40"></th>
+                        <th>納品先コード</th>
+                        <th>納品先名</th>
+                        <th>電話番号</th>
+                        <th>住所</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                      <tr class="addRow">
+                        <td><span class="btn-add"></span></td>
+                      </tr>
+                    </tfoot>
+                    <script type="text/template">
+                      <tr class="csptr">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </script>
+                  </table>
                 </div>
               </div>
             </div>

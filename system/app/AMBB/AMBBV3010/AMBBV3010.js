@@ -43,29 +43,29 @@ $(function () {
         return paginationView.render();
       });
 
-      const $table1 = this.$('#table1');
-      this.rowSelectListView1 = _.extend(
+      const $list1 = this.$('#list1');
+      this.listView1 = _.extend(
         new clutil.View.RowSelectListView({
-          el: $table1,
-          template: _.template($table1.find('script').html()),
+          el: $list1,
+          template: _.template($list1.find('script').html()),
           groupid: this.cid,
         })
           .initUIElement()
           .render(),
         { uniqKeys: ['bbcustId'] }
       );
-      const $table2 = this.$('#table2');
-      this.rowSelectListView2 = _.extend(
+      const $list2 = this.$('#list2');
+      this.listView2 = _.extend(
         new clutil.View.RowSelectListView({
-          el: $table2,
-          template: _.template($table2.find('script').html()),
+          el: $list2,
+          template: _.template($list2.find('script').html()),
           groupid: this.cid,
         })
           .initUIElement()
           .render(),
         { uniqKeys: ['bbcustId', 'bbcustbillId'] }
       );
-      this.rowSelectListView = this.rowSelectListView1;
+      this.listView = this.listView1;
 
       this.controlSrchArea = clutil.controlSrchArea(
         this.$('#cond'),
@@ -82,7 +82,7 @@ $(function () {
           return this.search(_.defaults({ reqPage: reqPage }, this.request));
         })
         .on('onOperation', (opeTypeId) => {
-          const recs = this.rowSelectListView.getSelectedRecs();
+          const recs = this.listView.getSelectedRecs();
           clcom.pushPage({
             url: ((code) => {
               return [
@@ -112,10 +112,10 @@ $(function () {
         const request = pageData.request;
         this.data2view(request.getReq);
         return this.search(request).then(() => {
-          this.rowSelectListView.setSelectRecs(
+          this.listView.setSelectRecs(
             pageData.recs,
             true,
-            this.rowSelectListView.uniqKeys
+            this.listView.uniqKeys
           );
         });
       }
@@ -192,18 +192,18 @@ $(function () {
             _.extend(this, { request: request, response: response });
             switch (request.getReq.format) {
               case 1:
-                _.extend(this, { rowSelectListView: this.rowSelectListView1 });
+                _.extend(this, { listView: this.listView1 });
                 break;
               case 2:
-                _.extend(this, { rowSelectListView: this.rowSelectListView2 });
+                _.extend(this, { listView: this.listView2 });
                 break;
               default:
                 return;
             }
-            this.rowSelectListView1.$el.hide();
-            this.rowSelectListView2.$el.hide();
-            this.rowSelectListView.setRecs(list);
-            this.rowSelectListView.$el.show();
+            this.listView1.$el.hide();
+            this.listView2.$el.hide();
+            this.listView.setRecs(list);
+            this.listView.$el.show();
             this.controlSrchArea.show_result();
           })
           // モック用
