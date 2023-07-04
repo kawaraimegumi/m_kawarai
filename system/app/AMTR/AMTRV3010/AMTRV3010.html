@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" />
+    <title></title>
+    <link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="../../../bootstrap/css/prettify.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
+    <script type="text/javascript" src="../../../../js/jquery.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery-ui.custom.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery.csv.js"></script>
+    <link media="screen" rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <script src="../../../js/function.js"></script>
+    <script src="../../../js/jquery.ui.touch-punch.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/bootstrap-select.js"></script>
+    <script src="../../../js/bootstrap-switch.js"></script>
+    <script src="../../../js/flatui-checkbox.js"></script>
+    <script src="../../../js/flatui-radio.js"></script>
+    <script src="../../../js/jquery.tagsinput.js"></script>
+    <script src="../../../js/jquery.placeholder.js"></script>
+    <script src="../../../bootstrap/js/google-code-prettify/prettify.js"></script>
+    <script src="../../../js/application.js"></script>
+    <script src="../../../js/jquery.skOuterClick.js"></script>
+    <script src="../../../js/jquery.tablesorter.js"></script>
+    <script src="../../../js/tsort.js"></script>
+    <script src="../../../js/perfect-scrollbar.with-mousewheel.min.js"></script>
+    <script src="../../../../js/jquery.contextmenu.js"></script>
+    <script src="../../../../js/jquery.ui.datepicker.js"></script>
+    <script src="../../../../js/jquery.ui.datepicker-ja.min.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery.tablefix_1.0.0.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery.dragtable.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery.form.js"></script>
+    <script type="text/javascript" src="../../../../js/underscore.js"></script>
+    <script type="text/javascript" src="../../../../js/backbone.js"></script>
+    <script type="text/javascript" src="../../../../js/json2.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="../../../../js/jquery.exchangeselect.0.1.0.js"></script>
+    <script type="text/javascript" src="../../../../js/backbone.syphon.js"></script>
+    <script type="text/javascript" src="../../../../js/backbone.syphon.fix.js"></script>
+    <script src="../../../js/clcom.js"></script>
+    <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="AMTRV3010.css"></script>
+  </head>
+  <!-- ここのbodyに"cl_body_hidden"が入る -->
+  <body class="">
+    <div id="ca_main">
+      <div id="container">
+        <div id="mainColumn">
+          <div id="mainColumninBox" class="noLeftColumn">
+            <div id="content">
+              <!-- 店舗テキストボックス（仮） -->
+              <!-- アイテムテキストボックス（仮） -->
+              <div id="ca_srchArea" class="fieldgroupInBox search">
+                <div class="fieldUnit mrgb10 half flleft mrgr20">
+                  <p class="fieldName">店舗*</p>
+                  <div class="fieldBox">
+                    <input type="text" class="form-control wt280 cl_valid" id="ca_srchIntstructCode" data-validator="maxlen:8 digit">
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <div class="fieldUnit mrgb10 half flleft mrgr20">
+                  <p class="fieldName">アイテム</p>
+                  <div class="fieldBox">
+                    <input type="text" class="form-control wt280 cl_valid" id="ca_srchIntstructCode" data-validator="maxlen:8 digit">
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <div class="clear"></div>      
+              </div>
+              <!-- 依頼分・依頼受領ラジオボタン -->
+                <div class="fieldUnit mrgb10 mrgr20">
+                    <p class="fieldName"> </p>
+                    <div class="fieldBox">
+                        <ul>
+                            <li><label class="radio checked"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="target" value="1" data-toggle="radio" checked="checked">依頼分</label></li>
+                            <li><label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="target" value="2" data-toggle="radio">依頼受領</label></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <!-- 検索・依頼リスト出力ボタン -->
+                <div class="fieldUnit">
+                  <div class="fieldBox mrgt20 noName btnCenter " data-cl_groupid="AMASV0030">
+                    <button class="btn btn-info wt280 mrgr20" id="cl_pdf">検索</button>
+                    <button class="btn btn-info wt280" id="cl_csv">依頼リスト出力</button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <!-- テーブル -->
+                <table class="hilightRow clutil_View_RowSelectListView" id="ca_table">
+                  <thead>
+                    <tr>
+                      <!-- １番目の要素は全選択チェックボックス用に予約 -->
+                      <th width="40px" class="cl_checkbox_selectall"><label class="checkbox"><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></th>
+                      <!-- thのcheckboxで表組内のすべてのチェックをオン／オフ -->
+                      <th width="120px">依頼先</th>
+                      <th width="120px">店舗/倉庫/メーカー</th>
+                      <th width="120px">アイテム</th>
+                      <th width="120px">メーカー品番</th>
+                      <th width="120px">カラー</th>
+                      <th width="120px">サイズ</th>
+                      <th width="120px">数量</th>
+                      <th width="120px">依頼日</th>
+                      <th width="120px">出荷日</th>
+                      <th width="120px">状態</th>
+                    </tr>
+                  </thead>
+                  <tbody><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">13</td>
+                      <td class="ca_c_link">A店</td>
+                      <td class="ca_c_link">2015/11/13（金）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">16</td>
+                      <td class="ca_c_link">B店</td>
+                      <td class="ca_c_link">2017/02/14（火）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">17</td>
+                      <td class="ca_c_link">C店</td>
+                      <td class="ca_c_link">2017/06/14（水）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">18</td>
+                      <td class="ca_c_link">D店</td>
+                      <td class="ca_c_link">2017/07/28（金）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">26</td>
+                      <td class="ca_c_link">E店</td>
+                      <td class="ca_c_link">2020/01/21（火）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">33</td>
+                      <td class="ca_c_link">D店</td>
+                      <td class="ca_c_link">2016/12/07（水）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">36</td>
+                      <td class="ca_c_link">E店</td>
+                      <td class="ca_c_link">2018/09/13（木）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">37</td>
+                      <td class="ca_c_link">F店</td>
+                      <td class="ca_c_link">2019/01/23（水）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">42</td>
+                      <td class="ca_c_link">G店</td>
+                      <td class="ca_c_link">2019/04/19（金）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr><tr class="csptr contextmenu">
+                      <td class="cl_checkbox_selectrec"><label class="checkbox "><span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span><input type="checkbox" data-toggle="checkbox"></label></td>
+                      <td class="ca_c_link">43</td>
+                      <td class="ca_c_link">H店</td>
+                      <td class="ca_c_link">2019/06/05（水）</td>
+                      <td class="ca_c_link">2070/12/31（水）</td>
+                      <td class="ca_c_link">01:メーカー</td>
+                      <td class="ca_c_link">5:数理</td>
+                      <td class="ca_c_link">100</td>
+                      <td class="ca_c_link">7月19日</td>
+                      <td class="ca_c_link">8月1日</td>
+                      <td class="ca_c_link">輸送中</td>
+                    </tr></tbody>
+                  </table>
+
+                  <!-- 削除承認・削除ボタン -->
+                  <div class="fieldUnit">
+                    <div class="fieldBox mrgt30 mrgb30 noName cl_opebtngroup" data-cl_groupid="AMMSV0310">
+                      <div class="flleft">
+                        <button class="btn btn-primary wt280 mrgr10" id="cl_edit">編集</button>
+                        <button class="btn btn-primary wt280 mrgr10" id="cl_edit">承認</button>
+                      </div>
+                      <div class="flright">
+                        <button class="btn btn-default wt140 mrgl20 delete" id="cl_delete">削除</button>
+                      </div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
