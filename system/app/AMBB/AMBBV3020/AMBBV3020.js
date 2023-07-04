@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3020 = Backbone.View.extend({
+  const MainView = Backbone.View.extend({
     el: $('#container'),
     events: {
       'click #bbcustbill tfoot': 'onclickBBcustbill', // 請求先情報[+]押下
@@ -113,7 +113,7 @@ $(function () {
   });
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3020();
+      mainView = new MainView();
     },
     (response) => {
       clutil.View.doAbort({

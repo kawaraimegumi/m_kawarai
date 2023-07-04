@@ -1,5 +1,5 @@
 $(function () {
-  const _BBcustdlvView = Backbone.View.extend({
+  const View = Backbone.View.extend({
     events: {
       'click #cancel': 'onclickCancel', // [キャンセル]押下
       'click #commit': 'onclickCommit', // [確定]押下
@@ -93,7 +93,7 @@ $(function () {
         .empty()
         .append()
         .data({
-          view: new _BBcustdlvView(
+          view: new View(
             _.defaults(
               {
                 el: '#' + this.cid,

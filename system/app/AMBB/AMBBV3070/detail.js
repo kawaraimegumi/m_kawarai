@@ -1,5 +1,5 @@
 $(function () {
-  const _DetailView = Backbone.View.extend({
+  const View = Backbone.View.extend({
     events: {
       'change [name=format], [name=content]': 'onchangeFormat', // [表示形式][表示内容]変更
       'click #cancel': 'onclickCancel', // [キャンセル]押下
@@ -161,7 +161,7 @@ $(function () {
     initialize: function (options) {
       $('#ca_main').append(_.template('<div id="<%= cid %>"></div>')(this));
       this.$el.empty().data({
-        view: new _DetailView(
+        view: new View(
           _.defaults({ el: '#' + this.cid, $main: $('#container') }, options)
         ),
       });

@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3190 = Backbone.View.extend({
+  const MainView = Backbone.View.extend({
     el: $('#container'),
     events: {
       'click #search': 'onclickSearch', // [検索]押下
@@ -35,24 +35,10 @@ $(function () {
           { id: 99, code: '99', name: '末日' },
         ],
       });
-      _([this.$('#請求年from'), this.$('#請求年to')]).each(($select) => {
-        clutil.cltypeselector3({
-          $select: $select,
-          list: _(10).times((index) => {
-            const year = bbutil.ymd2y(clcom.getOpeDate()) - index;
-            return { id: year, name: year + '年' };
-          }),
-        });
-      });
-      _([this.$('#請求月from'), this.$('#請求月to')]).each(($select) => {
-        clutil.cltypeselector3({
-          $select: $select,
-          list: _(12).times((index) => {
-            const month = index + 1;
-            return { id: month, name: month + '月' };
-          }),
-        });
-      });
+      bbutil.yearSelector({ $select: this.$('#請求年from') });
+      bbutil.monthSelector({ $select: this.$('#請求月from') });
+      bbutil.yearSelector({ $select: this.$('#請求年to') });
+      bbutil.monthSelector({ $select: this.$('#請求月to') });
 
       this.paginationViews = _(
         clutil.View.buildPaginationView(this.cid, this.$el)
@@ -191,13 +177,6 @@ $(function () {
       return Promise.resolve().then(() => {
         clutil.blockUI();
         return {
-          rspPage: {
-            curr_record: 0,
-            total_record: 10,
-            page_record: 10,
-            page_size: 10,
-            page_num: 1,
-          },
           getRsp: {
             list: _(10).times((index) => {
               index += 1;
@@ -289,7 +268,7 @@ $(function () {
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3190();
+      mainView = new MainView();
     },
     (response) => {
       clutil.View.doAbort({

@@ -18,6 +18,8 @@ $(function () {
 
       this.validator = this.baseView.validator;
 
+      // ★
+
       this.paginationViews = _(
         clutil.View.buildPaginationView(this.cid, this.$el)
       ).map((paginationView) => {
