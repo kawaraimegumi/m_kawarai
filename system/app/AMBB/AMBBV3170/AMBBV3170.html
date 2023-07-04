@@ -57,6 +57,32 @@
           <div id="mainColumninBox" class="noLeftColumn">
             <div id="content">
               <div class="fieldgroup">
+                <p class="gtitle">締処理履歴</p>
+                <div class="table" style="overflow: scroll">
+                  <table id="history" class="hilightRow">
+                    <thead>
+                      <tr>
+                        <th>請求締日</th>
+                        <th>請求締予定</th>
+                        <th>請求締済</th>
+                        <th>締処理日時</th>
+                        <th>締日</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <script type="text/template">
+                      <tr class="csptr">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </script>
+                  </table>
+                </div>
+              </div>
+              <div class="fieldgroup">
                 <div class="fieldgroupInBox">
                   <div class="fieldUnit flleft">
                     <p class="fieldName">法人</p>
@@ -95,8 +121,48 @@
                   <div class="clear"></div>
                 </div>
               </div>
+              <div id="result" class="fieldgroup dispn">
+                <div class="table" style="overflow: scroll">
+                  <table id="list" class="hilightRow">
+                    <thead>
+                      <tr>
+                        <th>法人コード</th>
+                        <th>法人名</th>
+                        <th>請求先コード</th>
+                        <th>請求先名</th>
+                        <th>前回締日</th>
+                        <th>売上金額</th>
+                        <th>消費税</th>
+                        <th>今回請求金額</th>
+                        <th>入金予定日</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <script type="text/template">
+                      <tr class="csptr">
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbcustbillCode %></td>
+                        <td><%= bbcustbillName %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </script>
+                  </table>
+                </div>
+                <div class="fieldUnit">
+                  <div class="fieldBox noName cl_opebtngroup">
+                    <button id="仮締" class="btn btn-default flleft wt280">仮締</button>
+                    <button id="出力" class="btn btn-primary flleft wt280 mrgl10">出力</button>
+                    <button id="本締" class="btn btn-default flright wt280 mrgl10">本締</button>
+                  </div>
+                </div>
+                <div class="clear"></div>
+              </div>
             </div>
-            <div id="mainColumnFooter" class="noLeftColumn"></div>
           </div>
         </div>
       </div>

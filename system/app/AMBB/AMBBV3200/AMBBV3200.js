@@ -10,6 +10,7 @@ $(function () {
       'click #search': 'onclickSearch', // [検索]押下
       'click #excel': 'onclickExcel', // [Excel出力]押下
       'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]押下
+      'click #cl_edit_multiple': 'onclickEditMultiple', // [編集(一括)]押下
     },
 
     initialize: function () {
@@ -74,6 +75,17 @@ $(function () {
             return;
           }
           return this.search(_.defaults({ reqPage: reqPage }, this.request));
+        })
+        .on('onRowSelectChanged', (groupid, arg) => {
+          if (groupid != this.cid) {
+            return;
+          }
+          const selectedRecsCount = arg.selectedRecsCount;
+          clutil.inputReadonly(this.$('#cl_edit'), !(selectedRecsCount == 1));
+          clutil.inputReadonly(
+            this.$('#cl_edit_multiple'),
+            !(selectedRecsCount > 1)
+          );
         })
         .on('onOperation', (opeTypeId) => {
           const recs = this.rowSelectListView.getSelectedRecs();
@@ -232,18 +244,21 @@ $(function () {
     },
 
     // [Excel出力]押下時の処理
-    onclickExcel: function () {
-      return this.postJSON({
-        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
-        getReq: this.view2data(),
-      }).then((response) => {
-        // clutil.download();
-      });
-    },
+    onclickExcel: function () {},
 
     // [検索条件を再指定]押下時の処理
     onclickSearchAgain: function () {
       this.controlSrchArea.show_srch();
+    },
+
+    // [編集(一括)]押下時の処理
+    onclickEditMultiple: function (e) {
+      clutil.mediator.trigger(
+        'onOperation',
+        am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW,
+        null,
+        e
+      );
     },
   });
 

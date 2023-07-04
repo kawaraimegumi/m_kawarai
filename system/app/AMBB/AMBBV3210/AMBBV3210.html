@@ -53,9 +53,9 @@
         <div id="mainColumn">
           <div id="mainColumninBox" class="noLeftColumn">
             <div id="content">
-              <div id="">
+              <div class="fieldgroup">
                 <div class="table" style="overflow: scroll">
-                  <table id="headerTable" class="hilightRow">
+                  <table id="recs" class="hilightRow">
                     <thead>
                       <tr>
                         <th>法人コード</th>
@@ -76,10 +76,11 @@
                     <tbody></tbody>
                     <script type="text/template">
                       <tr class="csptr">
-                        <td><%= bbcustCode %></td>
-                        <td><%= bbcustName %></td>
-                        <td><%= bbcustbillCode %></td>
-                        <td><%= bbcustbillName %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -98,7 +99,7 @@
                   <div class="fieldUnit flleft">
                     <p class="fieldName">伝票番号</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
+                      <input type="text" id="" class="form-control cl_valid wt280" disabled />
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -117,13 +118,38 @@
                     </div>
                   </div>
                   <div class="clear"></div>
+                  <div class="table" style="overflow: scroll">
+                    <table id="list" class="hilightRow">
+                      <thead>
+                        <tr>
+                          <th>取引コード</th>
+                          <th>金額</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                      <script type="text/template">
+                        <tr class="csptr">
+                          <td>
+                            <select name="取引コード" class="cl_valid wt280"></select>
+                          </td>
+                          <td>
+                            <input type="text" name="金額" class="form-control cl_valid wt280" />
+                          </td>
+                        </tr>
+                      </script>
+                    </table>
+                  </div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">入金額合計</p>
                     <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" disabled />
+                      <input type="text" id="入金額合計" class="form-control cl_valid wt280" disabled />
                     </div>
                   </div>
                   <div class="clear"></div>
+                </div>
+              </div>
+              <div class="fieldgroup">
+                <div class="fieldgroupInBox">
                   <div class="fieldUnit flleft">
                     <p class="fieldName">コメント</p>
                     <div class="fieldBox">
