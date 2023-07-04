@@ -91,7 +91,12 @@ $(function () {
     validate: function () {
       const validator = this.validator;
       if (
-        !_([validator.valid(), validator.validFromTo([{ stval: '契約期間from', edval: '契約期間to' }])]).reduce((memo, valid) => {
+        !_([
+          validator.valid(),
+          validator.validFromTo([
+            { stval: '契約期間from', edval: '契約期間to' },
+          ]),
+        ]).reduce((memo, valid) => {
           return valid && memo;
         }, true)
       ) {

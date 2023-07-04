@@ -9,10 +9,7 @@ $(function () {
     events: {},
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({
-        title: '空画面',
-        subtitle: '',
-      })
+      this.baseView = new clutil.View.MDBaseView({ title: '' })
         .initUIElement()
         .render();
     },

@@ -10,6 +10,7 @@ $(function () {
       'click #search': 'onclickSearch', // [検索]押下
       'click #excel': 'onclickExcel', // [Excel出力]押下
       'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]押下
+      'click #AMBBV3090, #AMBBV3130, #AMBBV3150': 'onclick', // [出荷指示登録][直納分仕入登録][売上登録]押下
     },
 
     initialize: function () {
@@ -87,14 +88,24 @@ $(function () {
           if (groupid != this.cid) {
             return;
           }
-          if (!arg.selectedRecsCount || arg.selectedRecsCount > 1) {
-            clutil.inputReadonly(this.$('#AMBBV3090'), true);
-            clutil.inputReadonly(this.$('#AMBBV3130'), true);
-            clutil.inputReadonly(this.$('#AMBBV3150'), true);
-            return;
-          }
+          // if (!arg.selectedRecsCount || arg.selectedRecsCount > 1) {
+          //   clutil.inputReadonly(this.$('#AMBBV3090'), true);
+          //   clutil.inputReadonly(this.$('#AMBBV3130'), true);
+          //   clutil.inputReadonly(this.$('#AMBBV3150'), true);
+          //   return;
+          // }
         })
-        .on('onOperation', (opeTypeId) => {
+        .on('onOperation', (opeTypeId, pageIndex, e) => {
+          let code = 'AMBBV3060';
+          switch (e.currentTarget.id) {
+            case 'AMBBV3090':
+            case 'AMBBV3130':
+            case 'AMBBV3150':
+              code = e.currentTarget.id;
+              break;
+            default:
+              break;
+          }
           const recs = this.rowSelectListView.getSelectedRecs();
           clcom.pushPage({
             url: ((code) => {
@@ -104,7 +115,7 @@ $(function () {
                 code,
                 code + '.html',
               ].join('/');
-            })('AMBBV3060'),
+            })(code),
             args: {
               opeTypeId: opeTypeId,
               recs: _(recs)
@@ -268,6 +279,16 @@ $(function () {
     // [検索条件を再指定]押下時の処理
     onclickSearchAgain: function () {
       this.controlSrchArea.show_srch();
+    },
+
+    // [出荷指示登録][直納分仕入登録][売上登録]押下時の処理
+    onclick: function (e) {
+      clutil.mediator.trigger(
+        'onOperation',
+        am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW,
+        null,
+        e
+      );
     },
   });
 
