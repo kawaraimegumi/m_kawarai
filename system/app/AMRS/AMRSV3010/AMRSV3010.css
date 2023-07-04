@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+.fieldgroupInBox {
+    display: flex;
+    flex-direction: column;
+}
