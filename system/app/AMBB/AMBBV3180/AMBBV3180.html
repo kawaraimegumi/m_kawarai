@@ -102,8 +102,48 @@
                   <div class="clear"></div>
                 </div>
               </div>
+              <div id="result" class="fieldgroup dispn">
+                <div class="table" style="overflow: scroll">
+                  <table id="list" class="hilightRow">
+                    <thead>
+                      <tr>
+                        <th>法人コード</th>
+                        <th>法人名</th>
+                        <th>請求先コード</th>
+                        <th>請求先名</th>
+                        <th>請求番号</th>
+                        <th>前回締日</th>
+                        <th>売上金額</th>
+                        <th>消費税</th>
+                        <th>今回請求金額</th>
+                        <th>入金予定日</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <script type="text/template">
+                      <tr class="csptr">
+                        <td><%= bbcustCode %></td>
+                        <td><%= bbcustName %></td>
+                        <td><%= bbcustbillCode %></td>
+                        <td><%= bbcustbillName %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </script>
+                  </table>
+                </div>
+                <div class="fieldUnit">
+                  <div class="fieldBox noName btnCenter cl_opebtngroup">
+                    <button id="取消" class="btn btn-default delete wt280">取消</button>
+                  </div>
+                </div>
+                <div class="clear"></div>
+              </div>
             </div>
-            <div id="mainColumnFooter" class="noLeftColumn"></div>
           </div>
         </div>
       </div>

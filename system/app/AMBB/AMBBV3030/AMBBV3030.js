@@ -236,14 +236,7 @@ $(function () {
     },
 
     // [Excel出力]押下時の処理
-    onclickExcel: function () {
-      return this.postJSON({
-        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
-        getReq: this.view2data(),
-      }).then((response) => {
-        // clutil.download();
-      });
-    },
+    onclickExcel: function () {},
 
     // [検索条件を再指定]押下時の処理
     onclickSearchAgain: function () {

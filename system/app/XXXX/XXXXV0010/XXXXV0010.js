@@ -32,6 +32,7 @@ $(function () {
         ],
         unselectedflag: true,
       });
+      clutil.clbusunitselector(this.$('#プルダウン単一'), 1);
 
       clutil.cltypeselector3({
         $select: this.$('#プルダウン複数任意'),
