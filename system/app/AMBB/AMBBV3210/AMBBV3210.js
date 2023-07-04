@@ -4,41 +4,30 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3090 = Backbone.View.extend({
+  const AMBBV3210 = Backbone.View.extend({
     el: $('#container'),
     events: {},
 
     initialize: function () {
       this.baseView = new clutil.View.MDBaseView({
         opeTypeId: clcom.pageArgs.opeTypeId,
-        title: '出荷指示',
+        title: '入金',
       })
         .initUIElement()
         .render();
 
       this.validator = this.baseView.validator;
 
-      this.bbcust = new BBcustView({ el: '#bbcust' });
-      this.bbproj = new BBprojView({ el: '#bbproj' });
-      clutil.datepicker(this.$('#受注日'));
-      clutil.datepicker(this.$('#希望納期'));
-      clutil.cltypeselector3({
-        $select: this.$('#売上パターン'),
-        list: [
-          { id: 1, code: '1', name: '法人売／法人請求' },
-          { id: 2, code: '2', name: '店売／法人請求' },
-          { id: 3, code: '3', name: '店売／店請求' },
-        ],
-      });
-      clutil.cltypeselector3({
-        $select: this.$('#発注先種別'),
-        list: [
-          { id: 1, code: '1', name: 'メーカー' },
-          { id: 2, code: '2', name: 'センター' },
-        ],
-      });
-      clutil.datepicker(this.$('#発注日'));
-      clutil.datepicker(this.$('#納品日'));
+      const $headerTable = this.$('#headerTable');
+      this.headerRowSelectListView = new clutil.View.RowSelectListView({
+        el: $headerTable,
+        template: _.template($headerTable.find('script').html()),
+        groupid: this.cid,
+      })
+        .initUIElement()
+        .render();
+
+      clutil.datepicker(this.$('#伝票日付'));
     },
 
     view2data: function () {
@@ -61,7 +50,7 @@ $(function () {
   });
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3090();
+      mainView = new AMBBV3210();
     },
     (response) => {
       clutil.View.doAbort({

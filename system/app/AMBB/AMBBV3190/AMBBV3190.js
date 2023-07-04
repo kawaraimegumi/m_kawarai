@@ -10,6 +10,7 @@ $(function () {
       'click #search': 'onclickSearch', // [検索]押下
       'click #excel': 'onclickExcel', // [Excel出力]押下
       'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]押下
+      'click #AMBBV3210': 'onclick', // [入金登録]押下
     },
 
     initialize: function () {
@@ -91,12 +92,41 @@ $(function () {
           if (groupid != this.cid) {
             return;
           }
-          if (!arg.selectedRecsCount || arg.selectedRecsCount > 1) {
-            clutil.inputReadonly(this.$('#AMBBV3210'), true);
-            return;
-          }
+          // if (!arg.selectedRecsCount || arg.selectedRecsCount > 1) {
+          //   clutil.inputReadonly(this.$('#AMBBV3210'), true);
+          //   return;
+          // }
         })
-        .on('onOperation', () => {
+        .on('onOperation', (opeTypeId, pageIndex, e) => {
+          switch (e.currentTarget.id) {
+            case 'AMBBV3210':
+              const recs = this.rowSelectListView.getSelectedRecs();
+              clcom.pushPage({
+                url: ((code) => {
+                  return [
+                    clcom.appRoot,
+                    code.slice(0, 4),
+                    code,
+                    code + '.html',
+                  ].join('/');
+                })(e.currentTarget.id),
+                args: {
+                  opeTypeId: opeTypeId,
+                  recs: _(recs)
+                    .uniq((rec) => {
+                      return [rec.bbcustId, rec.bbprojId, rec.bborderId].join();
+                    })
+                    .map((rec) => {
+                      return _.pick(rec, 'bbcustId', 'bbprojId', 'bborderId');
+                    }),
+                },
+                saved: { request: this.request, recs: recs },
+                newWindow: opeTypeId == am_proto_defs.AM_PROTO_COMMON_RTYPE_REL,
+              });
+              break;
+            default:
+              break;
+          }
           this.detail.show({
             recs: [this.rowSelectListView.getLastClickedRec()],
           });
@@ -245,6 +275,16 @@ $(function () {
     // [検索条件を再指定]押下時の処理
     onclickSearchAgain: function () {
       this.controlSrchArea.show_srch();
+    },
+
+    // [入金登録]押下時の処理
+    onclick: function (e) {
+      clutil.mediator.trigger(
+        'onOperation',
+        am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW,
+        null,
+        e
+      );
     },
   });
 

@@ -16,6 +16,8 @@ $(function () {
         .initUIElement()
         .render();
 
+      this.bbcust = new BBcustView({ el: '#bbcust' });
+      this.bbproj = new BBprojView({ el: '#bbproj' });
       clutil.datepicker(this.$('#受注日'));
       clutil.cltypeselector3({
         $select: this.$('#売上パターン'),
@@ -25,6 +27,7 @@ $(function () {
           { id: 3, code: '3', name: '店売／店請求' },
         ],
       });
+      this.bbcustbill = new BBcustbillView({ el: '#bbcustbill' });
       _([this.$('#締日1'), this.$('#締日2'), this.$('#締日3')]).each(
         ($select) => {
           clutil.cltypeselector3({
@@ -53,8 +56,17 @@ $(function () {
       });
     },
 
+    view2data: function () {
+      const data = clutil.view2data(this.$el);
+      return {};
+    },
+
+    data2view: function (data) {
+      clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
+    },
+
     validate: function () {
-      const validator = this.baseView.validator;
+      const validator = this.validator;
       if (!validator.valid()) {
         validator.setErrorHeader(clmsg.cl_echoback);
         return false;

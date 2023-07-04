@@ -4,14 +4,18 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3090 = Backbone.View.extend({
+  const AMBBV3180 = Backbone.View.extend({
     el: $('#container'),
-    events: {},
+    events: {
+      'click #search': 'onclickSearch', // [検索]押下
+    },
 
     initialize: function () {
       this.baseView = new clutil.View.MDBaseView({
-        opeTypeId: clcom.pageArgs.opeTypeId,
-        title: '出荷指示',
+        btn_new: false,
+        title: '請求締取消',
+        subtitle: '',
+        btn_csv: false,
       })
         .initUIElement()
         .render();
@@ -19,26 +23,22 @@ $(function () {
       this.validator = this.baseView.validator;
 
       this.bbcust = new BBcustView({ el: '#bbcust' });
-      this.bbproj = new BBprojView({ el: '#bbproj' });
-      clutil.datepicker(this.$('#受注日'));
-      clutil.datepicker(this.$('#希望納期'));
+      this.bbcustbill = new BBcustbillView({ el: '#bbcustbill' });
+      clutil.datepicker(this.$('#締日'));
       clutil.cltypeselector3({
-        $select: this.$('#売上パターン'),
-        list: [
-          { id: 1, code: '1', name: '法人売／法人請求' },
-          { id: 2, code: '2', name: '店売／法人請求' },
-          { id: 3, code: '3', name: '店売／店請求' },
-        ],
+        $select: this.$('#請求締年'),
+        list: _(10).times((index) => {
+          const year = bbutil.ymd2y(clcom.getOpeDate()) - index;
+          return { id: year, name: year + '年' };
+        }),
       });
       clutil.cltypeselector3({
-        $select: this.$('#発注先種別'),
-        list: [
-          { id: 1, code: '1', name: 'メーカー' },
-          { id: 2, code: '2', name: 'センター' },
-        ],
+        $select: this.$('#請求締月'),
+        list: _(12).times((index) => {
+          const month = index + 1;
+          return { id: month, name: month + '月' };
+        }),
       });
-      clutil.datepicker(this.$('#発注日'));
-      clutil.datepicker(this.$('#納品日'));
     },
 
     view2data: function () {
@@ -61,7 +61,7 @@ $(function () {
   });
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3090();
+      mainView = new AMBBV3180();
     },
     (response) => {
       clutil.View.doAbort({

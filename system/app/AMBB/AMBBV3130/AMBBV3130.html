@@ -44,6 +44,9 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../lib/bb.js"></script>
+    <script src="../lib/bbcust/bbcust.js"></script>
+    <script src="../lib/bbproj/bbproj.js"></script>
     <script src="AMBBV3130.js"></script>
   </head>
   <body class="cl_body_hidden">
@@ -56,12 +59,12 @@
                 <div class="fieldgroupInBox">
                   <div class="fieldUnit flleft">
                     <p class="fieldName">法人</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="bbcust"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">案件</p>
-                    <div class="fieldBox"></div>
+                    <div class="fieldBox" id="bbproj"></div>
                   </div>
                   <div class="clear"></div>
                   <div class="fieldUnit flleft">
@@ -72,6 +75,7 @@
                       </div>
                     </div>
                   </div>
+                  <div class="clear"></div>
                   <div class="fieldUnit flleft">
                     <p class="fieldName">売上パターン</p>
                     <div class="fieldBox">
@@ -106,6 +110,7 @@
                       </div>
                     </div>
                   </div>
+                  <div class="clear"></div>
                   <div class="fieldUnit flleft required">
                     <p class="fieldName">検収日</p>
                     <div class="fieldBox">
