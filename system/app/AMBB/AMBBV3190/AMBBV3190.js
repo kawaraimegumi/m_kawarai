@@ -10,7 +10,7 @@ $(function () {
       'click #search': 'onclickSearch', // [検索]押下
       'click #excel': 'onclickExcel', // [Excel出力]押下
       'click #searchAgain': 'onclickSearchAgain', // [検索条件を再指定]押下
-      'click #AMBBV3210': 'onclick', // [入金登録]押下
+      'click #AMBBV3210single, #AMBBV3210multiple': 'onclickAMBBV3210', // [入金登録][入金登録(一括)]押下
     },
 
     initialize: function () {
@@ -92,14 +92,20 @@ $(function () {
           if (groupid != this.cid) {
             return;
           }
-          // if (!arg.selectedRecsCount || arg.selectedRecsCount > 1) {
-          //   clutil.inputReadonly(this.$('#AMBBV3210'), true);
-          //   return;
-          // }
+          const selectedRecsCount = arg.selectedRecsCount;
+          clutil.inputReadonly(
+            this.$('#AMBBV3210single'),
+            !(selectedRecsCount == 1)
+          );
+          clutil.inputReadonly(
+            this.$('#AMBBV3210multiple'),
+            !(selectedRecsCount > 1)
+          );
         })
         .on('onOperation', (opeTypeId, pageIndex, e) => {
           switch (e.currentTarget.id) {
-            case 'AMBBV3210':
+            case 'AMBBV3210single':
+            case 'AMBBV3210multiple':
               const recs = this.rowSelectListView.getSelectedRecs();
               clcom.pushPage({
                 url: ((code) => {
@@ -263,22 +269,15 @@ $(function () {
     },
 
     // [Excel出力]押下時の処理
-    onclickExcel: function () {
-      return this.postJSON({
-        reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV },
-        getReq: this.view2data(),
-      }).then((response) => {
-        // clutil.download();
-      });
-    },
+    onclickExcel: function () {},
 
     // [検索条件を再指定]押下時の処理
     onclickSearchAgain: function () {
       this.controlSrchArea.show_srch();
     },
 
-    // [入金登録]押下時の処理
-    onclick: function (e) {
+    // [入金登録][入金登録(一括)]押下時の処理
+    onclickAMBBV3210: function (e) {
       clutil.mediator.trigger(
         'onOperation',
         am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW,
