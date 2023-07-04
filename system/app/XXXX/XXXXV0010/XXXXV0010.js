@@ -23,15 +23,15 @@ $(function () {
       clutil.datepicker(this.$('#カレンダーfrom'));
       clutil.datepicker(this.$('#カレンダーto'));
 
-      // clutil.cltypeselector3({
-      //   $select: this.$('#プルダウン単一'),
-      //   list: [
-      //     { id: 1, code: '01', name: 'A' },
-      //     { id: 2, code: '02', name: 'B' },
-      //     { id: 3, code: '03', name: 'C' },
-      //   ],
-      //   unselectedflag: true,
-      // });
+      clutil.cltypeselector3({
+        $select: this.$('#プルダウン単一'),
+        list: [
+          { id: 1, code: '01', name: 'A' },
+          { id: 2, code: '02', name: 'B' },
+          { id: 3, code: '03', name: 'C' },
+        ],
+        unselectedflag: true,
+      });
       clutil.clbusunitselector(this.$('#プルダウン単一'), 1);
 
       clutil.cltypeselector3({
