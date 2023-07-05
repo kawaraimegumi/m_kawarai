@@ -9,25 +9,12 @@ $(function () {
     events: {},
 
     initialize: function () {
-      this.baseView = new clutil.View.MDBaseView({ title: '' })
+      this.baseView = new clutil.View.MDBaseView({
+        title: '空画面',
+        subtitle: '',
+      })
         .initUIElement()
         .render();
-        clutil.cltypeselector3({
-          $select: this.$('#テスト1'),
-          list: [
-            { id: 1, code: '01', name: 'A' },
-            { id: 2, code: '02', name: 'B' },
-            { id: 3, code: '03', name: 'C' },
-          ],
-        });  
-        clutil.cltypeselector3({
-          $select: this.$('#テスト2'),
-          list: [
-            { id: 1, code: '01', name: 'A' },
-            { id: 2, code: '02', name: 'B' },
-            { id: 3, code: '03', name: 'C' },
-          ],
-        });  
     },
   });
 
