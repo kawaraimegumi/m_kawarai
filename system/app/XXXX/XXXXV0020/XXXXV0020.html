@@ -44,9 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="../lib/bb.js"></script>
-    <script src="../lib/staff/staff.js"></script>
-    <script src="AMBBV3010.js"></script>
+    <script src="XXXXV0020.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -56,52 +54,10 @@
             <div id="content">
               <div class="fieldgroup">
                 <div id="cond" class="fieldgroupInBox search">
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">法人コード</p>
-                    <div class="fieldBox">
-                      <input type="text" id="" class="form-control cl_valid wt280" />
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">自社担当</p>
-                    <div class="fieldBox" id="staff"></div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">締日</p>
-                    <div class="fieldBox">
-                      <select id="締日1" class="cl_valid wt140"></select>
-                      <select id="締日2" class="cl_valid wt140"></select>
-                      <select id="締日3" class="cl_valid wt140"></select>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
-                  <div class="fieldUnit flleft">
-                    <p class="fieldName">表示形式</p>
-                    <div class="fieldBox">
-                      <ul>
-                        <li>
-                          <label class="radio"><input type="radio" name="format" value="1" data-toggle="radio" checked />法人単位</label>
-                        </li>
-                        <li>
-                          <label class="radio"><input type="radio" name="format" value="2" data-toggle="radio" />法人・請求先単位</label>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="clear"></div>
+                  <!-- ★ -->
                   <div class="fieldUnit mrgt10">
-                    <div class="fieldBox noName">
-                      <div class="col-md-4" style="text-align: right">
-                        <button id="csv" class="btn btn-info wt280">発行先CSV出力</button>
-                      </div>
-                      <div class="col-md-4" style="text-align: center">
-                        <button id="search" class="btn btn-info wt280">検索</button>
-                      </div>
-                      <div class="col-md-4" style="text-align: left">
-                        <button id="excel" class="btn btn-info wt280">Excel出力</button>
-                      </div>
+                    <div class="fieldBox noName btnCenter">
+                      <button id="search" class="btn btn-info wt280">検索</button>
                     </div>
                   </div>
                   <div class="clear"></div>
@@ -111,47 +67,22 @@
               <div id="result" class="fieldgroup dispn">
                 <div class="pagination-wrapper"></div>
                 <div class="table" style="overflow: scroll">
-                  <table id="list1" class="hilightRow">
+                  <table id="list" class="hilightRow">
                     <thead>
                       <tr>
+                        <!-- ★ -->
                         <th class="cl_checkbox_selectall wt40"></th>
-                        <th>法人コード</th>
-                        <th>法人名</th>
+                        <th>コード</th>
+                        <th>名称</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
                     <script type="text/template">
                       <tr class="csptr">
+                        <!-- ★ -->
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= bbcustCode %></td>
-                        <td><%= bbcustName %></td>
-                      </tr>
-                    </script>
-                  </table>
-                  <table id="list2" class="hilightRow">
-                    <thead>
-                      <tr>
-                        <th class="cl_checkbox_selectall wt40"></th>
-                        <th>法人コード</th>
-                        <th>法人名</th>
-                        <th>請求先コード</th>
-                        <th>請求先名</th>
-                        <th>締日1</th>
-                        <th>締日2</th>
-                        <th>締日3</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                    <script type="text/template">
-                      <tr class="csptr">
-                        <td class="cl_checkbox_selectrec"></td>
-                        <td><%= bbcustCode %></td>
-                        <td><%= bbcustName %></td>
-                        <td><%= bbcustbillCode %></td>
-                        <td><%= bbcustbillName %></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= code %></td>
+                        <td><%= name %></td>
                       </tr>
                     </script>
                   </table>
@@ -160,6 +91,7 @@
                 <div class="fieldUnit">
                   <div class="fieldBox noName cl_opebtngroup">
                     <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
+                    <button id="cl_copy" class="btn btn-primary flleft wt280 mrgl10">複製</button>
                     <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
                   </div>
                 </div>

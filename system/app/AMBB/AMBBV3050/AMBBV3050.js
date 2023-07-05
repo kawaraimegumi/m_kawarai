@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3050 = Backbone.View.extend({
+  const MainView = Backbone.View.extend({
     el: $('#container'),
     events: {
       'click #search': 'onclickSearch', // [検索]押下
@@ -171,13 +171,6 @@ $(function () {
       return Promise.resolve().then(() => {
         clutil.blockUI();
         return {
-          rspPage: {
-            curr_record: 0,
-            total_record: 10,
-            page_record: 10,
-            page_size: 10,
-            page_num: 1,
-          },
           getRsp: {
             list: _(10).times((index) => {
               index += 1;
@@ -287,7 +280,7 @@ $(function () {
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3050();
+      mainView = new MainView();
     },
     (response) => {
       clutil.View.doAbort({

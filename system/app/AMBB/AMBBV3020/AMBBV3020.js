@@ -4,11 +4,11 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3020 = Backbone.View.extend({
+  const MainView = Backbone.View.extend({
     el: $('#container'),
     events: {
-      'click #bbcustbill': 'onclickBBcustbill',
-      'click #bbcustdlv': 'onclickBBcustdlv',
+      'click #bbcustbill tfoot': 'onclickBBcustbill', // 請求先情報[+]押下
+      'click #bbcustdlv tfoot': 'onclickBBcustdlv', // 納品先情報[+]押下
     },
 
     initialize: function () {
@@ -20,7 +20,7 @@ $(function () {
             resId: clcom.pageId,
             data: {
               reqHead: { opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL },
-              AMBBV3020GetReq: {},
+              getReq: {},
             },
           };
         },
@@ -32,7 +32,7 @@ $(function () {
             resId: clcom.pageId,
             data: {
               reqHead: { opeTypeId: opeTypeId },
-              AMBBV3020UpdReq: {},
+              updReq: {},
             },
           };
         },
@@ -40,13 +40,22 @@ $(function () {
         .initUIElement()
         .render();
 
+      this.bbcustbillView = new BBcustbillView();
+      this.bbcustdlvView = new BBcustdlvView();
+
+      switch (this.baseView.options.opeTypeId) {
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+        case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
+          this.disable();
+          break;
+        default:
+          break;
+      }
       switch (this.baseView.options.opeTypeId) {
         case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
         case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
         case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
-          clutil.mediator.on('onMDGetCompleted', (args) => {
-            // data2view
-          });
+          clutil.mediator.on('onMDGetCompleted', (args) => {});
           break;
         default:
           break;
@@ -56,18 +65,35 @@ $(function () {
         case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
         case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
           clutil.mediator.on('onMDSubmitCompleted', (args) => {});
-          // viewReadonly
           break;
         default:
           break;
       }
+    },
 
-      this.bbcustbillView = new BBcustbillView({ el: '#bbcustbillContainer' });
-      this.bbcustdlvView = new BBcustdlvView({ el: '#bbcustdlvContainer' });
+    view2data: function () {
+      const data = clutil.view2data(this.$el);
+      return {};
+    },
+
+    data2view: function (data) {
+      clutil.data2view(this.$el, JSON.parse(JSON.stringify(data)), null, true);
+    },
+
+    disable: function (disabled = true) {
+      if (disabled) {
+        clutil.viewReadonly(this.$el);
+        this.$('#bbcustbill').find('tfoot').hide();
+        this.$('#bbcustdlv').find('tfoot').hide();
+      } else {
+        clutil.viewRemoveReadonly(this.$el);
+        this.$('#bbcustbill').find('tfoot').show();
+        this.$('#bbcustdlv').find('tfoot').show();
+      }
     },
 
     validate: function () {
-      const validator = this.baseView.validator;
+      const validator = this.validator;
       if (!validator.valid()) {
         validator.setErrorHeader(clmsg.cl_echoback);
         return false;
@@ -75,17 +101,19 @@ $(function () {
       return true;
     },
 
+    // 請求先情報[+]押下時の処理
     onclickBBcustbill: function () {
       this.bbcustbillView.show();
     },
 
+    // 納品先情報[+]押下時の処理
     onclickBBcustdlv: function () {
       this.bbcustdlvView.show();
     },
   });
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3020();
+      mainView = new MainView();
     },
     (response) => {
       clutil.View.doAbort({

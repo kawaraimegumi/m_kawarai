@@ -15,4 +15,30 @@ bbutil = {
     date.setDate(date.getDate() + dd);
     return clutil.dateFormat(date, 'yyyymmdd');
   },
+  yearSelector: function (options) {
+    clutil.cltypeselector3(
+      _.defaults(
+        {
+          list: _(10).times((index) => {
+            const year = this.ymd2y(clcom.getOpeDate()) - index;
+            return { id: year, name: year + '年' };
+          }),
+        },
+        options
+      )
+    );
+  },
+  monthSelector: function (options) {
+    clutil.cltypeselector3(
+      _.defaults(
+        {
+          list: _(12).times((index) => {
+            const month = index + 1;
+            return { id: month, name: month + '月' };
+          }),
+        },
+        options
+      )
+    );
+  },
 };

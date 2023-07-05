@@ -4,7 +4,7 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const AMBBV3170 = Backbone.View.extend({
+  const MainView = Backbone.View.extend({
     el: $('#container'),
     events: {
       'click #search': 'onclickSearch', // [検索]押下
@@ -28,20 +28,8 @@ $(function () {
       this.bbcust = new BBcustView({ el: '#bbcust' });
       this.bbcustbill = new BBcustbillView({ el: '#bbcustbill' });
       clutil.datepicker(this.$('#締日'));
-      clutil.cltypeselector3({
-        $select: this.$('#請求締年'),
-        list: _(10).times((index) => {
-          const year = bbutil.ymd2y(clcom.getOpeDate()) - index;
-          return { id: year, name: year + '年' };
-        }),
-      });
-      clutil.cltypeselector3({
-        $select: this.$('#請求締月'),
-        list: _(12).times((index) => {
-          const month = index + 1;
-          return { id: month, name: month + '月' };
-        }),
-      });
+      bbutil.yearSelector({ $select: this.$('#請求締年') });
+      bbutil.monthSelector({ $select: this.$('#請求締月') });
 
       const $list = this.$('#list');
       this.listView = new clutil.View.RowSelectListView({
@@ -168,7 +156,7 @@ $(function () {
   });
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new AMBBV3170();
+      mainView = new MainView();
     },
     (response) => {
       clutil.View.doAbort({

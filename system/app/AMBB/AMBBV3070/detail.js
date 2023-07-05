@@ -1,5 +1,5 @@
 $(function () {
-  const _DetailView = Backbone.View.extend({
+  const View = Backbone.View.extend({
     events: {
       'change [name=format], [name=content]': 'onchangeFormat', // [表示形式][表示内容]変更
       'click #cancel': 'onclickCancel', // [キャンセル]押下
@@ -10,7 +10,9 @@ $(function () {
 
       clutil.loadHtml(
         ((code) => {
-          return [clcom.appRoot, code.slice(0, 4), code, 'detail.html'].join('/');
+          return [clcom.appRoot, code.slice(0, 4), code, 'detail.html'].join(
+            '/'
+          );
         })(clcom.pageId),
         (html) => {
           this.html = html;
@@ -159,7 +161,9 @@ $(function () {
     initialize: function (options) {
       $('#ca_main').append(_.template('<div id="<%= cid %>"></div>')(this));
       this.$el.empty().data({
-        view: new _DetailView(_.defaults({ el: '#' + this.cid, $main: $('#container') }, options)),
+        view: new View(
+          _.defaults({ el: '#' + this.cid, $main: $('#container') }, options)
+        ),
       });
     },
 

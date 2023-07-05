@@ -37,149 +37,149 @@
 // Provide a container to store, retrieve and
 // shut down child views.
 
-Backbone.ChildViewContainer = (function (Backbone, _) {
+Backbone.ChildViewContainer = (function(Backbone, _){
+  
+  // Container Constructor
+  // ---------------------
 
-	// Container Constructor
-	// ---------------------
+  var Container = function(views){
+    this._views = {};
+    this._indexByModel = {};
+    this._indexByCustom = {};
+    this._updateLength();
 
-	var Container = function (views) {
-		this._views = {};
-		this._indexByModel = {};
-		this._indexByCustom = {};
-		this._updateLength();
+    _.each(views, this.add, this);
+  };
 
-		_.each(views, this.add, this);
-	};
+  // Container Methods
+  // -----------------
 
-	// Container Methods
-	// -----------------
+  _.extend(Container.prototype, {
 
-	_.extend(Container.prototype, {
+    // Add a view to this container. Stores the view
+    // by `cid` and makes it searchable by the model
+    // cid (and model itself). Optionally specify
+    // a custom key to store an retrieve the view.
+    add: function(view, customIndex){
+      var viewCid = view.cid;
 
-		// Add a view to this container. Stores the view
-		// by `cid` and makes it searchable by the model
-		// cid (and model itself). Optionally specify
-		// a custom key to store an retrieve the view.
-		add: function (view, customIndex) {
-			var viewCid = view.cid;
+      // store the view
+      this._views[viewCid] = view;
 
-			// store the view
-			this._views[viewCid] = view;
+      // index it by model
+      if (view.model){
+        this._indexByModel[view.model.cid] = viewCid;
+      }
 
-			// index it by model
-			if (view.model) {
-				this._indexByModel[view.model.cid] = viewCid;
-			}
+      // index by custom
+      if (customIndex){
+        this._indexByCustom[customIndex] = viewCid;
+      }
 
-			// index by custom
-			if (customIndex) {
-				this._indexByCustom[customIndex] = viewCid;
-			}
+      this._updateLength();
+      return this;
+    },
 
-			this._updateLength();
-			return this;
-		},
+    // Find a view by the model that was attached to
+    // it. Uses the model's `cid` to find it.
+    findByModel: function(model){
+      return this.findByModelCid(model.cid);
+    },
 
-		// Find a view by the model that was attached to
-		// it. Uses the model's `cid` to find it.
-		findByModel: function (model) {
-			return this.findByModelCid(model.cid);
-		},
+    // Find a view by the `cid` of the model that was attached to
+    // it. Uses the model's `cid` to find the view `cid` and
+    // retrieve the view using it.
+    findByModelCid: function(modelCid){
+      var viewCid = this._indexByModel[modelCid];
+      return this.findByCid(viewCid);
+    },
 
-		// Find a view by the `cid` of the model that was attached to
-		// it. Uses the model's `cid` to find the view `cid` and
-		// retrieve the view using it.
-		findByModelCid: function (modelCid) {
-			var viewCid = this._indexByModel[modelCid];
-			return this.findByCid(viewCid);
-		},
+    // Find a view by a custom indexer.
+    findByCustom: function(index){
+      var viewCid = this._indexByCustom[index];
+      return this.findByCid(viewCid);
+    },
 
-		// Find a view by a custom indexer.
-		findByCustom: function (index) {
-			var viewCid = this._indexByCustom[index];
-			return this.findByCid(viewCid);
-		},
+    // Find by index. This is not guaranteed to be a
+    // stable index.
+    findByIndex: function(index){
+      return _.values(this._views)[index];
+    },
 
-		// Find by index. This is not guaranteed to be a
-		// stable index.
-		findByIndex: function (index) {
-			return _.values(this._views)[index];
-		},
+    // retrieve a view by its `cid` directly
+    findByCid: function(cid){
+      return this._views[cid];
+    },
 
-		// retrieve a view by its `cid` directly
-		findByCid: function (cid) {
-			return this._views[cid];
-		},
+    // Remove a view
+    remove: function(view){
+      var viewCid = view.cid;
 
-		// Remove a view
-		remove: function (view) {
-			var viewCid = view.cid;
+      // delete model index
+      if (view.model){
+        delete this._indexByModel[view.model.cid];
+      }
 
-			// delete model index
-			if (view.model) {
-				delete this._indexByModel[view.model.cid];
-			}
+      // delete custom index
+      _.any(this._indexByCustom, function(cid, key) {
+        if (cid === viewCid) {
+          delete this._indexByCustom[key];
+          return true;
+        }
+      }, this);
 
-			// delete custom index
-			_.any(this._indexByCustom, function (cid, key) {
-				if (cid === viewCid) {
-					delete this._indexByCustom[key];
-					return true;
-				}
-			}, this);
+      // remove the view from the container
+      delete this._views[viewCid];
 
-			// remove the view from the container
-			delete this._views[viewCid];
+      // update the length
+      this._updateLength();
+      return this;
+    },
 
-			// update the length
-			this._updateLength();
-			return this;
-		},
+    // Call a method on every view in the container,
+    // passing parameters to the call method one at a
+    // time, like `function.call`.
+    call: function(method){
+      this.apply(method, _.tail(arguments));
+    },
 
-		// Call a method on every view in the container,
-		// passing parameters to the call method one at a
-		// time, like `function.call`.
-		call: function (method) {
-			this.apply(method, _.tail(arguments));
-		},
+    // Apply a method on every view in the container,
+    // passing parameters to the call method one at a
+    // time, like `function.apply`.
+    apply: function(method, args){
+      _.each(this._views, function(view){
+        if (_.isFunction(view[method])){
+          view[method].apply(view, args || []);
+        }
+      });
+    },
 
-		// Apply a method on every view in the container,
-		// passing parameters to the call method one at a
-		// time, like `function.apply`.
-		apply: function (method, args) {
-			_.each(this._views, function (view) {
-				if (_.isFunction(view[method])) {
-					view[method].apply(view, args || []);
-				}
-			});
-		},
+    // Update the `.length` attribute on this container
+    _updateLength: function(){
+      this.length = _.size(this._views);
+    }
+  });
 
-		// Update the `.length` attribute on this container
-		_updateLength: function () {
-			this.length = _.size(this._views);
-		}
-	});
+  // Borrowing this code from Backbone.Collection:
+  // http://backbonejs.org/docs/backbone.html#section-106
+  //
+  // Mix in methods from Underscore, for iteration, and other
+  // collection related features.
+  var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter', 
+    'select', 'reject', 'every', 'all', 'some', 'any', 'include', 
+    'contains', 'invoke', 'toArray', 'first', 'initial', 'rest', 
+    'last', 'without', 'isEmpty', 'pluck'];
 
-	// Borrowing this code from Backbone.Collection:
-	// http://backbonejs.org/docs/backbone.html#section-106
-	//
-	// Mix in methods from Underscore, for iteration, and other
-	// collection related features.
-	var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter',
-		'select', 'reject', 'every', 'all', 'some', 'any', 'include',
-		'contains', 'invoke', 'toArray', 'first', 'initial', 'rest',
-		'last', 'without', 'isEmpty', 'pluck'];
+  _.each(methods, function(method) {
+    Container.prototype[method] = function() {
+      var views = _.values(this._views);
+      var args = [views].concat(_.toArray(arguments));
+      return _[method].apply(_, args);
+    };
+  });
 
-	_.each(methods, function (method) {
-		Container.prototype[method] = function () {
-			var views = _.values(this._views);
-			var args = [views].concat(_.toArray(arguments));
-			return _[method].apply(_, args);
-		};
-	});
-
-	// return the public API
-	return Container;
+  // return the public API
+  return Container;
 })(Backbone, _);
 
 // Backbone.Wreqr (Backbone.Marionette)
@@ -192,2955 +192,2955 @@ Backbone.ChildViewContainer = (function (Backbone, _) {
 // http://github.com/marionettejs/backbone.wreqr
 
 
-Backbone.Wreqr = (function (Backbone, Marionette, _) {
-	"use strict";
-	var Wreqr = {};
-
-	// Handlers
-	// --------
-	// A registry of functions to call, given a name
-
-	Wreqr.Handlers = (function (Backbone, _) {
-		"use strict";
-
-		// Constructor
-		// -----------
-
-		var Handlers = function (options) {
-			this.options = options;
-			this._wreqrHandlers = {};
-
-			if (_.isFunction(this.initialize)) {
-				this.initialize(options);
-			}
-		};
-
-		Handlers.extend = Backbone.Model.extend;
-
-		// Instance Members
-		// ----------------
-
-		_.extend(Handlers.prototype, Backbone.Events, {
-
-			// Add multiple handlers using an object literal configuration
-			setHandlers: function (handlers) {
-				_.each(handlers, function (handler, name) {
-					var context = null;
-
-					if (_.isObject(handler) && !_.isFunction(handler)) {
-						context = handler.context;
-						handler = handler.callback;
-					}
-
-					this.setHandler(name, handler, context);
-				}, this);
-			},
-
-			// Add a handler for the given name, with an
-			// optional context to run the handler within
-			setHandler: function (name, handler, context) {
-				var config = {
-					callback: handler,
-					context: context
-				};
-
-				this._wreqrHandlers[name] = config;
-
-				this.trigger("handler:add", name, handler, context);
-			},
-
-			// Determine whether or not a handler is registered
-			hasHandler: function (name) {
-				return !!this._wreqrHandlers[name];
-			},
-
-			// Get the currently registered handler for
-			// the specified name. Throws an exception if
-			// no handler is found.
-			getHandler: function (name) {
-				var config = this._wreqrHandlers[name];
-
-				if (!config) {
-					return;
-				}
-
-				return function () {
-					var args = Array.prototype.slice.apply(arguments);
-					return config.callback.apply(config.context, args);
-				};
-			},
-
-			// Remove a handler for the specified name
-			removeHandler: function (name) {
-				delete this._wreqrHandlers[name];
-			},
-
-			// Remove all handlers from this registry
-			removeAllHandlers: function () {
-				this._wreqrHandlers = {};
-			}
-		});
-
-		return Handlers;
-	})(Backbone, _);
-
-	// Wreqr.CommandStorage
-	// --------------------
-	//
-	// Store and retrieve commands for execution.
-	Wreqr.CommandStorage = (function () {
-		"use strict";
-
-		// Constructor function
-		var CommandStorage = function (options) {
-			this.options = options;
-			this._commands = {};
-
-			if (_.isFunction(this.initialize)) {
-				this.initialize(options);
-			}
-		};
-
-		// Instance methods
-		_.extend(CommandStorage.prototype, Backbone.Events, {
-
-			// Get an object literal by command name, that contains
-			// the `commandName` and the `instances` of all commands
-			// represented as an array of arguments to process
-			getCommands: function (commandName) {
-				var commands = this._commands[commandName];
-
-				// we don't have it, so add it
-				if (!commands) {
-
-					// build the configuration
-					commands = {
-						command: commandName,
-						instances: []
-					};
-
-					// store it
-					this._commands[commandName] = commands;
-				}
-
-				return commands;
-			},
-
-			// Add a command by name, to the storage and store the
-			// args for the command
-			addCommand: function (commandName, args) {
-				var command = this.getCommands(commandName);
-				command.instances.push(args);
-			},
-
-			// Clear all commands for the given `commandName`
-			clearCommands: function (commandName) {
-				var command = this.getCommands(commandName);
-				command.instances = [];
-			}
-		});
-
-		return CommandStorage;
-	})();
-
-	// Wreqr.Commands
-	// --------------
-	//
-	// A simple command pattern implementation. Register a command
-	// handler and execute it.
-	Wreqr.Commands = (function (Wreqr) {
-		"use strict";
-
-		return Wreqr.Handlers.extend({
-			// default storage type
-			storageType: Wreqr.CommandStorage,
-
-			constructor: function (options) {
-				this.options = options || {};
-
-				this._initializeStorage(this.options);
-				this.on("handler:add", this._executeCommands, this);
-
-				var args = Array.prototype.slice.call(arguments);
-				Wreqr.Handlers.prototype.constructor.apply(this, args);
-			},
-
-			// Execute a named command with the supplied args
-			execute: function (name, args) {
-				name = arguments[0];
-				args = Array.prototype.slice.call(arguments, 1);
-
-				if (this.hasHandler(name)) {
-					this.getHandler(name).apply(this, args);
-				} else {
-					this.storage.addCommand(name, args);
-				}
-
-			},
-
-			// Internal method to handle bulk execution of stored commands
-			_executeCommands: function (name, handler, context) {
-				var command = this.storage.getCommands(name);
-
-				// loop through and execute all the stored command instances
-				_.each(command.instances, function (args) {
-					handler.apply(context, args);
-				});
-
-				this.storage.clearCommands(name);
-			},
-
-			// Internal method to initialize storage either from the type's
-			// `storageType` or the instance `options.storageType`.
-			_initializeStorage: function (options) {
-				var storage;
-
-				var StorageType = options.storageType || this.storageType;
-				if (_.isFunction(StorageType)) {
-					storage = new StorageType();
-				} else {
-					storage = StorageType;
-				}
-
-				this.storage = storage;
-			}
-		});
-
-	})(Wreqr);
-
-	// Wreqr.RequestResponse
-	// ---------------------
-	//
-	// A simple request/response implementation. Register a
-	// request handler, and return a response from it
-	Wreqr.RequestResponse = (function (Wreqr) {
-		"use strict";
-
-		return Wreqr.Handlers.extend({
-			request: function () {
-				var name = arguments[0];
-				var args = Array.prototype.slice.call(arguments, 1);
-				if (this.hasHandler(name)) {
-					return this.getHandler(name).apply(this, args);
-				}
-			}
-		});
-
-	})(Wreqr);
-
-	// Event Aggregator
-	// ----------------
-	// A pub-sub object that can be used to decouple various parts
-	// of an application through event-driven architecture.
-
-	Wreqr.EventAggregator = (function (Backbone, _) {
-		"use strict";
-		var EA = function () { };
-
-		// Copy the `extend` function used by Backbone's classes
-		EA.extend = Backbone.Model.extend;
-
-		// Copy the basic Backbone.Events on to the event aggregator
-		_.extend(EA.prototype, Backbone.Events);
-
-		return EA;
-	})(Backbone, _);
-
-	// Wreqr.Channel
-	// --------------
-	//
-	// An object that wraps the three messaging systems:
-	// EventAggregator, RequestResponse, Commands
-	Wreqr.Channel = (function (Wreqr) {
-		"use strict";
-
-		var Channel = function (channelName) {
-			this.vent = new Backbone.Wreqr.EventAggregator();
-			this.reqres = new Backbone.Wreqr.RequestResponse();
-			this.commands = new Backbone.Wreqr.Commands();
-			this.channelName = channelName;
-		};
-
-		_.extend(Channel.prototype, {
-
-			// Remove all handlers from the messaging systems of this channel
-			reset: function () {
-				this.vent.off();
-				this.vent.stopListening();
-				this.reqres.removeAllHandlers();
-				this.commands.removeAllHandlers();
-				return this;
-			},
-
-			// Connect a hash of events; one for each messaging system
-			connectEvents: function (hash, context) {
-				this._connect('vent', hash, context);
-				return this;
-			},
-
-			connectCommands: function (hash, context) {
-				this._connect('commands', hash, context);
-				return this;
-			},
-
-			connectRequests: function (hash, context) {
-				this._connect('reqres', hash, context);
-				return this;
-			},
-
-			// Attach the handlers to a given message system `type`
-			_connect: function (type, hash, context) {
-				if (!hash) {
-					return;
-				}
-
-				context = context || this;
-				var method = (type === 'vent') ? 'on' : 'setHandler';
-
-				_.each(hash, function (fn, eventName) {
-					this[type][method](eventName, _.bind(fn, context));
-				}, this);
-			}
-		});
-
-
-		return Channel;
-	})(Wreqr);
-
-	// Wreqr.Radio
-	// --------------
-	//
-	// An object that lets you communicate with many channels.
-	Wreqr.radio = (function (Wreqr) {
-		"use strict";
-
-		var Radio = function () {
-			this._channels = {};
-			this.vent = {};
-			this.commands = {};
-			this.reqres = {};
-			this._proxyMethods();
-		};
-
-		_.extend(Radio.prototype, {
-
-			channel: function (channelName) {
-				if (!channelName) {
-					throw new Error('Channel must receive a name');
-				}
-
-				return this._getChannel(channelName);
-			},
-
-			_getChannel: function (channelName) {
-				var channel = this._channels[channelName];
-
-				if (!channel) {
-					channel = new Wreqr.Channel(channelName);
-					this._channels[channelName] = channel;
-				}
-
-				return channel;
-			},
-
-			_proxyMethods: function () {
-				_.each(['vent', 'commands', 'reqres'], function (system) {
-					_.each(messageSystems[system], function (method) {
-						this[system][method] = proxyMethod(this, system, method);
-					}, this);
-				}, this);
-			}
-		});
-
-
-		var messageSystems = {
-			vent: [
-				'on',
-				'off',
-				'trigger',
-				'once',
-				'stopListening',
-				'listenTo',
-				'listenToOnce'
-			],
-
-			commands: [
-				'execute',
-				'setHandler',
-				'setHandlers',
-				'removeHandler',
-				'removeAllHandlers'
-			],
-
-			reqres: [
-				'request',
-				'setHandler',
-				'setHandlers',
-				'removeHandler',
-				'removeAllHandlers'
-			]
-		};
-
-		var proxyMethod = function (radio, system, method) {
-			return function (channelName) {
-				var messageSystem = radio._getChannel(channelName)[system];
-				var args = Array.prototype.slice.call(arguments, 1);
-
-				messageSystem[method].apply(messageSystem, args);
-			};
-		};
-
-		return new Radio();
-
-	})(Wreqr);
-
-
-	return Wreqr;
+Backbone.Wreqr = (function(Backbone, Marionette, _){
+  "use strict";
+  var Wreqr = {};
+
+  // Handlers
+// --------
+// A registry of functions to call, given a name
+
+Wreqr.Handlers = (function(Backbone, _){
+  "use strict";
+  
+  // Constructor
+  // -----------
+
+  var Handlers = function(options){
+    this.options = options;
+    this._wreqrHandlers = {};
+    
+    if (_.isFunction(this.initialize)){
+      this.initialize(options);
+    }
+  };
+
+  Handlers.extend = Backbone.Model.extend;
+
+  // Instance Members
+  // ----------------
+
+  _.extend(Handlers.prototype, Backbone.Events, {
+
+    // Add multiple handlers using an object literal configuration
+    setHandlers: function(handlers){
+      _.each(handlers, function(handler, name){
+        var context = null;
+
+        if (_.isObject(handler) && !_.isFunction(handler)){
+          context = handler.context;
+          handler = handler.callback;
+        }
+
+        this.setHandler(name, handler, context);
+      }, this);
+    },
+
+    // Add a handler for the given name, with an
+    // optional context to run the handler within
+    setHandler: function(name, handler, context){
+      var config = {
+        callback: handler,
+        context: context
+      };
+
+      this._wreqrHandlers[name] = config;
+
+      this.trigger("handler:add", name, handler, context);
+    },
+
+    // Determine whether or not a handler is registered
+    hasHandler: function(name){
+      return !! this._wreqrHandlers[name];
+    },
+
+    // Get the currently registered handler for
+    // the specified name. Throws an exception if
+    // no handler is found.
+    getHandler: function(name){
+      var config = this._wreqrHandlers[name];
+
+      if (!config){
+        return;
+      }
+
+      return function(){
+        var args = Array.prototype.slice.apply(arguments);
+        return config.callback.apply(config.context, args);
+      };
+    },
+
+    // Remove a handler for the specified name
+    removeHandler: function(name){
+      delete this._wreqrHandlers[name];
+    },
+
+    // Remove all handlers from this registry
+    removeAllHandlers: function(){
+      this._wreqrHandlers = {};
+    }
+  });
+
+  return Handlers;
+})(Backbone, _);
+
+  // Wreqr.CommandStorage
+// --------------------
+//
+// Store and retrieve commands for execution.
+Wreqr.CommandStorage = (function(){
+  "use strict";
+
+  // Constructor function
+  var CommandStorage = function(options){
+    this.options = options;
+    this._commands = {};
+
+    if (_.isFunction(this.initialize)){
+      this.initialize(options);
+    }
+  };
+
+  // Instance methods
+  _.extend(CommandStorage.prototype, Backbone.Events, {
+
+    // Get an object literal by command name, that contains
+    // the `commandName` and the `instances` of all commands
+    // represented as an array of arguments to process
+    getCommands: function(commandName){
+      var commands = this._commands[commandName];
+
+      // we don't have it, so add it
+      if (!commands){
+
+        // build the configuration
+        commands = {
+          command: commandName, 
+          instances: []
+        };
+
+        // store it
+        this._commands[commandName] = commands;
+      }
+
+      return commands;
+    },
+
+    // Add a command by name, to the storage and store the
+    // args for the command
+    addCommand: function(commandName, args){
+      var command = this.getCommands(commandName);
+      command.instances.push(args);
+    },
+
+    // Clear all commands for the given `commandName`
+    clearCommands: function(commandName){
+      var command = this.getCommands(commandName);
+      command.instances = [];
+    }
+  });
+
+  return CommandStorage;
+})();
+
+  // Wreqr.Commands
+// --------------
+//
+// A simple command pattern implementation. Register a command
+// handler and execute it.
+Wreqr.Commands = (function(Wreqr){
+  "use strict";
+
+  return Wreqr.Handlers.extend({
+    // default storage type
+    storageType: Wreqr.CommandStorage,
+
+    constructor: function(options){
+      this.options = options || {};
+
+      this._initializeStorage(this.options);
+      this.on("handler:add", this._executeCommands, this);
+
+      var args = Array.prototype.slice.call(arguments);
+      Wreqr.Handlers.prototype.constructor.apply(this, args);
+    },
+
+    // Execute a named command with the supplied args
+    execute: function(name, args){
+      name = arguments[0];
+      args = Array.prototype.slice.call(arguments, 1);
+
+      if (this.hasHandler(name)){
+        this.getHandler(name).apply(this, args);
+      } else {
+        this.storage.addCommand(name, args);
+      }
+
+    },
+
+    // Internal method to handle bulk execution of stored commands
+    _executeCommands: function(name, handler, context){
+      var command = this.storage.getCommands(name);
+
+      // loop through and execute all the stored command instances
+      _.each(command.instances, function(args){
+        handler.apply(context, args);
+      });
+
+      this.storage.clearCommands(name);
+    },
+
+    // Internal method to initialize storage either from the type's
+    // `storageType` or the instance `options.storageType`.
+    _initializeStorage: function(options){
+      var storage;
+
+      var StorageType = options.storageType || this.storageType;
+      if (_.isFunction(StorageType)){
+        storage = new StorageType();
+      } else {
+        storage = StorageType;
+      }
+
+      this.storage = storage;
+    }
+  });
+
+})(Wreqr);
+
+  // Wreqr.RequestResponse
+// ---------------------
+//
+// A simple request/response implementation. Register a
+// request handler, and return a response from it
+Wreqr.RequestResponse = (function(Wreqr){
+  "use strict";
+
+  return Wreqr.Handlers.extend({
+    request: function(){
+      var name = arguments[0];
+      var args = Array.prototype.slice.call(arguments, 1);
+      if (this.hasHandler(name)) {
+        return this.getHandler(name).apply(this, args);
+      }
+    }
+  });
+
+})(Wreqr);
+
+  // Event Aggregator
+// ----------------
+// A pub-sub object that can be used to decouple various parts
+// of an application through event-driven architecture.
+
+Wreqr.EventAggregator = (function(Backbone, _){
+  "use strict";
+  var EA = function(){};
+
+  // Copy the `extend` function used by Backbone's classes
+  EA.extend = Backbone.Model.extend;
+
+  // Copy the basic Backbone.Events on to the event aggregator
+  _.extend(EA.prototype, Backbone.Events);
+
+  return EA;
+})(Backbone, _);
+
+  // Wreqr.Channel
+// --------------
+//
+// An object that wraps the three messaging systems:
+// EventAggregator, RequestResponse, Commands
+Wreqr.Channel = (function(Wreqr){
+  "use strict";
+
+  var Channel = function(channelName) {
+    this.vent        = new Backbone.Wreqr.EventAggregator();
+    this.reqres      = new Backbone.Wreqr.RequestResponse();
+    this.commands    = new Backbone.Wreqr.Commands();
+    this.channelName = channelName;
+  };
+
+  _.extend(Channel.prototype, {
+
+    // Remove all handlers from the messaging systems of this channel
+    reset: function() {
+      this.vent.off();
+      this.vent.stopListening();
+      this.reqres.removeAllHandlers();
+      this.commands.removeAllHandlers();
+      return this;
+    },
+
+    // Connect a hash of events; one for each messaging system
+    connectEvents: function(hash, context) {
+      this._connect('vent', hash, context);
+      return this;
+    },
+
+    connectCommands: function(hash, context) {
+      this._connect('commands', hash, context);
+      return this;
+    },
+
+    connectRequests: function(hash, context) {
+      this._connect('reqres', hash, context);
+      return this;
+    },
+
+    // Attach the handlers to a given message system `type`
+    _connect: function(type, hash, context) {
+      if (!hash) {
+        return;
+      }
+
+      context = context || this;
+      var method = (type === 'vent') ? 'on' : 'setHandler';
+
+      _.each(hash, function(fn, eventName) {
+        this[type][method](eventName, _.bind(fn, context));
+      }, this);
+    }
+  });
+
+
+  return Channel;
+})(Wreqr);
+
+  // Wreqr.Radio
+// --------------
+//
+// An object that lets you communicate with many channels.
+Wreqr.radio = (function(Wreqr){
+  "use strict";
+
+  var Radio = function() {
+    this._channels = {};
+    this.vent = {};
+    this.commands = {};
+    this.reqres = {};
+    this._proxyMethods();
+  };
+
+  _.extend(Radio.prototype, {
+
+    channel: function(channelName) {
+      if (!channelName) {
+        throw new Error('Channel must receive a name');
+      }
+
+      return this._getChannel( channelName );
+    },
+
+    _getChannel: function(channelName) {
+      var channel = this._channels[channelName];
+
+      if(!channel) {
+        channel = new Wreqr.Channel(channelName);
+        this._channels[channelName] = channel;
+      }
+
+      return channel;
+    },
+
+    _proxyMethods: function() {
+      _.each(['vent', 'commands', 'reqres'], function(system) {
+        _.each( messageSystems[system], function(method) {
+          this[system][method] = proxyMethod(this, system, method);
+        }, this);
+      }, this);
+    }
+  });
+
+
+  var messageSystems = {
+    vent: [
+      'on',
+      'off',
+      'trigger',
+      'once',
+      'stopListening',
+      'listenTo',
+      'listenToOnce'
+    ],
+
+    commands: [
+      'execute',
+      'setHandler',
+      'setHandlers',
+      'removeHandler',
+      'removeAllHandlers'
+    ],
+
+    reqres: [
+      'request',
+      'setHandler',
+      'setHandlers',
+      'removeHandler',
+      'removeAllHandlers'
+    ]
+  };
+
+  var proxyMethod = function(radio, system, method) {
+    return function(channelName) {
+      var messageSystem = radio._getChannel(channelName)[system];
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      messageSystem[method].apply(messageSystem, args);
+    };
+  };
+
+  return new Radio();
+
+})(Wreqr);
+
+
+  return Wreqr;
 })(Backbone, Backbone.Marionette, _);
 
-var Marionette = (function (global, Backbone, _) {
-	"use strict";
-
-	// Define and export the Marionette namespace
-	var Marionette = {};
-	Backbone.Marionette = Marionette;
-
-	// Get the DOM manipulator for later use
-	Marionette.$ = Backbone.$;
-
-	// Helpers
-	// -------
-
-	// For slicing `arguments` in functions
-	var slice = Array.prototype.slice;
-
-	function throwError(message, name) {
-		var error = new Error(message);
-		error.name = name || 'Error';
-		throw error;
-	}
-
-	// Marionette.extend
-	// -----------------
-
-	// Borrow the Backbone `extend` method so we can use it as needed
-	Marionette.extend = Backbone.Model.extend;
-
-	// Marionette.getOption
-	// --------------------
-
-	// Retrieve an object, function or other value from a target
-	// object or its `options`, with `options` taking precedence.
-	Marionette.getOption = function (target, optionName) {
-		if (!target || !optionName) { return; }
-		var value;
-
-		if (target.options && (optionName in target.options) && (target.options[optionName] !== undefined)) {
-			value = target.options[optionName];
-		} else {
-			value = target[optionName];
-		}
-
-		return value;
-	};
-
-	// Marionette.normalizeMethods
-	// ----------------------
-
-	// Pass in a mapping of events => functions or function names
-	// and return a mapping of events => functions
-	Marionette.normalizeMethods = function (hash) {
-		var normalizedHash = {}, method;
-		_.each(hash, function (fn, name) {
-			method = fn;
-			if (!_.isFunction(method)) {
-				method = this[method];
-			}
-			if (!method) {
-				return;
-			}
-			normalizedHash[name] = method;
-		}, this);
-		return normalizedHash;
-	};
-
-
-	// allows for the use of the @ui. syntax within
-	// a given key for triggers and events
-	// swaps the @ui with the associated selector
-	Marionette.normalizeUIKeys = function (hash, ui) {
-		if (typeof (hash) === "undefined") {
-			return;
-		}
-
-		_.each(_.keys(hash), function (v) {
-			var pattern = /@ui.[a-zA-Z_$0-9]*/g;
-			if (v.match(pattern)) {
-				hash[v.replace(pattern, function (r) {
-					return ui[r.slice(4)];
-				})] = hash[v];
-				delete hash[v];
-			}
-		});
-
-		return hash;
-	};
-
-	// Mix in methods from Underscore, for iteration, and other
-	// collection related features.
-	// Borrowing this code from Backbone.Collection:
-	// http://backbonejs.org/docs/backbone.html#section-106
-	Marionette.actAsCollection = function (object, listProperty) {
-		var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter',
-			'select', 'reject', 'every', 'all', 'some', 'any', 'include',
-			'contains', 'invoke', 'toArray', 'first', 'initial', 'rest',
-			'last', 'without', 'isEmpty', 'pluck'];
-
-		_.each(methods, function (method) {
-			object[method] = function () {
-				var list = _.values(_.result(this, listProperty));
-				var args = [list].concat(_.toArray(arguments));
-				return _[method].apply(_, args);
-			};
-		});
-	};
-
-	// Trigger an event and/or a corresponding method name. Examples:
-	//
-	// `this.triggerMethod("foo")` will trigger the "foo" event and
-	// call the "onFoo" method.
-	//
-	// `this.triggerMethod("foo:bar")` will trigger the "foo:bar" event and
-	// call the "onFooBar" method.
-	Marionette.triggerMethod = (function () {
-
-		// split the event name on the ":"
-		var splitter = /(^|:)(\w)/gi;
-
-		// take the event section ("section1:section2:section3")
-		// and turn it in to uppercase name
-		function getEventName(match, prefix, eventName) {
-			return eventName.toUpperCase();
-		}
-
-		// actual triggerMethod implementation
-		var triggerMethod = function (event) {
-			// get the method name from the event name
-			var methodName = 'on' + event.replace(splitter, getEventName);
-			var method = this[methodName];
-
-			// trigger the event, if a trigger method exists
-			if (_.isFunction(this.trigger)) {
-				this.trigger.apply(this, arguments);
-			}
-
-			// call the onMethodName if it exists
-			if (_.isFunction(method)) {
-				// pass all arguments, except the event name
-				return method.apply(this, _.tail(arguments));
-			}
-		};
-
-		return triggerMethod;
-	})();
-
-	// DOMRefresh
-	// ----------
-	//
-	// Monitor a view's state, and after it has been rendered and shown
-	// in the DOM, trigger a "dom:refresh" event every time it is
-	// re-rendered.
-
-	Marionette.MonitorDOMRefresh = (function (documentElement) {
-		// track when the view has been shown in the DOM,
-		// using a Marionette.Region (or by other means of triggering "show")
-		function handleShow(view) {
-			view._isShown = true;
-			triggerDOMRefresh(view);
-		}
-
-		// track when the view has been rendered
-		function handleRender(view) {
-			view._isRendered = true;
-			triggerDOMRefresh(view);
-		}
-
-		// Trigger the "dom:refresh" event and corresponding "onDomRefresh" method
-		function triggerDOMRefresh(view) {
-			if (view._isShown && view._isRendered && isInDOM(view)) {
-				if (_.isFunction(view.triggerMethod)) {
-					view.triggerMethod("dom:refresh");
-				}
-			}
-		}
-
-		function isInDOM(view) {
-			return documentElement.contains(view.el);
-		}
-
-		// Export public API
-		return function (view) {
-			view.listenTo(view, "show", function () {
-				handleShow(view);
-			});
-
-			view.listenTo(view, "render", function () {
-				handleRender(view);
-			});
-		};
-	})(document.documentElement);
-
-
-	// Marionette.bindEntityEvents & unbindEntityEvents
-	// ---------------------------
-	//
-	// These methods are used to bind/unbind a backbone "entity" (collection/model)
-	// to methods on a target object.
-	//
-	// The first parameter, `target`, must have a `listenTo` method from the
-	// EventBinder object.
-	//
-	// The second parameter is the entity (Backbone.Model or Backbone.Collection)
-	// to bind the events from.
-	//
-	// The third parameter is a hash of { "event:name": "eventHandler" }
-	// configuration. Multiple handlers can be separated by a space. A
-	// function can be supplied instead of a string handler name.
-
-	(function (Marionette) {
-		"use strict";
-
-		// Bind the event to handlers specified as a string of
-		// handler names on the target object
-		function bindFromStrings(target, entity, evt, methods) {
-			var methodNames = methods.split(/\s+/);
-
-			_.each(methodNames, function (methodName) {
-
-				var method = target[methodName];
-				if (!method) {
-					throwError("Method '" + methodName + "' was configured as an event handler, but does not exist.");
-				}
-
-				target.listenTo(entity, evt, method);
-			});
-		}
-
-		// Bind the event to a supplied callback function
-		function bindToFunction(target, entity, evt, method) {
-			target.listenTo(entity, evt, method);
-		}
-
-		// Bind the event to handlers specified as a string of
-		// handler names on the target object
-		function unbindFromStrings(target, entity, evt, methods) {
-			var methodNames = methods.split(/\s+/);
-
-			_.each(methodNames, function (methodName) {
-				var method = target[methodName];
-				target.stopListening(entity, evt, method);
-			});
-		}
-
-		// Bind the event to a supplied callback function
-		function unbindToFunction(target, entity, evt, method) {
-			target.stopListening(entity, evt, method);
-		}
-
-
-		// generic looping function
-		function iterateEvents(target, entity, bindings, functionCallback, stringCallback) {
-			if (!entity || !bindings) { return; }
-
-			// allow the bindings to be a function
-			if (_.isFunction(bindings)) {
-				bindings = bindings.call(target);
-			}
-
-			// iterate the bindings and bind them
-			_.each(bindings, function (methods, evt) {
-
-				// allow for a function as the handler,
-				// or a list of event names as a string
-				if (_.isFunction(methods)) {
-					functionCallback(target, entity, evt, methods);
-				} else {
-					stringCallback(target, entity, evt, methods);
-				}
-
-			});
-		}
-
-		// Export Public API
-		Marionette.bindEntityEvents = function (target, entity, bindings) {
-			iterateEvents(target, entity, bindings, bindToFunction, bindFromStrings);
-		};
-
-		Marionette.unbindEntityEvents = function (target, entity, bindings) {
-			iterateEvents(target, entity, bindings, unbindToFunction, unbindFromStrings);
-		};
-
-	})(Marionette);
-
-
-	// Callbacks
-	// ---------
-
-	// A simple way of managing a collection of callbacks
-	// and executing them at a later point in time, using jQuery's
-	// `Deferred` object.
-	Marionette.Callbacks = function () {
-		this._deferred = Marionette.$.Deferred();
-		this._callbacks = [];
-	};
-
-	_.extend(Marionette.Callbacks.prototype, {
-
-		// Add a callback to be executed. Callbacks added here are
-		// guaranteed to execute, even if they are added after the
-		// `run` method is called.
-		add: function (callback, contextOverride) {
-			this._callbacks.push({ cb: callback, ctx: contextOverride });
-
-			this._deferred.done(function (context, options) {
-				if (contextOverride) { context = contextOverride; }
-				callback.call(context, options);
-			});
-		},
-
-		// Run all registered callbacks with the context specified.
-		// Additional callbacks can be added after this has been run
-		// and they will still be executed.
-		run: function (options, context) {
-			this._deferred.resolve(context, options);
-		},
-
-		// Resets the list of callbacks to be run, allowing the same list
-		// to be run multiple times - whenever the `run` method is called.
-		reset: function () {
-			var callbacks = this._callbacks;
-			this._deferred = Marionette.$.Deferred();
-			this._callbacks = [];
-
-			_.each(callbacks, function (cb) {
-				this.add(cb.cb, cb.ctx);
-			}, this);
-		}
-	});
-
-	// Marionette Controller
-	// ---------------------
-	//
-	// A multi-purpose object to use as a controller for
-	// modules and routers, and as a mediator for workflow
-	// and coordination of other objects, views, and more.
-	Marionette.Controller = function (options) {
-		this.triggerMethod = Marionette.triggerMethod;
-		this.options = options || {};
-
-		if (_.isFunction(this.initialize)) {
-			this.initialize(this.options);
-		}
-	};
-
-	Marionette.Controller.extend = Marionette.extend;
-
-	// Controller Methods
-	// --------------
-
-	// Ensure it can trigger events with Backbone.Events
-	_.extend(Marionette.Controller.prototype, Backbone.Events, {
-		close: function () {
-			this.stopListening();
-			var args = Array.prototype.slice.call(arguments);
-			this.triggerMethod.apply(this, ["close"].concat(args));
-			this.off();
-		}
-	});
-
-	// Region
-	// ------
-	//
-	// Manage the visual regions of your composite application. See
-	// http://lostechies.com/derickbailey/2011/12/12/composite-js-apps-regions-and-region-managers/
-
-	Marionette.Region = function (options) {
-		this.options = options || {};
-		this.el = Marionette.getOption(this, "el");
-
-		if (!this.el) {
-			throwError("An 'el' must be specified for a region.", "NoElError");
-		}
-
-		if (this.initialize) {
-			var args = Array.prototype.slice.apply(arguments);
-			this.initialize.apply(this, args);
-		}
-	};
-
-
-	// Region Type methods
-	// -------------------
-
-	_.extend(Marionette.Region, {
-
-		// Build an instance of a region by passing in a configuration object
-		// and a default region type to use if none is specified in the config.
-		//
-		// The config object should either be a string as a jQuery DOM selector,
-		// a Region type directly, or an object literal that specifies both
-		// a selector and regionType:
-		//
-		// ```js
-		// {
-		//   selector: "#foo",
-		//   regionType: MyCustomRegion
-		// }
-		// ```
-		//
-		buildRegion: function (regionConfig, defaultRegionType) {
-			var regionIsString = _.isString(regionConfig);
-			var regionSelectorIsString = _.isString(regionConfig.selector);
-			var regionTypeIsUndefined = _.isUndefined(regionConfig.regionType);
-			var regionIsType = _.isFunction(regionConfig);
-
-			if (!regionIsType && !regionIsString && !regionSelectorIsString) {
-				throwError("Region must be specified as a Region type, a selector string or an object with selector property");
-			}
-
-			var selector, RegionType;
-
-			// get the selector for the region
-
-			if (regionIsString) {
-				selector = regionConfig;
-			}
-
-			if (regionConfig.selector) {
-				selector = regionConfig.selector;
-				delete regionConfig.selector;
-			}
-
-			// get the type for the region
-
-			if (regionIsType) {
-				RegionType = regionConfig;
-			}
-
-			if (!regionIsType && regionTypeIsUndefined) {
-				RegionType = defaultRegionType;
-			}
-
-			if (regionConfig.regionType) {
-				RegionType = regionConfig.regionType;
-				delete regionConfig.regionType;
-			}
-
-			if (regionIsString || regionIsType) {
-				regionConfig = {};
-			}
-
-			regionConfig.el = selector;
-
-			// build the region instance
-			var region = new RegionType(regionConfig);
-
-			// override the `getEl` function if we have a parentEl
-			// this must be overridden to ensure the selector is found
-			// on the first use of the region. if we try to assign the
-			// region's `el` to `parentEl.find(selector)` in the object
-			// literal to build the region, the element will not be
-			// guaranteed to be in the DOM already, and will cause problems
-			if (regionConfig.parentEl) {
-				region.getEl = function (selector) {
-					var parentEl = regionConfig.parentEl;
-					if (_.isFunction(parentEl)) {
-						parentEl = parentEl();
-					}
-					return parentEl.find(selector);
-				};
-			}
-
-			return region;
-		}
-
-	});
-
-	// Region Instance Methods
-	// -----------------------
-
-	_.extend(Marionette.Region.prototype, Backbone.Events, {
-
-		// Displays a backbone view instance inside of the region.
-		// Handles calling the `render` method for you. Reads content
-		// directly from the `el` attribute. Also calls an optional
-		// `onShow` and `close` method on your view, just after showing
-		// or just before closing the view, respectively.
-		// The `preventClose` option can be used to prevent a view from being destroyed on show.
-		show: function (view, options) {
-			this.ensureEl();
-
-			var showOptions = options || {};
-			var isViewClosed = view.isClosed || _.isUndefined(view.$el);
-			var isDifferentView = view !== this.currentView;
-			var preventClose = !!showOptions.preventClose;
-
-			// only close the view if we don't want to preventClose and the view is different
-			var _shouldCloseView = !preventClose && isDifferentView;
-
-			if (_shouldCloseView) {
-				this.close();
-			}
-
-			view.render();
-			Marionette.triggerMethod.call(this, "before:show", view);
-			Marionette.triggerMethod.call(view, "before:show");
-
-			if (isDifferentView || isViewClosed) {
-				this.open(view);
-			}
-
-			this.currentView = view;
-
-			Marionette.triggerMethod.call(this, "show", view);
-			Marionette.triggerMethod.call(view, "show");
-		},
-
-		ensureEl: function () {
-			if (!this.$el || this.$el.length === 0) {
-				this.$el = this.getEl(this.el);
-			}
-		},
-
-		// Override this method to change how the region finds the
-		// DOM element that it manages. Return a jQuery selector object.
-		getEl: function (selector) {
-			return Marionette.$(selector);
-		},
-
-		// Override this method to change how the new view is
-		// appended to the `$el` that the region is managing
-		open: function (view) {
-			this.$el.empty().append(view.el);
-		},
-
-		// Close the current view, if there is one. If there is no
-		// current view, it does nothing and returns immediately.
-		close: function () {
-			var view = this.currentView;
-			if (!view || view.isClosed) { return; }
-
-			// call 'close' or 'remove', depending on which is found
-			if (view.close) { view.close(); }
-			else if (view.remove) { view.remove(); }
-
-			Marionette.triggerMethod.call(this, "close", view);
-
-			delete this.currentView;
-		},
-
-		// Attach an existing view to the region. This
-		// will not call `render` or `onShow` for the new view,
-		// and will not replace the current HTML for the `el`
-		// of the region.
-		attachView: function (view) {
-			this.currentView = view;
-		},
-
-		// Reset the region by closing any existing view and
-		// clearing out the cached `$el`. The next time a view
-		// is shown via this region, the region will re-query the
-		// DOM for the region's `el`.
-		reset: function () {
-			this.close();
-			delete this.$el;
-		}
-	});
-
-	// Copy the `extend` function used by Backbone's classes
-	Marionette.Region.extend = Marionette.extend;
-
-	// Marionette.RegionManager
-	// ------------------------
-	//
-	// Manage one or more related `Marionette.Region` objects.
-	Marionette.RegionManager = (function (Marionette) {
-
-		var RegionManager = Marionette.Controller.extend({
-			constructor: function (options) {
-				this._regions = {};
-				Marionette.Controller.prototype.constructor.call(this, options);
-			},
-
-			// Add multiple regions using an object literal, where
-			// each key becomes the region name, and each value is
-			// the region definition.
-			addRegions: function (regionDefinitions, defaults) {
-				var regions = {};
-
-				_.each(regionDefinitions, function (definition, name) {
-					if (_.isString(definition)) {
-						definition = { selector: definition };
-					}
-
-					if (definition.selector) {
-						definition = _.defaults({}, definition, defaults);
-					}
-
-					var region = this.addRegion(name, definition);
-					regions[name] = region;
-				}, this);
-
-				return regions;
-			},
-
-			// Add an individual region to the region manager,
-			// and return the region instance
-			addRegion: function (name, definition) {
-				var region;
-
-				var isObject = _.isObject(definition);
-				var isString = _.isString(definition);
-				var hasSelector = !!definition.selector;
-
-				if (isString || (isObject && hasSelector)) {
-					region = Marionette.Region.buildRegion(definition, Marionette.Region);
-				} else if (_.isFunction(definition)) {
-					region = Marionette.Region.buildRegion(definition, Marionette.Region);
-				} else {
-					region = definition;
-				}
-
-				this._store(name, region);
-				this.triggerMethod("region:add", name, region);
-				return region;
-			},
-
-			// Get a region by name
-			get: function (name) {
-				return this._regions[name];
-			},
-
-			// Remove a region by name
-			removeRegion: function (name) {
-				var region = this._regions[name];
-				this._remove(name, region);
-			},
-
-			// Close all regions in the region manager, and
-			// remove them
-			removeRegions: function () {
-				_.each(this._regions, function (region, name) {
-					this._remove(name, region);
-				}, this);
-			},
-
-			// Close all regions in the region manager, but
-			// leave them attached
-			closeRegions: function () {
-				_.each(this._regions, function (region, name) {
-					region.close();
-				}, this);
-			},
-
-			// Close all regions and shut down the region
-			// manager entirely
-			close: function () {
-				this.removeRegions();
-				Marionette.Controller.prototype.close.apply(this, arguments);
-			},
-
-			// internal method to store regions
-			_store: function (name, region) {
-				this._regions[name] = region;
-				this._setLength();
-			},
-
-			// internal method to remove a region
-			_remove: function (name, region) {
-				region.close();
-				region.stopListening();
-				delete this._regions[name];
-				this._setLength();
-				this.triggerMethod("region:remove", name, region);
-			},
-
-			// set the number of regions current held
-			_setLength: function () {
-				this.length = _.size(this._regions);
-			}
-
-		});
-
-		Marionette.actAsCollection(RegionManager.prototype, '_regions');
-
-		return RegionManager;
-	})(Marionette);
-
-
-	// Template Cache
-	// --------------
-
-	// Manage templates stored in `<script>` blocks,
-	// caching them for faster access.
-	Marionette.TemplateCache = function (templateId) {
-		this.templateId = templateId;
-	};
-
-	// TemplateCache object-level methods. Manage the template
-	// caches from these method calls instead of creating
-	// your own TemplateCache instances
-	_.extend(Marionette.TemplateCache, {
-		templateCaches: {},
-
-		// Get the specified template by id. Either
-		// retrieves the cached version, or loads it
-		// from the DOM.
-		get: function (templateId) {
-			var cachedTemplate = this.templateCaches[templateId];
-
-			if (!cachedTemplate) {
-				cachedTemplate = new Marionette.TemplateCache(templateId);
-				this.templateCaches[templateId] = cachedTemplate;
-			}
-
-			return cachedTemplate.load();
-		},
-
-		// Clear templates from the cache. If no arguments
-		// are specified, clears all templates:
-		// `clear()`
-		//
-		// If arguments are specified, clears each of the
-		// specified templates from the cache:
-		// `clear("#t1", "#t2", "...")`
-		clear: function () {
-			var i;
-			var args = slice.call(arguments);
-			var length = args.length;
-
-			if (length > 0) {
-				for (i = 0; i < length; i++) {
-					delete this.templateCaches[args[i]];
-				}
-			} else {
-				this.templateCaches = {};
-			}
-		}
-	});
-
-	// TemplateCache instance methods, allowing each
-	// template cache object to manage its own state
-	// and know whether or not it has been loaded
-	_.extend(Marionette.TemplateCache.prototype, {
-
-		// Internal method to load the template
-		load: function () {
-			// Guard clause to prevent loading this template more than once
-			if (this.compiledTemplate) {
-				return this.compiledTemplate;
-			}
-
-			// Load the template and compile it
-			var template = this.loadTemplate(this.templateId);
-			this.compiledTemplate = this.compileTemplate(template);
-
-			return this.compiledTemplate;
-		},
-
-		// Load a template from the DOM, by default. Override
-		// this method to provide your own template retrieval
-		// For asynchronous loading with AMD/RequireJS, consider
-		// using a template-loader plugin as described here:
-		// https://github.com/marionettejs/backbone.marionette/wiki/Using-marionette-with-requirejs
-		loadTemplate: function (templateId) {
-			var template = Marionette.$(templateId).html();
-
-			if (!template || template.length === 0) {
-				throwError("Could not find template: '" + templateId + "'", "NoTemplateError");
-			}
-
-			return template;
-		},
-
-		// Pre-compile the template before caching it. Override
-		// this method if you do not need to pre-compile a template
-		// (JST / RequireJS for example) or if you want to change
-		// the template engine used (Handebars, etc).
-		compileTemplate: function (rawTemplate) {
-			return _.template(rawTemplate);
-		}
-	});
-
-	// Renderer
-	// --------
-
-	// Render a template with data by passing in the template
-	// selector and the data to render.
-	Marionette.Renderer = {
-
-		// Render a template with data. The `template` parameter is
-		// passed to the `TemplateCache` object to retrieve the
-		// template function. Override this method to provide your own
-		// custom rendering and template handling for all of Marionette.
-		render: function (template, data) {
-
-			if (!template) {
-				throwError("Cannot render the template since it's false, null or undefined.", "TemplateNotFoundError");
-			}
-
-			var templateFunc;
-			if (typeof template === "function") {
-				templateFunc = template;
-			} else {
-				templateFunc = Marionette.TemplateCache.get(template);
-			}
-
-			return templateFunc(data);
-		}
-	};
-
-
-	// Marionette.View
-	// ---------------
-
-	// The core view type that other Marionette views extend from.
-	Marionette.View = Backbone.View.extend({
-
-		constructor: function (options) {
-			_.bindAll(this, "render");
-
-			// this exposes view options to the view initializer
-			// this is a backfill since backbone removed the assignment
-			// of this.options
-			// at some point however this may be removed
-			this.options = _.extend({}, _.result(this, 'options'), _.isFunction(options) ? options.call(this) : options);
-
-			// parses out the @ui DSL for events
-			this.events = this.normalizeUIKeys(_.result(this, 'events'));
-
-			if (_.isObject(this.behaviors)) {
-				new Marionette.Behaviors(this);
-			}
-
-			Backbone.View.prototype.constructor.apply(this, arguments);
-
-			Marionette.MonitorDOMRefresh(this);
-			this.listenTo(this, "show", this.onShowCalled);
-		},
-
-		// import the "triggerMethod" to trigger events with corresponding
-		// methods if the method exists
-		triggerMethod: Marionette.triggerMethod,
-
-		// Imports the "normalizeMethods" to transform hashes of
-		// events=>function references/names to a hash of events=>function references
-		normalizeMethods: Marionette.normalizeMethods,
-
-		// Get the template for this view
-		// instance. You can set a `template` attribute in the view
-		// definition or pass a `template: "whatever"` parameter in
-		// to the constructor options.
-		getTemplate: function () {
-			return Marionette.getOption(this, "template");
-		},
-
-		// Mix in template helper methods. Looks for a
-		// `templateHelpers` attribute, which can either be an
-		// object literal, or a function that returns an object
-		// literal. All methods and attributes from this object
-		// are copies to the object passed in.
-		mixinTemplateHelpers: function (target) {
-			target = target || {};
-			var templateHelpers = Marionette.getOption(this, "templateHelpers");
-			if (_.isFunction(templateHelpers)) {
-				templateHelpers = templateHelpers.call(this);
-			}
-			return _.extend(target, templateHelpers);
-		},
-
-
-		normalizeUIKeys: function (hash) {
-			var ui = _.result(this, 'ui');
-			return Marionette.normalizeUIKeys(hash, ui);
-		},
-
-		// Configure `triggers` to forward DOM events to view
-		// events. `triggers: {"click .foo": "do:foo"}`
-		configureTriggers: function () {
-			if (!this.triggers) { return; }
-
-			var triggerEvents = {};
-
-			// Allow `triggers` to be configured as a function
-			var triggers = this.normalizeUIKeys(_.result(this, "triggers"));
-
-			// Configure the triggers, prevent default
-			// action and stop propagation of DOM events
-			_.each(triggers, function (value, key) {
-
-				var hasOptions = _.isObject(value);
-				var eventName = hasOptions ? value.event : value;
-
-				// build the event handler function for the DOM event
-				triggerEvents[key] = function (e) {
-
-					// stop the event in its tracks
-					if (e) {
-						var prevent = e.preventDefault;
-						var stop = e.stopPropagation;
-
-						var shouldPrevent = hasOptions ? value.preventDefault : prevent;
-						var shouldStop = hasOptions ? value.stopPropagation : stop;
-
-						if (shouldPrevent && prevent) { prevent.apply(e); }
-						if (shouldStop && stop) { stop.apply(e); }
-					}
-
-					// build the args for the event
-					var args = {
-						view: this,
-						model: this.model,
-						collection: this.collection
-					};
-
-					// trigger the event
-					this.triggerMethod(eventName, args);
-				};
-
-			}, this);
-
-			return triggerEvents;
-		},
-
-		// Overriding Backbone.View's delegateEvents to handle
-		// the `triggers`, `modelEvents`, and `collectionEvents` configuration
-		delegateEvents: function (events) {
-			this._delegateDOMEvents(events);
-			Marionette.bindEntityEvents(this, this.model, Marionette.getOption(this, "modelEvents"));
-			Marionette.bindEntityEvents(this, this.collection, Marionette.getOption(this, "collectionEvents"));
-		},
-
-		// internal method to delegate DOM events and triggers
-		_delegateDOMEvents: function (events) {
-			events = events || this.events;
-			if (_.isFunction(events)) { events = events.call(this); }
-
-			var combinedEvents = {};
-
-			// look up if this view has behavior events
-			var behaviorEvents = _.result(this, 'behaviorEvents') || {};
-			var triggers = this.configureTriggers();
-
-			// behavior events will be overriden by view events and or triggers
-			_.extend(combinedEvents, behaviorEvents, events, triggers);
-
-			Backbone.View.prototype.delegateEvents.call(this, combinedEvents);
-		},
-
-		// Overriding Backbone.View's undelegateEvents to handle unbinding
-		// the `triggers`, `modelEvents`, and `collectionEvents` config
-		undelegateEvents: function () {
-			var args = Array.prototype.slice.call(arguments);
-			Backbone.View.prototype.undelegateEvents.apply(this, args);
-
-			Marionette.unbindEntityEvents(this, this.model, Marionette.getOption(this, "modelEvents"));
-			Marionette.unbindEntityEvents(this, this.collection, Marionette.getOption(this, "collectionEvents"));
-		},
-
-		// Internal method, handles the `show` event.
-		onShowCalled: function () { },
-
-		// Default `close` implementation, for removing a view from the
-		// DOM and unbinding it. Regions will call this method
-		// for you. You can specify an `onClose` method in your view to
-		// add custom code that is called after the view is closed.
-		close: function () {
-			if (this.isClosed) { return; }
-
-			var args = Array.prototype.slice.call(arguments);
-
-			// allow the close to be stopped by returning `false`
-			// from the `onBeforeClose` method
-			var shouldClose = this.triggerMethod.apply(this, ["before:close"].concat(args));
-			if (shouldClose === false) {
-				return;
-			}
-
-			// mark as closed before doing the actual close, to
-			// prevent infinite loops within "close" event handlers
-			// that are trying to close other views
-			this.isClosed = true;
-			this.triggerMethod.apply(this, ["close"].concat(args));
-
-			// unbind UI elements
-			this.unbindUIElements();
-
-			// remove the view from the DOM
-			this.remove();
-		},
-
-		// This method binds the elements specified in the "ui" hash inside the view's code with
-		// the associated jQuery selectors.
-		bindUIElements: function () {
-			if (!this.ui) { return; }
-
-			// store the ui hash in _uiBindings so they can be reset later
-			// and so re-rendering the view will be able to find the bindings
-			if (!this._uiBindings) {
-				this._uiBindings = this.ui;
-			}
-
-			// get the bindings result, as a function or otherwise
-			var bindings = _.result(this, "_uiBindings");
-
-			// empty the ui so we don't have anything to start with
-			this.ui = {};
-
-			// bind each of the selectors
-			_.each(_.keys(bindings), function (key) {
-				var selector = bindings[key];
-				this.ui[key] = this.$(selector);
-			}, this);
-		},
-
-		// This method unbinds the elements specified in the "ui" hash
-		unbindUIElements: function () {
-			if (!this.ui || !this._uiBindings) { return; }
-
-			// delete all of the existing ui bindings
-			_.each(this.ui, function ($el, name) {
-				delete this.ui[name];
-			}, this);
-
-			// reset the ui element to the original bindings configuration
-			this.ui = this._uiBindings;
-			delete this._uiBindings;
-		}
-	});
-
-	// Item View
-	// ---------
-
-	// A single item view implementation that contains code for rendering
-	// with underscore.js templates, serializing the view's model or collection,
-	// and calling several methods on extended views, such as `onRender`.
-	Marionette.ItemView = Marionette.View.extend({
-
-		// Setting up the inheritance chain which allows changes to
-		// Marionette.View.prototype.constructor which allows overriding
-		constructor: function () {
-			Marionette.View.prototype.constructor.apply(this, arguments);
-		},
-
-		// Serialize the model or collection for the view. If a model is
-		// found, `.toJSON()` is called. If a collection is found, `.toJSON()`
-		// is also called, but is used to populate an `items` array in the
-		// resulting data. If both are found, defaults to the model.
-		// You can override the `serializeData` method in your own view
-		// definition, to provide custom serialization for your view's data.
-		serializeData: function () {
-			var data = {};
-
-			if (this.model) {
-				data = this.model.toJSON();
-			}
-			else if (this.collection) {
-				data = { items: this.collection.toJSON() };
-			}
-
-			return data;
-		},
-
-		// Render the view, defaulting to underscore.js templates.
-		// You can override this in your view definition to provide
-		// a very specific rendering for your view. In general, though,
-		// you should override the `Marionette.Renderer` object to
-		// change how Marionette renders views.
-		render: function () {
-			this.isClosed = false;
-
-			this.triggerMethod("before:render", this);
-			this.triggerMethod("item:before:render", this);
-
-			var data = this.serializeData();
-			data = this.mixinTemplateHelpers(data);
-
-			var template = this.getTemplate();
-			var html = Marionette.Renderer.render(template, data);
-
-			this.$el.html(html);
-			this.bindUIElements();
-
-			this.triggerMethod("render", this);
-			this.triggerMethod("item:rendered", this);
-
-			return this;
-		},
-
-		// Override the default close event to add a few
-		// more events that are triggered.
-		close: function () {
-			if (this.isClosed) { return; }
-
-			this.triggerMethod('item:before:close');
-
-			Marionette.View.prototype.close.apply(this, arguments);
-
-			this.triggerMethod('item:closed');
-		}
-	});
-
-	// Collection View
-	// ---------------
-
-	// A view that iterates over a Backbone.Collection
-	// and renders an individual ItemView for each model.
-	Marionette.CollectionView = Marionette.View.extend({
-		// used as the prefix for item view events
-		// that are forwarded through the collectionview
-		itemViewEventPrefix: "itemview",
-
-		// constructor
-		constructor: function (options) {
-			this._initChildViewStorage();
-
-			Marionette.View.prototype.constructor.apply(this, arguments);
-
-			this._initialEvents();
-			this.initRenderBuffer();
-		},
-
-		// Instead of inserting elements one by one into the page,
-		// it's much more performant to insert elements into a document
-		// fragment and then insert that document fragment into the page
-		initRenderBuffer: function () {
-			this.elBuffer = document.createDocumentFragment();
-			this._bufferedChildren = [];
-		},
-
-		startBuffering: function () {
-			this.initRenderBuffer();
-			this.isBuffering = true;
-		},
-
-		endBuffering: function () {
-			this.isBuffering = false;
-			this.appendBuffer(this, this.elBuffer);
-			this._triggerShowBufferedChildren();
-			this.initRenderBuffer();
-		},
-
-		_triggerShowBufferedChildren: function () {
-			if (this._isShown) {
-				_.each(this._bufferedChildren, function (child) {
-					Marionette.triggerMethod.call(child, "show");
-				});
-				this._bufferedChildren = [];
-			}
-		},
-
-		// Configured the initial events that the collection view
-		// binds to.
-		_initialEvents: function () {
-			if (this.collection) {
-				this.listenTo(this.collection, "add", this.addChildView);
-				this.listenTo(this.collection, "remove", this.removeItemView);
-				this.listenTo(this.collection, "reset", this.render);
-			}
-		},
-
-		// Handle a child item added to the collection
-		addChildView: function (item, collection, options) {
-			this.closeEmptyView();
-			var ItemView = this.getItemView(item);
-			var index = this.collection.indexOf(item);
-			this.addItemView(item, ItemView, index);
-		},
-
-		// Override from `Marionette.View` to guarantee the `onShow` method
-		// of child views is called.
-		onShowCalled: function () {
-			this.children.each(function (child) {
-				Marionette.triggerMethod.call(child, "show");
-			});
-		},
-
-		// Internal method to trigger the before render callbacks
-		// and events
-		triggerBeforeRender: function () {
-			this.triggerMethod("before:render", this);
-			this.triggerMethod("collection:before:render", this);
-		},
-
-		// Internal method to trigger the rendered callbacks and
-		// events
-		triggerRendered: function () {
-			this.triggerMethod("render", this);
-			this.triggerMethod("collection:rendered", this);
-		},
-
-		// Render the collection of items. Override this method to
-		// provide your own implementation of a render function for
-		// the collection view.
-		render: function () {
-			this.isClosed = false;
-			this.triggerBeforeRender();
-			this._renderChildren();
-			this.triggerRendered();
-			return this;
-		},
-
-		// Internal method. Separated so that CompositeView can have
-		// more control over events being triggered, around the rendering
-		// process
-		_renderChildren: function () {
-			this.startBuffering();
-
-			this.closeEmptyView();
-			this.closeChildren();
-
-			if (!this.isEmpty(this.collection)) {
-				this.showCollection();
-			} else {
-				this.showEmptyView();
-			}
-
-			this.endBuffering();
-		},
-
-		// Internal method to loop through each item in the
-		// collection view and show it
-		showCollection: function () {
-			var ItemView;
-			this.collection.each(function (item, index) {
-				ItemView = this.getItemView(item);
-				this.addItemView(item, ItemView, index);
-			}, this);
-		},
-
-		// Internal method to show an empty view in place of
-		// a collection of item views, when the collection is
-		// empty
-		showEmptyView: function () {
-			var EmptyView = this.getEmptyView();
-
-			if (EmptyView && !this._showingEmptyView) {
-				this._showingEmptyView = true;
-				var model = new Backbone.Model();
-				this.addItemView(model, EmptyView, 0);
-			}
-		},
-
-		// Internal method to close an existing emptyView instance
-		// if one exists. Called when a collection view has been
-		// rendered empty, and then an item is added to the collection.
-		closeEmptyView: function () {
-			if (this._showingEmptyView) {
-				this.closeChildren();
-				delete this._showingEmptyView;
-			}
-		},
-
-		// Retrieve the empty view type
-		getEmptyView: function () {
-			return Marionette.getOption(this, "emptyView");
-		},
-
-		// Retrieve the itemView type, either from `this.options.itemView`
-		// or from the `itemView` in the object definition. The "options"
-		// takes precedence.
-		getItemView: function (item) {
-			var itemView = Marionette.getOption(this, "itemView");
-
-			if (!itemView) {
-				throwError("An `itemView` must be specified", "NoItemViewError");
-			}
-
-			return itemView;
-		},
-
-		// Render the child item's view and add it to the
-		// HTML for the collection view.
-		addItemView: function (item, ItemView, index) {
-			// get the itemViewOptions if any were specified
-			var itemViewOptions = Marionette.getOption(this, "itemViewOptions");
-			if (_.isFunction(itemViewOptions)) {
-				itemViewOptions = itemViewOptions.call(this, item, index);
-			}
-
-			// build the view
-			var view = this.buildItemView(item, ItemView, itemViewOptions);
-
-			// set up the child view event forwarding
-			this.addChildViewEventForwarding(view);
-
-			// this view is about to be added
-			this.triggerMethod("before:item:added", view);
-
-			// Store the child view itself so we can properly
-			// remove and/or close it later
-			this.children.add(view);
-
-			// Render it and show it
-			this.renderItemView(view, index);
-
-			// call the "show" method if the collection view
-			// has already been shown
-			if (this._isShown && !this.isBuffering) {
-				Marionette.triggerMethod.call(view, "show");
-			}
-
-			// this view was added
-			this.triggerMethod("after:item:added", view);
-
-			return view;
-		},
-
-		// Set up the child view event forwarding. Uses an "itemview:"
-		// prefix in front of all forwarded events.
-		addChildViewEventForwarding: function (view) {
-			var prefix = Marionette.getOption(this, "itemViewEventPrefix");
-
-			// Forward all child item view events through the parent,
-			// prepending "itemview:" to the event name
-			this.listenTo(view, "all", function () {
-				var args = slice.call(arguments);
-				var rootEvent = args[0];
-				var itemEvents = this.normalizeMethods(this.getItemEvents());
-
-				args[0] = prefix + ":" + rootEvent;
-				args.splice(1, 0, view);
-
-				// call collectionView itemEvent if defined
-				if (typeof itemEvents !== "undefined" && _.isFunction(itemEvents[rootEvent])) {
-					itemEvents[rootEvent].apply(this, args);
-				}
-
-				Marionette.triggerMethod.apply(this, args);
-			}, this);
-		},
-
-		// returns the value of itemEvents depending on if a function
-		getItemEvents: function () {
-			if (_.isFunction(this.itemEvents)) {
-				return this.itemEvents.call(this);
-			}
-
-			return this.itemEvents;
-		},
-
-		// render the item view
-		renderItemView: function (view, index) {
-			view.render();
-			this.appendHtml(this, view, index);
-		},
-
-		// Build an `itemView` for every model in the collection.
-		buildItemView: function (item, ItemViewType, itemViewOptions) {
-			var options = _.extend({ model: item }, itemViewOptions);
-			return new ItemViewType(options);
-		},
-
-		// get the child view by item it holds, and remove it
-		removeItemView: function (item) {
-			var view = this.children.findByModel(item);
-			this.removeChildView(view);
-			this.checkEmpty();
-		},
-
-		// Remove the child view and close it
-		removeChildView: function (view) {
-
-			// shut down the child view properly,
-			// including events that the collection has from it
-			if (view) {
-				// call 'close' or 'remove', depending on which is found
-				if (view.close) { view.close(); }
-				else if (view.remove) { view.remove(); }
-
-				this.stopListening(view);
-				this.children.remove(view);
-			}
-
-			this.triggerMethod("item:removed", view);
-		},
-
-		// helper to check if the collection is empty
-		isEmpty: function (collection) {
-			// check if we're empty now
-			return !this.collection || this.collection.length === 0;
-		},
-
-		// If empty, show the empty view
-		checkEmpty: function () {
-			if (this.isEmpty(this.collection)) {
-				this.showEmptyView();
-			}
-		},
-
-		// You might need to override this if you've overridden appendHtml
-		appendBuffer: function (collectionView, buffer) {
-			collectionView.$el.append(buffer);
-		},
-
-		// Append the HTML to the collection's `el`.
-		// Override this method to do something other
-		// than `.append`.
-		appendHtml: function (collectionView, itemView, index) {
-			if (collectionView.isBuffering) {
-				// buffering happens on reset events and initial renders
-				// in order to reduce the number of inserts into the
-				// document, which are expensive.
-				collectionView.elBuffer.appendChild(itemView.el);
-				collectionView._bufferedChildren.push(itemView);
-			}
-			else {
-				// If we've already rendered the main collection, just
-				// append the new items directly into the element.
-				collectionView.$el.append(itemView.el);
-			}
-		},
-
-		// Internal method to set up the `children` object for
-		// storing all of the child views
-		_initChildViewStorage: function () {
-			this.children = new Backbone.ChildViewContainer();
-		},
-
-		// Handle cleanup and other closing needs for
-		// the collection of views.
-		close: function () {
-			if (this.isClosed) { return; }
-
-			this.triggerMethod("collection:before:close");
-			this.closeChildren();
-			this.triggerMethod("collection:closed");
-
-			Marionette.View.prototype.close.apply(this, arguments);
-		},
-
-		// Close the child views that this collection view
-		// is holding on to, if any
-		closeChildren: function () {
-			this.children.each(function (child) {
-				this.removeChildView(child);
-			}, this);
-			this.checkEmpty();
-		}
-	});
-
-	// Composite View
-	// --------------
-
-	// Used for rendering a branch-leaf, hierarchical structure.
-	// Extends directly from CollectionView and also renders an
-	// an item view as `modelView`, for the top leaf
-	Marionette.CompositeView = Marionette.CollectionView.extend({
-
-		// Setting up the inheritance chain which allows changes to
-		// Marionette.CollectionView.prototype.constructor which allows overriding
-		constructor: function () {
-			Marionette.CollectionView.prototype.constructor.apply(this, arguments);
-		},
-
-		// Configured the initial events that the composite view
-		// binds to. Override this method to prevent the initial
-		// events, or to add your own initial events.
-		_initialEvents: function () {
-
-			// Bind only after composite view is rendered to avoid adding child views
-			// to nonexistent itemViewContainer
-			this.once('render', function () {
-				if (this.collection) {
-					this.listenTo(this.collection, "add", this.addChildView);
-					this.listenTo(this.collection, "remove", this.removeItemView);
-					this.listenTo(this.collection, "reset", this._renderChildren);
-				}
-			});
-
-		},
-
-		// Retrieve the `itemView` to be used when rendering each of
-		// the items in the collection. The default is to return
-		// `this.itemView` or Marionette.CompositeView if no `itemView`
-		// has been defined
-		getItemView: function (item) {
-			var itemView = Marionette.getOption(this, "itemView") || this.constructor;
-
-			if (!itemView) {
-				throwError("An `itemView` must be specified", "NoItemViewError");
-			}
-
-			return itemView;
-		},
-
-		// Serialize the collection for the view.
-		// You can override the `serializeData` method in your own view
-		// definition, to provide custom serialization for your view's data.
-		serializeData: function () {
-			var data = {};
-
-			if (this.model) {
-				data = this.model.toJSON();
-			}
-
-			return data;
-		},
-
-		// Renders the model once, and the collection once. Calling
-		// this again will tell the model's view to re-render itself
-		// but the collection will not re-render.
-		render: function () {
-			this.isRendered = true;
-			this.isClosed = false;
-			this.resetItemViewContainer();
-
-			this.triggerBeforeRender();
-			var html = this.renderModel();
-			this.$el.html(html);
-			// the ui bindings is done here and not at the end of render since they
-			// will not be available until after the model is rendered, but should be
-			// available before the collection is rendered.
-			this.bindUIElements();
-			this.triggerMethod("composite:model:rendered");
-
-			this._renderChildren();
-
-			this.triggerMethod("composite:rendered");
-			this.triggerRendered();
-			return this;
-		},
-
-		_renderChildren: function () {
-			if (this.isRendered) {
-				this.triggerMethod("composite:collection:before:render");
-				Marionette.CollectionView.prototype._renderChildren.call(this);
-				this.triggerMethod("composite:collection:rendered");
-			}
-		},
-
-		// Render an individual model, if we have one, as
-		// part of a composite view (branch / leaf). For example:
-		// a treeview.
-		renderModel: function () {
-			var data = {};
-			data = this.serializeData();
-			data = this.mixinTemplateHelpers(data);
-
-			var template = this.getTemplate();
-			return Marionette.Renderer.render(template, data);
-		},
-
-
-		// You might need to override this if you've overridden appendHtml
-		appendBuffer: function (compositeView, buffer) {
-			var $container = this.getItemViewContainer(compositeView);
-			$container.append(buffer);
-		},
-
-		// Appends the `el` of itemView instances to the specified
-		// `itemViewContainer` (a jQuery selector). Override this method to
-		// provide custom logic of how the child item view instances have their
-		// HTML appended to the composite view instance.
-		appendHtml: function (compositeView, itemView, index) {
-			if (compositeView.isBuffering) {
-				compositeView.elBuffer.appendChild(itemView.el);
-				compositeView._bufferedChildren.push(itemView);
-			}
-			else {
-				// If we've already rendered the main collection, just
-				// append the new items directly into the element.
-				var $container = this.getItemViewContainer(compositeView);
-				$container.append(itemView.el);
-			}
-		},
-
-		// Internal method to ensure an `$itemViewContainer` exists, for the
-		// `appendHtml` method to use.
-		getItemViewContainer: function (containerView) {
-			if ("$itemViewContainer" in containerView) {
-				return containerView.$itemViewContainer;
-			}
-
-			var container;
-			var itemViewContainer = Marionette.getOption(containerView, "itemViewContainer");
-			if (itemViewContainer) {
-
-				var selector = _.isFunction(itemViewContainer) ? itemViewContainer.call(containerView) : itemViewContainer;
-
-				if (selector.charAt(0) === "@" && containerView.ui) {
-					container = containerView.ui[selector.substr(4)];
-				} else {
-					container = containerView.$(selector);
-				}
-
-				if (container.length <= 0) {
-					throwError("The specified `itemViewContainer` was not found: " + containerView.itemViewContainer, "ItemViewContainerMissingError");
-				}
-
-			} else {
-				container = containerView.$el;
-			}
-
-			containerView.$itemViewContainer = container;
-			return container;
-		},
-
-		// Internal method to reset the `$itemViewContainer` on render
-		resetItemViewContainer: function () {
-			if (this.$itemViewContainer) {
-				delete this.$itemViewContainer;
-			}
-		}
-	});
-
-	// Layout
-	// ------
-
-	// Used for managing application layouts, nested layouts and
-	// multiple regions within an application or sub-application.
-	//
-	// A specialized view type that renders an area of HTML and then
-	// attaches `Region` instances to the specified `regions`.
-	// Used for composite view management and sub-application areas.
-	Marionette.Layout = Marionette.ItemView.extend({
-		regionType: Marionette.Region,
-
-		// Ensure the regions are available when the `initialize` method
-		// is called.
-		constructor: function (options) {
-			options = options || {};
-
-			this._firstRender = true;
-			this._initializeRegions(options);
-
-			Marionette.ItemView.prototype.constructor.call(this, options);
-		},
-
-		// Layout's render will use the existing region objects the
-		// first time it is called. Subsequent calls will close the
-		// views that the regions are showing and then reset the `el`
-		// for the regions to the newly rendered DOM elements.
-		render: function () {
-
-			if (this.isClosed) {
-				// a previously closed layout means we need to
-				// completely re-initialize the regions
-				this._initializeRegions();
-			}
-			if (this._firstRender) {
-				// if this is the first render, don't do anything to
-				// reset the regions
-				this._firstRender = false;
-			} else if (!this.isClosed) {
-				// If this is not the first render call, then we need to
-				// re-initializing the `el` for each region
-				this._reInitializeRegions();
-			}
-
-			return Marionette.ItemView.prototype.render.apply(this, arguments);
-		},
-
-		// Handle closing regions, and then close the view itself.
-		close: function () {
-			if (this.isClosed) { return; }
-			this.regionManager.close();
-			Marionette.ItemView.prototype.close.apply(this, arguments);
-		},
-
-		// Add a single region, by name, to the layout
-		addRegion: function (name, definition) {
-			var regions = {};
-			regions[name] = definition;
-			return this._buildRegions(regions)[name];
-		},
-
-		// Add multiple regions as a {name: definition, name2: def2} object literal
-		addRegions: function (regions) {
-			this.regions = _.extend({}, this.regions, regions);
-			return this._buildRegions(regions);
-		},
-
-		// Remove a single region from the Layout, by name
-		removeRegion: function (name) {
-			delete this.regions[name];
-			return this.regionManager.removeRegion(name);
-		},
-
-		// Provides alternative access to regions
-		// Accepts the region name
-		// getRegion('main')
-		getRegion: function (region) {
-			return this.regionManager.get(region);
-		},
-
-		// internal method to build regions
-		_buildRegions: function (regions) {
-			var that = this;
-
-			var defaults = {
-				regionType: Marionette.getOption(this, "regionType"),
-				parentEl: function () { return that.$el; }
-			};
-
-			return this.regionManager.addRegions(regions, defaults);
-		},
-
-		// Internal method to initialize the regions that have been defined in a
-		// `regions` attribute on this layout.
-		_initializeRegions: function (options) {
-			var regions;
-			this._initRegionManager();
-
-			if (_.isFunction(this.regions)) {
-				regions = this.regions(options);
-			} else {
-				regions = this.regions || {};
-			}
-
-			this.addRegions(regions);
-		},
-
-		// Internal method to re-initialize all of the regions by updating the `el` that
-		// they point to
-		_reInitializeRegions: function () {
-			this.regionManager.closeRegions();
-			this.regionManager.each(function (region) {
-				region.reset();
-			});
-		},
-
-		// Internal method to initialize the region manager
-		// and all regions in it
-		_initRegionManager: function () {
-			this.regionManager = new Marionette.RegionManager();
-
-			this.listenTo(this.regionManager, "region:add", function (name, region) {
-				this[name] = region;
-				this.trigger("region:add", name, region);
-			});
-
-			this.listenTo(this.regionManager, "region:remove", function (name, region) {
-				delete this[name];
-				this.trigger("region:remove", name, region);
-			});
-		}
-	});
-
-
-	// Behavior
-	// -----------
-
-	// A Behavior is an isolated set of DOM /
-	// user interactions that can be mixed into any View.
-	// Behaviors allow you to blackbox View specific interactions
-	// into portable logical chunks, keeping your views simple and your code DRY.
-
-	Marionette.Behavior = (function (_, Backbone) {
-		function Behavior(options, view) {
-			// Setup reference to the view.
-			// this comes in handle when a behavior
-			// wants to directly talk up the chain
-			// to the view.
-			this.view = view;
-			this.defaults = _.result(this, "defaults") || {};
-			this.options = _.extend({}, this.defaults, options);
-
-			// proxy behavior $ method to the view
-			// this is useful for doing jquery DOM lookups
-			// scoped to behaviors view.
-			this.$ = function () {
-				return this.view.$.apply(this.view, arguments);
-			};
-
-			// Call the initialize method passing
-			// the arguments from the instance constructor
-			this.initialize.apply(this, arguments);
-		}
-
-		_.extend(Behavior.prototype, Backbone.Events, {
-			initialize: function () { },
-
-			// stopListening to behavior `onListen` events.
-			close: function () {
-				this.stopListening();
-			},
-
-			// Setup class level proxy for triggerMethod.
-			triggerMethod: Marionette.triggerMethod
-		});
-
-		// Borrow Backbones extend implementation
-		// this allows us to setup a proper
-		// inheritence pattern that follow in suite
-		// with the rest of Marionette views.
-		Behavior.extend = Marionette.extend;
-
-		return Behavior;
-	})(_, Backbone);
-
-	// Marionette.Behaviors
-	// --------
-
-	// Behaviors is a utility class that takes care of
-	// glueing your behavior instances to their given View.
-	// The most important part of this class is that you
-	// **MUST** override the class level behaviorsLookup
-	// method for things to work properly.
-
-	Marionette.Behaviors = (function (Marionette, _) {
-
-		function Behaviors(view) {
-			// Behaviors defined on a view can be a flat object literal
-			// or it can be a function that returns an object.
-			this.behaviors = Behaviors.parseBehaviors(view, _.result(view, 'behaviors'));
-
-			// Wraps several of the view's methods
-			// calling the methods first on each behavior
-			// and then eventually calling the method on the view.
-			Behaviors.wrap(view, this.behaviors, [
-				'bindUIElements', 'unbindUIElements',
-				'delegateEvents', 'undelegateEvents',
-				'onShow', 'onClose',
-				'behaviorEvents', 'triggerMethod',
-				'setElement', 'close'
-			]);
-		}
-
-		var methods = {
-			setElement: function (setElement, behaviors) {
-				setElement.apply(this, _.tail(arguments, 2));
-
-				// proxy behavior $el to the view's $el.
-				// This is needed because a view's $el proxy
-				// is not set until after setElement is called.
-				_.each(behaviors, function (b) {
-					b.$el = this.$el;
-				}, this);
-			},
-
-			close: function (close, behaviors) {
-				var args = _.tail(arguments, 2);
-				close.apply(this, args);
-
-				// Call close on each behavior after
-				// closing down the view.
-				// This unbinds event listeners
-				// that behaviors have registerd for.
-				_.invoke(behaviors, 'close', args);
-			},
-
-			onShow: function (onShow, behaviors) {
-				var args = _.tail(arguments, 2);
-
-				_.each(behaviors, function (b) {
-					Marionette.triggerMethod.apply(b, ["show"].concat(args));
-				});
-
-				if (_.isFunction(onShow)) {
-					onShow.apply(this, args);
-				}
-			},
-
-			onClose: function (onClose, behaviors) {
-				var args = _.tail(arguments, 2);
-
-				_.each(behaviors, function (b) {
-					Marionette.triggerMethod.apply(b, ["close"].concat(args));
-				});
-
-				if (_.isFunction(onClose)) {
-					onClose.apply(this, args);
-				}
-			},
-
-			bindUIElements: function (bindUIElements, behaviors) {
-				bindUIElements.apply(this);
-				_.invoke(behaviors, bindUIElements);
-			},
-
-			unbindUIElements: function (unbindUIElements, behaviors) {
-				unbindUIElements.apply(this);
-				_.invoke(behaviors, unbindUIElements);
-			},
-
-			triggerMethod: function (triggerMethod, behaviors) {
-				var args = _.tail(arguments, 2);
-				triggerMethod.apply(this, args);
-
-				_.each(behaviors, function (b) {
-					triggerMethod.apply(b, args);
-				});
-			},
-
-			delegateEvents: function (delegateEvents, behaviors) {
-				var args = _.tail(arguments, 2);
-				delegateEvents.apply(this, args);
-
-				_.each(behaviors, function (b) {
-					Marionette.bindEntityEvents(b, this.model, Marionette.getOption(b, "modelEvents"));
-					Marionette.bindEntityEvents(b, this.collection, Marionette.getOption(b, "collectionEvents"));
-				}, this);
-			},
-
-			undelegateEvents: function (undelegateEvents, behaviors) {
-				var args = _.tail(arguments, 2);
-				undelegateEvents.apply(this, args);
-
-				_.each(behaviors, function (b) {
-					Marionette.unbindEntityEvents(b, this.model, Marionette.getOption(b, "modelEvents"));
-					Marionette.unbindEntityEvents(b, this.collection, Marionette.getOption(b, "collectionEvents"));
-				}, this);
-			},
-
-			behaviorEvents: function (behaviorEvents, behaviors) {
-				var _behaviorsEvents = {};
-				var viewUI = _.result(this, 'ui');
-
-				_.each(behaviors, function (b, i) {
-					var _events = {};
-					var behaviorEvents = _.result(b, 'events') || {};
-					var behaviorUI = _.result(b, 'ui');
-
-					// Construct an internal UI hash first using
-					// the views UI hash and then the behaviors UI hash.
-					// This allows the user to use UI hash elements
-					// defined in the parent view as well as those
-					// defined in the given behavior.
-					var ui = _.extend({}, viewUI, behaviorUI);
-
-					// Normalize behavior events hash to allow
-					// a user to use the @ui. syntax.
-					behaviorEvents = Marionette.normalizeUIKeys(behaviorEvents, ui);
-
-					_.each(_.keys(behaviorEvents), function (key) {
-						// append white-space at the end of each key to prevent behavior key collisions
-						// this is relying on the fact backbone events considers "click .foo" the same  "click .foo "
-						// starts with an array of two so the first behavior has one space
-
-						// +2 is uses becauce new Array(1) or 0 is "" and not " "
-						var whitespace = (new Array(i + 2)).join(" ");
-						var eventKey = key + whitespace;
-						var handler = _.isFunction(behaviorEvents[key]) ? behaviorEvents[key] : b[behaviorEvents[key]];
-
-						_events[eventKey] = _.bind(handler, b);
-					});
-
-					_behaviorsEvents = _.extend(_behaviorsEvents, _events);
-				});
-
-				return _behaviorsEvents;
-			}
-		};
-
-		_.extend(Behaviors, {
-
-			// placeholder method to be extended by the user
-			// should define the object that stores the behaviors
-			// i.e.
-			//
-			// Marionette.Behaviors.behaviorsLookup: function() {
-			//   return App.Behaviors
-			// }
-			behaviorsLookup: function () {
-				throw new Error("You must define where your behaviors are stored. See https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.behaviors.md#behaviorslookup");
-			},
-
-			// Takes care of getting the behavior class
-			// given options and a key.
-			// If a user passes in options.behaviorClass
-			// default to using that. Otherwise delegate
-			// the lookup to the users behaviorsLookup implementation.
-			getBehaviorClass: function (options, key) {
-				if (options.behaviorClass) {
-					return options.behaviorClass;
-				}
-
-				// Get behavior class can be either a flat object or a method
-				return _.isFunction(Behaviors.behaviorsLookup) ? Behaviors.behaviorsLookup.apply(this, arguments)[key] : Behaviors.behaviorsLookup[key];
-			},
-
-			// Maps over a view's behaviors. Performing
-			// a lookup on each behavior and the instantiating
-			// said behavior passing its options and view.
-			parseBehaviors: function (view, behaviors) {
-				return _.map(behaviors, function (options, key) {
-					var BehaviorClass = Behaviors.getBehaviorClass(options, key);
-					return new BehaviorClass(options, view);
-				});
-			},
-
-			// wrap view internal methods so that they delegate to behaviors.
-			// For example, onClose should trigger close on all of the behaviors and then close itself.
-			// i.e.
-			//
-			// view.delegateEvents = _.partial(methods.delegateEvents, view.delegateEvents, behaviors);
-			wrap: function (view, behaviors, methodNames) {
-				_.each(methodNames, function (methodName) {
-					view[methodName] = _.partial(methods[methodName], view[methodName], behaviors);
-				});
-			}
-		});
-
-		return Behaviors;
-
-	})(Marionette, _);
-
-
-	// AppRouter
-	// ---------
-
-	// Reduce the boilerplate code of handling route events
-	// and then calling a single method on another object.
-	// Have your routers configured to call the method on
-	// your object, directly.
-	//
-	// Configure an AppRouter with `appRoutes`.
-	//
-	// App routers can only take one `controller` object.
-	// It is recommended that you divide your controller
-	// objects in to smaller pieces of related functionality
-	// and have multiple routers / controllers, instead of
-	// just one giant router and controller.
-	//
-	// You can also add standard routes to an AppRouter.
-
-	Marionette.AppRouter = Backbone.Router.extend({
-
-		constructor: function (options) {
-			Backbone.Router.prototype.constructor.apply(this, arguments);
-
-			this.options = options || {};
-
-			var appRoutes = Marionette.getOption(this, "appRoutes");
-			var controller = this._getController();
-			this.processAppRoutes(controller, appRoutes);
-			this.on("route", this._processOnRoute, this);
-		},
-
-		// Similar to route method on a Backbone Router but
-		// method is called on the controller
-		appRoute: function (route, methodName) {
-			var controller = this._getController();
-			this._addAppRoute(controller, route, methodName);
-		},
-
-		// process the route event and trigger the onRoute
-		// method call, if it exists
-		_processOnRoute: function (routeName, routeArgs) {
-			// find the path that matched
-			var routePath = _.invert(this.appRoutes)[routeName];
-
-			// make sure an onRoute is there, and call it
-			if (_.isFunction(this.onRoute)) {
-				this.onRoute(routeName, routePath, routeArgs);
-			}
-		},
-
-		// Internal method to process the `appRoutes` for the
-		// router, and turn them in to routes that trigger the
-		// specified method on the specified `controller`.
-		processAppRoutes: function (controller, appRoutes) {
-			if (!appRoutes) { return; }
-
-			var routeNames = _.keys(appRoutes).reverse(); // Backbone requires reverted order of routes
-
-			_.each(routeNames, function (route) {
-				this._addAppRoute(controller, route, appRoutes[route]);
-			}, this);
-		},
-
-		_getController: function () {
-			return Marionette.getOption(this, "controller");
-		},
-
-		_addAppRoute: function (controller, route, methodName) {
-			var method = controller[methodName];
-
-			if (!method) {
-				throwError("Method '" + methodName + "' was not found on the controller");
-			}
-
-			this.route(route, methodName, _.bind(method, controller));
-		}
-	});
-
-	// Application
-	// -----------
-
-	// Contain and manage the composite application as a whole.
-	// Stores and starts up `Region` objects, includes an
-	// event aggregator as `app.vent`
-	Marionette.Application = function (options) {
-		this._initRegionManager();
-		this._initCallbacks = new Marionette.Callbacks();
-		this.vent = new Backbone.Wreqr.EventAggregator();
-		this.commands = new Backbone.Wreqr.Commands();
-		this.reqres = new Backbone.Wreqr.RequestResponse();
-		this.submodules = {};
-
-		_.extend(this, options);
-
-		this.triggerMethod = Marionette.triggerMethod;
-	};
-
-	_.extend(Marionette.Application.prototype, Backbone.Events, {
-		// Command execution, facilitated by Backbone.Wreqr.Commands
-		execute: function () {
-			this.commands.execute.apply(this.commands, arguments);
-		},
-
-		// Request/response, facilitated by Backbone.Wreqr.RequestResponse
-		request: function () {
-			return this.reqres.request.apply(this.reqres, arguments);
-		},
-
-		// Add an initializer that is either run at when the `start`
-		// method is called, or run immediately if added after `start`
-		// has already been called.
-		addInitializer: function (initializer) {
-			this._initCallbacks.add(initializer);
-		},
-
-		// kick off all of the application's processes.
-		// initializes all of the regions that have been added
-		// to the app, and runs all of the initializer functions
-		start: function (options) {
-			this.triggerMethod("initialize:before", options);
-			this._initCallbacks.run(options, this);
-			this.triggerMethod("initialize:after", options);
-
-			this.triggerMethod("start", options);
-		},
-
-		// Add regions to your app.
-		// Accepts a hash of named strings or Region objects
-		// addRegions({something: "#someRegion"})
-		// addRegions({something: Region.extend({el: "#someRegion"}) });
-		addRegions: function (regions) {
-			return this._regionManager.addRegions(regions);
-		},
-
-		// Close all regions in the app, without removing them
-		closeRegions: function () {
-			this._regionManager.closeRegions();
-		},
-
-		// Removes a region from your app, by name
-		// Accepts the regions name
-		// removeRegion('myRegion')
-		removeRegion: function (region) {
-			this._regionManager.removeRegion(region);
-		},
-
-		// Provides alternative access to regions
-		// Accepts the region name
-		// getRegion('main')
-		getRegion: function (region) {
-			return this._regionManager.get(region);
-		},
-
-		// Create a module, attached to the application
-		module: function (moduleNames, moduleDefinition) {
-
-			// Overwrite the module class if the user specifies one
-			var ModuleClass = Marionette.Module.getClass(moduleDefinition);
-
-			// slice the args, and add this application object as the
-			// first argument of the array
-			var args = slice.call(arguments);
-			args.unshift(this);
-
-			// see the Marionette.Module object for more information
-			return ModuleClass.create.apply(ModuleClass, args);
-		},
-
-		// Internal method to set up the region manager
-		_initRegionManager: function () {
-			this._regionManager = new Marionette.RegionManager();
-
-			this.listenTo(this._regionManager, "region:add", function (name, region) {
-				this[name] = region;
-			});
-
-			this.listenTo(this._regionManager, "region:remove", function (name, region) {
-				delete this[name];
-			});
-		}
-	});
-
-	// Copy the `extend` function used by Backbone's classes
-	Marionette.Application.extend = Marionette.extend;
-
-	// Module
-	// ------
-
-	// A simple module system, used to create privacy and encapsulation in
-	// Marionette applications
-	Marionette.Module = function (moduleName, app, options) {
-		this.moduleName = moduleName;
-		this.options = _.extend({}, this.options, options);
-		// Allow for a user to overide the initialize
-		// for a given module instance.
-		this.initialize = options.initialize || this.initialize;
-
-		// Set up an internal store for sub-modules.
-		this.submodules = {};
-
-		this._setupInitializersAndFinalizers();
-
-		// Set an internal reference to the app
-		// within a module.
-		this.app = app;
-
-		// By default modules start with their parents.
-		this.startWithParent = true;
-
-		// Setup a proxy to the trigger method implementation.
-		this.triggerMethod = Marionette.triggerMethod;
-
-		if (_.isFunction(this.initialize)) {
-			this.initialize(this.options, moduleName, app);
-		}
-	};
-
-	Marionette.Module.extend = Marionette.extend;
-
-	// Extend the Module prototype with events / listenTo, so that the module
-	// can be used as an event aggregator or pub/sub.
-	_.extend(Marionette.Module.prototype, Backbone.Events, {
-
-		// Initialize is an empty function by default. Override it with your own
-		// initialization logic when extending Marionette.Module.
-		initialize: function () { },
-
-		// Initializer for a specific module. Initializers are run when the
-		// module's `start` method is called.
-		addInitializer: function (callback) {
-			this._initializerCallbacks.add(callback);
-		},
-
-		// Finalizers are run when a module is stopped. They are used to teardown
-		// and finalize any variables, references, events and other code that the
-		// module had set up.
-		addFinalizer: function (callback) {
-			this._finalizerCallbacks.add(callback);
-		},
-
-		// Start the module, and run all of its initializers
-		start: function (options) {
-			// Prevent re-starting a module that is already started
-			if (this._isInitialized) { return; }
-
-			// start the sub-modules (depth-first hierarchy)
-			_.each(this.submodules, function (mod) {
-				// check to see if we should start the sub-module with this parent
-				if (mod.startWithParent) {
-					mod.start(options);
-				}
-			});
-
-			// run the callbacks to "start" the current module
-			this.triggerMethod("before:start", options);
-
-			this._initializerCallbacks.run(options, this);
-			this._isInitialized = true;
-
-			this.triggerMethod("start", options);
-		},
-
-		// Stop this module by running its finalizers and then stop all of
-		// the sub-modules for this module
-		stop: function () {
-			// if we are not initialized, don't bother finalizing
-			if (!this._isInitialized) { return; }
-			this._isInitialized = false;
-
-			Marionette.triggerMethod.call(this, "before:stop");
-
-			// stop the sub-modules; depth-first, to make sure the
-			// sub-modules are stopped / finalized before parents
-			_.each(this.submodules, function (mod) { mod.stop(); });
-
-			// run the finalizers
-			this._finalizerCallbacks.run(undefined, this);
-
-			// reset the initializers and finalizers
-			this._initializerCallbacks.reset();
-			this._finalizerCallbacks.reset();
-
-			Marionette.triggerMethod.call(this, "stop");
-		},
-
-		// Configure the module with a definition function and any custom args
-		// that are to be passed in to the definition function
-		addDefinition: function (moduleDefinition, customArgs) {
-			this._runModuleDefinition(moduleDefinition, customArgs);
-		},
-
-		// Internal method: run the module definition function with the correct
-		// arguments
-		_runModuleDefinition: function (definition, customArgs) {
-			// If there is no definition short circut the method.
-			if (!definition) { return; }
-
-			// build the correct list of arguments for the module definition
-			var args = _.flatten([
-				this,
-				this.app,
-				Backbone,
-				Marionette,
-				Marionette.$, _,
-				customArgs
-			]);
-
-			definition.apply(this, args);
-		},
-
-		// Internal method: set up new copies of initializers and finalizers.
-		// Calling this method will wipe out all existing initializers and
-		// finalizers.
-		_setupInitializersAndFinalizers: function () {
-			this._initializerCallbacks = new Marionette.Callbacks();
-			this._finalizerCallbacks = new Marionette.Callbacks();
-		}
-	});
-
-	// Type methods to create modules
-	_.extend(Marionette.Module, {
-
-		// Create a module, hanging off the app parameter as the parent object.
-		create: function (app, moduleNames, moduleDefinition) {
-			var module = app;
-
-			// get the custom args passed in after the module definition and
-			// get rid of the module name and definition function
-			var customArgs = slice.call(arguments);
-			customArgs.splice(0, 3);
-
-			// Split the module names and get the number of submodules.
-			// i.e. an example module name of `Doge.Wow.Amaze` would
-			// then have the potential for 3 module definitions.
-			moduleNames = moduleNames.split(".");
-			var length = moduleNames.length;
-
-			// store the module definition for the last module in the chain
-			var moduleDefinitions = [];
-			moduleDefinitions[length - 1] = moduleDefinition;
-
-			// Loop through all the parts of the module definition
-			_.each(moduleNames, function (moduleName, i) {
-				var parentModule = module;
-				module = this._getModule(parentModule, moduleName, app, moduleDefinition);
-				this._addModuleDefinition(parentModule, module, moduleDefinitions[i], customArgs);
-			}, this);
-
-			// Return the last module in the definition chain
-			return module;
-		},
-
-		_getModule: function (parentModule, moduleName, app, def, args) {
-			var options = _.extend({}, def);
-			var ModuleClass = this.getClass(def);
-
-			// Get an existing module of this name if we have one
-			var module = parentModule[moduleName];
-
-			if (!module) {
-				// Create a new module if we don't have one
-				module = new ModuleClass(moduleName, app, options);
-				parentModule[moduleName] = module;
-				// store the module on the parent
-				parentModule.submodules[moduleName] = module;
-			}
-
-			return module;
-		},
-
-		// ## Module Classes
-		//
-		// Module classes can be used as an alternative to the define pattern.
-		// The extend function of a Module is identical to the extend functions
-		// on other Backbone and Marionette classes.
-		// This allows module lifecyle events like `onStart` and `onStop` to be called directly.
-		getClass: function (moduleDefinition) {
-			var ModuleClass = Marionette.Module;
-
-			if (!moduleDefinition) {
-				return ModuleClass;
-			}
-
-			// If all of the module's functionality is defined inside its class,
-			// then the class can be passed in directly. `MyApp.module("Foo", FooModule)`.
-			if (moduleDefinition.prototype instanceof ModuleClass) {
-				return moduleDefinition;
-			}
-
-			return moduleDefinition.moduleClass || ModuleClass;
-		},
-
-		// Add the module definition and add a startWithParent initializer function.
-		// This is complicated because module definitions are heavily overloaded
-		// and support an anonymous function, module class, or options object
-		_addModuleDefinition: function (parentModule, module, def, args) {
-			var fn = this._getDefine(def);
-			var startWithParent = this._getStartWithParent(def, module);
-
-			if (fn) {
-				module.addDefinition(fn, args);
-			}
-
-			this._addStartWithParent(parentModule, module, startWithParent);
-		},
-
-		_getStartWithParent: function (def, module) {
-			var swp;
-
-			if (_.isFunction(def) && (def.prototype instanceof Marionette.Module)) {
-				swp = module.constructor.prototype.startWithParent;
-				return _.isUndefined(swp) ? true : swp;
-			}
-
-			if (_.isObject(def)) {
-				swp = def.startWithParent;
-				return _.isUndefined(swp) ? true : swp;
-			}
-
-			return true;
-		},
-
-		_getDefine: function (def) {
-			if (_.isFunction(def) && !(def.prototype instanceof Marionette.Module)) {
-				return def;
-			}
-
-			if (_.isObject(def)) {
-				return def.define;
-			}
-
-			return null;
-		},
-
-		_addStartWithParent: function (parentModule, module, startWithParent) {
-			module.startWithParent = module.startWithParent && startWithParent;
-
-			if (!module.startWithParent || !!module.startWithParentIsConfigured) {
-				return;
-			}
-
-			module.startWithParentIsConfigured = true;
-
-			parentModule.addInitializer(function (options) {
-				if (module.startWithParent) {
-					module.start(options);
-				}
-			});
-		}
-	});
-
-
-	return Marionette;
+var Marionette = (function(global, Backbone, _){
+  "use strict";
+
+  // Define and export the Marionette namespace
+  var Marionette = {};
+  Backbone.Marionette = Marionette;
+
+  // Get the DOM manipulator for later use
+  Marionette.$ = Backbone.$;
+
+// Helpers
+// -------
+
+// For slicing `arguments` in functions
+var slice = Array.prototype.slice;
+
+function throwError(message, name) {
+  var error = new Error(message);
+  error.name = name || 'Error';
+  throw error;
+}
+
+// Marionette.extend
+// -----------------
+
+// Borrow the Backbone `extend` method so we can use it as needed
+Marionette.extend = Backbone.Model.extend;
+
+// Marionette.getOption
+// --------------------
+
+// Retrieve an object, function or other value from a target
+// object or its `options`, with `options` taking precedence.
+Marionette.getOption = function(target, optionName){
+  if (!target || !optionName){ return; }
+  var value;
+
+  if (target.options && (optionName in target.options) && (target.options[optionName] !== undefined)){
+    value = target.options[optionName];
+  } else {
+    value = target[optionName];
+  }
+
+  return value;
+};
+
+// Marionette.normalizeMethods
+// ----------------------
+
+// Pass in a mapping of events => functions or function names
+// and return a mapping of events => functions
+Marionette.normalizeMethods = function(hash) {
+  var normalizedHash = {}, method;
+  _.each(hash, function(fn, name) {
+    method = fn;
+    if (!_.isFunction(method)) {
+      method = this[method];
+    }
+    if (!method) {
+      return;
+    }
+    normalizedHash[name] = method;
+  }, this);
+  return normalizedHash;
+};
+
+
+// allows for the use of the @ui. syntax within
+// a given key for triggers and events
+// swaps the @ui with the associated selector
+Marionette.normalizeUIKeys = function(hash, ui) {
+  if (typeof(hash) === "undefined") {
+    return;
+  }
+
+  _.each(_.keys(hash), function(v) {
+    var pattern = /@ui.[a-zA-Z_$0-9]*/g;
+    if (v.match(pattern)) {
+      hash[v.replace(pattern, function(r) {
+        return ui[r.slice(4)];
+      })] = hash[v];
+      delete hash[v];
+    }
+  });
+
+  return hash;
+};
+
+// Mix in methods from Underscore, for iteration, and other
+// collection related features.
+// Borrowing this code from Backbone.Collection:
+// http://backbonejs.org/docs/backbone.html#section-106
+Marionette.actAsCollection = function(object, listProperty) {
+  var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter',
+    'select', 'reject', 'every', 'all', 'some', 'any', 'include',
+    'contains', 'invoke', 'toArray', 'first', 'initial', 'rest',
+    'last', 'without', 'isEmpty', 'pluck'];
+
+  _.each(methods, function(method) {
+    object[method] = function() {
+      var list = _.values(_.result(this, listProperty));
+      var args = [list].concat(_.toArray(arguments));
+      return _[method].apply(_, args);
+    };
+  });
+};
+
+// Trigger an event and/or a corresponding method name. Examples:
+//
+// `this.triggerMethod("foo")` will trigger the "foo" event and
+// call the "onFoo" method.
+//
+// `this.triggerMethod("foo:bar")` will trigger the "foo:bar" event and
+// call the "onFooBar" method.
+Marionette.triggerMethod = (function(){
+
+  // split the event name on the ":"
+  var splitter = /(^|:)(\w)/gi;
+
+  // take the event section ("section1:section2:section3")
+  // and turn it in to uppercase name
+  function getEventName(match, prefix, eventName) {
+    return eventName.toUpperCase();
+  }
+
+  // actual triggerMethod implementation
+  var triggerMethod = function(event) {
+    // get the method name from the event name
+    var methodName = 'on' + event.replace(splitter, getEventName);
+    var method = this[methodName];
+
+    // trigger the event, if a trigger method exists
+    if(_.isFunction(this.trigger)) {
+      this.trigger.apply(this, arguments);
+    }
+
+    // call the onMethodName if it exists
+    if (_.isFunction(method)) {
+      // pass all arguments, except the event name
+      return method.apply(this, _.tail(arguments));
+    }
+  };
+
+  return triggerMethod;
+})();
+
+// DOMRefresh
+// ----------
+//
+// Monitor a view's state, and after it has been rendered and shown
+// in the DOM, trigger a "dom:refresh" event every time it is
+// re-rendered.
+
+Marionette.MonitorDOMRefresh = (function(documentElement){
+  // track when the view has been shown in the DOM,
+  // using a Marionette.Region (or by other means of triggering "show")
+  function handleShow(view){
+    view._isShown = true;
+    triggerDOMRefresh(view);
+  }
+
+  // track when the view has been rendered
+  function handleRender(view){
+    view._isRendered = true;
+    triggerDOMRefresh(view);
+  }
+
+  // Trigger the "dom:refresh" event and corresponding "onDomRefresh" method
+  function triggerDOMRefresh(view){
+    if (view._isShown && view._isRendered && isInDOM(view)){
+      if (_.isFunction(view.triggerMethod)){
+        view.triggerMethod("dom:refresh");
+      }
+    }
+  }
+
+  function isInDOM(view) {
+    return documentElement.contains(view.el);
+  }
+
+  // Export public API
+  return function(view){
+    view.listenTo(view, "show", function(){
+      handleShow(view);
+    });
+
+    view.listenTo(view, "render", function(){
+      handleRender(view);
+    });
+  };
+})(document.documentElement);
+
+
+// Marionette.bindEntityEvents & unbindEntityEvents
+// ---------------------------
+//
+// These methods are used to bind/unbind a backbone "entity" (collection/model)
+// to methods on a target object.
+//
+// The first parameter, `target`, must have a `listenTo` method from the
+// EventBinder object.
+//
+// The second parameter is the entity (Backbone.Model or Backbone.Collection)
+// to bind the events from.
+//
+// The third parameter is a hash of { "event:name": "eventHandler" }
+// configuration. Multiple handlers can be separated by a space. A
+// function can be supplied instead of a string handler name.
+
+(function(Marionette){
+  "use strict";
+
+  // Bind the event to handlers specified as a string of
+  // handler names on the target object
+  function bindFromStrings(target, entity, evt, methods){
+    var methodNames = methods.split(/\s+/);
+
+    _.each(methodNames, function(methodName) {
+
+      var method = target[methodName];
+      if(!method) {
+        throwError("Method '"+ methodName +"' was configured as an event handler, but does not exist.");
+      }
+
+      target.listenTo(entity, evt, method);
+    });
+  }
+
+  // Bind the event to a supplied callback function
+  function bindToFunction(target, entity, evt, method){
+      target.listenTo(entity, evt, method);
+  }
+
+  // Bind the event to handlers specified as a string of
+  // handler names on the target object
+  function unbindFromStrings(target, entity, evt, methods){
+    var methodNames = methods.split(/\s+/);
+
+    _.each(methodNames, function(methodName) {
+      var method = target[methodName];
+      target.stopListening(entity, evt, method);
+    });
+  }
+
+  // Bind the event to a supplied callback function
+  function unbindToFunction(target, entity, evt, method){
+      target.stopListening(entity, evt, method);
+  }
+
+
+  // generic looping function
+  function iterateEvents(target, entity, bindings, functionCallback, stringCallback){
+    if (!entity || !bindings) { return; }
+
+    // allow the bindings to be a function
+    if (_.isFunction(bindings)){
+      bindings = bindings.call(target);
+    }
+
+    // iterate the bindings and bind them
+    _.each(bindings, function(methods, evt){
+
+      // allow for a function as the handler,
+      // or a list of event names as a string
+      if (_.isFunction(methods)){
+        functionCallback(target, entity, evt, methods);
+      } else {
+        stringCallback(target, entity, evt, methods);
+      }
+
+    });
+  }
+
+  // Export Public API
+  Marionette.bindEntityEvents = function(target, entity, bindings){
+    iterateEvents(target, entity, bindings, bindToFunction, bindFromStrings);
+  };
+
+  Marionette.unbindEntityEvents = function(target, entity, bindings){
+    iterateEvents(target, entity, bindings, unbindToFunction, unbindFromStrings);
+  };
+
+})(Marionette);
+
+
+// Callbacks
+// ---------
+
+// A simple way of managing a collection of callbacks
+// and executing them at a later point in time, using jQuery's
+// `Deferred` object.
+Marionette.Callbacks = function(){
+  this._deferred = Marionette.$.Deferred();
+  this._callbacks = [];
+};
+
+_.extend(Marionette.Callbacks.prototype, {
+
+  // Add a callback to be executed. Callbacks added here are
+  // guaranteed to execute, even if they are added after the
+  // `run` method is called.
+  add: function(callback, contextOverride){
+    this._callbacks.push({cb: callback, ctx: contextOverride});
+
+    this._deferred.done(function(context, options){
+      if (contextOverride){ context = contextOverride; }
+      callback.call(context, options);
+    });
+  },
+
+  // Run all registered callbacks with the context specified.
+  // Additional callbacks can be added after this has been run
+  // and they will still be executed.
+  run: function(options, context){
+    this._deferred.resolve(context, options);
+  },
+
+  // Resets the list of callbacks to be run, allowing the same list
+  // to be run multiple times - whenever the `run` method is called.
+  reset: function(){
+    var callbacks = this._callbacks;
+    this._deferred = Marionette.$.Deferred();
+    this._callbacks = [];
+
+    _.each(callbacks, function(cb){
+      this.add(cb.cb, cb.ctx);
+    }, this);
+  }
+});
+
+// Marionette Controller
+// ---------------------
+//
+// A multi-purpose object to use as a controller for
+// modules and routers, and as a mediator for workflow
+// and coordination of other objects, views, and more.
+Marionette.Controller = function(options){
+  this.triggerMethod = Marionette.triggerMethod;
+  this.options = options || {};
+
+  if (_.isFunction(this.initialize)){
+    this.initialize(this.options);
+  }
+};
+
+Marionette.Controller.extend = Marionette.extend;
+
+// Controller Methods
+// --------------
+
+// Ensure it can trigger events with Backbone.Events
+_.extend(Marionette.Controller.prototype, Backbone.Events, {
+  close: function(){
+    this.stopListening();
+    var args = Array.prototype.slice.call(arguments);
+    this.triggerMethod.apply(this, ["close"].concat(args));
+    this.off();
+  }
+});
+
+// Region
+// ------
+//
+// Manage the visual regions of your composite application. See
+// http://lostechies.com/derickbailey/2011/12/12/composite-js-apps-regions-and-region-managers/
+
+Marionette.Region = function(options){
+  this.options = options || {};
+  this.el = Marionette.getOption(this, "el");
+
+  if (!this.el){
+    throwError("An 'el' must be specified for a region.", "NoElError");
+  }
+
+  if (this.initialize){
+    var args = Array.prototype.slice.apply(arguments);
+    this.initialize.apply(this, args);
+  }
+};
+
+
+// Region Type methods
+// -------------------
+
+_.extend(Marionette.Region, {
+
+  // Build an instance of a region by passing in a configuration object
+  // and a default region type to use if none is specified in the config.
+  //
+  // The config object should either be a string as a jQuery DOM selector,
+  // a Region type directly, or an object literal that specifies both
+  // a selector and regionType:
+  //
+  // ```js
+  // {
+  //   selector: "#foo",
+  //   regionType: MyCustomRegion
+  // }
+  // ```
+  //
+  buildRegion: function(regionConfig, defaultRegionType){
+    var regionIsString = _.isString(regionConfig);
+    var regionSelectorIsString = _.isString(regionConfig.selector);
+    var regionTypeIsUndefined = _.isUndefined(regionConfig.regionType);
+    var regionIsType = _.isFunction(regionConfig);
+
+    if (!regionIsType && !regionIsString && !regionSelectorIsString) {
+      throwError("Region must be specified as a Region type, a selector string or an object with selector property");
+    }
+
+    var selector, RegionType;
+
+    // get the selector for the region
+
+    if (regionIsString) {
+      selector = regionConfig;
+    }
+
+    if (regionConfig.selector) {
+      selector = regionConfig.selector;
+      delete regionConfig.selector;
+    }
+
+    // get the type for the region
+
+    if (regionIsType){
+      RegionType = regionConfig;
+    }
+
+    if (!regionIsType && regionTypeIsUndefined) {
+      RegionType = defaultRegionType;
+    }
+
+    if (regionConfig.regionType) {
+      RegionType = regionConfig.regionType;
+      delete regionConfig.regionType;
+    }
+
+    if (regionIsString || regionIsType) {
+      regionConfig = {};
+    }
+
+    regionConfig.el = selector;
+
+    // build the region instance
+    var region = new RegionType(regionConfig);
+
+    // override the `getEl` function if we have a parentEl
+    // this must be overridden to ensure the selector is found
+    // on the first use of the region. if we try to assign the
+    // region's `el` to `parentEl.find(selector)` in the object
+    // literal to build the region, the element will not be
+    // guaranteed to be in the DOM already, and will cause problems
+    if (regionConfig.parentEl){
+      region.getEl = function(selector) {
+        var parentEl = regionConfig.parentEl;
+        if (_.isFunction(parentEl)){
+          parentEl = parentEl();
+        }
+        return parentEl.find(selector);
+      };
+    }
+
+    return region;
+  }
+
+});
+
+// Region Instance Methods
+// -----------------------
+
+_.extend(Marionette.Region.prototype, Backbone.Events, {
+
+  // Displays a backbone view instance inside of the region.
+  // Handles calling the `render` method for you. Reads content
+  // directly from the `el` attribute. Also calls an optional
+  // `onShow` and `close` method on your view, just after showing
+  // or just before closing the view, respectively.
+  // The `preventClose` option can be used to prevent a view from being destroyed on show.
+  show: function(view, options){
+    this.ensureEl();
+
+    var showOptions = options || {};
+    var isViewClosed = view.isClosed || _.isUndefined(view.$el);
+    var isDifferentView = view !== this.currentView;
+    var preventClose =  !!showOptions.preventClose;
+
+    // only close the view if we don't want to preventClose and the view is different
+    var _shouldCloseView = !preventClose && isDifferentView;
+
+    if (_shouldCloseView) {
+      this.close();
+    }
+
+    view.render();
+    Marionette.triggerMethod.call(this, "before:show", view);
+    Marionette.triggerMethod.call(view, "before:show");
+
+    if (isDifferentView || isViewClosed) {
+      this.open(view);
+    }
+
+    this.currentView = view;
+
+    Marionette.triggerMethod.call(this, "show", view);
+    Marionette.triggerMethod.call(view, "show");
+  },
+
+  ensureEl: function(){
+    if (!this.$el || this.$el.length === 0){
+      this.$el = this.getEl(this.el);
+    }
+  },
+
+  // Override this method to change how the region finds the
+  // DOM element that it manages. Return a jQuery selector object.
+  getEl: function(selector){
+    return Marionette.$(selector);
+  },
+
+  // Override this method to change how the new view is
+  // appended to the `$el` that the region is managing
+  open: function(view){
+    this.$el.empty().append(view.el);
+  },
+
+  // Close the current view, if there is one. If there is no
+  // current view, it does nothing and returns immediately.
+  close: function(){
+    var view = this.currentView;
+    if (!view || view.isClosed){ return; }
+
+    // call 'close' or 'remove', depending on which is found
+    if (view.close) { view.close(); }
+    else if (view.remove) { view.remove(); }
+
+    Marionette.triggerMethod.call(this, "close", view);
+
+    delete this.currentView;
+  },
+
+  // Attach an existing view to the region. This
+  // will not call `render` or `onShow` for the new view,
+  // and will not replace the current HTML for the `el`
+  // of the region.
+  attachView: function(view){
+    this.currentView = view;
+  },
+
+  // Reset the region by closing any existing view and
+  // clearing out the cached `$el`. The next time a view
+  // is shown via this region, the region will re-query the
+  // DOM for the region's `el`.
+  reset: function(){
+    this.close();
+    delete this.$el;
+  }
+});
+
+// Copy the `extend` function used by Backbone's classes
+Marionette.Region.extend = Marionette.extend;
+
+// Marionette.RegionManager
+// ------------------------
+//
+// Manage one or more related `Marionette.Region` objects.
+Marionette.RegionManager = (function(Marionette){
+
+  var RegionManager = Marionette.Controller.extend({
+    constructor: function(options){
+      this._regions = {};
+      Marionette.Controller.prototype.constructor.call(this, options);
+    },
+
+    // Add multiple regions using an object literal, where
+    // each key becomes the region name, and each value is
+    // the region definition.
+    addRegions: function(regionDefinitions, defaults){
+      var regions = {};
+
+      _.each(regionDefinitions, function(definition, name){
+        if (_.isString(definition)){
+          definition = { selector: definition };
+        }
+
+        if (definition.selector){
+          definition = _.defaults({}, definition, defaults);
+        }
+
+        var region = this.addRegion(name, definition);
+        regions[name] = region;
+      }, this);
+
+      return regions;
+    },
+
+    // Add an individual region to the region manager,
+    // and return the region instance
+    addRegion: function(name, definition){
+      var region;
+
+      var isObject = _.isObject(definition);
+      var isString = _.isString(definition);
+      var hasSelector = !!definition.selector;
+
+      if (isString || (isObject && hasSelector)){
+        region = Marionette.Region.buildRegion(definition, Marionette.Region);
+      } else if (_.isFunction(definition)){
+        region = Marionette.Region.buildRegion(definition, Marionette.Region);
+      } else {
+        region = definition;
+      }
+
+      this._store(name, region);
+      this.triggerMethod("region:add", name, region);
+      return region;
+    },
+
+    // Get a region by name
+    get: function(name){
+      return this._regions[name];
+    },
+
+    // Remove a region by name
+    removeRegion: function(name){
+      var region = this._regions[name];
+      this._remove(name, region);
+    },
+
+    // Close all regions in the region manager, and
+    // remove them
+    removeRegions: function(){
+      _.each(this._regions, function(region, name){
+        this._remove(name, region);
+      }, this);
+    },
+
+    // Close all regions in the region manager, but
+    // leave them attached
+    closeRegions: function(){
+      _.each(this._regions, function(region, name){
+        region.close();
+      }, this);
+    },
+
+    // Close all regions and shut down the region
+    // manager entirely
+    close: function(){
+      this.removeRegions();
+      Marionette.Controller.prototype.close.apply(this, arguments);
+    },
+
+    // internal method to store regions
+    _store: function(name, region){
+      this._regions[name] = region;
+      this._setLength();
+    },
+
+    // internal method to remove a region
+    _remove: function(name, region){
+      region.close();
+      region.stopListening();
+      delete this._regions[name];
+      this._setLength();
+      this.triggerMethod("region:remove", name, region);
+    },
+
+    // set the number of regions current held
+    _setLength: function(){
+      this.length = _.size(this._regions);
+    }
+
+  });
+
+  Marionette.actAsCollection(RegionManager.prototype, '_regions');
+
+  return RegionManager;
+})(Marionette);
+
+
+// Template Cache
+// --------------
+
+// Manage templates stored in `<script>` blocks,
+// caching them for faster access.
+Marionette.TemplateCache = function(templateId){
+  this.templateId = templateId;
+};
+
+// TemplateCache object-level methods. Manage the template
+// caches from these method calls instead of creating
+// your own TemplateCache instances
+_.extend(Marionette.TemplateCache, {
+  templateCaches: {},
+
+  // Get the specified template by id. Either
+  // retrieves the cached version, or loads it
+  // from the DOM.
+  get: function(templateId){
+    var cachedTemplate = this.templateCaches[templateId];
+
+    if (!cachedTemplate){
+      cachedTemplate = new Marionette.TemplateCache(templateId);
+      this.templateCaches[templateId] = cachedTemplate;
+    }
+
+    return cachedTemplate.load();
+  },
+
+  // Clear templates from the cache. If no arguments
+  // are specified, clears all templates:
+  // `clear()`
+  //
+  // If arguments are specified, clears each of the
+  // specified templates from the cache:
+  // `clear("#t1", "#t2", "...")`
+  clear: function(){
+    var i;
+    var args = slice.call(arguments);
+    var length = args.length;
+
+    if (length > 0){
+      for(i=0; i<length; i++){
+        delete this.templateCaches[args[i]];
+      }
+    } else {
+      this.templateCaches = {};
+    }
+  }
+});
+
+// TemplateCache instance methods, allowing each
+// template cache object to manage its own state
+// and know whether or not it has been loaded
+_.extend(Marionette.TemplateCache.prototype, {
+
+  // Internal method to load the template
+  load: function(){
+    // Guard clause to prevent loading this template more than once
+    if (this.compiledTemplate){
+      return this.compiledTemplate;
+    }
+
+    // Load the template and compile it
+    var template = this.loadTemplate(this.templateId);
+    this.compiledTemplate = this.compileTemplate(template);
+
+    return this.compiledTemplate;
+  },
+
+  // Load a template from the DOM, by default. Override
+  // this method to provide your own template retrieval
+  // For asynchronous loading with AMD/RequireJS, consider
+  // using a template-loader plugin as described here:
+  // https://github.com/marionettejs/backbone.marionette/wiki/Using-marionette-with-requirejs
+  loadTemplate: function(templateId){
+    var template = Marionette.$(templateId).html();
+
+    if (!template || template.length === 0){
+      throwError("Could not find template: '" + templateId + "'", "NoTemplateError");
+    }
+
+    return template;
+  },
+
+  // Pre-compile the template before caching it. Override
+  // this method if you do not need to pre-compile a template
+  // (JST / RequireJS for example) or if you want to change
+  // the template engine used (Handebars, etc).
+  compileTemplate: function(rawTemplate){
+    return _.template(rawTemplate);
+  }
+});
+
+// Renderer
+// --------
+
+// Render a template with data by passing in the template
+// selector and the data to render.
+Marionette.Renderer = {
+
+  // Render a template with data. The `template` parameter is
+  // passed to the `TemplateCache` object to retrieve the
+  // template function. Override this method to provide your own
+  // custom rendering and template handling for all of Marionette.
+  render: function(template, data){
+
+    if (!template) {
+      throwError("Cannot render the template since it's false, null or undefined.", "TemplateNotFoundError");
+    }
+
+    var templateFunc;
+    if (typeof template === "function"){
+      templateFunc = template;
+    } else {
+      templateFunc = Marionette.TemplateCache.get(template);
+    }
+
+    return templateFunc(data);
+  }
+};
+
+
+// Marionette.View
+// ---------------
+
+// The core view type that other Marionette views extend from.
+Marionette.View = Backbone.View.extend({
+
+  constructor: function(options){
+    _.bindAll(this, "render");
+
+    // this exposes view options to the view initializer
+    // this is a backfill since backbone removed the assignment
+    // of this.options
+    // at some point however this may be removed
+    this.options = _.extend({}, _.result(this, 'options'), _.isFunction(options) ? options.call(this) : options);
+
+    // parses out the @ui DSL for events
+    this.events = this.normalizeUIKeys(_.result(this, 'events'));
+
+    if (_.isObject(this.behaviors)) {
+      new Marionette.Behaviors(this);
+    }
+
+    Backbone.View.prototype.constructor.apply(this, arguments);
+
+    Marionette.MonitorDOMRefresh(this);
+    this.listenTo(this, "show", this.onShowCalled);
+  },
+
+  // import the "triggerMethod" to trigger events with corresponding
+  // methods if the method exists
+  triggerMethod: Marionette.triggerMethod,
+
+  // Imports the "normalizeMethods" to transform hashes of
+  // events=>function references/names to a hash of events=>function references
+  normalizeMethods: Marionette.normalizeMethods,
+
+  // Get the template for this view
+  // instance. You can set a `template` attribute in the view
+  // definition or pass a `template: "whatever"` parameter in
+  // to the constructor options.
+  getTemplate: function(){
+    return Marionette.getOption(this, "template");
+  },
+
+  // Mix in template helper methods. Looks for a
+  // `templateHelpers` attribute, which can either be an
+  // object literal, or a function that returns an object
+  // literal. All methods and attributes from this object
+  // are copies to the object passed in.
+  mixinTemplateHelpers: function(target){
+    target = target || {};
+    var templateHelpers = Marionette.getOption(this, "templateHelpers");
+    if (_.isFunction(templateHelpers)){
+      templateHelpers = templateHelpers.call(this);
+    }
+    return _.extend(target, templateHelpers);
+  },
+
+
+  normalizeUIKeys: function(hash) {
+    var ui = _.result(this, 'ui');
+    return Marionette.normalizeUIKeys(hash, ui);
+  },
+
+  // Configure `triggers` to forward DOM events to view
+  // events. `triggers: {"click .foo": "do:foo"}`
+  configureTriggers: function(){
+    if (!this.triggers) { return; }
+
+    var triggerEvents = {};
+
+    // Allow `triggers` to be configured as a function
+    var triggers = this.normalizeUIKeys(_.result(this, "triggers"));
+
+    // Configure the triggers, prevent default
+    // action and stop propagation of DOM events
+    _.each(triggers, function(value, key){
+
+      var hasOptions = _.isObject(value);
+      var eventName = hasOptions ? value.event : value;
+
+      // build the event handler function for the DOM event
+      triggerEvents[key] = function(e){
+
+        // stop the event in its tracks
+        if (e) {
+          var prevent = e.preventDefault;
+          var stop = e.stopPropagation;
+
+          var shouldPrevent = hasOptions ? value.preventDefault : prevent;
+          var shouldStop = hasOptions ? value.stopPropagation : stop;
+
+          if (shouldPrevent && prevent) { prevent.apply(e); }
+          if (shouldStop && stop) { stop.apply(e); }
+        }
+
+        // build the args for the event
+        var args = {
+          view: this,
+          model: this.model,
+          collection: this.collection
+        };
+
+        // trigger the event
+        this.triggerMethod(eventName, args);
+      };
+
+    }, this);
+
+    return triggerEvents;
+  },
+
+  // Overriding Backbone.View's delegateEvents to handle
+  // the `triggers`, `modelEvents`, and `collectionEvents` configuration
+  delegateEvents: function(events){
+    this._delegateDOMEvents(events);
+    Marionette.bindEntityEvents(this, this.model, Marionette.getOption(this, "modelEvents"));
+    Marionette.bindEntityEvents(this, this.collection, Marionette.getOption(this, "collectionEvents"));
+  },
+
+  // internal method to delegate DOM events and triggers
+  _delegateDOMEvents: function(events){
+    events = events || this.events;
+    if (_.isFunction(events)){ events = events.call(this); }
+
+    var combinedEvents = {};
+
+    // look up if this view has behavior events
+    var behaviorEvents = _.result(this, 'behaviorEvents') || {};
+    var triggers = this.configureTriggers();
+
+    // behavior events will be overriden by view events and or triggers
+    _.extend(combinedEvents, behaviorEvents, events, triggers);
+
+    Backbone.View.prototype.delegateEvents.call(this, combinedEvents);
+  },
+
+  // Overriding Backbone.View's undelegateEvents to handle unbinding
+  // the `triggers`, `modelEvents`, and `collectionEvents` config
+  undelegateEvents: function(){
+    var args = Array.prototype.slice.call(arguments);
+    Backbone.View.prototype.undelegateEvents.apply(this, args);
+
+    Marionette.unbindEntityEvents(this, this.model, Marionette.getOption(this, "modelEvents"));
+    Marionette.unbindEntityEvents(this, this.collection, Marionette.getOption(this, "collectionEvents"));
+  },
+
+  // Internal method, handles the `show` event.
+  onShowCalled: function(){},
+
+  // Default `close` implementation, for removing a view from the
+  // DOM and unbinding it. Regions will call this method
+  // for you. You can specify an `onClose` method in your view to
+  // add custom code that is called after the view is closed.
+  close: function(){
+    if (this.isClosed) { return; }
+
+    var args = Array.prototype.slice.call(arguments);
+
+    // allow the close to be stopped by returning `false`
+    // from the `onBeforeClose` method
+    var shouldClose = this.triggerMethod.apply(this, ["before:close"].concat(args));
+    if (shouldClose === false){
+      return;
+    }
+
+    // mark as closed before doing the actual close, to
+    // prevent infinite loops within "close" event handlers
+    // that are trying to close other views
+    this.isClosed = true;
+    this.triggerMethod.apply(this, ["close"].concat(args));
+
+    // unbind UI elements
+    this.unbindUIElements();
+
+    // remove the view from the DOM
+    this.remove();
+  },
+
+  // This method binds the elements specified in the "ui" hash inside the view's code with
+  // the associated jQuery selectors.
+  bindUIElements: function(){
+    if (!this.ui) { return; }
+
+    // store the ui hash in _uiBindings so they can be reset later
+    // and so re-rendering the view will be able to find the bindings
+    if (!this._uiBindings){
+      this._uiBindings = this.ui;
+    }
+
+    // get the bindings result, as a function or otherwise
+    var bindings = _.result(this, "_uiBindings");
+
+    // empty the ui so we don't have anything to start with
+    this.ui = {};
+
+    // bind each of the selectors
+    _.each(_.keys(bindings), function(key) {
+      var selector = bindings[key];
+      this.ui[key] = this.$(selector);
+    }, this);
+  },
+
+  // This method unbinds the elements specified in the "ui" hash
+  unbindUIElements: function(){
+    if (!this.ui || !this._uiBindings){ return; }
+
+    // delete all of the existing ui bindings
+    _.each(this.ui, function($el, name){
+      delete this.ui[name];
+    }, this);
+
+    // reset the ui element to the original bindings configuration
+    this.ui = this._uiBindings;
+    delete this._uiBindings;
+  }
+});
+
+// Item View
+// ---------
+
+// A single item view implementation that contains code for rendering
+// with underscore.js templates, serializing the view's model or collection,
+// and calling several methods on extended views, such as `onRender`.
+Marionette.ItemView = Marionette.View.extend({
+
+  // Setting up the inheritance chain which allows changes to
+  // Marionette.View.prototype.constructor which allows overriding
+  constructor: function(){
+    Marionette.View.prototype.constructor.apply(this, arguments);
+  },
+
+  // Serialize the model or collection for the view. If a model is
+  // found, `.toJSON()` is called. If a collection is found, `.toJSON()`
+  // is also called, but is used to populate an `items` array in the
+  // resulting data. If both are found, defaults to the model.
+  // You can override the `serializeData` method in your own view
+  // definition, to provide custom serialization for your view's data.
+  serializeData: function(){
+    var data = {};
+
+    if (this.model) {
+      data = this.model.toJSON();
+    }
+    else if (this.collection) {
+      data = { items: this.collection.toJSON() };
+    }
+
+    return data;
+  },
+
+  // Render the view, defaulting to underscore.js templates.
+  // You can override this in your view definition to provide
+  // a very specific rendering for your view. In general, though,
+  // you should override the `Marionette.Renderer` object to
+  // change how Marionette renders views.
+  render: function(){
+    this.isClosed = false;
+
+    this.triggerMethod("before:render", this);
+    this.triggerMethod("item:before:render", this);
+
+    var data = this.serializeData();
+    data = this.mixinTemplateHelpers(data);
+
+    var template = this.getTemplate();
+    var html = Marionette.Renderer.render(template, data);
+
+    this.$el.html(html);
+    this.bindUIElements();
+
+    this.triggerMethod("render", this);
+    this.triggerMethod("item:rendered", this);
+
+    return this;
+  },
+
+  // Override the default close event to add a few
+  // more events that are triggered.
+  close: function(){
+    if (this.isClosed){ return; }
+
+    this.triggerMethod('item:before:close');
+
+    Marionette.View.prototype.close.apply(this, arguments);
+
+    this.triggerMethod('item:closed');
+  }
+});
+
+// Collection View
+// ---------------
+
+// A view that iterates over a Backbone.Collection
+// and renders an individual ItemView for each model.
+Marionette.CollectionView = Marionette.View.extend({
+  // used as the prefix for item view events
+  // that are forwarded through the collectionview
+  itemViewEventPrefix: "itemview",
+
+  // constructor
+  constructor: function(options){
+    this._initChildViewStorage();
+
+    Marionette.View.prototype.constructor.apply(this, arguments);
+
+    this._initialEvents();
+    this.initRenderBuffer();
+  },
+
+  // Instead of inserting elements one by one into the page,
+  // it's much more performant to insert elements into a document
+  // fragment and then insert that document fragment into the page
+  initRenderBuffer: function() {
+    this.elBuffer = document.createDocumentFragment();
+    this._bufferedChildren = [];
+  },
+
+  startBuffering: function() {
+    this.initRenderBuffer();
+    this.isBuffering = true;
+  },
+
+  endBuffering: function() {
+    this.isBuffering = false;
+    this.appendBuffer(this, this.elBuffer);
+    this._triggerShowBufferedChildren();
+    this.initRenderBuffer();
+  },
+
+  _triggerShowBufferedChildren: function () {
+    if (this._isShown) {
+      _.each(this._bufferedChildren, function (child) {
+        Marionette.triggerMethod.call(child, "show");
+      });
+      this._bufferedChildren = [];
+    }
+  },
+
+  // Configured the initial events that the collection view
+  // binds to.
+  _initialEvents: function(){
+    if (this.collection){
+      this.listenTo(this.collection, "add", this.addChildView);
+      this.listenTo(this.collection, "remove", this.removeItemView);
+      this.listenTo(this.collection, "reset", this.render);
+    }
+  },
+
+  // Handle a child item added to the collection
+  addChildView: function(item, collection, options){
+    this.closeEmptyView();
+    var ItemView = this.getItemView(item);
+    var index = this.collection.indexOf(item);
+    this.addItemView(item, ItemView, index);
+  },
+
+  // Override from `Marionette.View` to guarantee the `onShow` method
+  // of child views is called.
+  onShowCalled: function(){
+    this.children.each(function(child){
+      Marionette.triggerMethod.call(child, "show");
+    });
+  },
+
+  // Internal method to trigger the before render callbacks
+  // and events
+  triggerBeforeRender: function(){
+    this.triggerMethod("before:render", this);
+    this.triggerMethod("collection:before:render", this);
+  },
+
+  // Internal method to trigger the rendered callbacks and
+  // events
+  triggerRendered: function(){
+    this.triggerMethod("render", this);
+    this.triggerMethod("collection:rendered", this);
+  },
+
+  // Render the collection of items. Override this method to
+  // provide your own implementation of a render function for
+  // the collection view.
+  render: function(){
+    this.isClosed = false;
+    this.triggerBeforeRender();
+    this._renderChildren();
+    this.triggerRendered();
+    return this;
+  },
+
+  // Internal method. Separated so that CompositeView can have
+  // more control over events being triggered, around the rendering
+  // process
+  _renderChildren: function(){
+    this.startBuffering();
+
+    this.closeEmptyView();
+    this.closeChildren();
+
+    if (!this.isEmpty(this.collection)) {
+      this.showCollection();
+    } else {
+      this.showEmptyView();
+    }
+
+    this.endBuffering();
+  },
+
+  // Internal method to loop through each item in the
+  // collection view and show it
+  showCollection: function(){
+    var ItemView;
+    this.collection.each(function(item, index){
+      ItemView = this.getItemView(item);
+      this.addItemView(item, ItemView, index);
+    }, this);
+  },
+
+  // Internal method to show an empty view in place of
+  // a collection of item views, when the collection is
+  // empty
+  showEmptyView: function(){
+    var EmptyView = this.getEmptyView();
+
+    if (EmptyView && !this._showingEmptyView){
+      this._showingEmptyView = true;
+      var model = new Backbone.Model();
+      this.addItemView(model, EmptyView, 0);
+    }
+  },
+
+  // Internal method to close an existing emptyView instance
+  // if one exists. Called when a collection view has been
+  // rendered empty, and then an item is added to the collection.
+  closeEmptyView: function(){
+    if (this._showingEmptyView){
+      this.closeChildren();
+      delete this._showingEmptyView;
+    }
+  },
+
+  // Retrieve the empty view type
+  getEmptyView: function(){
+    return Marionette.getOption(this, "emptyView");
+  },
+
+  // Retrieve the itemView type, either from `this.options.itemView`
+  // or from the `itemView` in the object definition. The "options"
+  // takes precedence.
+  getItemView: function(item){
+    var itemView = Marionette.getOption(this, "itemView");
+
+    if (!itemView){
+      throwError("An `itemView` must be specified", "NoItemViewError");
+    }
+
+    return itemView;
+  },
+
+  // Render the child item's view and add it to the
+  // HTML for the collection view.
+  addItemView: function(item, ItemView, index){
+    // get the itemViewOptions if any were specified
+    var itemViewOptions = Marionette.getOption(this, "itemViewOptions");
+    if (_.isFunction(itemViewOptions)){
+      itemViewOptions = itemViewOptions.call(this, item, index);
+    }
+
+    // build the view
+    var view = this.buildItemView(item, ItemView, itemViewOptions);
+
+    // set up the child view event forwarding
+    this.addChildViewEventForwarding(view);
+
+    // this view is about to be added
+    this.triggerMethod("before:item:added", view);
+
+    // Store the child view itself so we can properly
+    // remove and/or close it later
+    this.children.add(view);
+
+    // Render it and show it
+    this.renderItemView(view, index);
+
+    // call the "show" method if the collection view
+    // has already been shown
+    if (this._isShown && !this.isBuffering){
+      Marionette.triggerMethod.call(view, "show");
+    }
+
+    // this view was added
+    this.triggerMethod("after:item:added", view);
+
+    return view;
+  },
+
+  // Set up the child view event forwarding. Uses an "itemview:"
+  // prefix in front of all forwarded events.
+  addChildViewEventForwarding: function(view){
+    var prefix = Marionette.getOption(this, "itemViewEventPrefix");
+
+    // Forward all child item view events through the parent,
+    // prepending "itemview:" to the event name
+    this.listenTo(view, "all", function(){
+      var args = slice.call(arguments);
+      var rootEvent = args[0];
+      var itemEvents = this.normalizeMethods(this.getItemEvents());
+
+      args[0] = prefix + ":" + rootEvent;
+      args.splice(1, 0, view);
+
+      // call collectionView itemEvent if defined
+      if (typeof itemEvents !== "undefined" && _.isFunction(itemEvents[rootEvent])) {
+        itemEvents[rootEvent].apply(this, args);
+      }
+
+      Marionette.triggerMethod.apply(this, args);
+    }, this);
+  },
+
+  // returns the value of itemEvents depending on if a function
+  getItemEvents: function() {
+    if (_.isFunction(this.itemEvents)) {
+      return this.itemEvents.call(this);
+    }
+
+    return this.itemEvents;
+  },
+
+  // render the item view
+  renderItemView: function(view, index) {
+    view.render();
+    this.appendHtml(this, view, index);
+  },
+
+  // Build an `itemView` for every model in the collection.
+  buildItemView: function(item, ItemViewType, itemViewOptions){
+    var options = _.extend({model: item}, itemViewOptions);
+    return new ItemViewType(options);
+  },
+
+  // get the child view by item it holds, and remove it
+  removeItemView: function(item){
+    var view = this.children.findByModel(item);
+    this.removeChildView(view);
+    this.checkEmpty();
+  },
+
+  // Remove the child view and close it
+  removeChildView: function(view){
+
+    // shut down the child view properly,
+    // including events that the collection has from it
+    if (view){
+      // call 'close' or 'remove', depending on which is found
+      if (view.close) { view.close(); }
+      else if (view.remove) { view.remove(); }
+
+      this.stopListening(view);
+      this.children.remove(view);
+    }
+
+    this.triggerMethod("item:removed", view);
+  },
+
+  // helper to check if the collection is empty
+  isEmpty: function(collection){
+    // check if we're empty now
+    return !this.collection || this.collection.length === 0;
+  },
+
+  // If empty, show the empty view
+  checkEmpty: function (){
+    if (this.isEmpty(this.collection)){
+      this.showEmptyView();
+    }
+  },
+
+  // You might need to override this if you've overridden appendHtml
+  appendBuffer: function(collectionView, buffer) {
+    collectionView.$el.append(buffer);
+  },
+
+  // Append the HTML to the collection's `el`.
+  // Override this method to do something other
+  // than `.append`.
+  appendHtml: function(collectionView, itemView, index){
+    if (collectionView.isBuffering) {
+      // buffering happens on reset events and initial renders
+      // in order to reduce the number of inserts into the
+      // document, which are expensive.
+      collectionView.elBuffer.appendChild(itemView.el);
+      collectionView._bufferedChildren.push(itemView);
+    }
+    else {
+      // If we've already rendered the main collection, just
+      // append the new items directly into the element.
+      collectionView.$el.append(itemView.el);
+    }
+  },
+
+  // Internal method to set up the `children` object for
+  // storing all of the child views
+  _initChildViewStorage: function(){
+    this.children = new Backbone.ChildViewContainer();
+  },
+
+  // Handle cleanup and other closing needs for
+  // the collection of views.
+  close: function(){
+    if (this.isClosed){ return; }
+
+    this.triggerMethod("collection:before:close");
+    this.closeChildren();
+    this.triggerMethod("collection:closed");
+
+    Marionette.View.prototype.close.apply(this, arguments);
+  },
+
+  // Close the child views that this collection view
+  // is holding on to, if any
+  closeChildren: function(){
+    this.children.each(function(child){
+      this.removeChildView(child);
+    }, this);
+    this.checkEmpty();
+  }
+});
+
+// Composite View
+// --------------
+
+// Used for rendering a branch-leaf, hierarchical structure.
+// Extends directly from CollectionView and also renders an
+// an item view as `modelView`, for the top leaf
+Marionette.CompositeView = Marionette.CollectionView.extend({
+
+  // Setting up the inheritance chain which allows changes to
+  // Marionette.CollectionView.prototype.constructor which allows overriding
+  constructor: function(){
+    Marionette.CollectionView.prototype.constructor.apply(this, arguments);
+  },
+
+  // Configured the initial events that the composite view
+  // binds to. Override this method to prevent the initial
+  // events, or to add your own initial events.
+  _initialEvents: function(){
+
+    // Bind only after composite view is rendered to avoid adding child views
+    // to nonexistent itemViewContainer
+    this.once('render', function () {
+      if (this.collection){
+        this.listenTo(this.collection, "add", this.addChildView);
+        this.listenTo(this.collection, "remove", this.removeItemView);
+        this.listenTo(this.collection, "reset", this._renderChildren);
+      }
+    });
+
+  },
+
+  // Retrieve the `itemView` to be used when rendering each of
+  // the items in the collection. The default is to return
+  // `this.itemView` or Marionette.CompositeView if no `itemView`
+  // has been defined
+  getItemView: function(item){
+    var itemView = Marionette.getOption(this, "itemView") || this.constructor;
+
+    if (!itemView){
+      throwError("An `itemView` must be specified", "NoItemViewError");
+    }
+
+    return itemView;
+  },
+
+  // Serialize the collection for the view.
+  // You can override the `serializeData` method in your own view
+  // definition, to provide custom serialization for your view's data.
+  serializeData: function(){
+    var data = {};
+
+    if (this.model){
+      data = this.model.toJSON();
+    }
+
+    return data;
+  },
+
+  // Renders the model once, and the collection once. Calling
+  // this again will tell the model's view to re-render itself
+  // but the collection will not re-render.
+  render: function(){
+    this.isRendered = true;
+    this.isClosed = false;
+    this.resetItemViewContainer();
+
+    this.triggerBeforeRender();
+    var html = this.renderModel();
+    this.$el.html(html);
+    // the ui bindings is done here and not at the end of render since they
+    // will not be available until after the model is rendered, but should be
+    // available before the collection is rendered.
+    this.bindUIElements();
+    this.triggerMethod("composite:model:rendered");
+
+    this._renderChildren();
+
+    this.triggerMethod("composite:rendered");
+    this.triggerRendered();
+    return this;
+  },
+
+  _renderChildren: function(){
+    if (this.isRendered){
+      this.triggerMethod("composite:collection:before:render");
+      Marionette.CollectionView.prototype._renderChildren.call(this);
+      this.triggerMethod("composite:collection:rendered");
+    }
+  },
+
+  // Render an individual model, if we have one, as
+  // part of a composite view (branch / leaf). For example:
+  // a treeview.
+  renderModel: function(){
+    var data = {};
+    data = this.serializeData();
+    data = this.mixinTemplateHelpers(data);
+
+    var template = this.getTemplate();
+    return Marionette.Renderer.render(template, data);
+  },
+
+
+  // You might need to override this if you've overridden appendHtml
+  appendBuffer: function(compositeView, buffer) {
+    var $container = this.getItemViewContainer(compositeView);
+    $container.append(buffer);
+  },
+
+  // Appends the `el` of itemView instances to the specified
+  // `itemViewContainer` (a jQuery selector). Override this method to
+  // provide custom logic of how the child item view instances have their
+  // HTML appended to the composite view instance.
+  appendHtml: function(compositeView, itemView, index){
+    if (compositeView.isBuffering) {
+      compositeView.elBuffer.appendChild(itemView.el);
+      compositeView._bufferedChildren.push(itemView);
+    }
+    else {
+      // If we've already rendered the main collection, just
+      // append the new items directly into the element.
+      var $container = this.getItemViewContainer(compositeView);
+      $container.append(itemView.el);
+    }
+  },
+
+  // Internal method to ensure an `$itemViewContainer` exists, for the
+  // `appendHtml` method to use.
+  getItemViewContainer: function(containerView){
+    if ("$itemViewContainer" in containerView){
+      return containerView.$itemViewContainer;
+    }
+
+    var container;
+    var itemViewContainer = Marionette.getOption(containerView, "itemViewContainer");
+    if (itemViewContainer){
+
+      var selector = _.isFunction(itemViewContainer) ? itemViewContainer.call(containerView) : itemViewContainer;
+
+      if (selector.charAt(0) === "@" && containerView.ui) {
+        container = containerView.ui[selector.substr(4)];
+      } else {
+        container = containerView.$(selector);
+      }
+
+      if (container.length <= 0) {
+        throwError("The specified `itemViewContainer` was not found: " + containerView.itemViewContainer, "ItemViewContainerMissingError");
+      }
+
+    } else {
+      container = containerView.$el;
+    }
+
+    containerView.$itemViewContainer = container;
+    return container;
+  },
+
+  // Internal method to reset the `$itemViewContainer` on render
+  resetItemViewContainer: function(){
+    if (this.$itemViewContainer){
+      delete this.$itemViewContainer;
+    }
+  }
+});
+
+// Layout
+// ------
+
+// Used for managing application layouts, nested layouts and
+// multiple regions within an application or sub-application.
+//
+// A specialized view type that renders an area of HTML and then
+// attaches `Region` instances to the specified `regions`.
+// Used for composite view management and sub-application areas.
+Marionette.Layout = Marionette.ItemView.extend({
+  regionType: Marionette.Region,
+
+  // Ensure the regions are available when the `initialize` method
+  // is called.
+  constructor: function (options) {
+    options = options || {};
+
+    this._firstRender = true;
+    this._initializeRegions(options);
+
+    Marionette.ItemView.prototype.constructor.call(this, options);
+  },
+
+  // Layout's render will use the existing region objects the
+  // first time it is called. Subsequent calls will close the
+  // views that the regions are showing and then reset the `el`
+  // for the regions to the newly rendered DOM elements.
+  render: function(){
+
+    if (this.isClosed){
+      // a previously closed layout means we need to
+      // completely re-initialize the regions
+      this._initializeRegions();
+    }
+    if (this._firstRender) {
+      // if this is the first render, don't do anything to
+      // reset the regions
+      this._firstRender = false;
+    } else if (!this.isClosed){
+      // If this is not the first render call, then we need to
+      // re-initializing the `el` for each region
+      this._reInitializeRegions();
+    }
+
+    return Marionette.ItemView.prototype.render.apply(this, arguments);
+  },
+
+  // Handle closing regions, and then close the view itself.
+  close: function () {
+    if (this.isClosed){ return; }
+    this.regionManager.close();
+    Marionette.ItemView.prototype.close.apply(this, arguments);
+  },
+
+  // Add a single region, by name, to the layout
+  addRegion: function(name, definition){
+    var regions = {};
+    regions[name] = definition;
+    return this._buildRegions(regions)[name];
+  },
+
+  // Add multiple regions as a {name: definition, name2: def2} object literal
+  addRegions: function(regions){
+    this.regions = _.extend({}, this.regions, regions);
+    return this._buildRegions(regions);
+  },
+
+  // Remove a single region from the Layout, by name
+  removeRegion: function(name){
+    delete this.regions[name];
+    return this.regionManager.removeRegion(name);
+  },
+
+  // Provides alternative access to regions
+  // Accepts the region name
+  // getRegion('main')
+  getRegion: function(region) {
+    return this.regionManager.get(region);
+  },
+
+  // internal method to build regions
+  _buildRegions: function(regions){
+    var that = this;
+
+    var defaults = {
+      regionType: Marionette.getOption(this, "regionType"),
+      parentEl: function(){ return that.$el; }
+    };
+
+    return this.regionManager.addRegions(regions, defaults);
+  },
+
+  // Internal method to initialize the regions that have been defined in a
+  // `regions` attribute on this layout.
+  _initializeRegions: function (options) {
+    var regions;
+    this._initRegionManager();
+
+    if (_.isFunction(this.regions)) {
+      regions = this.regions(options);
+    } else {
+      regions = this.regions || {};
+    }
+
+    this.addRegions(regions);
+  },
+
+  // Internal method to re-initialize all of the regions by updating the `el` that
+  // they point to
+  _reInitializeRegions: function(){
+    this.regionManager.closeRegions();
+    this.regionManager.each(function(region){
+      region.reset();
+    });
+  },
+
+  // Internal method to initialize the region manager
+  // and all regions in it
+  _initRegionManager: function(){
+    this.regionManager = new Marionette.RegionManager();
+
+    this.listenTo(this.regionManager, "region:add", function(name, region){
+      this[name] = region;
+      this.trigger("region:add", name, region);
+    });
+
+    this.listenTo(this.regionManager, "region:remove", function(name, region){
+      delete this[name];
+      this.trigger("region:remove", name, region);
+    });
+  }
+});
+
+
+// Behavior
+// -----------
+
+// A Behavior is an isolated set of DOM /
+// user interactions that can be mixed into any View.
+// Behaviors allow you to blackbox View specific interactions
+// into portable logical chunks, keeping your views simple and your code DRY.
+
+Marionette.Behavior = (function(_, Backbone){
+  function Behavior(options, view){
+    // Setup reference to the view.
+    // this comes in handle when a behavior
+    // wants to directly talk up the chain
+    // to the view.
+    this.view = view;
+    this.defaults = _.result(this, "defaults") || {};
+    this.options  = _.extend({}, this.defaults, options);
+
+    // proxy behavior $ method to the view
+    // this is useful for doing jquery DOM lookups
+    // scoped to behaviors view.
+    this.$ = function() {
+      return this.view.$.apply(this.view, arguments);
+    };
+
+    // Call the initialize method passing
+    // the arguments from the instance constructor
+    this.initialize.apply(this, arguments);
+  }
+
+  _.extend(Behavior.prototype, Backbone.Events, {
+    initialize: function(){},
+
+    // stopListening to behavior `onListen` events.
+    close: function() {
+      this.stopListening();
+    },
+
+    // Setup class level proxy for triggerMethod.
+    triggerMethod: Marionette.triggerMethod
+  });
+
+  // Borrow Backbones extend implementation
+  // this allows us to setup a proper
+  // inheritence pattern that follow in suite
+  // with the rest of Marionette views.
+  Behavior.extend = Marionette.extend;
+
+  return Behavior;
+})(_, Backbone);
+
+// Marionette.Behaviors
+// --------
+
+// Behaviors is a utility class that takes care of
+// glueing your behavior instances to their given View.
+// The most important part of this class is that you
+// **MUST** override the class level behaviorsLookup
+// method for things to work properly.
+
+Marionette.Behaviors = (function(Marionette, _) {
+
+  function Behaviors(view) {
+    // Behaviors defined on a view can be a flat object literal
+    // or it can be a function that returns an object.
+    this.behaviors = Behaviors.parseBehaviors(view, _.result(view, 'behaviors'));
+
+    // Wraps several of the view's methods
+    // calling the methods first on each behavior
+    // and then eventually calling the method on the view.
+    Behaviors.wrap(view, this.behaviors, [
+      'bindUIElements', 'unbindUIElements',
+      'delegateEvents', 'undelegateEvents',
+      'onShow', 'onClose',
+      'behaviorEvents', 'triggerMethod',
+      'setElement', 'close'
+    ]);
+  }
+
+  var methods = {
+    setElement: function(setElement, behaviors) {
+      setElement.apply(this, _.tail(arguments, 2));
+
+      // proxy behavior $el to the view's $el.
+      // This is needed because a view's $el proxy
+      // is not set until after setElement is called.
+      _.each(behaviors, function(b) {
+        b.$el = this.$el;
+      }, this);
+    },
+
+    close: function(close, behaviors) {
+      var args = _.tail(arguments, 2);
+      close.apply(this, args);
+
+      // Call close on each behavior after
+      // closing down the view.
+      // This unbinds event listeners
+      // that behaviors have registerd for.
+      _.invoke(behaviors, 'close', args);
+    },
+
+    onShow: function(onShow, behaviors) {
+      var args = _.tail(arguments, 2);
+
+      _.each(behaviors, function(b) {
+        Marionette.triggerMethod.apply(b, ["show"].concat(args));
+      });
+
+      if (_.isFunction(onShow)) {
+        onShow.apply(this, args);
+      }
+    },
+
+    onClose: function(onClose, behaviors){
+      var args = _.tail(arguments, 2);
+
+      _.each(behaviors, function(b) {
+        Marionette.triggerMethod.apply(b, ["close"].concat(args));
+      });
+
+      if (_.isFunction(onClose)) {
+        onClose.apply(this, args);
+      }
+    },
+
+    bindUIElements: function(bindUIElements, behaviors) {
+      bindUIElements.apply(this);
+      _.invoke(behaviors, bindUIElements);
+    },
+
+    unbindUIElements: function(unbindUIElements, behaviors) {
+      unbindUIElements.apply(this);
+      _.invoke(behaviors, unbindUIElements);
+    },
+
+    triggerMethod: function(triggerMethod, behaviors) {
+      var args = _.tail(arguments, 2);
+      triggerMethod.apply(this, args);
+
+      _.each(behaviors, function(b) {
+        triggerMethod.apply(b, args);
+      });
+    },
+
+    delegateEvents: function(delegateEvents, behaviors) {
+      var args = _.tail(arguments, 2);
+      delegateEvents.apply(this, args);
+
+      _.each(behaviors, function(b){
+        Marionette.bindEntityEvents(b, this.model, Marionette.getOption(b, "modelEvents"));
+        Marionette.bindEntityEvents(b, this.collection, Marionette.getOption(b, "collectionEvents"));
+      }, this);
+    },
+
+    undelegateEvents: function(undelegateEvents, behaviors) {
+      var args = _.tail(arguments, 2);
+      undelegateEvents.apply(this, args);
+
+      _.each(behaviors, function(b) {
+        Marionette.unbindEntityEvents(b, this.model, Marionette.getOption(b, "modelEvents"));
+        Marionette.unbindEntityEvents(b, this.collection, Marionette.getOption(b, "collectionEvents"));
+      }, this);
+    },
+
+    behaviorEvents: function(behaviorEvents, behaviors) {
+      var _behaviorsEvents = {};
+      var viewUI = _.result(this, 'ui');
+
+      _.each(behaviors, function(b, i) {
+        var _events = {};
+        var behaviorEvents = _.result(b, 'events') || {};
+        var behaviorUI = _.result(b, 'ui');
+
+        // Construct an internal UI hash first using
+        // the views UI hash and then the behaviors UI hash.
+        // This allows the user to use UI hash elements
+        // defined in the parent view as well as those
+        // defined in the given behavior.
+        var ui = _.extend({}, viewUI, behaviorUI);
+
+        // Normalize behavior events hash to allow
+        // a user to use the @ui. syntax.
+        behaviorEvents = Marionette.normalizeUIKeys(behaviorEvents, ui);
+
+        _.each(_.keys(behaviorEvents), function(key) {
+          // append white-space at the end of each key to prevent behavior key collisions
+          // this is relying on the fact backbone events considers "click .foo" the same  "click .foo "
+          // starts with an array of two so the first behavior has one space
+
+          // +2 is uses becauce new Array(1) or 0 is "" and not " "
+          var whitespace = (new Array(i+2)).join(" ");
+          var eventKey   = key + whitespace;
+          var handler    = _.isFunction(behaviorEvents[key]) ? behaviorEvents[key] : b[behaviorEvents[key]];
+
+          _events[eventKey] = _.bind(handler, b);
+        });
+
+        _behaviorsEvents = _.extend(_behaviorsEvents, _events);
+      });
+
+      return _behaviorsEvents;
+    }
+  };
+
+  _.extend(Behaviors, {
+
+    // placeholder method to be extended by the user
+    // should define the object that stores the behaviors
+    // i.e.
+    //
+    // Marionette.Behaviors.behaviorsLookup: function() {
+    //   return App.Behaviors
+    // }
+    behaviorsLookup: function() {
+      throw new Error("You must define where your behaviors are stored. See https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.behaviors.md#behaviorslookup");
+    },
+
+    // Takes care of getting the behavior class
+    // given options and a key.
+    // If a user passes in options.behaviorClass
+    // default to using that. Otherwise delegate
+    // the lookup to the users behaviorsLookup implementation.
+    getBehaviorClass: function(options, key) {
+      if (options.behaviorClass) {
+        return options.behaviorClass;
+      }
+
+      // Get behavior class can be either a flat object or a method
+      return _.isFunction(Behaviors.behaviorsLookup) ? Behaviors.behaviorsLookup.apply(this, arguments)[key] : Behaviors.behaviorsLookup[key];
+    },
+
+    // Maps over a view's behaviors. Performing
+    // a lookup on each behavior and the instantiating
+    // said behavior passing its options and view.
+    parseBehaviors: function(view, behaviors){
+      return _.map(behaviors, function(options, key){
+        var BehaviorClass = Behaviors.getBehaviorClass(options, key);
+        return new BehaviorClass(options, view);
+      });
+    },
+
+    // wrap view internal methods so that they delegate to behaviors.
+    // For example, onClose should trigger close on all of the behaviors and then close itself.
+    // i.e.
+    //
+    // view.delegateEvents = _.partial(methods.delegateEvents, view.delegateEvents, behaviors);
+    wrap: function(view, behaviors, methodNames) {
+      _.each(methodNames, function(methodName) {
+        view[methodName] = _.partial(methods[methodName], view[methodName], behaviors);
+      });
+    }
+  });
+
+  return Behaviors;
+
+})(Marionette, _);
+
+
+// AppRouter
+// ---------
+
+// Reduce the boilerplate code of handling route events
+// and then calling a single method on another object.
+// Have your routers configured to call the method on
+// your object, directly.
+//
+// Configure an AppRouter with `appRoutes`.
+//
+// App routers can only take one `controller` object.
+// It is recommended that you divide your controller
+// objects in to smaller pieces of related functionality
+// and have multiple routers / controllers, instead of
+// just one giant router and controller.
+//
+// You can also add standard routes to an AppRouter.
+
+Marionette.AppRouter = Backbone.Router.extend({
+
+  constructor: function(options){
+    Backbone.Router.prototype.constructor.apply(this, arguments);
+
+    this.options = options || {};
+
+    var appRoutes = Marionette.getOption(this, "appRoutes");
+    var controller = this._getController();
+    this.processAppRoutes(controller, appRoutes);
+    this.on("route", this._processOnRoute, this);
+  },
+
+  // Similar to route method on a Backbone Router but
+  // method is called on the controller
+  appRoute: function(route, methodName) {
+    var controller = this._getController();
+    this._addAppRoute(controller, route, methodName);
+  },
+
+  // process the route event and trigger the onRoute
+  // method call, if it exists
+  _processOnRoute: function(routeName, routeArgs){
+    // find the path that matched
+    var routePath = _.invert(this.appRoutes)[routeName];
+
+    // make sure an onRoute is there, and call it
+    if (_.isFunction(this.onRoute)){
+      this.onRoute(routeName, routePath, routeArgs);
+    }
+  },
+
+  // Internal method to process the `appRoutes` for the
+  // router, and turn them in to routes that trigger the
+  // specified method on the specified `controller`.
+  processAppRoutes: function(controller, appRoutes) {
+    if (!appRoutes){ return; }
+
+    var routeNames = _.keys(appRoutes).reverse(); // Backbone requires reverted order of routes
+
+    _.each(routeNames, function(route) {
+      this._addAppRoute(controller, route, appRoutes[route]);
+    }, this);
+  },
+
+  _getController: function(){
+    return Marionette.getOption(this, "controller");
+  },
+
+  _addAppRoute: function(controller, route, methodName){
+    var method = controller[methodName];
+
+    if (!method) {
+      throwError("Method '" + methodName + "' was not found on the controller");
+    }
+
+    this.route(route, methodName, _.bind(method, controller));
+  }
+});
+
+// Application
+// -----------
+
+// Contain and manage the composite application as a whole.
+// Stores and starts up `Region` objects, includes an
+// event aggregator as `app.vent`
+Marionette.Application = function(options){
+  this._initRegionManager();
+  this._initCallbacks = new Marionette.Callbacks();
+  this.vent = new Backbone.Wreqr.EventAggregator();
+  this.commands = new Backbone.Wreqr.Commands();
+  this.reqres = new Backbone.Wreqr.RequestResponse();
+  this.submodules = {};
+
+  _.extend(this, options);
+
+  this.triggerMethod = Marionette.triggerMethod;
+};
+
+_.extend(Marionette.Application.prototype, Backbone.Events, {
+  // Command execution, facilitated by Backbone.Wreqr.Commands
+  execute: function(){
+    this.commands.execute.apply(this.commands, arguments);
+  },
+
+  // Request/response, facilitated by Backbone.Wreqr.RequestResponse
+  request: function(){
+    return this.reqres.request.apply(this.reqres, arguments);
+  },
+
+  // Add an initializer that is either run at when the `start`
+  // method is called, or run immediately if added after `start`
+  // has already been called.
+  addInitializer: function(initializer){
+    this._initCallbacks.add(initializer);
+  },
+
+  // kick off all of the application's processes.
+  // initializes all of the regions that have been added
+  // to the app, and runs all of the initializer functions
+  start: function(options){
+    this.triggerMethod("initialize:before", options);
+    this._initCallbacks.run(options, this);
+    this.triggerMethod("initialize:after", options);
+
+    this.triggerMethod("start", options);
+  },
+
+  // Add regions to your app.
+  // Accepts a hash of named strings or Region objects
+  // addRegions({something: "#someRegion"})
+  // addRegions({something: Region.extend({el: "#someRegion"}) });
+  addRegions: function(regions){
+    return this._regionManager.addRegions(regions);
+  },
+
+  // Close all regions in the app, without removing them
+  closeRegions: function(){
+    this._regionManager.closeRegions();
+  },
+
+  // Removes a region from your app, by name
+  // Accepts the regions name
+  // removeRegion('myRegion')
+  removeRegion: function(region) {
+    this._regionManager.removeRegion(region);
+  },
+
+  // Provides alternative access to regions
+  // Accepts the region name
+  // getRegion('main')
+  getRegion: function(region) {
+    return this._regionManager.get(region);
+  },
+
+  // Create a module, attached to the application
+  module: function(moduleNames, moduleDefinition){
+
+    // Overwrite the module class if the user specifies one
+    var ModuleClass = Marionette.Module.getClass(moduleDefinition);
+
+    // slice the args, and add this application object as the
+    // first argument of the array
+    var args = slice.call(arguments);
+    args.unshift(this);
+
+    // see the Marionette.Module object for more information
+    return ModuleClass.create.apply(ModuleClass, args);
+  },
+
+  // Internal method to set up the region manager
+  _initRegionManager: function(){
+    this._regionManager = new Marionette.RegionManager();
+
+    this.listenTo(this._regionManager, "region:add", function(name, region){
+      this[name] = region;
+    });
+
+    this.listenTo(this._regionManager, "region:remove", function(name, region){
+      delete this[name];
+    });
+  }
+});
+
+// Copy the `extend` function used by Backbone's classes
+Marionette.Application.extend = Marionette.extend;
+
+// Module
+// ------
+
+// A simple module system, used to create privacy and encapsulation in
+// Marionette applications
+Marionette.Module = function(moduleName, app, options){
+  this.moduleName = moduleName;
+  this.options = _.extend({}, this.options, options);
+  // Allow for a user to overide the initialize
+  // for a given module instance.
+  this.initialize = options.initialize || this.initialize;
+
+  // Set up an internal store for sub-modules.
+  this.submodules = {};
+
+  this._setupInitializersAndFinalizers();
+
+  // Set an internal reference to the app
+  // within a module.
+  this.app = app;
+
+  // By default modules start with their parents.
+  this.startWithParent = true;
+
+  // Setup a proxy to the trigger method implementation.
+  this.triggerMethod = Marionette.triggerMethod;
+
+  if (_.isFunction(this.initialize)){
+    this.initialize(this.options, moduleName, app);
+  }
+};
+
+Marionette.Module.extend = Marionette.extend;
+
+// Extend the Module prototype with events / listenTo, so that the module
+// can be used as an event aggregator or pub/sub.
+_.extend(Marionette.Module.prototype, Backbone.Events, {
+
+  // Initialize is an empty function by default. Override it with your own
+  // initialization logic when extending Marionette.Module.
+  initialize: function(){},
+
+  // Initializer for a specific module. Initializers are run when the
+  // module's `start` method is called.
+  addInitializer: function(callback){
+    this._initializerCallbacks.add(callback);
+  },
+
+  // Finalizers are run when a module is stopped. They are used to teardown
+  // and finalize any variables, references, events and other code that the
+  // module had set up.
+  addFinalizer: function(callback){
+    this._finalizerCallbacks.add(callback);
+  },
+
+  // Start the module, and run all of its initializers
+  start: function(options){
+    // Prevent re-starting a module that is already started
+    if (this._isInitialized){ return; }
+
+    // start the sub-modules (depth-first hierarchy)
+    _.each(this.submodules, function(mod){
+      // check to see if we should start the sub-module with this parent
+      if (mod.startWithParent){
+        mod.start(options);
+      }
+    });
+
+    // run the callbacks to "start" the current module
+    this.triggerMethod("before:start", options);
+
+    this._initializerCallbacks.run(options, this);
+    this._isInitialized = true;
+
+    this.triggerMethod("start", options);
+  },
+
+  // Stop this module by running its finalizers and then stop all of
+  // the sub-modules for this module
+  stop: function(){
+    // if we are not initialized, don't bother finalizing
+    if (!this._isInitialized){ return; }
+    this._isInitialized = false;
+
+    Marionette.triggerMethod.call(this, "before:stop");
+
+    // stop the sub-modules; depth-first, to make sure the
+    // sub-modules are stopped / finalized before parents
+    _.each(this.submodules, function(mod){ mod.stop(); });
+
+    // run the finalizers
+    this._finalizerCallbacks.run(undefined,this);
+
+    // reset the initializers and finalizers
+    this._initializerCallbacks.reset();
+    this._finalizerCallbacks.reset();
+
+    Marionette.triggerMethod.call(this, "stop");
+  },
+
+  // Configure the module with a definition function and any custom args
+  // that are to be passed in to the definition function
+  addDefinition: function(moduleDefinition, customArgs){
+    this._runModuleDefinition(moduleDefinition, customArgs);
+  },
+
+  // Internal method: run the module definition function with the correct
+  // arguments
+  _runModuleDefinition: function(definition, customArgs){
+    // If there is no definition short circut the method.
+    if (!definition){ return; }
+
+    // build the correct list of arguments for the module definition
+    var args = _.flatten([
+      this,
+      this.app,
+      Backbone,
+      Marionette,
+      Marionette.$, _,
+      customArgs
+    ]);
+
+    definition.apply(this, args);
+  },
+
+  // Internal method: set up new copies of initializers and finalizers.
+  // Calling this method will wipe out all existing initializers and
+  // finalizers.
+  _setupInitializersAndFinalizers: function(){
+    this._initializerCallbacks = new Marionette.Callbacks();
+    this._finalizerCallbacks = new Marionette.Callbacks();
+  }
+});
+
+// Type methods to create modules
+_.extend(Marionette.Module, {
+
+  // Create a module, hanging off the app parameter as the parent object.
+  create: function(app, moduleNames, moduleDefinition){
+    var module = app;
+
+    // get the custom args passed in after the module definition and
+    // get rid of the module name and definition function
+    var customArgs = slice.call(arguments);
+    customArgs.splice(0, 3);
+
+    // Split the module names and get the number of submodules.
+    // i.e. an example module name of `Doge.Wow.Amaze` would
+    // then have the potential for 3 module definitions.
+    moduleNames = moduleNames.split(".");
+    var length = moduleNames.length;
+
+    // store the module definition for the last module in the chain
+    var moduleDefinitions = [];
+    moduleDefinitions[length-1] = moduleDefinition;
+
+    // Loop through all the parts of the module definition
+    _.each(moduleNames, function(moduleName, i){
+      var parentModule = module;
+      module = this._getModule(parentModule, moduleName, app, moduleDefinition);
+      this._addModuleDefinition(parentModule, module, moduleDefinitions[i], customArgs);
+    }, this);
+
+    // Return the last module in the definition chain
+    return module;
+  },
+
+  _getModule: function(parentModule, moduleName, app, def, args){
+    var options = _.extend({}, def);
+    var ModuleClass = this.getClass(def);
+
+    // Get an existing module of this name if we have one
+    var module = parentModule[moduleName];
+
+    if (!module){
+      // Create a new module if we don't have one
+      module = new ModuleClass(moduleName, app, options);
+      parentModule[moduleName] = module;
+      // store the module on the parent
+      parentModule.submodules[moduleName] = module;
+    }
+
+    return module;
+  },
+
+  // ## Module Classes
+  //
+  // Module classes can be used as an alternative to the define pattern.
+  // The extend function of a Module is identical to the extend functions
+  // on other Backbone and Marionette classes.
+  // This allows module lifecyle events like `onStart` and `onStop` to be called directly.
+  getClass: function(moduleDefinition) {
+    var ModuleClass = Marionette.Module;
+
+    if (!moduleDefinition) {
+      return ModuleClass;
+    }
+
+    // If all of the module's functionality is defined inside its class,
+    // then the class can be passed in directly. `MyApp.module("Foo", FooModule)`.
+    if (moduleDefinition.prototype instanceof ModuleClass) {
+      return moduleDefinition;
+    }
+
+    return moduleDefinition.moduleClass || ModuleClass;
+  },
+
+  // Add the module definition and add a startWithParent initializer function.
+  // This is complicated because module definitions are heavily overloaded
+  // and support an anonymous function, module class, or options object
+  _addModuleDefinition: function(parentModule, module, def, args){
+    var fn = this._getDefine(def);
+    var startWithParent = this._getStartWithParent(def, module);
+
+    if (fn){
+      module.addDefinition(fn, args);
+    }
+
+    this._addStartWithParent(parentModule, module, startWithParent);
+  },
+
+  _getStartWithParent: function(def, module) {
+    var swp;
+
+    if (_.isFunction(def) && (def.prototype instanceof Marionette.Module)) {
+      swp = module.constructor.prototype.startWithParent;
+      return _.isUndefined(swp) ? true : swp;
+    }
+
+    if (_.isObject(def)){
+      swp = def.startWithParent;
+      return _.isUndefined(swp) ? true : swp;
+    }
+
+    return true;
+  },
+
+  _getDefine: function(def) {
+    if (_.isFunction(def) && !(def.prototype instanceof Marionette.Module)) {
+      return def;
+    }
+
+    if (_.isObject(def)){
+      return def.define;
+    }
+
+    return null;
+  },
+
+  _addStartWithParent: function(parentModule, module, startWithParent) {
+    module.startWithParent = module.startWithParent && startWithParent;
+
+    if (!module.startWithParent || !!module.startWithParentIsConfigured){
+      return;
+    }
+
+    module.startWithParentIsConfigured = true;
+
+    parentModule.addInitializer(function(options){
+      if (module.startWithParent){
+        module.start(options);
+      }
+    });
+  }
+});
+
+
+  return Marionette;
 })(this, Backbone, _);
 
-(function () {
-	var arrays, basicObjects, deepClone, deepExtend, deepExtendCouple, isBasicObject,
-		__slice = [].slice;
+(function() {
+  var arrays, basicObjects, deepClone, deepExtend, deepExtendCouple, isBasicObject,
+    __slice = [].slice;
 
-	deepClone = function (obj) {
-		var func, isArr;
-		if (!_.isObject(obj) || _.isFunction(obj)) {
-			return obj;
-		}
-		if (_.isDate(obj)) {
-			return new Date(obj.getTime());
-		}
-		if (_.isRegExp(obj)) {
-			return new RegExp(obj.source, obj.toString().replace(/.*\//, ""));
-		}
-		isArr = _.isArray(obj || _.isArguments(obj));
-		func = function (memo, value, key) {
-			if (isArr) {
-				memo.push(deepClone(value));
-			} else {
-				memo[key] = deepClone(value);
-			}
-			return memo;
-		};
-		return _.reduce(obj, func, isArr ? [] : {});
-	};
+  deepClone = function(obj) {
+    var func, isArr;
+    if (!_.isObject(obj) || _.isFunction(obj)) {
+      return obj;
+    }
+    if (_.isDate(obj)) {
+      return new Date(obj.getTime());
+    }
+    if (_.isRegExp(obj)) {
+      return new RegExp(obj.source, obj.toString().replace(/.*\//, ""));
+    }
+    isArr = _.isArray(obj || _.isArguments(obj));
+    func = function(memo, value, key) {
+      if (isArr) {
+        memo.push(deepClone(value));
+      } else {
+        memo[key] = deepClone(value);
+      }
+      return memo;
+    };
+    return _.reduce(obj, func, isArr ? [] : {});
+  };
 
-	isBasicObject = function (object) {
-		return (object.prototype === {}.prototype || object.prototype === Object.prototype) && _.isObject(object) && !_.isArray(object) && !_.isFunction(object) && !_.isDate(object) && !_.isRegExp(object) && !_.isArguments(object);
-	};
+  isBasicObject = function(object) {
+    return (object.prototype === {}.prototype || object.prototype === Object.prototype) && _.isObject(object) && !_.isArray(object) && !_.isFunction(object) && !_.isDate(object) && !_.isRegExp(object) && !_.isArguments(object);
+  };
 
-	basicObjects = function (object) {
-		return _.filter(_.keys(object), function (key) {
-			return isBasicObject(object[key]);
-		});
-	};
+  basicObjects = function(object) {
+    return _.filter(_.keys(object), function(key) {
+      return isBasicObject(object[key]);
+    });
+  };
 
-	arrays = function (object) {
-		return _.filter(_.keys(object), function (key) {
-			return _.isArray(object[key]);
-		});
-	};
+  arrays = function(object) {
+    return _.filter(_.keys(object), function(key) {
+      return _.isArray(object[key]);
+    });
+  };
 
-	deepExtendCouple = function (destination, source, maxDepth) {
-		var combine, recurse, sharedArrayKey, sharedArrayKeys, sharedObjectKey, sharedObjectKeys, _i, _j, _len, _len1;
-		if (maxDepth == null) {
-			maxDepth = 20;
-		}
-		if (maxDepth <= 0) {
-			console.warn('_.deepExtend(): Maximum depth of recursion hit.');
-			return _.extend(destination, source);
-		}
-		sharedObjectKeys = _.intersection(basicObjects(destination), basicObjects(source));
-		recurse = function (key) {
-			return source[key] = deepExtendCouple(destination[key], source[key], maxDepth - 1);
-		};
-		for (_i = 0, _len = sharedObjectKeys.length; _i < _len; _i++) {
-			sharedObjectKey = sharedObjectKeys[_i];
-			recurse(sharedObjectKey);
-		}
-		sharedArrayKeys = _.intersection(arrays(destination), arrays(source));
-		combine = function (key) {
-			return source[key] = _.union(destination[key], source[key]);
-		};
-		for (_j = 0, _len1 = sharedArrayKeys.length; _j < _len1; _j++) {
-			sharedArrayKey = sharedArrayKeys[_j];
-			combine(sharedArrayKey);
-		}
-		return _.extend(destination, source);
-	};
+  deepExtendCouple = function(destination, source, maxDepth) {
+    var combine, recurse, sharedArrayKey, sharedArrayKeys, sharedObjectKey, sharedObjectKeys, _i, _j, _len, _len1;
+    if (maxDepth == null) {
+      maxDepth = 20;
+    }
+    if (maxDepth <= 0) {
+      console.warn('_.deepExtend(): Maximum depth of recursion hit.');
+      return _.extend(destination, source);
+    }
+    sharedObjectKeys = _.intersection(basicObjects(destination), basicObjects(source));
+    recurse = function(key) {
+      return source[key] = deepExtendCouple(destination[key], source[key], maxDepth - 1);
+    };
+    for (_i = 0, _len = sharedObjectKeys.length; _i < _len; _i++) {
+      sharedObjectKey = sharedObjectKeys[_i];
+      recurse(sharedObjectKey);
+    }
+    sharedArrayKeys = _.intersection(arrays(destination), arrays(source));
+    combine = function(key) {
+      return source[key] = _.union(destination[key], source[key]);
+    };
+    for (_j = 0, _len1 = sharedArrayKeys.length; _j < _len1; _j++) {
+      sharedArrayKey = sharedArrayKeys[_j];
+      combine(sharedArrayKey);
+    }
+    return _.extend(destination, source);
+  };
 
-	deepExtend = function () {
-		var finalObj, maxDepth, objects, _i;
-		objects = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), maxDepth = arguments[_i++];
-		if (!_.isNumber(maxDepth)) {
-			objects.push(maxDepth);
-			maxDepth = 20;
-		}
-		if (objects.length <= 1) {
-			return objects[0];
-		}
-		if (maxDepth <= 0) {
-			return _.extend.apply(this, objects);
-		}
-		finalObj = objects.shift();
-		while (objects.length > 0) {
-			finalObj = deepExtendCouple(finalObj, deepClone(objects.shift()), maxDepth);
-		}
-		return finalObj;
-	};
+  deepExtend = function() {
+    var finalObj, maxDepth, objects, _i;
+    objects = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), maxDepth = arguments[_i++];
+    if (!_.isNumber(maxDepth)) {
+      objects.push(maxDepth);
+      maxDepth = 20;
+    }
+    if (objects.length <= 1) {
+      return objects[0];
+    }
+    if (maxDepth <= 0) {
+      return _.extend.apply(this, objects);
+    }
+    finalObj = objects.shift();
+    while (objects.length > 0) {
+      finalObj = deepExtendCouple(finalObj, deepClone(objects.shift()), maxDepth);
+    }
+    return finalObj;
+  };
 
-	_.mixin({
-		deepClone: deepClone,
-		isBasicObject: isBasicObject,
-		basicObjects: basicObjects,
-		arrays: arrays,
-		deepExtend: deepExtend
-	});
+  _.mixin({
+    deepClone: deepClone,
+    isBasicObject: isBasicObject,
+    basicObjects: basicObjects,
+    arrays: arrays,
+    deepExtend: deepExtend
+  });
 
 }).call(this);
 /**
@@ -3149,344 +3149,344 @@ var Marionette = (function (global, Backbone, _) {
  * @author Ariel Flesler
  * @version 1.4.3.1
  */
-; (function ($) { var h = $.scrollTo = function (a, b, c) { $(window).scrollTo(a, b, c) }; h.defaults = { axis: 'xy', duration: parseFloat($.fn.jquery) >= 1.3 ? 0 : 1, limit: true }; h.window = function (a) { return $(window)._scrollable() }; $.fn._scrollable = function () { return this.map(function () { var a = this, isWin = !a.nodeName || $.inArray(a.nodeName.toLowerCase(), ['iframe', '#document', 'html', 'body']) != -1; if (!isWin) return a; var b = (a.contentWindow || a).document || a.ownerDocument || a; return /webkit/i.test(navigator.userAgent) || b.compatMode == 'BackCompat' ? b.body : b.documentElement }) }; $.fn.scrollTo = function (e, f, g) { if (typeof f == 'object') { g = f; f = 0 } if (typeof g == 'function') g = { onAfter: g }; if (e == 'max') e = 9e9; g = $.extend({}, h.defaults, g); f = f || g.duration; g.queue = g.queue && g.axis.length > 1; if (g.queue) f /= 2; g.offset = both(g.offset); g.over = both(g.over); return this._scrollable().each(function () { if (e == null) return; var d = this, $elem = $(d), targ = e, toff, attr = {}, win = $elem.is('html,body'); switch (typeof targ) { case 'number': case 'string': if (/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)) { targ = both(targ); break } targ = $(targ, this); if (!targ.length) return; case 'object': if (targ.is || targ.style) toff = (targ = $(targ)).offset() }$.each(g.axis.split(''), function (i, a) { var b = a == 'x' ? 'Left' : 'Top', pos = b.toLowerCase(), key = 'scroll' + b, old = d[key], max = h.max(d, a); if (toff) { attr[key] = toff[pos] + (win ? 0 : old - $elem.offset()[pos]); if (g.margin) { attr[key] -= parseInt(targ.css('margin' + b)) || 0; attr[key] -= parseInt(targ.css('border' + b + 'Width')) || 0 } attr[key] += g.offset[pos] || 0; if (g.over[pos]) attr[key] += targ[a == 'x' ? 'width' : 'height']() * g.over[pos] } else { var c = targ[pos]; attr[key] = c.slice && c.slice(-1) == '%' ? parseFloat(c) / 100 * max : c } if (g.limit && /^\d+$/.test(attr[key])) attr[key] = attr[key] <= 0 ? 0 : Math.min(attr[key], max); if (!i && g.queue) { if (old != attr[key]) animate(g.onAfterFirst); delete attr[key] } }); animate(g.onAfter); function animate(a) { $elem.animate(attr, f, g.easing, a && function () { a.call(this, e, g) }) } }).end() }; h.max = function (a, b) { var c = b == 'x' ? 'Width' : 'Height', scroll = 'scroll' + c; if (!$(a).is('html,body')) return a[scroll] - $(a)[c.toLowerCase()](); var d = 'client' + c, html = a.ownerDocument.documentElement, body = a.ownerDocument.body; return Math.max(html[scroll], body[scroll]) - Math.min(html[d], body[d]) }; function both(a) { return typeof a == 'object' ? a : { top: a, left: a } } })(jQuery);
+;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
 /*iPadフルスクリーンモード用リンク置換*/
-$(function () {
+$(function(){
 	//ページ内のaタグ群を取得。aTagsに配列として代入。
 	var aTags = $('a');
-	//全てのaタグについて処理
-	aTags.each(function () {
-		//aタグのhref属性からリンク先url取得
-		var url = $(this).attr('href');
-		//念のため、href属性は削除
-		$(this).removeAttr('href');
-		//クリックイベントをバインド
-		$(this).click(function () {
+		//全てのaタグについて処理
+		aTags.each(function(){
+			//aタグのhref属性からリンク先url取得
+			var url = $(this).attr('href');
+			//念のため、href属性は削除
+			$(this).removeAttr('href');
+			//クリックイベントをバインド
+			$(this).click(function(){
 			location.href = url;
 		});
 	});
 
 	/*メニューサブナビラベル*/
-	$(".zone", "#lbl_navi-sub").mouseover(function () {
-		$(this).css('opacity', '0.7');
-		$(".zone a", "#navi-sub").addClass('ovr');
+	$(".zone","#lbl_navi-sub").mouseover(function(){
+		$(this).css('opacity','0.7');
+		$(".zone a","#navi-sub").addClass('ovr');
 	});
-	$(".zone", "#lbl_navi-sub").mouseout(function () {
-		$(this).css('opacity', '1');
-		$(".zone a", "#navi-sub").removeClass('ovr');
+	$(".zone","#lbl_navi-sub").mouseout(function(){
+		$(this).css('opacity','1');
+		$(".zone a","#navi-sub").removeClass('ovr');
 	});
-	$(".list", "#lbl_navi-sub").mouseover(function () {
-		$(this).css('opacity', '0.7');
-		$(".list a", "#navi-sub").addClass('ovr');
+	$(".list","#lbl_navi-sub").mouseover(function(){
+		$(this).css('opacity','0.7');
+		$(".list a","#navi-sub").addClass('ovr');
 	});
-	$(".list", "#lbl_navi-sub").mouseout(function () {
-		$(this).css('opacity', '1');
-		$(".list a", "#navi-sub").removeClass('ovr');
+	$(".list","#lbl_navi-sub").mouseout(function(){
+		$(this).css('opacity','1');
+		$(".list a","#navi-sub").removeClass('ovr');
 	});
-	$(".note", "#lbl_navi-sub").mouseover(function () {
-		$(this).css('opacity', '0.7');
-		$(".note a", "#navi-sub").addClass('ovr');
+	$(".note","#lbl_navi-sub").mouseover(function(){
+		$(this).css('opacity','0.7');
+		$(".note a","#navi-sub").addClass('ovr');
 	});
-	$(".note", "#lbl_navi-sub").mouseout(function () {
-		$(this).css('opacity', '1');
-		$(".note a", "#navi-sub").removeClass('ovr');
+	$(".note","#lbl_navi-sub").mouseout(function(){
+		$(this).css('opacity','1');
+		$(".note a","#navi-sub").removeClass('ovr');
 	});
-	$(".permission", "#lbl_navi-sub").mouseover(function () {
-		$(this).css('opacity', '0.7');
-		$(".permission a", "#navi-sub").addClass('ovr');
+	$(".permission","#lbl_navi-sub").mouseover(function(){
+		$(this).css('opacity','0.7');
+		$(".permission a","#navi-sub").addClass('ovr');
 	});
-	$(".permission", "#lbl_navi-sub").mouseout(function () {
-		$(this).css('opacity', '1');
-		$(".permission a", "#navi-sub").removeClass('ovr');
+	$(".permission","#lbl_navi-sub").mouseout(function(){
+		$(this).css('opacity','1');
+		$(".permission a","#navi-sub").removeClass('ovr');
 	});
-	$(".upload", "#lbl_navi-sub").mouseover(function () {
-		$(this).css('opacity', '0.7');
-		$(".upload a", "#navi-sub").addClass('ovr');
+	$(".upload","#lbl_navi-sub").mouseover(function(){
+		$(this).css('opacity','0.7');
+		$(".upload a","#navi-sub").addClass('ovr');
 	});
-	$(".upload", "#lbl_navi-sub").mouseout(function () {
-		$(this).css('opacity', '1');
-		$(".upload a", "#navi-sub").removeClass('ovr');
+	$(".upload","#lbl_navi-sub").mouseout(function(){
+		$(this).css('opacity','1');
+		$(".upload a","#navi-sub").removeClass('ovr');
 	});
 });
 var AMBPV0010Rsp = {
-	AMBPV0010_TOTAL: 1,
-	AMBPV0010_STORE: 2
+	AMBPV0010_TOTAL : 1,
+	AMBPV0010_STORE : 2
 };
 
 var AMBPV0050Rsp = {
-	AMBPV0050_TOTAL: 1,
-	AMBPV0050_WEEK: 2,
-	AMBPV0050_DAY: 3
+	AMBPV0050_TOTAL : 1,
+	AMBPV0050_WEEK : 2,
+	AMBPV0050_DAY : 3
 };
 
 var AMCMV0040_if = {
-	AMCMV0040_REQ_SCH: 1,
-	AMCMV0040_REQ_CSV: 101
+	AMCMV0040_REQ_SCH : 1,
+	AMCMV0040_REQ_CSV : 101
 };
 
 var AMCMV0060_if = {
-	AMCMV0060_REQ_SCH: 1,
-	AMCMV0060_REQ_CSV: 101
+	AMCMV0060_REQ_SCH : 1,
+	AMCMV0060_REQ_CSV : 101
 };
 
 var AMCMV0080_if = {
-	AMCMV0080_REQ_SCH: 1,
-	AMCMV0080_REQ_CSV: 101
+	AMCMV0080_REQ_SCH : 1,
+	AMCMV0080_REQ_CSV : 101
 };
 
 var AMCPV0010CntPrc = {
-	AMCPV0010_STATUS_NOT: 1,
-	AMCPV0010_STATUS_INPUT: 2
+	AMCPV0010_STATUS_NOT : 1,
+	AMCPV0010_STATUS_INPUT : 2
 };
 
 var AMCPV0030Defs = {
-	AMCPV0030_RECORD_TYPE_ITEM: 1,
-	AMCPV0030_RECORD_TYPE_SUBTTL: 2,
-	AMCPV0030_RECORD_TYPE_TTL: 3
+	AMCPV0030_RECORD_TYPE_ITEM : 1,
+	AMCPV0030_RECORD_TYPE_SUBTTL : 2,
+	AMCPV0030_RECORD_TYPE_TTL : 3
 };
 
 var AMCPV0040Defs = {
-	AMCPV0040_RECORD_TYPE_ITEM: 1,
-	AMCPV0040_RECORD_TYPE_SUBTTL: 2,
-	AMCPV0040_RECORD_TYPE_TTL: 3,
-	AMCPV0040_ITEMRECORD_TYPE_QY: 1,
-	AMCPV0040_ITEMRECORD_TYPE_RT: 2
+	AMCPV0040_RECORD_TYPE_ITEM : 1,
+	AMCPV0040_RECORD_TYPE_SUBTTL : 2,
+	AMCPV0040_RECORD_TYPE_TTL : 3,
+	AMCPV0040_ITEMRECORD_TYPE_QY : 1,
+	AMCPV0040_ITEMRECORD_TYPE_RT : 2
 };
 
 var AMDLV0160Req = {
-	AMDLV0160_SHIP_RETURN: 1,
-	AMDLV0160_SHIP_TRANS: 2
+	AMDLV0160_SHIP_RETURN : 1,
+	AMDLV0160_SHIP_TRANS : 2
 };
 
 var AMDSV0040Req = {
-	AMDSV0040_GET_STORERANKPTN: 1,
-	AMDSV0040_GET_BASESTOCKPTN: 2
+	AMDSV0040_GET_STORERANKPTN : 1,
+	AMDSV0040_GET_BASESTOCKPTN : 2
 };
 
 var AMDSV0050Req = {
-	AMDSV0050_RESULTTYPE_ITEM: 1,
-	AMDSV0050_RESULTTYPE_STORE: 2
+	AMDSV0050_RESULTTYPE_ITEM : 1,
+	AMDSV0050_RESULTTYPE_STORE : 2
 };
 
 var AMDSV0060Req = {
-	AMDSV0060_TYPE_ITEM: 1,
-	AMDSV0060_TYPE_STORE: 2,
-	AMDSV0060_TYPE_BASESTOCKPTN: 3,
-	AMDSV0060_TYPE_STORERANK: 4
+	AMDSV0060_TYPE_ITEM : 1,
+	AMDSV0060_TYPE_STORE : 2,
+	AMDSV0060_TYPE_BASESTOCKPTN : 3,
+	AMDSV0060_TYPE_STORERANK : 4
 };
 
 var AMDSV0100Req = {
-	AMDSV0100_RESULTTYPE_ITEM: 1,
-	AMDSV0100_RESULTTYPE_STORE: 2
+	AMDSV0100_RESULTTYPE_ITEM : 1,
+	AMDSV0100_RESULTTYPE_STORE : 2
 };
 
 var AMDSV0110Defs = {
-	AMDSV0110_RESULTTYPE_ITEM: 1,
-	AMDSV0110_RESULTTYPE_STORE: 2,
-	AMDSV0110_RESULTTYPE_NEWOLD: 3,
-	AMDSV0110_RESULTTYPE_SIZEITEM: 4,
-	AMDSV0110_RESULTTYPE_SIZESTORE: 5,
-	AMDSV0110_RESULTTYPE_SALESTOCK: 6,
-	AMDSV0110_RESULTTYPE_SALESTOCKST: 7,
-	AMDSV0110_STOREINFO_FLOOR: 1,
-	AMDSV0110_STOREINFO_OPENYEAR: 2,
-	AMDSV0110_STOREINFO_DISPNUM: 3,
-	AMDSV0110_STOREINFO_SALE: 4,
-	AMDSV0110_STOREINFO_EXIST: 5
+	AMDSV0110_RESULTTYPE_ITEM : 1,
+	AMDSV0110_RESULTTYPE_STORE : 2,
+	AMDSV0110_RESULTTYPE_NEWOLD : 3,
+	AMDSV0110_RESULTTYPE_SIZEITEM : 4,
+	AMDSV0110_RESULTTYPE_SIZESTORE : 5,
+	AMDSV0110_RESULTTYPE_SALESTOCK : 6,
+	AMDSV0110_RESULTTYPE_SALESTOCKST : 7,
+	AMDSV0110_STOREINFO_FLOOR : 1,
+	AMDSV0110_STOREINFO_OPENYEAR : 2,
+	AMDSV0110_STOREINFO_DISPNUM : 3,
+	AMDSV0110_STOREINFO_SALE : 4,
+	AMDSV0110_STOREINFO_EXIST : 5
 };
 
 var AMFUV0010_if = {
-	AMFUV0010_REQ_SCH: 1
+	AMFUV0010_REQ_SCH : 1
 };
 
 var AMMPV0010Req = {
-	AMMPV0010_BASE_YEAR: 1,
-	AMMPV0010_LAST_YEAR: 2,
-	AMMPV0010_BASE_MONTH: 3,
-	AMMPV0010_LAST_MONTH: 4,
-	AMMPV0010_BASE_WEEK: 5,
-	AMMPV0010_LAST_WEEK: 6
+	AMMPV0010_BASE_YEAR : 1,
+	AMMPV0010_LAST_YEAR : 2,
+	AMMPV0010_BASE_MONTH : 3,
+	AMMPV0010_LAST_MONTH : 4,
+	AMMPV0010_BASE_WEEK : 5,
+	AMMPV0010_LAST_WEEK : 6
 };
 
 var AMMPV0020Req = {
-	AMMPV0020_REQTYPE_SEASON: 1,
-	AMMPV0020_REQTYPE_ATTR: 2,
-	AMMPV0020_PLAN_AUTO: 1,
-	AMMPV0020_PLAN_INPUT: 2,
-	AMMPV0020_PARAM_CSV_SEASON: 1,
-	AMMPV0020_PARAM_CSV_ATTR: 2,
-	AMMPV0020_PARAM_CSV_SIZE: 3,
-	AMMPV0020_CSV_SEASON: 4,
-	AMMPV0020_CSV_ATTR: 5,
-	AMMPV0020_CSV_SIZE: 6
+	AMMPV0020_REQTYPE_SEASON : 1,
+	AMMPV0020_REQTYPE_ATTR : 2,
+	AMMPV0020_PLAN_AUTO : 1,
+	AMMPV0020_PLAN_INPUT : 2,
+	AMMPV0020_PARAM_CSV_SEASON : 1,
+	AMMPV0020_PARAM_CSV_ATTR : 2,
+	AMMPV0020_PARAM_CSV_SIZE : 3,
+	AMMPV0020_CSV_SEASON : 4,
+	AMMPV0020_CSV_ATTR : 5,
+	AMMPV0020_CSV_SIZE : 6
 };
 
 var AMMPV0030Req = {
-	AMMPV0030_CSVTYPE_BASE: 1,
-	AMMPV0030_CSVTYPE_LAST: 2,
-	AMMPV0030_CSV_ITEM: 1,
-	AMMPV0030_CSV_SIZE: 2
+	AMMPV0030_CSVTYPE_BASE : 1,
+	AMMPV0030_CSVTYPE_LAST : 2,
+	AMMPV0030_CSV_ITEM : 1,
+	AMMPV0030_CSV_SIZE : 2
 };
 
 var AMMPV0040Req = {
-	AMMPV0040_PLAN_AUTO: 1,
-	AMMPV0040_PLAN_INPUT: 2,
-	AMMPV0040_CSV_WEEK: 1,
-	AMMPV0040_CSV_STOCK: 2,
-	AMMPV0040_CSV_STORE: 3,
-	AMMPV0040_CSV_MONTH: 4,
-	AMMPV0040_CSV_EFFICIENT: 5
+	AMMPV0040_PLAN_AUTO : 1,
+	AMMPV0040_PLAN_INPUT : 2,
+	AMMPV0040_CSV_WEEK : 1,
+	AMMPV0040_CSV_STOCK : 2,
+	AMMPV0040_CSV_STORE : 3,
+	AMMPV0040_CSV_MONTH : 4,
+	AMMPV0040_CSV_EFFICIENT : 5
 };
 
 var AMMPV0050Req = {
-	AMMPV0050_CSVTYPE_BASE: 1,
-	AMMPV0050_CSVTYPE_LAST: 2,
-	AMMPV0050_CSV_PARAM: 1,
-	AMMPV0050_CSV: 2
+	AMMPV0050_CSVTYPE_BASE : 1,
+	AMMPV0050_CSVTYPE_LAST : 2,
+	AMMPV0050_CSV_PARAM : 1,
+	AMMPV0050_CSV : 2
 };
 
 var AMRSV0010_if = {
-	AMRSV0010_REQ_SCH: 1,
-	AMRSV0010_REQ_CSV: 101
+	AMRSV0010_REQ_SCH : 1,
+	AMRSV0010_REQ_CSV : 101
 };
 
 var AMRSV0030_if = {
-	AMRSV0030_REQ_SCH: 1,
-	AMRSV0030_REQ_CSV: 101
+	AMRSV0030_REQ_SCH : 1,
+	AMRSV0030_REQ_CSV : 101
 };
 
 var AMRSV0050_if = {
-	AMRSV0050_REQ_SCH: 1,
-	AMRSV0050_REQ_CSV: 101
+	AMRSV0050_REQ_SCH : 1,
+	AMRSV0050_REQ_CSV : 101
 };
 
 var AMRSV0070_if = {
-	AMRSV0070_REQ_SCH: 1,
-	AMRSV0070_REQ_CSV: 101
+	AMRSV0070_REQ_SCH : 1,
+	AMRSV0070_REQ_CSV : 101
 };
 
 var AMRSV0090_if = {
-	AMRSV0090_REQ_SCH: 1,
-	AMRSV0090_REQ_CSV: 101
+	AMRSV0090_REQ_SCH : 1,
+	AMRSV0090_REQ_CSV : 101
 };
 
 var AMRSV0100OutData = {
-	AMRSV0100_REQ_XLS: 102
+	AMRSV0100_REQ_XLS : 102
 };
 
 var AMRSV0100_if = {
-	AMRSV0100_REQ_XLS: 102
+	AMRSV0100_REQ_XLS : 102
 };
 
 var AMRSV0110_if = {
-	AMRSV0110_REQ_XLS: 102
+	AMRSV0110_REQ_XLS : 102
 };
 
 var AMRSV0120OutData = {
-	AMRSV0120_REQ_XLS: 102
+	AMRSV0120_REQ_XLS : 102
 };
 
 var AMRSV0120_if = {
-	AMRSV0120_REQ_XLS: 102
+	AMRSV0120_REQ_XLS : 102
 };
 
 var AMRSV0130OutData = {
-	AMRSV0130_REQ_XLS: 102
+	AMRSV0130_REQ_XLS : 102
 };
 
 var AMRSV0130_if = {
-	AMRSV0130_REQ_XLS: 102
+	AMRSV0130_REQ_XLS : 102
 };
 
 var am_pa_genlist_srch_if = {
-	AM_PA_PROTO_SORT_KEY_NAME: 1,
-	AM_PA_PROTO_SORT_KEY_FOPEN: 2,
-	AM_PA_PROTO_SORT_KEY_UPDTIME: 3,
-	AM_PA_PROTO_SORT_KEY_CRENAME: 4,
-	AM_PA_PROTO_SORT_KEY_ELEMNUM: 5,
-	AM_PA_PROTO_SORT_KEY_FLISTUSE: 6
+	AM_PA_PROTO_SORT_KEY_NAME : 1,
+	AM_PA_PROTO_SORT_KEY_FOPEN : 2,
+	AM_PA_PROTO_SORT_KEY_UPDTIME : 3,
+	AM_PA_PROTO_SORT_KEY_CRENAME : 4,
+	AM_PA_PROTO_SORT_KEY_ELEMNUM : 5,
+	AM_PA_PROTO_SORT_KEY_FLISTUSE : 6
 };
 
 var am_pa_item_srch_if = {
-	AM_PA_PROTO_SORT_KEY_CODE: 1,
-	AM_PA_PROTO_SORT_KEY_NAME: 2,
-	AM_PA_PROTO_SORT_KEY_VCODE: 3,
-	AM_PA_PROTO_SORT_KEY_VNAME: 4,
-	AM_PA_PROTO_SORT_KEY_YEAR: 5
+	AM_PA_PROTO_SORT_KEY_CODE : 1,
+	AM_PA_PROTO_SORT_KEY_NAME : 2,
+	AM_PA_PROTO_SORT_KEY_VCODE : 3,
+	AM_PA_PROTO_SORT_KEY_VNAME : 4,
+	AM_PA_PROTO_SORT_KEY_YEAR : 5
 };
 
 var am_pa_store_if = {
-	AM_PA_PROTO_SORT_KEY_CODE: 1,
-	AM_PA_PROTO_SORT_KEY_NAME: 2,
-	AM_PA_DEFS_KIND_STORE: 102,
-	AM_PA_STORE_ORG_KIND_HD: 1,
-	AM_PA_STORE_ORG_KIND_CORP: 2,
-	AM_PA_STORE_ORG_KIND_UNIT: 4,
-	AM_PA_STORE_ORG_KIND_ZONE: 8,
-	AM_PA_STORE_ORG_KIND_AREA: 16,
-	AM_PA_STORE_ORG_KIND_STORE: 32,
-	AM_PA_STORE_ORG_KIND_CENTER: 64,
-	AM_PA_STORE_ORG_KIND_HQ: 128,
-	AM_PA_STORE_ORG_KIND_OTHER: 16384
+	AM_PA_PROTO_SORT_KEY_CODE : 1,
+	AM_PA_PROTO_SORT_KEY_NAME : 2,
+	AM_PA_DEFS_KIND_STORE : 102,
+	AM_PA_STORE_ORG_KIND_HD : 1,
+	AM_PA_STORE_ORG_KIND_CORP : 2,
+	AM_PA_STORE_ORG_KIND_UNIT : 4,
+	AM_PA_STORE_ORG_KIND_ZONE : 8,
+	AM_PA_STORE_ORG_KIND_AREA : 16,
+	AM_PA_STORE_ORG_KIND_STORE : 32,
+	AM_PA_STORE_ORG_KIND_CENTER : 64,
+	AM_PA_STORE_ORG_KIND_HQ : 128,
+	AM_PA_STORE_ORG_KIND_OTHER : 16384
 };
 
 var am_proto_defs = {
-	AMDB_DEFS_F_GENLIST_STORE: 1,
-	AMDB_DEFS_F_GENLIST_ITEM: 2,
-	AMDB_DEFS_F_GENLIST_MEMB: 3,
-	AMDB_DEFS_F_GENLIST_ADDR: 4,
-	AMDB_DEFS_F_GENLIST_MEMB_TMP: 13,
-	AMDB_DEFS_HALF_PERIOD_FIRST: 1,
-	AMDB_DEFS_HALF_PERIOD_SECOND: 2,
-	AMDB_DEFS_QUARTER_PERIOD_FIRST: 1,
-	AMDB_DEFS_QUARTER_PERIOD_SECOND: 2,
-	AMDB_DEFS_QUARTER_PERIOD_THIRD: 3,
-	AMDB_DEFS_QUARTER_PERIOD_FORTH: 4,
-	AM_PROTO_COMMON_RSP_STATUS_OK: 0,
-	AM_PROTO_COMMON_RSP_STATUS_NG: 1,
-	AM_PROTO_COMMON_RTYPE_NEW: 1,
-	AM_PROTO_COMMON_RTYPE_UPD: 2,
-	AM_PROTO_COMMON_RTYPE_DEL: 3,
-	AM_PROTO_COMMON_RTYPE_REL: 4,
-	AM_PROTO_COMMON_RTYPE_CSV: 5,
-	AM_PROTO_COMMON_RTYPE_CSV_INPUT: 6,
-	AM_PROTO_COMMON_RTYPE_COPY: 7,
-	AM_PROTO_COMMON_RTYPE_PDF: 8,
-	AM_PROTO_COMMON_RTYPE_DELCANCEL: 9,
-	AM_PROTO_COMMON_RTYPE_RSVCANCEL: 10,
-	AM_PROTO_COMMON_RTYPE_TMPSAVE: 11,
-	AM_PROTO_COMMON_RTYPE_APPLY: 12,
-	AM_PROTO_COMMON_RTYPE_APPROVAL: 13,
-	AM_PROTO_COMMON_RTYPE_PASSBACK: 14,
-	AM_PROTO_ACTYPE_TEXT: 10,
-	AM_PROTO_ACTYPE_NUMRANGE: 20,
-	AM_PROTO_ACTYPE_NUMRANGE100: 21,
-	AM_PROTO_ACTYPE_YMDRANGE: 30,
-	AM_PROTO_ACTYPE_BIRTH_MONTH: 35,
-	AM_PROTO_ACTYPE_ONOFF: 40,
-	AM_PROTO_ACTYPE_TYPE: 50,
-	AM_PROTO_ACTYPE_CDNAME: 51,
-	AM_PROTO_ACTYPE_STAFFCDNAME: 52,
-	AM_PROTO_ACTYPE_ORG: 60,
-	AM_PROTO_ACTYPE_MARKETTYPE: 61,
-	AM_PROTO_ACTYPE_AGETYPE: 62,
-	AM_PROTO_CELL_TYPE_NUMBER: 10,
-	AM_PROTO_CELL_TYPE_REAL: 11,
-	AM_PROTO_CELL_TYPE_RATIO: 12,
-	AM_PROTO_CELL_TYPE_YMD: 20,
-	AM_PROTO_CELL_TYPE_STRING: 30,
-	AM_PROTO_MEMBITEM_TYPE_TEXT: 1,
-	AM_PROTO_MEMBITEM_TYPE_NUMBER: 2,
-	AM_PROTO_MEMBITEM_TYPE_YMD: 3,
-	AM_PROTO_MEMBITEM_TYPE_IYMD: 4,
-	AM_PROTO_MEMBITEM_TYPE_REAL: 5,
-	AM_PROTO_MEMBITEM_TYPE_ORGNAME: 6,
-	AM_PROTO_MEMBITEM_TYPE_TYPE: 7
+	AMDB_DEFS_F_GENLIST_STORE : 1,
+	AMDB_DEFS_F_GENLIST_ITEM : 2,
+	AMDB_DEFS_F_GENLIST_MEMB : 3,
+	AMDB_DEFS_F_GENLIST_ADDR : 4,
+	AMDB_DEFS_F_GENLIST_MEMB_TMP : 13,
+	AMDB_DEFS_HALF_PERIOD_FIRST : 1,
+	AMDB_DEFS_HALF_PERIOD_SECOND : 2,
+	AMDB_DEFS_QUARTER_PERIOD_FIRST : 1,
+	AMDB_DEFS_QUARTER_PERIOD_SECOND : 2,
+	AMDB_DEFS_QUARTER_PERIOD_THIRD : 3,
+	AMDB_DEFS_QUARTER_PERIOD_FORTH : 4,
+	AM_PROTO_COMMON_RSP_STATUS_OK : 0,
+	AM_PROTO_COMMON_RSP_STATUS_NG : 1,
+	AM_PROTO_COMMON_RTYPE_NEW : 1,
+	AM_PROTO_COMMON_RTYPE_UPD : 2,
+	AM_PROTO_COMMON_RTYPE_DEL : 3,
+	AM_PROTO_COMMON_RTYPE_REL : 4,
+	AM_PROTO_COMMON_RTYPE_CSV : 5,
+	AM_PROTO_COMMON_RTYPE_CSV_INPUT : 6,
+	AM_PROTO_COMMON_RTYPE_COPY : 7,
+	AM_PROTO_COMMON_RTYPE_PDF : 8,
+	AM_PROTO_COMMON_RTYPE_DELCANCEL : 9,
+	AM_PROTO_COMMON_RTYPE_RSVCANCEL : 10,
+	AM_PROTO_COMMON_RTYPE_TMPSAVE : 11,
+	AM_PROTO_COMMON_RTYPE_APPLY : 12,
+	AM_PROTO_COMMON_RTYPE_APPROVAL : 13,
+	AM_PROTO_COMMON_RTYPE_PASSBACK : 14,
+	AM_PROTO_ACTYPE_TEXT : 10,
+	AM_PROTO_ACTYPE_NUMRANGE : 20,
+	AM_PROTO_ACTYPE_NUMRANGE100 : 21,
+	AM_PROTO_ACTYPE_YMDRANGE : 30,
+	AM_PROTO_ACTYPE_BIRTH_MONTH : 35,
+	AM_PROTO_ACTYPE_ONOFF : 40,
+	AM_PROTO_ACTYPE_TYPE : 50,
+	AM_PROTO_ACTYPE_CDNAME : 51,
+	AM_PROTO_ACTYPE_STAFFCDNAME : 52,
+	AM_PROTO_ACTYPE_ORG : 60,
+	AM_PROTO_ACTYPE_MARKETTYPE : 61,
+	AM_PROTO_ACTYPE_AGETYPE : 62,
+	AM_PROTO_CELL_TYPE_NUMBER : 10,
+	AM_PROTO_CELL_TYPE_REAL : 11,
+	AM_PROTO_CELL_TYPE_RATIO : 12,
+	AM_PROTO_CELL_TYPE_YMD : 20,
+	AM_PROTO_CELL_TYPE_STRING : 30,
+	AM_PROTO_MEMBITEM_TYPE_TEXT : 1,
+	AM_PROTO_MEMBITEM_TYPE_NUMBER : 2,
+	AM_PROTO_MEMBITEM_TYPE_YMD : 3,
+	AM_PROTO_MEMBITEM_TYPE_IYMD : 4,
+	AM_PROTO_MEMBITEM_TYPE_REAL : 5,
+	AM_PROTO_MEMBITEM_TYPE_ORGNAME : 6,
+	AM_PROTO_MEMBITEM_TYPE_TYPE : 7
 };
 
 var am_proto_sort_req = {
-	AM_PROTO_SORT_ORDER_ASCENDING: 1,
-	AM_PROTO_SORT_ORDER_DESCENDING: -1
+	AM_PROTO_SORT_ORDER_ASCENDING : 1,
+	AM_PROTO_SORT_ORDER_DESCENDING : -1
 };
 
 /******************************************************************************
@@ -6946,334 +6946,334 @@ var amcm_type = {
 	_eof: 'end of amcm_type//'
 };
 var amdb_defs = {
-	AM_PA_DEFS_KIND_NON: 0,
-	AMDB_DEFS_F_GENLIST_STORE: 1,
-	AMDB_DEFS_F_GENLIST_ITEM: 2,
-	AMDB_DEFS_F_GENLIST_MEMB: 3,
-	AMDB_DEFS_F_GENLIST_ADDR: 4,
-	AMDB_DEFS_F_GENLIST_MEMB_TMP: 13,
-	AM_PA_DEFS_KIND_ORG_MIN: 100,
-	AM_PA_DEFS_KIND_ORG: 101,
-	AM_PA_DEFS_KIND_STORE: 102,
-	AM_PA_DEFS_KIND_STORELIST: 103,
-	AM_PA_DEFS_KIND_ORG_MAX: 199,
-	AM_PA_DEFS_KIND_ITGRP_MIN: 200,
-	AM_PA_DEFS_KIND_ITGRP: 201,
-	AM_PA_DEFS_KIND_ITEM: 202,
-	AM_PA_DEFS_KIND_SKUCS: 203,
-	AM_PA_DEFS_KIND_ITEMATTR_MIN: 210,
-	AM_PA_DEFS_KIND_ITEMATTR_SUBCLASS1: 211,
-	AM_PA_DEFS_KIND_ITEMATTR_SUBCLASS2: 212,
-	AM_PA_DEFS_KIND_ITEMATTR_BRAND: 213,
-	AM_PA_DEFS_KIND_ITEMATTR_STYLE: 214,
-	AM_PA_DEFS_KIND_ITEMATTR_DESIGN: 215,
-	AM_PA_DEFS_KIND_ITEMATTR_MATERIAL: 216,
-	AM_PA_DEFS_KIND_ITEMATTR_COLOR: 217,
-	AM_PA_DEFS_KIND_ITEMATTR_T_COLOR: 218,
-	AM_PA_DEFS_KIND_ITEMATTR_K_SIZE: 219,
-	AM_PA_DEFS_KIND_ITEMATTR_SEASON: 220,
-	AM_PA_DEFS_KIND_ITEMATTR_USE: 221,
-	AM_PA_DEFS_KIND_ITEMATTR_MAX: 210,
-	AM_PA_DEFS_KIND_ITEMLIST: 230,
-	AM_PA_DEFS_KIND_ITGRP_MAX: 299,
-	AMDB_DEFS_F_GENLIST_STORE: 1,
-	AMDB_DEFS_F_GENLIST_ITEM: 2,
-	AMDB_DEFS_F_GENLIST_MEMB: 3,
-	AMDB_DEFS_F_GENLIST_ADDR: 4,
-	AMDB_DEFS_F_GENLIST_MEMB_TMP: 13,
-	AMDB_DEFS_HALF_PERIOD_FIRST: 1,
-	AMDB_DEFS_HALF_PERIOD_SECOND: 2,
-	AMDB_DEFS_QUARTER_PERIOD_FIRST: 1,
-	AMDB_DEFS_QUARTER_PERIOD_SECOND: 2,
-	AMDB_DEFS_QUARTER_PERIOD_THIRD: 3,
-	AMDB_DEFS_QUARTER_PERIOD_FORTH: 4,
-	MTTYPETYPE_F_VENDOR: 6,
-	MTTYPETYPE_F_OFFSET_TYPE: 153,
-	MTTYPETYPE_F_ADJ_GRP: 186,
-	MTTYPETYPE_F_ACC_TYPE: 190,
-	MTTYPETYPE_F_OPEN: 1,
-	MTTYPETYPE_F_LISTUSE: 2,
-	MTTYPETYPE_F_PROM: 3,
-	MTTYPETYPE_F_DISCNT: 4,
-	MTTYPETYPE_F_PROC: 5,
-	MTTYPETYPE_F_FUNC: 6,
-	MTTYPETYPE_F_KANANAME: 7,
-	MTTYPETYPE_F_ITEMGRP: 8,
-	MTTYPETYPE_F_ORGLVL: 9,
-	MTTYPETYPE_F_ITGRPLVL: 10,
-	MTTYPETYPE_F_FOLDER: 11,
-	MTTYPETYPE_F_KT: 12,
-	MTTYPETYPE_F_LADYS: 13,
-	MTTYPETYPE_F_ORDER: 14,
-	MTTYPETYPE_F_TELCONNECT: 15,
-	MTTYPETYPE_F_SOLIDBASE: 16,
-	MTTYPETYPE_F_CUST: 17,
-	MTTYPETYPE_F_DMSTAT: 18,
-	MTTYPETYPE_F_ADDRLVL: 19,
-	MTTYPETYPE_F_ANAKIND: 20,
-	MTTYPETYPE_F_BIRTHDAY: 21,
-	MTTYPETYPE_F_SEX: 22,
-	MTTYPETYPE_F_USESTOP: 23,
-	MTTYPETYPE_F_CARDTYPE: 24,
-	MTTYPETYPE_F_EMAIL: 28,
-	MTTYPETYPE_F_EMAIL_RESIGN: 29,
-	MTTYPETYPE_F_EMAIL_SEND: 30,
-	MTTYPETYPE_F_POINT: 31,
-	MTTYPETYPE_F_WDAY: 32,
-	MTTYPETYPE_F_CHANNEL: 33,
-	MTTYPETYPE_F_UPD: 34,
-	MTTYPETYPE_F_DMPOST: 35,
-	MTTYPETYPE_F_ORGFUNC: 36,
-	MTTYPETYPE_F_ITGRPFUNC: 37,
-	MTTYPETYPE_F_TELNO: 38,
-	MTTYPETYPE_F_STOREHQ: 39,
-	MTTYPETYPE_F_MARKET: 40,
-	MTTYPETYPE_F_SEXAGE: 41,
-	MTTYPETYPE_F_SZ_SW: 42,
-	MTTYPETYPE_F_SZ_NAME: 43,
-	MTTYPETYPE_F_CUSTKARTE: 44,
-	MTTYPETYPE_F_DELIVERY: 45,
-	MTTYPETYPE_F_PREF: 46,
-	MTTYPETYPE_F_NEWMEMB: 47,
-	MTTYPETYPE_F_ANACOND: 48,
-	MTTYPETYPE_F_PERIOD_TYPE: 49,
-	MTTYPETYPE_F_DMPROM: 50,
-	MTTYPE_F_VENDOR_MAKER: 1,
-	MTTYPE_F_VENDOR_TAGISSUE: 2,
-	MTTYPE_F_VENDOR_CORRECT: 3,
-	MTTYPE_F_VENDOR_HANGER: 4,
-	MTTYPE_F_VENDOR_WOOLECO: 5,
-	MTTYPE_F_VENDOR_CUSTENTRY: 6,
-	MTTYPE_F_OFFSET_TYPE_FIXED: 1,
-	MTTYPE_F_OFFSET_TYPE_NUMBER: 2,
-	MTTYPE_F_ADJ_GRP_TYPE_SLACKS: 1,
-	MTTYPE_F_ADJ_GRP_TYPE_JACKET: 2,
-	MTTYPE_F_ADJ_GRP_TYPE_COAT: 3,
-	MTTYPE_F_ADJ_GRP_TYPE_LADIES: 4,
-	MTTYPE_F_ADJ_GRP_TYPE_OTHER: 5,
-	MTTYPE_F_ACC_TYPE_KOUSEIHI: 1,
-	MTTYPE_F_ACC_TYPE_SHANAI: 2,
-	MTTYPE_F_ACC_TYPE_LEASE: 3,
-	MTTYPE_F_OPEN_PRIVATE: 1,
-	MTTYPE_F_OPEN_PUBORG: 2,
-	MTTYPE_F_OPEN_PUBLIC: 3,
-	MTTYPE_F_LISTUSE_DM: 1,
-	MTTYPE_F_LISTUSE_MAILMAGA: 2,
-	MTTYPE_F_LISTUSE_CUSTANA: 3,
-	MTTYPE_F_FUNC_CUST: 1,
-	MTTYPE_F_FUNC_ANALYZE: 2,
-	MTTYPE_F_KANANAME_FIRST: 1,
-	MTTYPE_F_KANANAME_SECOND: 2,
-	MTTYPE_F_ITEMGRP_PERSONAL: 1,
-	MTTYPE_F_ORGLVL_HD: 1,
-	MTTYPE_F_ORGLVL_CORP: 2,
-	MTTYPE_F_ORGLVL_BU: 3,
-	MTTYPE_F_ORGLVL_ZONE: 4,
-	MTTYPE_F_ORGLVL_AREA: 5,
-	MTTYPE_F_ORGLVL_STORE: 6,
-	MTTYPE_F_ORGLVL_OTHER: 9,
-	MTTYPE_F_ITGRPLVL_HD: 1,
-	MTTYPE_F_ITGRPLVL_CORP: 1,
-	MTTYPE_F_ITGRPLVL_BU: 2,
-	MTTYPE_F_ITGRPLVL_BUMON: 3,
-	MTTYPE_F_ITGRPLVL_VARIETY: 4,
-	MTTYPE_F_ITGRPLVL_ITEM: 5,
-	MTTYPE_F_ITGRPLVL_SKUCS: 7,
-	MTTYPE_F_ITGRPLVL_OTHER: 9,
-	MTTYPE_F_FOLDER_SYS: 1,
-	MTTYPE_F_FOLDER_USER: 2,
-	MTTYPE_F_TELCONNECT_ON: 1,
-	MTTYPE_F_TELCONNECT_OFF: 2,
-	MTTYPE_F_SOLIDBASE_REGULAR: 1,
-	MTTYPE_F_SOLIDBASE_CANDIDATE: 2,
-	MTTYPE_F_DMSTAT_NON: 1,
-	MTTYPE_F_DMSTAT_NG: 2,
-	MTTYPE_F_ADDRLVL_PREF: 1,
-	MTTYPE_F_ADDRLVL_ADDR1: 2,
-	MTTYPE_F_ADDRLVL_ADDR2: 3,
-	MTTYPE_F_ADDRLVL_ADDR3: 4,
-	MTTYPE_F_ANAKIND_CUST_MATRIX: 1,
-	MTTYPE_F_ANAKIND_CUST_ABC: 2,
-	MTTYPE_F_ANAKIND_CUST_DECIL: 3,
-	MTTYPE_F_BIRTHDAY_REGIST: 1,
-	MTTYPE_F_BIRTHDAY_NOREG: 2,
-	MTTYPE_F_BIRTHDAY_REJCT: 3,
-	MTTYPE_F_SEX_MALE: 1,
-	MTTYPE_F_SEX_FEMALE: 2,
-	MTTYPE_F_SEX_NON: 3,
-	MTTYPE_F_USESTOP_NON: 1,
-	MTTYPE_F_USESTOP_REISSUE: 2,
-	MTTYPE_F_USESTOP_DELETE: 3,
-	MTTYPE_F_CARDTYPE_OLD: 1,
-	MTTYPE_F_CARDTYPE_NEW: 2,
-	MTTYPE_F_EMAIL_PC: 1,
-	MTTYPE_F_EMAIL_MOBILE: 2,
-	MTTYPE_F_EMAIL_RESIGN_ON: 1,
-	MTTYPE_F_EMAIL_RESIGN_OFF: 2,
-	MTTYPE_F_EMAIL_SEND_OK: 1,
-	MTTYPE_F_EMAIL_SEND_NG: 2,
-	MTTYPE_F_POINT_11: 11,
-	MTTYPE_F_POINT_21: 21,
-	MTTYPE_F_POINT_31: 31,
-	MTTYPE_F_POINT_32: 32,
-	MTTYPE_F_POINT_41: 41,
-	MTTYPE_F_POINT_42: 42,
-	MTTYPE_F_POINT_61: 61,
-	MTTYPE_F_POINT_81: 81,
-	MTTYPE_F_WDAY_MON: 1,
-	MTTYPE_F_WDAY_TUE: 2,
-	MTTYPE_F_WDAY_WED: 3,
-	MTTYPE_F_WDAY_THU: 4,
-	MTTYPE_F_WDAY_FRI: 5,
-	MTTYPE_F_WDAY_SAT: 6,
-	MTTYPE_F_WDAY_SUN: 7,
-	MTTYPE_F_CHANNEL_POINT: 1,
-	MTTYPE_F_CHANNEL_EC: 2,
-	MTTYPE_F_CHANNEL_MOBILE: 4,
-	MTTYPE_F_UPD_NEW: 1,
-	MTTYPE_F_UPD_UPD: 2,
-	MTTYPE_F_UPD_DEL: 9,
-	MTTYPE_F_DMPOST_OK: 1,
-	MTTYPE_F_DMPOST_NG: 2,
-	MTTYPE_F_ORGFUNC_BASE: 1,
-	MTTYPE_F_ORGFUNC_OTHER: 9,
-	MTTYPE_F_ITGRPFUNC_BASE: 1,
-	MTTYPE_F_ITGRPFUNC_OTHER: 9,
-	MTTYPE_F_TELNO_1: 1,
-	MTTYPE_F_TELNO_2: 2,
-	MTTYPE_F_KT_ON: 1,
-	MTTYPE_F_KT_OFF: 2,
-	MTTYPE_F_ORDER_ON: 1,
-	MTTYPE_F_ORDER_OFF: 2,
-	MTTYPE_F_STOREHQ_STORE: 1,
-	MTTYPE_F_STOREHQ_HQ: 2,
-	MTTYPE_F_SZ_SW_S: 1,
-	MTTYPE_F_SZ_SW_W: 2,
-	MTTYPE_F_SZ_NAME_NON: 1,
-	MTTYPE_F_SZ_NAME_KANJI: 2,
-	MTTYPE_F_SZ_NAME_ROMA: 3,
-	MTTYPE_F_SZ_NAME_INI: 4,
-	MTTYPE_F_CUSTKARTE_ON: 1,
-	MTTYPE_F_CUSTKARTE_OFF: 2,
-	MTTYPE_F_DELIVERY_YAMATO: 1,
-	MTTYPE_F_DELIVERY_HUKUYAMA1: 2,
-	MTTYPE_F_DELIVERY_HUKUYAMA2: 3,
-	MTTYPE_F_DELIVERY_SEINO: 4,
-	MTTYPE_F_DELIVERY_SAGAWA: 5,
-	MTTYPE_F_DELIVERY_JPPOST1: 6,
-	MTTYPE_F_DELIVERY_JPPOST2: 7,
-	MTTYPE_F_PREF_01: 1,
-	MTTYPE_F_PREF_02: 2,
-	MTTYPE_F_PREF_03: 3,
-	MTTYPE_F_PREF_04: 4,
-	MTTYPE_F_PREF_05: 5,
-	MTTYPE_F_PREF_06: 6,
-	MTTYPE_F_PREF_07: 7,
-	MTTYPE_F_PREF_08: 8,
-	MTTYPE_F_PREF_09: 9,
-	MTTYPE_F_PREF_10: 10,
-	MTTYPE_F_PREF_11: 11,
-	MTTYPE_F_PREF_12: 12,
-	MTTYPE_F_PREF_13: 13,
-	MTTYPE_F_PREF_14: 14,
-	MTTYPE_F_PREF_15: 15,
-	MTTYPE_F_PREF_16: 16,
-	MTTYPE_F_PREF_17: 17,
-	MTTYPE_F_PREF_18: 18,
-	MTTYPE_F_PREF_19: 19,
-	MTTYPE_F_PREF_20: 20,
-	MTTYPE_F_PREF_21: 21,
-	MTTYPE_F_PREF_22: 22,
-	MTTYPE_F_PREF_23: 23,
-	MTTYPE_F_PREF_24: 24,
-	MTTYPE_F_PREF_25: 25,
-	MTTYPE_F_PREF_26: 26,
-	MTTYPE_F_PREF_27: 27,
-	MTTYPE_F_PREF_28: 28,
-	MTTYPE_F_PREF_29: 29,
-	MTTYPE_F_PREF_30: 30,
-	MTTYPE_F_PREF_31: 31,
-	MTTYPE_F_PREF_32: 32,
-	MTTYPE_F_PREF_33: 33,
-	MTTYPE_F_PREF_34: 34,
-	MTTYPE_F_PREF_35: 35,
-	MTTYPE_F_PREF_36: 36,
-	MTTYPE_F_PREF_37: 37,
-	MTTYPE_F_PREF_38: 38,
-	MTTYPE_F_PREF_39: 39,
-	MTTYPE_F_PREF_40: 40,
-	MTTYPE_F_PREF_41: 41,
-	MTTYPE_F_PREF_42: 42,
-	MTTYPE_F_PREF_43: 43,
-	MTTYPE_F_PREF_44: 44,
-	MTTYPE_F_PREF_45: 45,
-	MTTYPE_F_PREF_46: 46,
-	MTTYPE_F_PREF_47: 47,
-	MTTYPE_F_NEWMEMB_NEW: 1,
-	MTTYPE_F_NEWMEMB_MEMB: 2,
-	MTTYPE_F_NEWMEMB_OTHER: 3,
-	MTTYPE_F_ANACOND_PERIOD: 1,
-	MTTYPE_F_ANACOND_AXIS: 2,
-	MTTYPE_F_ANACOND_DISP: 4,
-	MTTYPE_F_ANACOND_STORE: 8,
-	MTTYPE_F_ANACOND_ITEM: 16,
-	MTTYPE_F_ANACOND_MEMB: 32,
-	MTTYPE_F_ANACOND_STAFF: 64,
-	MTTYPE_F_ANACOND_SALE: 128,
-	MTTYPE_F_PERIOD_TYPE_ABS: 1,
-	MTTYPE_F_PERIOD_TYPE_OPP: 2,
-	MTCDNAME_CNTYPE_STORE: 1,
-	MTCDNAME_CNTYPE_AREA: 2,
-	MTCDNAME_CNTYPE_ZONE: 3,
-	MTITEM_CNTYPE_SUBCLASS1: 2,
-	MTITEM_CNTYPE_SUBCLASS2: 3,
-	MTITEM_CNTYPE_BRAND: 4,
-	MTITEM_CNTYPE_STYLE: 5,
-	MTITEM_CNTYPE_DESIGN: 6,
-	MTITEM_CNTYPE_MATERIAL: 7,
-	MTITEM_CNTYPE_COLOR: 8,
-	MTITEM_CNTYPE_T_COLOR: 9,
-	MTITEM_CNTYPE_K_SIZE: 10,
-	MTITEM_CNTYPE_USE: 11,
-	MTITEM_CNTYPE_SEASON: 12,
-	MTSTAFF_CNTYPE_SEX: 101,
-	MTSTAFF_CNTYPE_FAMILYREL: 102,
-	MTSTAFF_CNTYPE_FAMILYLIVES: 103,
-	MTSTAFF_CNTYPE_FAMILYSUP: 104,
-	MTSTAFF_CNTYPE_CERT: 105,
-	MTSTAFF_CNTYPE_CERTNAME: 106,
-	MTSTAFF_CNTYPE_PRAISEBLAME: 107,
-	MTSTAFF_CNTYPE_LICENCE: 108,
-	MTSTAFF_CNTYPE_LICENCE_RESULT: 109,
-	MTSTAFF_CNTYPE_TASK_EXTEND: 110,
-	MTSTAFF_CNTYPE_TRAINING: 111,
-	MTSTAFF_CNTYPE_TRAINING_NAME: 112,
-	MTSTAFF_CNTYPE_HOPE_TRANS: 113,
-	MTSTAFF_CNTYPE_TRAINING_ESTIMATE: 114,
-	MTSTAFF_CNTYPE_JOBPOST: 115,
-	MTSTAFF_CNTYPE_MARRIAGE: 116,
-	MTSTAFF_CNTYPE_HOUSE: 117,
-	MTSTAFF_CNTYPE_TRANS: 118,
-	MTSTAFF_CNTYPE_STAFF: 119,
-	MTSTAFF_CNTYPE_GRADE: 120,
-	MTSTAFF_CNTYPE_BLOOD: 121,
-	MTSTAFF_CNTYPE_NEWMID: 122,
-	MTSTAFF_CNTYPE_JOIN_COMPANY: 123,
-	MTSTAFF_CNTYPE_BUSI: 124,
-	MTSTAFF_CNTYPE_HOPE_JOBTYPE: 125,
-	MTSTAFF_CNTYPE_PREF: 126,
-	MTSTAFF_CNTYPE_CIGARETTE: 127,
-	MTSTAFF_CNTYPE_SCHOOL_SYS: 128,
-	MTSTAFF_CNTYPE_SCHOOL_KIND: 129,
-	MTSTAFF_CNTYPE_SCHOOL_TYPE: 130,
-	MTSTAFF_CNTYPE_SINGLE_TRANS: 131,
-	MTSTAFF_CNTYPE_BEFORE_JOBCLASS: 132,
-	MTSTAFF_CNTYPE_XX1: 133,
-	MTSTAFF_CNTYPE_XX2: 134,
-	MTSTAFF_CNTYPE_XX3: 135,
-	MTSTAFF_CNTYPE_TRANS_KIND: 136,
-	MTGENLIST_FILETYPE_IDARRAY: 1,
-	MTGENLIST_FILETYPE_IDSET: 2
+	AM_PA_DEFS_KIND_NON : 0,
+	AMDB_DEFS_F_GENLIST_STORE : 1,
+	AMDB_DEFS_F_GENLIST_ITEM : 2,
+	AMDB_DEFS_F_GENLIST_MEMB : 3,
+	AMDB_DEFS_F_GENLIST_ADDR : 4,
+	AMDB_DEFS_F_GENLIST_MEMB_TMP : 13,
+	AM_PA_DEFS_KIND_ORG_MIN : 100,
+	AM_PA_DEFS_KIND_ORG : 101,
+	AM_PA_DEFS_KIND_STORE : 102,
+	AM_PA_DEFS_KIND_STORELIST : 103,
+	AM_PA_DEFS_KIND_ORG_MAX : 199,
+	AM_PA_DEFS_KIND_ITGRP_MIN : 200,
+	AM_PA_DEFS_KIND_ITGRP : 201,
+	AM_PA_DEFS_KIND_ITEM : 202,
+	AM_PA_DEFS_KIND_SKUCS : 203,
+	AM_PA_DEFS_KIND_ITEMATTR_MIN : 210,
+	AM_PA_DEFS_KIND_ITEMATTR_SUBCLASS1 : 211,
+	AM_PA_DEFS_KIND_ITEMATTR_SUBCLASS2 : 212,
+	AM_PA_DEFS_KIND_ITEMATTR_BRAND : 213,
+	AM_PA_DEFS_KIND_ITEMATTR_STYLE : 214,
+	AM_PA_DEFS_KIND_ITEMATTR_DESIGN : 215,
+	AM_PA_DEFS_KIND_ITEMATTR_MATERIAL : 216,
+	AM_PA_DEFS_KIND_ITEMATTR_COLOR : 217,
+	AM_PA_DEFS_KIND_ITEMATTR_T_COLOR : 218,
+	AM_PA_DEFS_KIND_ITEMATTR_K_SIZE : 219,
+	AM_PA_DEFS_KIND_ITEMATTR_SEASON : 220,
+	AM_PA_DEFS_KIND_ITEMATTR_USE : 221,
+	AM_PA_DEFS_KIND_ITEMATTR_MAX : 210,
+	AM_PA_DEFS_KIND_ITEMLIST : 230,
+	AM_PA_DEFS_KIND_ITGRP_MAX : 299,
+	AMDB_DEFS_F_GENLIST_STORE : 1,
+	AMDB_DEFS_F_GENLIST_ITEM : 2,
+	AMDB_DEFS_F_GENLIST_MEMB : 3,
+	AMDB_DEFS_F_GENLIST_ADDR : 4,
+	AMDB_DEFS_F_GENLIST_MEMB_TMP : 13,
+	AMDB_DEFS_HALF_PERIOD_FIRST : 1,
+	AMDB_DEFS_HALF_PERIOD_SECOND : 2,
+	AMDB_DEFS_QUARTER_PERIOD_FIRST : 1,
+	AMDB_DEFS_QUARTER_PERIOD_SECOND : 2,
+	AMDB_DEFS_QUARTER_PERIOD_THIRD : 3,
+	AMDB_DEFS_QUARTER_PERIOD_FORTH : 4,
+	MTTYPETYPE_F_VENDOR : 6,
+	MTTYPETYPE_F_OFFSET_TYPE : 153,
+	MTTYPETYPE_F_ADJ_GRP : 186,
+	MTTYPETYPE_F_ACC_TYPE : 190,
+	MTTYPETYPE_F_OPEN : 1,
+	MTTYPETYPE_F_LISTUSE : 2,
+	MTTYPETYPE_F_PROM : 3,
+	MTTYPETYPE_F_DISCNT : 4,
+	MTTYPETYPE_F_PROC : 5,
+	MTTYPETYPE_F_FUNC : 6,
+	MTTYPETYPE_F_KANANAME : 7,
+	MTTYPETYPE_F_ITEMGRP : 8,
+	MTTYPETYPE_F_ORGLVL : 9,
+	MTTYPETYPE_F_ITGRPLVL : 10,
+	MTTYPETYPE_F_FOLDER : 11,
+	MTTYPETYPE_F_KT : 12,
+	MTTYPETYPE_F_LADYS : 13,
+	MTTYPETYPE_F_ORDER : 14,
+	MTTYPETYPE_F_TELCONNECT : 15,
+	MTTYPETYPE_F_SOLIDBASE : 16,
+	MTTYPETYPE_F_CUST : 17,
+	MTTYPETYPE_F_DMSTAT : 18,
+	MTTYPETYPE_F_ADDRLVL : 19,
+	MTTYPETYPE_F_ANAKIND : 20,
+	MTTYPETYPE_F_BIRTHDAY : 21,
+	MTTYPETYPE_F_SEX : 22,
+	MTTYPETYPE_F_USESTOP : 23,
+	MTTYPETYPE_F_CARDTYPE : 24,
+	MTTYPETYPE_F_EMAIL : 28,
+	MTTYPETYPE_F_EMAIL_RESIGN : 29,
+	MTTYPETYPE_F_EMAIL_SEND : 30,
+	MTTYPETYPE_F_POINT : 31,
+	MTTYPETYPE_F_WDAY : 32,
+	MTTYPETYPE_F_CHANNEL : 33,
+	MTTYPETYPE_F_UPD : 34,
+	MTTYPETYPE_F_DMPOST : 35,
+	MTTYPETYPE_F_ORGFUNC : 36,
+	MTTYPETYPE_F_ITGRPFUNC : 37,
+	MTTYPETYPE_F_TELNO : 38,
+	MTTYPETYPE_F_STOREHQ : 39,
+	MTTYPETYPE_F_MARKET : 40,
+	MTTYPETYPE_F_SEXAGE : 41,
+	MTTYPETYPE_F_SZ_SW : 42,
+	MTTYPETYPE_F_SZ_NAME : 43,
+	MTTYPETYPE_F_CUSTKARTE : 44,
+	MTTYPETYPE_F_DELIVERY : 45,
+	MTTYPETYPE_F_PREF : 46,
+	MTTYPETYPE_F_NEWMEMB : 47,
+	MTTYPETYPE_F_ANACOND : 48,
+	MTTYPETYPE_F_PERIOD_TYPE : 49,
+	MTTYPETYPE_F_DMPROM : 50,
+	MTTYPE_F_VENDOR_MAKER : 1,
+	MTTYPE_F_VENDOR_TAGISSUE : 2,
+	MTTYPE_F_VENDOR_CORRECT : 3,
+	MTTYPE_F_VENDOR_HANGER : 4,
+	MTTYPE_F_VENDOR_WOOLECO : 5,
+	MTTYPE_F_VENDOR_CUSTENTRY : 6,
+	MTTYPE_F_OFFSET_TYPE_FIXED : 1,
+	MTTYPE_F_OFFSET_TYPE_NUMBER : 2,
+	MTTYPE_F_ADJ_GRP_TYPE_SLACKS : 1,
+	MTTYPE_F_ADJ_GRP_TYPE_JACKET : 2,
+	MTTYPE_F_ADJ_GRP_TYPE_COAT : 3,
+	MTTYPE_F_ADJ_GRP_TYPE_LADIES : 4,
+	MTTYPE_F_ADJ_GRP_TYPE_OTHER : 5,
+	MTTYPE_F_ACC_TYPE_KOUSEIHI : 1,
+	MTTYPE_F_ACC_TYPE_SHANAI : 2,
+	MTTYPE_F_ACC_TYPE_LEASE : 3,
+	MTTYPE_F_OPEN_PRIVATE : 1,
+	MTTYPE_F_OPEN_PUBORG : 2,
+	MTTYPE_F_OPEN_PUBLIC : 3,
+	MTTYPE_F_LISTUSE_DM : 1,
+	MTTYPE_F_LISTUSE_MAILMAGA : 2,
+	MTTYPE_F_LISTUSE_CUSTANA : 3,
+	MTTYPE_F_FUNC_CUST : 1,
+	MTTYPE_F_FUNC_ANALYZE : 2,
+	MTTYPE_F_KANANAME_FIRST : 1,
+	MTTYPE_F_KANANAME_SECOND : 2,
+	MTTYPE_F_ITEMGRP_PERSONAL : 1,
+	MTTYPE_F_ORGLVL_HD : 1,
+	MTTYPE_F_ORGLVL_CORP : 2,
+	MTTYPE_F_ORGLVL_BU : 3,
+	MTTYPE_F_ORGLVL_ZONE : 4,
+	MTTYPE_F_ORGLVL_AREA : 5,
+	MTTYPE_F_ORGLVL_STORE : 6,
+	MTTYPE_F_ORGLVL_OTHER : 9,
+	MTTYPE_F_ITGRPLVL_HD : 1,
+	MTTYPE_F_ITGRPLVL_CORP : 1,
+	MTTYPE_F_ITGRPLVL_BU : 2,
+	MTTYPE_F_ITGRPLVL_BUMON : 3,
+	MTTYPE_F_ITGRPLVL_VARIETY : 4,
+	MTTYPE_F_ITGRPLVL_ITEM : 5,
+	MTTYPE_F_ITGRPLVL_SKUCS : 7,
+	MTTYPE_F_ITGRPLVL_OTHER : 9,
+	MTTYPE_F_FOLDER_SYS : 1,
+	MTTYPE_F_FOLDER_USER : 2,
+	MTTYPE_F_TELCONNECT_ON : 1,
+	MTTYPE_F_TELCONNECT_OFF : 2,
+	MTTYPE_F_SOLIDBASE_REGULAR : 1,
+	MTTYPE_F_SOLIDBASE_CANDIDATE : 2,
+	MTTYPE_F_DMSTAT_NON : 1,
+	MTTYPE_F_DMSTAT_NG : 2,
+	MTTYPE_F_ADDRLVL_PREF : 1,
+	MTTYPE_F_ADDRLVL_ADDR1 : 2,
+	MTTYPE_F_ADDRLVL_ADDR2 : 3,
+	MTTYPE_F_ADDRLVL_ADDR3 : 4,
+	MTTYPE_F_ANAKIND_CUST_MATRIX : 1,
+	MTTYPE_F_ANAKIND_CUST_ABC : 2,
+	MTTYPE_F_ANAKIND_CUST_DECIL : 3,
+	MTTYPE_F_BIRTHDAY_REGIST : 1,
+	MTTYPE_F_BIRTHDAY_NOREG : 2,
+	MTTYPE_F_BIRTHDAY_REJCT : 3,
+	MTTYPE_F_SEX_MALE : 1,
+	MTTYPE_F_SEX_FEMALE : 2,
+	MTTYPE_F_SEX_NON : 3,
+	MTTYPE_F_USESTOP_NON : 1,
+	MTTYPE_F_USESTOP_REISSUE : 2,
+	MTTYPE_F_USESTOP_DELETE : 3,
+	MTTYPE_F_CARDTYPE_OLD : 1,
+	MTTYPE_F_CARDTYPE_NEW : 2,
+	MTTYPE_F_EMAIL_PC : 1,
+	MTTYPE_F_EMAIL_MOBILE : 2,
+	MTTYPE_F_EMAIL_RESIGN_ON : 1,
+	MTTYPE_F_EMAIL_RESIGN_OFF : 2,
+	MTTYPE_F_EMAIL_SEND_OK : 1,
+	MTTYPE_F_EMAIL_SEND_NG : 2,
+	MTTYPE_F_POINT_11 : 11,
+	MTTYPE_F_POINT_21 : 21,
+	MTTYPE_F_POINT_31 : 31,
+	MTTYPE_F_POINT_32 : 32,
+	MTTYPE_F_POINT_41 : 41,
+	MTTYPE_F_POINT_42 : 42,
+	MTTYPE_F_POINT_61 : 61,
+	MTTYPE_F_POINT_81 : 81,
+	MTTYPE_F_WDAY_MON : 1,
+	MTTYPE_F_WDAY_TUE : 2,
+	MTTYPE_F_WDAY_WED : 3,
+	MTTYPE_F_WDAY_THU : 4,
+	MTTYPE_F_WDAY_FRI : 5,
+	MTTYPE_F_WDAY_SAT : 6,
+	MTTYPE_F_WDAY_SUN : 7,
+	MTTYPE_F_CHANNEL_POINT : 1,
+	MTTYPE_F_CHANNEL_EC : 2,
+	MTTYPE_F_CHANNEL_MOBILE : 4,
+	MTTYPE_F_UPD_NEW : 1,
+	MTTYPE_F_UPD_UPD : 2,
+	MTTYPE_F_UPD_DEL : 9,
+	MTTYPE_F_DMPOST_OK : 1,
+	MTTYPE_F_DMPOST_NG : 2,
+	MTTYPE_F_ORGFUNC_BASE : 1,
+	MTTYPE_F_ORGFUNC_OTHER : 9,
+	MTTYPE_F_ITGRPFUNC_BASE : 1,
+	MTTYPE_F_ITGRPFUNC_OTHER : 9,
+	MTTYPE_F_TELNO_1 : 1,
+	MTTYPE_F_TELNO_2 : 2,
+	MTTYPE_F_KT_ON : 1,
+	MTTYPE_F_KT_OFF : 2,
+	MTTYPE_F_ORDER_ON : 1,
+	MTTYPE_F_ORDER_OFF : 2,
+	MTTYPE_F_STOREHQ_STORE : 1,
+	MTTYPE_F_STOREHQ_HQ : 2,
+	MTTYPE_F_SZ_SW_S : 1,
+	MTTYPE_F_SZ_SW_W : 2,
+	MTTYPE_F_SZ_NAME_NON : 1,
+	MTTYPE_F_SZ_NAME_KANJI : 2,
+	MTTYPE_F_SZ_NAME_ROMA : 3,
+	MTTYPE_F_SZ_NAME_INI : 4,
+	MTTYPE_F_CUSTKARTE_ON : 1,
+	MTTYPE_F_CUSTKARTE_OFF : 2,
+	MTTYPE_F_DELIVERY_YAMATO : 1,
+	MTTYPE_F_DELIVERY_HUKUYAMA1 : 2,
+	MTTYPE_F_DELIVERY_HUKUYAMA2 : 3,
+	MTTYPE_F_DELIVERY_SEINO : 4,
+	MTTYPE_F_DELIVERY_SAGAWA : 5,
+	MTTYPE_F_DELIVERY_JPPOST1 : 6,
+	MTTYPE_F_DELIVERY_JPPOST2 : 7,
+	MTTYPE_F_PREF_01 : 1,
+	MTTYPE_F_PREF_02 : 2,
+	MTTYPE_F_PREF_03 : 3,
+	MTTYPE_F_PREF_04 : 4,
+	MTTYPE_F_PREF_05 : 5,
+	MTTYPE_F_PREF_06 : 6,
+	MTTYPE_F_PREF_07 : 7,
+	MTTYPE_F_PREF_08 : 8,
+	MTTYPE_F_PREF_09 : 9,
+	MTTYPE_F_PREF_10 : 10,
+	MTTYPE_F_PREF_11 : 11,
+	MTTYPE_F_PREF_12 : 12,
+	MTTYPE_F_PREF_13 : 13,
+	MTTYPE_F_PREF_14 : 14,
+	MTTYPE_F_PREF_15 : 15,
+	MTTYPE_F_PREF_16 : 16,
+	MTTYPE_F_PREF_17 : 17,
+	MTTYPE_F_PREF_18 : 18,
+	MTTYPE_F_PREF_19 : 19,
+	MTTYPE_F_PREF_20 : 20,
+	MTTYPE_F_PREF_21 : 21,
+	MTTYPE_F_PREF_22 : 22,
+	MTTYPE_F_PREF_23 : 23,
+	MTTYPE_F_PREF_24 : 24,
+	MTTYPE_F_PREF_25 : 25,
+	MTTYPE_F_PREF_26 : 26,
+	MTTYPE_F_PREF_27 : 27,
+	MTTYPE_F_PREF_28 : 28,
+	MTTYPE_F_PREF_29 : 29,
+	MTTYPE_F_PREF_30 : 30,
+	MTTYPE_F_PREF_31 : 31,
+	MTTYPE_F_PREF_32 : 32,
+	MTTYPE_F_PREF_33 : 33,
+	MTTYPE_F_PREF_34 : 34,
+	MTTYPE_F_PREF_35 : 35,
+	MTTYPE_F_PREF_36 : 36,
+	MTTYPE_F_PREF_37 : 37,
+	MTTYPE_F_PREF_38 : 38,
+	MTTYPE_F_PREF_39 : 39,
+	MTTYPE_F_PREF_40 : 40,
+	MTTYPE_F_PREF_41 : 41,
+	MTTYPE_F_PREF_42 : 42,
+	MTTYPE_F_PREF_43 : 43,
+	MTTYPE_F_PREF_44 : 44,
+	MTTYPE_F_PREF_45 : 45,
+	MTTYPE_F_PREF_46 : 46,
+	MTTYPE_F_PREF_47 : 47,
+	MTTYPE_F_NEWMEMB_NEW : 1,
+	MTTYPE_F_NEWMEMB_MEMB : 2,
+	MTTYPE_F_NEWMEMB_OTHER : 3,
+	MTTYPE_F_ANACOND_PERIOD : 1,
+	MTTYPE_F_ANACOND_AXIS : 2,
+	MTTYPE_F_ANACOND_DISP : 4,
+	MTTYPE_F_ANACOND_STORE : 8,
+	MTTYPE_F_ANACOND_ITEM : 16,
+	MTTYPE_F_ANACOND_MEMB : 32,
+	MTTYPE_F_ANACOND_STAFF : 64,
+	MTTYPE_F_ANACOND_SALE : 128,
+	MTTYPE_F_PERIOD_TYPE_ABS : 1,
+	MTTYPE_F_PERIOD_TYPE_OPP : 2,
+	MTCDNAME_CNTYPE_STORE : 1,
+	MTCDNAME_CNTYPE_AREA : 2,
+	MTCDNAME_CNTYPE_ZONE : 3,
+	MTITEM_CNTYPE_SUBCLASS1 : 2,
+	MTITEM_CNTYPE_SUBCLASS2 : 3,
+	MTITEM_CNTYPE_BRAND : 4,
+	MTITEM_CNTYPE_STYLE : 5,
+	MTITEM_CNTYPE_DESIGN : 6,
+	MTITEM_CNTYPE_MATERIAL : 7,
+	MTITEM_CNTYPE_COLOR : 8,
+	MTITEM_CNTYPE_T_COLOR : 9,
+	MTITEM_CNTYPE_K_SIZE : 10,
+	MTITEM_CNTYPE_USE : 11,
+	MTITEM_CNTYPE_SEASON : 12,
+	MTSTAFF_CNTYPE_SEX : 101,
+	MTSTAFF_CNTYPE_FAMILYREL : 102,
+	MTSTAFF_CNTYPE_FAMILYLIVES : 103,
+	MTSTAFF_CNTYPE_FAMILYSUP : 104,
+	MTSTAFF_CNTYPE_CERT : 105,
+	MTSTAFF_CNTYPE_CERTNAME : 106,
+	MTSTAFF_CNTYPE_PRAISEBLAME : 107,
+	MTSTAFF_CNTYPE_LICENCE : 108,
+	MTSTAFF_CNTYPE_LICENCE_RESULT : 109,
+	MTSTAFF_CNTYPE_TASK_EXTEND : 110,
+	MTSTAFF_CNTYPE_TRAINING : 111,
+	MTSTAFF_CNTYPE_TRAINING_NAME : 112,
+	MTSTAFF_CNTYPE_HOPE_TRANS : 113,
+	MTSTAFF_CNTYPE_TRAINING_ESTIMATE : 114,
+	MTSTAFF_CNTYPE_JOBPOST : 115,
+	MTSTAFF_CNTYPE_MARRIAGE : 116,
+	MTSTAFF_CNTYPE_HOUSE : 117,
+	MTSTAFF_CNTYPE_TRANS : 118,
+	MTSTAFF_CNTYPE_STAFF : 119,
+	MTSTAFF_CNTYPE_GRADE : 120,
+	MTSTAFF_CNTYPE_BLOOD : 121,
+	MTSTAFF_CNTYPE_NEWMID : 122,
+	MTSTAFF_CNTYPE_JOIN_COMPANY : 123,
+	MTSTAFF_CNTYPE_BUSI : 124,
+	MTSTAFF_CNTYPE_HOPE_JOBTYPE : 125,
+	MTSTAFF_CNTYPE_PREF : 126,
+	MTSTAFF_CNTYPE_CIGARETTE : 127,
+	MTSTAFF_CNTYPE_SCHOOL_SYS : 128,
+	MTSTAFF_CNTYPE_SCHOOL_KIND : 129,
+	MTSTAFF_CNTYPE_SCHOOL_TYPE : 130,
+	MTSTAFF_CNTYPE_SINGLE_TRANS : 131,
+	MTSTAFF_CNTYPE_BEFORE_JOBCLASS : 132,
+	MTSTAFF_CNTYPE_XX1 : 133,
+	MTSTAFF_CNTYPE_XX2 : 134,
+	MTSTAFF_CNTYPE_XX3 : 135,
+	MTSTAFF_CNTYPE_TRANS_KIND : 136,
+	MTGENLIST_FILETYPE_IDARRAY : 1,
+	MTGENLIST_FILETYPE_IDSET : 2
 };
 
 /**
@@ -7282,286 +7282,286 @@ var amdb_defs = {
 
 !function ($) {
 
-	"use strict"; // jshint ;_;
+  "use strict"; // jshint ;_;
 
 
-	/* TOOLTIP PUBLIC CLASS DEFINITION
-	 * =============================== */
+ /* TOOLTIP PUBLIC CLASS DEFINITION
+  * =============================== */
 
-	var Tooltip = function (element, options) {
-		this.init('tooltip', element, options)
-	}
+  var Tooltip = function (element, options) {
+    this.init('tooltip', element, options)
+  }
 
-	Tooltip.prototype = {
+  Tooltip.prototype = {
 
-		constructor: Tooltip
+    constructor: Tooltip
 
-		, init: function (type, element, options) {
-			var eventIn
-				, eventOut
+  , init: function (type, element, options) {
+      var eventIn
+        , eventOut
 
-			this.type = type
-			this.$element = $(element)
-			this.options = this.getOptions(options)
-			this.enabled = true
+      this.type = type
+      this.$element = $(element)
+      this.options = this.getOptions(options)
+      this.enabled = true
 
-			if (this.options.trigger == 'click') {
-				this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-			} else if (this.options.trigger != 'manual') {
-				eventIn = this.options.trigger == 'hover' ? 'mouseenter' : 'focus'
-				eventOut = this.options.trigger == 'hover' ? 'mouseleave' : 'blur'
-				this.$element.on(eventIn + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-				this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
-			}
+      if (this.options.trigger == 'click') {
+        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+      } else if (this.options.trigger != 'manual') {
+        eventIn = this.options.trigger == 'hover' ? 'mouseenter' : 'focus'
+        eventOut = this.options.trigger == 'hover' ? 'mouseleave' : 'blur'
+        this.$element.on(eventIn + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+      }
 
-			this.options.selector ?
-				(this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
-				this.fixTitle()
-		}
+      this.options.selector ?
+        (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+        this.fixTitle()
+    }
 
-		, getOptions: function (options) {
-			options = $.extend({}, $.fn[this.type].defaults, options, this.$element.data())
+  , getOptions: function (options) {
+      options = $.extend({}, $.fn[this.type].defaults, options, this.$element.data())
 
-			if (options.delay && typeof options.delay == 'number') {
-				options.delay = {
-					show: options.delay
-					, hide: options.delay
-				}
-			}
+      if (options.delay && typeof options.delay == 'number') {
+        options.delay = {
+          show: options.delay
+        , hide: options.delay
+        }
+      }
 
-			return options
-		}
+      return options
+    }
 
-		, enter: function (e) {
-			var self = $(e.currentTarget)[this.type](this._options).data(this.type)
+  , enter: function (e) {
+      var self = $(e.currentTarget)[this.type](this._options).data(this.type)
 
-			if (!self.options.delay || !self.options.delay.show) return self.show()
+      if (!self.options.delay || !self.options.delay.show) return self.show()
 
-			clearTimeout(this.timeout)
-			self.hoverState = 'in'
-			this.timeout = setTimeout(function () {
-				if (self.hoverState == 'in') self.show()
-			}, self.options.delay.show)
-		}
+      clearTimeout(this.timeout)
+      self.hoverState = 'in'
+      this.timeout = setTimeout(function() {
+        if (self.hoverState == 'in') self.show()
+      }, self.options.delay.show)
+    }
 
-		, leave: function (e) {
-			var self = $(e.currentTarget)[this.type](this._options).data(this.type)
+  , leave: function (e) {
+      var self = $(e.currentTarget)[this.type](this._options).data(this.type)
 
-			if (this.timeout) clearTimeout(this.timeout)
-			if (!self.options.delay || !self.options.delay.hide) return self.hide()
+      if (this.timeout) clearTimeout(this.timeout)
+      if (!self.options.delay || !self.options.delay.hide) return self.hide()
 
-			self.hoverState = 'out'
-			this.timeout = setTimeout(function () {
-				if (self.hoverState == 'out') self.hide()
-			}, self.options.delay.hide)
-		}
+      self.hoverState = 'out'
+      this.timeout = setTimeout(function() {
+        if (self.hoverState == 'out') self.hide()
+      }, self.options.delay.hide)
+    }
 
-		, show: function () {
-			var $tip
-				, inside
-				, pos
-				, actualWidth
-				, actualHeight
-				, placement
-				, tp
-				, arrowPos;
+  , show: function () {
+      var $tip
+        , inside
+        , pos
+        , actualWidth
+        , actualHeight
+        , placement
+        , tp
+        , arrowPos;
 
-			if (this.hasContent() && this.enabled) {
-				$('body > .tooltip').remove();
-				$tip = this.tip();
-				this.setContent();
+      if (this.hasContent() && this.enabled) {
+        $('body > .tooltip').remove();
+        $tip = this.tip();
+        this.setContent();
 
-				if (this.options.animation) {
-					$tip.addClass('fade');
-				}
+        if (this.options.animation) {
+          $tip.addClass('fade');
+        }
 
-				placement = typeof this.options.placement == 'function' ?
-					this.options.placement.call(this, $tip[0], this.$element[0]) :
-					this.options.placement;
+        placement = typeof this.options.placement == 'function' ?
+          this.options.placement.call(this, $tip[0], this.$element[0]) :
+          this.options.placement;
 
-				inside = /in/.test(placement);
+        inside = /in/.test(placement);
 
-				$tip
-					.detach()
-					.css({ top: 0, left: 0, display: 'block' });
+        $tip
+          .detach()
+          .css({ top: 0, left: 0, display: 'block' });
 
-				switch (this.options.container || 'parent') {
-					case "parent":
-						$tip.insertAfter(this.$element);
-						break;
-					case "body":
-						$tip.appendTo(document.body);
-						break;
-					default:
-						var container = $(this.options.container);
-						if (container.length) {
-							$tip.appendTo(container);
-						} else {
-							$tip.insertAfter(this.$element);
-						}
-				}
-				pos = this.getPosition(inside);
+        switch (this.options.container || 'parent') {
+          case "parent":
+            $tip.insertAfter(this.$element);
+          break;
+          case "body":
+            $tip.appendTo(document.body);
+          break;
+          default:
+            var container = $(this.options.container);
+            if (container.length) {
+              $tip.appendTo(container);
+            } else {
+              $tip.insertAfter(this.$element);
+            }
+        }
+        pos = this.getPosition(inside);
 
-				actualWidth = $tip[0].offsetWidth;
-				actualHeight = $tip[0].offsetHeight;
+        actualWidth = $tip[0].offsetWidth;
+        actualHeight = $tip[0].offsetHeight;
 
-				switch (inside ? placement.split(' ')[1] : placement) {
-					case 'bottom':
-						tp = { top: pos.top + pos.height, left: Math.max(pos.left + pos.width / 2 - actualWidth / 2, 20) };
-						break;
-					case 'top':
-						tp = { top: pos.top - actualHeight, left: Math.max(pos.left + pos.width / 2 - actualWidth / 2, 20) };
-						arrowPos = { left: (((pos.left + pos.width / 2 - tp.left) / Math.max(actualWidth, 1)) * 100) + '%' };
-						break;
-					case 'left':
-						tp = { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth };
-						break;
-					case 'right':
-						tp = { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width };
-						break;
-				}
+        switch (inside ? placement.split(' ')[1] : placement) {
+          case 'bottom':
+            tp = {top: pos.top + pos.height, left: Math.max(pos.left + pos.width / 2 - actualWidth / 2, 20)};
+            break;
+          case 'top':
+            tp = {top: pos.top - actualHeight, left: Math.max(pos.left + pos.width / 2 - actualWidth / 2, 20)};
+            arrowPos = {left: (((pos.left + pos.width / 2 - tp.left) / Math.max(actualWidth, 1))*100) + '%'};
+            break;
+          case 'left':
+            tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
+            break;
+          case 'right':
+            tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
+            break;
+        }
 
-				// ツールチップ表示位置補正：<body> 要素右端を超える場合は左へ寄せる。加えて arrows 位置も補正。
-				var bodyWidth = $('body').width();
-				var dw = tp.left + actualWidth - bodyWidth;
-				if (dw > 0) {
-					tp.left -= dw;
-					arrowPos = { left: (((pos.left + pos.width / 2 - tp.left) / Math.max(actualWidth, 1)) * 100) + '%' };
-				}
+        // ツールチップ表示位置補正：<body> 要素右端を超える場合は左へ寄せる。加えて arrows 位置も補正。
+        var bodyWidth = $('body').width();
+        var dw = tp.left + actualWidth - bodyWidth;
+        if (dw > 0) {
+          tp.left -= dw;
+          arrowPos = {left: (((pos.left + pos.width / 2 - tp.left) / Math.max(actualWidth, 1))*100) + '%'};
+        }
 
-				$tip
-					.offset(tp)
-					.addClass(placement)
-					.addClass('in');
-				if (arrowPos) {
-					$tip.find('.tooltip-arrow').css(arrowPos);
-				}
-			}
-		}
+        $tip
+          .offset(tp)
+          .addClass(placement)
+          .addClass('in');
+        if (arrowPos) {
+            $tip.find('.tooltip-arrow').css(arrowPos);
+        }
+      }
+    }
 
-		, setContent: function () {
-			var $tip = this.tip()
-				, title = this.getTitle()
+  , setContent: function () {
+      var $tip = this.tip()
+        , title = this.getTitle()
 
-			$tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-			$tip.removeClass('fade in top bottom left right')
-		}
+      $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+      $tip.removeClass('fade in top bottom left right')
+    }
 
-		, hide: function () {
-			var that = this
-				, $tip = this.tip()
+  , hide: function () {
+      var that = this
+        , $tip = this.tip()
 
-			$tip.removeClass('in')
+      $tip.removeClass('in')
 
-			function removeWithAnimation() {
-				var timeout = setTimeout(function () {
-					$tip.off($.support.transition.end).detach()
-				}, 500)
+      function removeWithAnimation() {
+        var timeout = setTimeout(function () {
+          $tip.off($.support.transition.end).detach()
+        }, 500)
 
-				$tip.one($.support.transition.end, function () {
-					clearTimeout(timeout)
-					$tip.detach()
-				})
-			}
+        $tip.one($.support.transition.end, function () {
+          clearTimeout(timeout)
+          $tip.detach()
+        })
+      }
 
-			$.support.transition && this.$tip.hasClass('fade') ?
-				removeWithAnimation() :
-				$tip.detach()
+      $.support.transition && this.$tip.hasClass('fade') ?
+        removeWithAnimation() :
+        $tip.detach()
 
-			return this
-		}
+      return this
+    }
 
-		, fixTitle: function () {
-			var $e = this.$element
-			if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
-				$e.attr('data-original-title', $e.attr('title') || '').removeAttr('title')
-			}
-		}
+  , fixTitle: function () {
+      var $e = this.$element
+      if ($e.attr('title') || typeof($e.attr('data-original-title')) != 'string') {
+        $e.attr('data-original-title', $e.attr('title') || '').removeAttr('title')
+      }
+    }
 
-		, hasContent: function () {
-			return this.getTitle()
-		}
+  , hasContent: function () {
+      return this.getTitle()
+    }
 
-		, getPosition: function (inside) {
-			return $.extend({}, (inside ? { top: 0, left: 0 } : this.$element.offset()), {
-				width: this.$element[0].offsetWidth
-				, height: this.$element[0].offsetHeight
-			})
-		}
+  , getPosition: function (inside) {
+      return $.extend({}, (inside ? {top: 0, left: 0} : this.$element.offset()), {
+        width: this.$element[0].offsetWidth
+      , height: this.$element[0].offsetHeight
+      })
+    }
 
-		, getTitle: function () {
-			var title
-				, $e = this.$element
-				, o = this.options
+  , getTitle: function () {
+      var title
+        , $e = this.$element
+        , o = this.options
 
-			title = $e.attr('data-original-title')
-				|| (typeof o.title == 'function' ? o.title.call($e[0]) : o.title)
+      title = $e.attr('data-original-title')
+        || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
 
-			return title
-		}
+      return title
+    }
 
-		, tip: function () {
-			return this.$tip = this.$tip || $(this.options.template)
-		}
+  , tip: function () {
+      return this.$tip = this.$tip || $(this.options.template)
+    }
 
-		, validate: function () {
-			if (!this.$element[0].parentNode) {
-				this.hide()
-				this.$element = null
-				this.options = null
-			}
-		}
+  , validate: function () {
+      if (!this.$element[0].parentNode) {
+        this.hide()
+        this.$element = null
+        this.options = null
+      }
+    }
 
-		, enable: function () {
-			this.enabled = true
-		}
+  , enable: function () {
+      this.enabled = true
+    }
 
-		, disable: function () {
-			this.enabled = false
-		}
+  , disable: function () {
+      this.enabled = false
+    }
 
-		, toggleEnabled: function () {
-			this.enabled = !this.enabled
-		}
+  , toggleEnabled: function () {
+      this.enabled = !this.enabled
+    }
 
-		, toggle: function (e) {
-			var self = $(e.currentTarget)[this.type](this._options).data(this.type)
-			self[self.tip().hasClass('in') ? 'hide' : 'show']()
-		}
+  , toggle: function (e) {
+      var self = $(e.currentTarget)[this.type](this._options).data(this.type)
+      self[self.tip().hasClass('in') ? 'hide' : 'show']()
+    }
 
-		, destroy: function () {
-			this.hide().$element.off('.' + this.type).removeData(this.type)
-		}
+  , destroy: function () {
+      this.hide().$element.off('.' + this.type).removeData(this.type)
+    }
 
-	}
+  }
 
 
-	/* TOOLTIP PLUGIN DEFINITION
-	 * ========================= */
+ /* TOOLTIP PLUGIN DEFINITION
+  * ========================= */
 
-	$.fn.tooltip = function (option) {
-		return this.each(function () {
-			var $this = $(this)
-				, data = $this.data('tooltip')
-				, options = typeof option == 'object' && option
-			if (!data) $this.data('tooltip', (data = new Tooltip(this, options)))
-			if (typeof option == 'string') data[option]()
-		})
-	}
+  $.fn.tooltip = function ( option ) {
+    return this.each(function () {
+      var $this = $(this)
+        , data = $this.data('tooltip')
+        , options = typeof option == 'object' && option
+      if (!data) $this.data('tooltip', (data = new Tooltip(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
 
-	$.fn.tooltip.Constructor = Tooltip
+  $.fn.tooltip.Constructor = Tooltip
 
-	$.fn.tooltip.defaults = {
-		animation: false
-		, placement: 'top'
-		, selector: false
-		, template: '<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-		, trigger: 'hover'
-		, title: ''
-		, delay: 0
-		, html: false
-		, container: 'parent'
-	}
+  $.fn.tooltip.defaults = {
+    animation: false
+  , placement: 'top'
+  , selector: false
+  , template: '<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+  , trigger: 'hover'
+  , title: ''
+  , delay: 0
+  , html: false
+  , container: 'parent'
+  }
 
 }(window.jQuery);
 
@@ -7590,64 +7590,64 @@ var amdb_defs = {
  * THE SOFTWARE.
  */
 
-var store = (function () {
+var store = (function(){
 	var api = {},
 		win = window,
 		doc = win.document,
 		localStorageName = 'localStorage',
 		globalStorageName = 'globalStorage',
 		storage;
-
-	api.set = function (key, value) { };
-	api.get = function (key) { };
-	api.remove = function (key) { };
-	api.clear = function () { };
-	api.transact = function (key, transactionFn) {
+	
+	api.set = function(key, value) {};
+	api.get = function(key) {};
+	api.remove = function(key) {};
+	api.clear = function() {};
+	api.transact = function(key, transactionFn) {
 		var val = api.get(key);
 		if (typeof val == 'undefined') { val = {}; }
 		transactionFn(val);
 		api.set(key, val);
 	};
-
-	api.serialize = function (value) {
+	
+	api.serialize = function(value) {
 		return JSON.stringify(value);
 	};
-	api.deserialize = function (value) {
+	api.deserialize = function(value) {
 		if (typeof value != 'string') { return undefined; }
 		return JSON.parse(value);
 	};
-
+	
 	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
 		try { return (localStorageName in win && win[localStorageName]); }
-		catch (err) { return false; }
+		catch(err) { return false; }
 	}
-
+	
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]); }
-		catch (err) { return false; }
-	}
+		catch(err) { return false; }
+	}	
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName];
-		api.set = function (key, val) { storage.setItem(key, api.serialize(val)); };
-		api.get = function (key) { return api.deserialize(storage.getItem(key)); };
-		api.remove = function (key) { storage.removeItem(key); };
-		api.clear = function () { storage.clear(); };
+		api.set = function(key, val) { storage.setItem(key, api.serialize(val)); };
+		api.get = function(key) { return api.deserialize(storage.getItem(key)); };
+		api.remove = function(key) { storage.removeItem(key); };
+		api.clear = function() { storage.clear(); };
 
 	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname];
-		api.set = function (key, val) { storage[key] = api.serialize(val); };
-		api.get = function (key) { return api.deserialize(storage[key] && storage[key].value); };
-		api.remove = function (key) { delete storage[key]; };
-		api.clear = function () { for (var key in storage) { delete storage[key]; } };
+		api.set = function(key, val) { storage[key] = api.serialize(val); };
+		api.get = function(key) { return api.deserialize(storage[key] && storage[key].value); };
+		api.remove = function(key) { delete storage[key]; };
+		api.clear = function() { for (var key in storage ) { delete storage[key]; } };
 
 	} else if (doc.documentElement.addBehavior) {
 		storage = doc.createElement('div');
 		function withIEStorage(storeFunction) {
-			return function () {
+			return function() {
 				var args = Array.prototype.slice.call(arguments, 0);
 				args.unshift(storage);
 				// See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
@@ -7660,21 +7660,21 @@ var store = (function () {
 				return result;
 			};
 		}
-		api.set = withIEStorage(function (storage, key, val) {
+		api.set = withIEStorage(function(storage, key, val) {
 			storage.setAttribute(key, api.serialize(val));
 			storage.save(localStorageName);
 		});
-		api.get = withIEStorage(function (storage, key) {
+		api.get = withIEStorage(function(storage, key) {
 			return api.deserialize(storage.getAttribute(key));
 		});
-		api.remove = withIEStorage(function (storage, key) {
+		api.remove = withIEStorage(function(storage, key) {
 			storage.removeAttribute(key);
 			storage.save(localStorageName);
 		});
-		api.clear = withIEStorage(function (storage) {
+		api.clear = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes;
 			storage.load(localStorageName);
-			for (var i = 0, attr; attr = attributes[i]; i++) {
+			for (var i=0, attr; attr = attributes[i]; i++) {
 				storage.removeAttribute(attr.name);
 			}
 			storage.save(localStorageName);
@@ -7686,8 +7686,8 @@ var store = (function () {
 
 //////////////////////////////////////////////////////////////////
 // store.js プラグイン拡張 - セットしているキーがどんなかを管理
-(function (store) {
-	if (!store) {
+(function(store){
+	if(!store){
 		throw 'store.js がロードされておりません。';
 	}
 
@@ -7698,31 +7698,31 @@ var store = (function () {
 	/**
 	 *
 	 */
-	store.set = function (k, v) {
-		if (k != null) {
+	store.set = function(k,v){
+		if(k != null){
 			var keyMap = store.get(_keys) || {};
 			keyMap[k] = true;
 			origSetFunc(_keys, keyMap);
 		}
-		origSetFunc(k, v);
+		origSetFunc(k,v);
 	};
 
 	/**
 	 *
 	 */
-	store.remove = function (k) {
+	store.remove = function(k){
 		var keyMap = store.get(_keys);
-		var kk = _.isArray(k) ? k : [k];
-		for (var i = 0; i < kk.length; i++) {
+		var kk = _.isArray(k) ? k : [ k ];
+		for(var i = 0; i < kk.length; i++){
 			var k = kk[i];
 			origRemoveFunc(k);
-			if (k != null) {
-				if (keyMap && _.has(keyMap, k)) {
+			if(k != null){
+				if(keyMap && _.has(keyMap, k)){
 					delete keyMap[k];
 				}
 			}
 		}
-		if (keyMap) {
+		if(keyMap){
 			origSetFunc(_keys, keyMap);
 		}
 	};
@@ -7730,7 +7730,7 @@ var store = (function () {
 	/**
 	 *
 	 */
-	store.keys = function () {
+	store.keys = function(){
 		var keyMap = store.get(_keys);
 		return keyMap || {};
 	};
@@ -8111,7 +8111,7 @@ var store = (function () {
 
 
 	// デバッグ用
-	var eventLogHandler = function (e) {
+	var eventLogHandler = function(e){
 		// var str = (e.type + '																				').slice(0,20);
 		// if (e.keyCode) str += '\tkeyCode:' + e.keyCode;
 		// if (e.data) str += '\tdata:' + e.data;
@@ -8150,7 +8150,7 @@ var store = (function () {
 				];
 
 				return function (value) {
-					return _.reduce(_.map(regs, function (reg) { return reg(value); }), function (memo, v) {
+					return _.reduce(_.map(regs, function (reg) {return reg(value);}), function (memo, v) {
 						if (memo.length > v.length)
 							return memo;
 						else
@@ -8165,7 +8165,7 @@ var store = (function () {
 			 * @method upper
 			 * @return {function}
 			 */
-			upper = function () {
+			upper = function(){
 				return regexLimiter(/[A-Z]+/);
 			},
 
@@ -8175,7 +8175,7 @@ var store = (function () {
 			 * @method lower
 			 * @return {function}
 			 */
-			lower = function () {
+			lower = function(){
 				return regexLimiter(/[a-z]+/);
 			},
 
@@ -8259,7 +8259,7 @@ var store = (function () {
 					var match = value.match(reg);
 					if (!match)
 						return '';
-					return match[1] + (match[2] || '').substring(0, len || undefined);
+					return match[1] + (match[2]||'').substring(0, len || undefined);
 				};
 			},
 
@@ -8314,8 +8314,8 @@ var store = (function () {
 
 			isHalf_cr = function (c) {
 				return (c >= 0x0 && c < 0x09) || (c >= 0x0b && c < 0x81)
-					|| (c == 0xf8f0) || (c >= 0xff61 && c < 0xffa0)
-					|| (c >= 0xf8f1 && c < 0xf8f4);
+					 ||(c == 0xf8f0) || (c >= 0xff61 && c < 0xffa0)
+					 ||(c >= 0xf8f1 && c < 0xf8f4);
 			},
 
 			hankaku = function () {
@@ -8327,26 +8327,26 @@ var store = (function () {
 			},
 
 			zenkaku = function () {
-				return truncateByCharMap(function (c) { return !isHalf(c); });
+				return truncateByCharMap(function (c) { return !isHalf(c);});
 			},
 			//全角(改行許容)
 			zenkaku_cr = function () {
-				return truncateByCharMap(function (c) { return !isHalf_cr(c); });
+				return truncateByCharMap(function (c) { return !isHalf_cr(c);});
 			},
 
 			// UTF-16でサロゲートペアで表現される文字を禁止する
-			noSurrogatePair = function () {
-				return function (value) {
+			noSurrogatePair = function(){
+				return function(value){
 					return value.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "");
 				};
 			},
 
-			kinsoku = function (prohibited) {
+			kinsoku = function(prohibited){
 				// 禁則文字を排除する
 				if (!_.isRegExp(prohibited)) {
 					prohibited = new RegExp("[" + prohibited + "]", "g");
 				}
-				return function (value) {
+				return function(value){
 					return value.replace(prohibited, "");
 				};
 			};
@@ -8429,11 +8429,11 @@ var store = (function () {
 
 				return {
 					mask: function (value) {
-						if (_.isString(value)) {
+						if(_.isString(value)){
 							value = $.trim(value);
 						}
 						var xs = value.split('.');
-						value = xs[0].replace(format, function (t) {
+						value = xs[0].replace(format, function(t){
 							return t + ',';
 						});
 						xs[0] = value;
@@ -8446,18 +8446,18 @@ var store = (function () {
 				};
 			},
 
-			currency = function () {
+			currency = function(){
 				var format = /([\d]+?)(?=(?:\d{3})+$)/g;
 
 				return {
 					mask: function (value) {
 						var xs = value.split('.');
-						var xs0 = xs[0].replace(format, function (t) {
+						var xs0 = xs[0].replace(format, function(t){
 							return t + ',';
 						});
 						xs[0] = xs0;
 						var appliedVal = xs.join('.');
-						if (_.isFinite(value) && !_.isEmpty(appliedVal)) {
+						if(_.isFinite(value) && !_.isEmpty(appliedVal)){
 							appliedVal = '&yen; ' + appliedVal;
 						}
 						return appliedVal;
@@ -8474,7 +8474,7 @@ var store = (function () {
 
 				return {
 					mask: function (value) {
-						return value.replace(format, function (t) { return t + ':' });
+						return value.replace(format, function (t) {return t + ':'});
 					},
 
 					unmask: function (value) {
@@ -8562,14 +8562,14 @@ var store = (function () {
 			// 共通のリミッターを設定する
 			limiters = $.inputlimiter._commonLimiters.concat(limiters);
 
-			if (data.limiters) {
+			if (data.limiters){
 				// エレメントに割りあてられたリミッターを設定する
 				limiters = limiters.concat(_.values(data.limiters));
 			}
 			return limiters;
 		},
 
-		buildFilters = function (dataFilter, data) {
+		buildFilters = function(dataFilter, data){
 			dataFilter || (dataFilter = '');
 			var filters = _.map(_.compact(dataFilter.split(splitter)), function (s) {
 				var args = s.split(':'),
@@ -8583,7 +8583,7 @@ var store = (function () {
 				return Filters[filter].apply(this, args);
 			});
 
-			if (data.filters) {
+			if (data.filters){
 				// エレメントに割りあてられたフィルタを設定する
 				filters = filters.concat(_.values(data.filters));
 			}
@@ -8591,7 +8591,7 @@ var store = (function () {
 		},
 
 		getConverter = function (limitExpr, filterExpr, data) {
-			if (!data) {
+			if (!data){
 				data = {
 					cache: compiledConverter
 				};
@@ -8616,10 +8616,10 @@ var store = (function () {
 
 		getConverterByElement = function ($input) {
 			var data = $input.data('inputlimiter');
-			var converter = getConverter($input.attr('data-limit') || '',
-				$input.attr('data-filter') || '',
-				data);
-			if (data) {
+			var converter =  getConverter($input.attr('data-limit') || '',
+										  $input.attr('data-filter') || '',
+										  data);
+			if (data){
 				$input.data('inputlimiter', data);
 			}
 			return converter;
@@ -8640,21 +8640,21 @@ var store = (function () {
 					// うに変更したのでここでは何も行わない
 				},
 
-				onCompositionStart = function (e) {
+				onCompositionStart = function(e) {
 					eventLogHandler(e);
 				},
 
-				onCompositionEnd = function (e) {
+				onCompositionEnd = function(e) {
 					eventLogHandler(e);
 					$(e.currentTarget).data("compositioningend", true);
 				},
 
 				// IMEで確定時用の処理
-				onInput = function (e) {
+				onInput = function(e){
 					eventLogHandler(e);
 					var input = e.currentTarget, $input = $(input);
 
-					if ($input.data("compositioningend")) {
+					if ($input.data("compositioningend")){
 						$input.data("compositioningend", false);
 					} else {
 						return;
@@ -8698,7 +8698,7 @@ var store = (function () {
 							ch = String.fromCharCode(e.which),
 							prevVal = $(e.currentTarget).val(),
 							curVal = splice(prevVal, selection.start, selection.end - selection.start, ch),
-							filtValu = converter.filter('unmask', curVal, { eventType: 'keypress' }),
+							filtValu = converter.filter('unmask', curVal, {eventType: 'keypress'}),
 							newVal = converter.limitValue(filtValu);
 
 						// console.log('###(press)',
@@ -8746,7 +8746,7 @@ var store = (function () {
 					var converter = _converter || getConverterByElement($input);
 					// 遅延するのはpasteイベントがChromeではペーストす
 					// る直前のタイミングで行われるため。
-					_.defer(function () {
+					_.defer(function(){
 						var value = $input.val(),
 							filtered = converter.filterValue(value),
 							masked = converter.filter('unmask', filtered);
@@ -8754,7 +8754,7 @@ var store = (function () {
 						$input.data('inputfilter.previousValue', masked);
 						$input.data('inputfilter.rawPreviousValue', value);
 						console.log('onPaste', input.id, input.className,
-							value, filtered, masked);
+									value, filtered, masked);
 						if (!$input.is(".bootstrap-select-searchbox >")) {
 							// TODO bootstrap-select liveSearch
 							$input.val(masked);
@@ -8784,7 +8784,7 @@ var store = (function () {
 						isBsSrch = $input.is(".bootstrap-select-searchbox >");
 
 					if ($.inputlimiter.noTrim &&
-						value !== limited) {
+						value !== limited){
 						// noTrimオプションが設定されている場合でtrimさ
 						// れる場合は何もしない
 						clutil.mediator.trigger('validation:require', $input);
@@ -8830,7 +8830,7 @@ var store = (function () {
 						filtered = converter.filterValue(value);
 
 					if ($.inputlimiter.noTrim &&
-						value !== limited) {
+						value !== limited){
 						// noTrimオプションが設定されている場合でtrimさ
 						// れる場合は何もしない
 						clutil.mediator.trigger('validation:require', $input);
@@ -8851,7 +8851,7 @@ var store = (function () {
 						return;
 
 					// MDBaseViewのブラー時のオートValid無効を解除にする。
-					_.defer(function () {
+					_.defer(function(){
 						$input.removeClass('cl_valid_blur_off');
 					});
 
@@ -8862,18 +8862,18 @@ var store = (function () {
 						filtered = converter.filterValue(value);
 
 					if ($.inputlimiter.noTrim &&
-						value !== limited) {
+						value !== limited){
 						clutil.mediator.trigger('validation:require', $input);
 						// noTrimオプションが設定されている場合でtrimさ
 						// れる場合は何もしない
 						return;
 					}
 
-					if (value === previous) {
+					if (value === previous){
 						$input.val(filtered);
 						clutil.mediator.trigger('validation:require', $input);
 						var rawPrevious = $input.data('inputfilter.rawPreviousValue');
-						if (previous != rawPrevious) {
+						if(previous != rawPrevious){
 							// ペーストまたは IME 確定等のまとまったテキスト入力で、フィルタが作用した場合、
 							// change イベントが発火していない可能性があるので、change 発火！！！！
 							console.info('inputlimiter.onBlur: change イベント発火');
@@ -8928,9 +8928,9 @@ var store = (function () {
 
 			var handler = createHandler(converter);
 			$el.unbind('.inputlimiter')
-				.bind('compositionstart.inputlimiter', handler.onCompositionStart)
-				.bind('compositionend.inputlimiter', handler.onCompositionEnd)
-				.bind('input.inputlimiter', handler.onInput)
+				.bind('compositionstart.inputlimiter',	handler.onCompositionStart)
+				.bind('compositionend.inputlimiter',  handler.onCompositionEnd)
+				.bind('input.inputlimiter',	 handler.onInput)
 
 				.bind('keypress.inputlimiter', handler.onKeypress)
 				.bind('keyup.inputlimiter', handler.onKeyup)
@@ -8942,7 +8942,7 @@ var store = (function () {
 				.addClass('bindInputlimiter');
 		},
 
-		addFilter = function ($el, id, filterFunc) {
+		addFilter = function($el, id, filterFunc){
 			var data = $el.data('inputlimiter') || {
 				filters: {},
 				limiters: {}
@@ -8953,7 +8953,7 @@ var store = (function () {
 			$el.data('inputlimiter', data);
 		},
 
-		addLimiter = function ($el, id, limiterFunc) {
+		addLimiter = function($el, id, limiterFunc){
 			var data = $el.data('inputlimiter') || {
 				filters: {},
 				limiters: {}
@@ -9007,9 +9007,9 @@ var store = (function () {
 				$element.unbind('.inputlimiter').removeClass('bindInputlimiter');
 			} else if (method === 'new') {
 				bindElement($element, converter);
-			} else if (method === 'addfilter') {
+			} else if (method === 'addfilter'){
 				addFilter.call(this, $element, args[1], args[2]);
-			} else if (method === 'addlimiter') {
+			} else if (method === 'addlimiter'){
 				addLimiter.call(this, $element, args[1], args[2]);
 			}
 		});
@@ -9073,7 +9073,7 @@ var store = (function () {
 			return converter.value(value);
 		},
 
-		clearCache: function () {
+		clearCache: function(){
 			compiledConverter = {};
 		},
 
@@ -9117,7 +9117,7 @@ var store = (function () {
 		 * $.inputlimiter.setCommonLimiters($.inputlimiter.Limiters.kinsoku("あ"));
 		 * ```
 		 */
-		setCommonLimiters: function () {
+		setCommonLimiters: function(){
 			var limiters = _.toArray(arguments);
 			this._commonLimiters = limiters;
 		}
@@ -9129,167 +9129,167 @@ var store = (function () {
  * ORIGINAL messages_ja.js
  */
 var clmsg = _.extend((typeof clmsg === 'undefined') && {} || clmsg, {
-	cl_echoback: "入力項目が間違っています。",
-	// http エラー
-	cl_http_status_xxx: '障害が発生しました。ご迷惑お掛けしています。しばらくお待ち下さい。',
-	cl_http_status_0: 'サーバーに接続できませんでした。',
-	cl_http_status_unauthorized: 'ログイン情報が確認できませんでした。しばらくお待ち下さい。',
-	cl_http_status_forbidden: 'アクセスが拒否されました。',
-	cl_http_status_501: 'サーバが混みあっています。しばらくお待ちいただいたのち、再度実行して下さい。',
+    cl_echoback: "入力項目が間違っています。",
+     // http エラー
+    cl_http_status_xxx: '障害が発生しました。ご迷惑お掛けしています。しばらくお待ち下さい。',
+    cl_http_status_0: 'サーバーに接続できませんでした。',
+    cl_http_status_unauthorized: 'ログイン情報が確認できませんでした。しばらくお待ち下さい。',
+    cl_http_status_forbidden: 'アクセスが拒否されました。',
+    cl_http_status_501: 'サーバが混みあっています。しばらくお待ちいただいたのち、再度実行して下さい。',
 
-	// validation メッセージ
-	cl_required: "入力してください。",
-	cl_its_required: "{0}を入力してください。",
-	cl_required2: "どちらか入力してください。",
-	cl_its_required2: "{0}のどちらかを入力してください。",
+    // validation メッセージ
+    cl_required             : "入力してください。",
+    cl_its_required : "{0}を入力してください。",
+    cl_required2 : "どちらか入力してください。",
+    cl_its_required2 : "{0}のどちらかを入力してください。",
 
-	cl_len1: '{0}文字で入力してください。',
-	cl_len2: '{0}文字以上で入力してください。',
-	cl_len3: '{1}文字以下で入力してください。',
-	cl_len4: '{0}〜{1}文字で入力してください。',
+    cl_len1: '{0}文字で入力してください。',
+    cl_len2: '{0}文字以上で入力してください。',
+    cl_len3: '{1}文字以下で入力してください。',
+    cl_len4: '{0}〜{1}文字で入力してください。',
 
-	cl_length_short1: "{0}文字以上で入力してください。",
-	cl_length_short2: "{0}〜{1}文字で入力してください。",
-	cl_length_long1: "{0}文字以下で入力してください。",
-	cl_length_long2: "{0}〜{1}文字で入力してください。",
-	cl_its_length_short1: "{0}が短すぎます。{1}文字以上で入力してください。",
-	cl_its_length_short2: "{0}が短すぎます。{1}〜{2}文字で入力してください。",
-	cl_its_length_long1: "{0}が長すぎます。{1}文字以下で入力してください。",
-	cl_its_length_long2: "{0}が長すぎます。{1}〜{2}文字で入力してください。",
+    cl_length_short1        : "{0}文字以上で入力してください。",
+    cl_length_short2        : "{0}〜{1}文字で入力してください。",
+    cl_length_long1 : "{0}文字以下で入力してください。",
+    cl_length_long2 : "{0}〜{1}文字で入力してください。",
+    cl_its_length_short1    : "{0}が短すぎます。{1}文字以上で入力してください。",
+    cl_its_length_short2    : "{0}が短すぎます。{1}〜{2}文字で入力してください。",
+    cl_its_length_long1     : "{0}が長すぎます。{1}文字以下で入力してください。",
+    cl_its_length_long2     : "{0}が長すぎます。{1}〜{2}文字で入力してください。",
 
-	cl_less_than_oreqlto: "{0}以下で入力してください。",
+    cl_less_than_oreqlto       : "{0}以下で入力してください。",
 
-	cl_email: "メールアドレス形式ではありません。",
-	cl_email_long: "256文字以下で入力してください。",
-	cl_its_email: "{0}はメールアドレス形式ではありません。入力をご確認ください。",
-	cl_its_email_long: "{0}は256文字以下で入力してください。",
+    cl_email                        : "メールアドレス形式ではありません。",
+    cl_email_long   : "256文字以下で入力してください。",
+    cl_its_email                    : "{0}はメールアドレス形式ではありません。入力をご確認ください。",
+    cl_its_email_long       : "{0}は256文字以下で入力してください。",
 
-	cl_url: "URL形式ではありません。",
-	cl_its_url: "{0}はURL形式ではありません。入力をご確認ください。",
-	cl_zenkaku: "全角文字列で入力してください。",
-	cl_zenkaku_length: "全角{0}〜{1}文字で入力してください。",
-	cl_zenkaku_short: "全角{0}文字以上で入力してください。",
-	cl_zenkaku_long: "全角{0}文字以下で入力してください。",
-	cl_hankaku: "半角文字列で入力してください。",
-	cl_hankaku_length: "半角{0}〜{1}文字で入力してください。",
-	cl_hankaku_short: "半角{0}文字以上で入力してください。",
-	cl_hankaku_long: "半角{0}文字以下で入力してください。",
-	cl_zenhan: "全角{0}文字以内もしくは半角{1}文字以内で入力してください",
+    cl_url                  : "URL形式ではありません。",
+    cl_its_url              : "{0}はURL形式ではありません。入力をご確認ください。",
+    cl_zenkaku: "全角文字列で入力してください。",
+    cl_zenkaku_length: "全角{0}〜{1}文字で入力してください。",
+    cl_zenkaku_short: "全角{0}文字以上で入力してください。",
+    cl_zenkaku_long: "全角{0}文字以下で入力してください。",
+    cl_hankaku: "半角文字列で入力してください。",
+    cl_hankaku_length: "半角{0}〜{1}文字で入力してください。",
+    cl_hankaku_short: "半角{0}文字以上で入力してください。",
+    cl_hankaku_long: "半角{0}文字以下で入力してください。",
+    cl_zenhan: "全角{0}文字以内もしくは半角{1}文字以内で入力してください",
 
-	cl_decimal1: "数値で入力してください(整数部{0}桁以下、小数部{1}桁以下)",
-	cl_decimal2: "数値で入力してください(整数部{0}桁以下)",
-	cl_decimal3: "数値で入力してください(小数部{0}桁以下)",
-	cl_decimal4: "数値で入力してください",
+    cl_decimal1: "数値で入力してください(整数部{0}桁以下、小数部{1}桁以下)",
+    cl_decimal2: "数値で入力してください(整数部{0}桁以下)",
+    cl_decimal3: "数値で入力してください(小数部{0}桁以下)",
+    cl_decimal4: "数値で入力してください",
 
-	cl_numeric1: "数字で入力してください",
+    cl_numeric1: "数字で入力してください",
 
-	cl_int1: "整数で入力してください({0}桁以内)",
-	cl_int2: "整数で入力してください",
+    cl_int1: "整数で入力してください({0}桁以内)",
+    cl_int2: "整数で入力してください",
 
-	cl_alphaperiod: '英字もしくはドットで入力してください',
-	cl_alnumperiod: '英数字もしくはドットで入力してください',
-	cl_passwd: '英数字、ドットもしくはハイフンで入力してください',
-	cl_upperperiod: '英大文字もしくはドットで入力してください',
-	cl_uppernumperiod: '英大文字、数字、もしくはドットで入力してください',
-	cl_alnum: '英数字で入力してください',
-	cl_alnum2: '英数字またはハイフンで入力してください',
-	cl_alpha: '英字で入力してください',
+    cl_alphaperiod: '英字もしくはドットで入力してください',
+    cl_alnumperiod: '英数字もしくはドットで入力してください',
+    cl_passwd: '英数字、ドットもしくはハイフンで入力してください',
+    cl_upperperiod: '英大文字もしくはドットで入力してください',
+    cl_uppernumperiod: '英大文字、数字、もしくはドットで入力してください',
+    cl_alnum: '英数字で入力してください',
+    cl_alnum2: '英数字またはハイフンで入力してください',
+    cl_alpha: '英字で入力してください',
 
 	cl_upper: '英字大文字で入力してください',
 
-	cl_minlen: '{0}文字以上で入力してください。',
-	cl_maxlen: '{0}文字以下で入力してください。',
+    cl_minlen: '{0}文字以上で入力してください。',
+    cl_maxlen: '{0}文字以下で入力してください。',
 
-	cl_min: '{0}以上で入力してください。',
-	cl_max: '{0}以下で入力してください。',
+    cl_min: '{0}以上で入力してください。',
+    cl_max: '{0}以下で入力してください。',
 
-	cl_st_date_min_opedate: "運用日以前の適用開始日は設定できません。",
-	cl_ed_date_min_opedate: "運用日以前の適用終了日は設定できません。",
-	cl_st_date_min_eddate: "最終予約日以前の適用開始日は設定できません",
+    cl_st_date_min_opedate  : "運用日以前の適用開始日は設定できません。",
+    cl_ed_date_min_opedate  : "運用日以前の適用終了日は設定できません。",
+    cl_st_date_min_eddate   : "最終予約日以前の適用開始日は設定できません",
 
-	cl_st_date_min_del: "適用開始日が運用日より前のデータは削除できません。",
-	cl_postalcode_inval: "郵便番号が不正です",
+    cl_st_date_min_del      : "適用開始日が運用日より前のデータは削除できません。",
+    cl_postalcode_inval     : "郵便番号が不正です",
 
-	cl_its_time_inval: "時刻の形式が誤っています。",
-	cl_time_inval: "時刻の形式が誤っています。",
+    cl_its_time_inval       : "時刻の形式が誤っています。",
+    cl_time_inval           : "時刻の形式が誤っています。",
 
-	cl_date_inval: "日付形式が誤っています。",
-	cl_month_inval: "日付形式が誤っています。",
-	cl_its_month_inval: "日付形式が誤っています。",
-	cl_date_max: "日付が範囲外です。{0}前の日付を入力してください。",
-	cl_date_min: "日付が範囲外です。{0}後の日付を入力してください。",
-	cl_date_range: "日付が範囲外です。{0}〜{1}の日付を入力してください。",
-	cl_its_date_inval: "{0}の日付形式が誤っています。",
-	cl_its_date_max: "{0}の日付が範囲外です。{1}前の日付を入力してください。",
-	cl_its_date_min: "{0}の日付が範囲外です。{1}後の日付を入力してください。",
-	cl_its_date_range: "{0}の日付が範囲外です。{1}〜{2}の日付を入力してください。",
+    cl_date_inval           : "日付形式が誤っています。",
+    cl_month_inval          : "日付形式が誤っています。",
+    cl_its_month_inval      : "日付形式が誤っています。",
+    cl_date_max             : "日付が範囲外です。{0}前の日付を入力してください。",
+    cl_date_min             : "日付が範囲外です。{0}後の日付を入力してください。",
+    cl_date_range           : "日付が範囲外です。{0}〜{1}の日付を入力してください。",
+    cl_its_date_inval       : "{0}の日付形式が誤っています。",
+    cl_its_date_max         : "{0}の日付が範囲外です。{1}前の日付を入力してください。",
+    cl_its_date_min         : "{0}の日付が範囲外です。{1}後の日付を入力してください。",
+    cl_its_date_range       : "{0}の日付が範囲外です。{1}〜{2}の日付を入力してください。",
 
-	cl_regex: "形式が誤っています。",
-	cl_its_regex: "{0}の形式が誤っています。入力をご確認ください。",
-	cl_autocomplete_mismatch: "選択肢の中から指定してください。",
+    cl_regex                : "形式が誤っています。",
+    cl_its_regex            : "{0}の形式が誤っています。入力をご確認ください。",
+    cl_autocomplete_mismatch: "選択肢の中から指定してください。",
 	cl_staffcode_mismatch: "コードの指定が誤っています。",
 
-	// 共通メッセージコード
-	cl_sys_error: 'システムエラーが発生しました。',
+    // 共通メッセージコード
+    cl_sys_error            : 'システムエラーが発生しました。',
 
-	cl_sys_db_nomem: 'メモリ確保に失敗しました。',
-	cl_sys_db_error: 'システムエラー：データベースアクセスに失敗しました。',
-	cl_sys_db_access: 'システムエラー：データベースアクセスに失敗しました。',
-	cl_sys_db_other: '別のユーザによってDBが更新されました。',
+    cl_sys_db_nomem         : 'メモリ確保に失敗しました。',
+    cl_sys_db_error         : 'システムエラー：データベースアクセスに失敗しました。',
+    cl_sys_db_access        : 'システムエラー：データベースアクセスに失敗しました。',
+    cl_sys_db_other         : '別のユーザによってDBが更新されました。',
 
-	cl_sys_fread: 'ファイルの読み込みに失敗しました。',
-	cl_sys_fwrite: 'ファイルの書き込みに失敗しました。',
+    cl_sys_fread            : 'ファイルの読み込みに失敗しました。',
+    cl_sys_fwrite           : 'ファイルの書き込みに失敗しました。',
 
-	cl_invalid_args: 'システムは要求を受け付けられませんでした。もう一度入力をご確認ください。',
-	cl_fromto_error: '開始値と終了値が反転しています',
+    cl_invalid_args         : 'システムは要求を受け付けられませんでした。もう一度入力をご確認ください。',
+    cl_fromto_error         : '開始値と終了値が反転しています',
 
-	cl_apl_error: 'アプリケーションエラーが発生しました。',
-	cl_apl_access_denied: 'アクセスが許可されておりません。',
+    cl_apl_error            : 'アプリケーションエラーが発生しました。',
+    cl_apl_access_denied	: 'アクセスが許可されておりません。',
 
-	cl_no_data: '検索結果は0件です。',
-	cl_nodata: '検索結果は0件です。',
-	ca_srch_maxover: '検索結果が多ぎます。絞込条件を追加してください。',
+    cl_no_data          : '検索結果は0件です。',
+    cl_nodata           : '検索結果は0件です。',
+    ca_srch_maxover     : '検索結果が多ぎます。絞込条件を追加してください。',
 
-	cl_ini_failed: '初期表示データ取得に失敗しました。',
-	cl_ini_nodata: '初期表示データがありません。',
+    cl_ini_failed		: '初期表示データ取得に失敗しました。',
+    cl_ini_nodata		: '初期表示データがありません。',
 
-	// 日付選択部品
-	cl_datepicker_button_text: 'カレンダー',
-	cl_date_error: '開始期間と終了期間が反転しています',
-	cl_month_error: '開始年月と終了年月が反転しています',
-	cl_time_error: '開始時刻と終了時刻が反転しています',
+    // 日付選択部品
+    cl_datepicker_button_text                       : 'カレンダー',
+    cl_date_error                   : '開始期間と終了期間が反転しています',
+    cl_month_error                  : '開始年月と終了年月が反転しています',
+    cl_time_error                   : '開始時刻と終了時刻が反転しています',
 
-	cl_rtype_r_upd: "登録できないデータが含まれています。",
-	cl_rtype_r_edit: "編集できないデータが含まれています。",
-	cl_rtype_r_del: "削除できないデータが含まれています。",
+    cl_rtype_r_upd  : "登録できないデータが含まれています。",
+    cl_rtype_r_edit  : "編集できないデータが含まれています。",
+    cl_rtype_r_del  : "削除できないデータが含まれています。",
 
-	cl_rtype_upd: "登録できないデータです。",
-	cl_rtype_rsvcancel: "予約取消できないデータです。",
-	cl_rtype_del: "削除できないデータです。",
+    cl_rtype_upd  : "登録できないデータです。",
+    cl_rtype_rsvcancel  : "予約取消できないデータです。",
+    cl_rtype_del  : "削除できないデータです。",
 
-	cl_rtype_add_confirm: "新規登録が完了しました。",
-	cl_rtype_upd_confirm: "登録が完了しました。",
-	cl_rtype_del_confirm: "削除が完了しました。",
-	cl_rtype_any_confirm: "{0}が完了しました。",
+    cl_rtype_add_confirm  : "新規登録が完了しました。",
+    cl_rtype_upd_confirm  : "登録が完了しました。",
+    cl_rtype_del_confirm  : "削除が完了しました。",
+    cl_rtype_any_confirm  : "{0}が完了しました。",
 
-	cl_rtype_add_confirm_chk: "新規登録を行います。よろしいですか。",
-	cl_rtype_upd_confirm_chk: "登録を行います。よろしいですか。",
-	cl_rtype_del_confirm_chk: "削除を行います。よろしいですか。",
+    cl_rtype_add_confirm_chk  : "新規登録を行います。よろしいですか。",
+    cl_rtype_upd_confirm_chk  : "登録を行います。よろしいですか。",
+    cl_rtype_del_confirm_chk  : "削除を行います。よろしいですか。",
 
-	cl_repetition_select: "どちらかひとつのみ選択してください。",
-	cl_repetition_input: "どちらかひとつのみ入力してください。",
-	cl_repetition: "データが重複しています。",
+    cl_repetition_select        : "どちらかひとつのみ選択してください。",
+    cl_repetition_input         : "どちらかひとつのみ入力してください。",
+    cl_repetition               : "データが重複しています。",
 
-	cl_repetition_select_required: "どちらか選択してください。",
-	cl_repetition_input_required: "どちらか入力してください。",
+    cl_repetition_select_required   : "どちらか選択してください。",
+    cl_repetition_input_required    : "どちらか入力してください。",
 
-	cl_re_enter: "もういちど入力してください",
+    cl_re_enter : "もういちど入力してください",
 
-	// 個別エラーメッセージ
-	no_staff_list: "社員を登録してください。",
-	no_auth_list: "権限を登録してください。",
-	is_upd_false: "更新権限がないため、編集はできません。",
-	is_del_false: "削除権限がないため、削除はできません。"
+    // 個別エラーメッセージ
+    no_staff_list       : "社員を登録してください。",
+    no_auth_list        : "権限を登録してください。",
+    is_upd_false        : "更新権限がないため、編集はできません。",
+    is_del_false        : "削除権限がないため、削除はできません。"
 });
 
 /**
@@ -10179,30 +10179,30 @@ var clmsg = _.extend((typeof clmsg === 'undefined') && {} || clmsg, {
 var clconst = {};
 
 _.extend(clconst, {
-	ITEMATTRGRPFUNC_ID_SUBCLS1: 1,   // サブクラス1
-	ITEMATTRGRPFUNC_ID_SUBCLS2: 2,   // サブクラス2
-	ITEMATTRGRPFUNC_ID_USETYPE: 3,   // 用途区分
-	ITEMATTRGRPFUNC_ID_COLOR: 4,   // カラー
-	ITEMATTRGRPFUNC_ID_SEASON: 5,   // シーズン
-	ITEMATTRGRPFUNC_ID_BRAND: 6,   // ブランド
-	ITEMATTRGRPFUNC_ID_STYLE: 7,   // スタイル
-	ITEMATTRGRPFUNC_ID_DESIGN: 8,   // 柄
-	ITEMATTRGRPFUNC_ID_MATERIAL: 9,   // 素材
-	ITEMATTRGRPFUNC_ID_COUNTRY: 10,  // 国
-	ITEMATTRGRPFUNC_ID_FACTORY: 11,  // 縫製工場
-	ITEMATTRGRPFUNC_ID_PARTS: 12,  // 部位
-	ITEMATTRGRPFUNC_ID_TAGMATERIAL: 13,  // 素材(タグ用)
-	ITEMATTRGRPFUNC_ID_SUBDESIGN: 14,  // サブ柄
-	ITEMATTRGRPFUNC_ID_DESIGNCOLOR: 15,  // ベース色(柄色)
-	ITEMATTRGRPFUNC_ID_CURRENCY: 16,  // 通貨
+	ITEMATTRGRPFUNC_ID_SUBCLS1:      1,   // サブクラス1
+	ITEMATTRGRPFUNC_ID_SUBCLS2:      2,   // サブクラス2
+	ITEMATTRGRPFUNC_ID_USETYPE:      3,   // 用途区分
+	ITEMATTRGRPFUNC_ID_COLOR:        4,   // カラー
+	ITEMATTRGRPFUNC_ID_SEASON:       5,   // シーズン
+	ITEMATTRGRPFUNC_ID_BRAND:        6,   // ブランド
+	ITEMATTRGRPFUNC_ID_STYLE:        7,   // スタイル
+	ITEMATTRGRPFUNC_ID_DESIGN:       8,   // 柄
+	ITEMATTRGRPFUNC_ID_MATERIAL:     9,   // 素材
+	ITEMATTRGRPFUNC_ID_COUNTRY:      10,  // 国
+	ITEMATTRGRPFUNC_ID_FACTORY:      11,  // 縫製工場
+	ITEMATTRGRPFUNC_ID_PARTS:        12,  // 部位
+	ITEMATTRGRPFUNC_ID_TAGMATERIAL:  13,  // 素材(タグ用)
+	ITEMATTRGRPFUNC_ID_SUBDESIGN:    14,  // サブ柄
+	ITEMATTRGRPFUNC_ID_DESIGNCOLOR:  15,  // ベース色(柄色)
+	ITEMATTRGRPFUNC_ID_CURRENCY:     16,  // 通貨
 	ITEMATTRGRPFUNC_ID_MODELNOPLACE: 17,  // 部位(型番)
-	ITEMATTRGRPFUNC_ID_ITOLOX: 18,   // 糸LOX
-	ITEMATTRGRPFUNC_ID_AGG_SEASON: 19,  // 集約シーズン   *区分(分析の都合でiagfunc_idだけ定義)
-	ITEMATTRGRPFUNC_ID_ITEM_TYPE: 20,  // 商品区分       *区分(分析の都合でiagfunc_idだけ定義)
-	ITEMATTRGRPFUNC_ID_KI: 21,  // KI区分         *区分(分析の都合でiagfunc_idだけ定義)
-	ITEMATTRGRPFUNC_ID_SIZE: 22,  // サイズ         *MtSize(分析の都合でiagfunc_idだけ定義)
-	ITEMATTRGRPFUNC_ID_PRICELINE: 23,  // プライスライン *MtPriceline(集計Libの都合でiagfunc_idだけ定義)
-	ITEMATTRGRPFUNC_ID_CUSTOMER: 24   // 客層
+	ITEMATTRGRPFUNC_ID_ITOLOX:       18,   // 糸LOX
+	ITEMATTRGRPFUNC_ID_AGG_SEASON:   19,  // 集約シーズン   *区分(分析の都合でiagfunc_idだけ定義)
+	ITEMATTRGRPFUNC_ID_ITEM_TYPE:    20,  // 商品区分       *区分(分析の都合でiagfunc_idだけ定義)
+	ITEMATTRGRPFUNC_ID_KI:           21,  // KI区分         *区分(分析の都合でiagfunc_idだけ定義)
+	ITEMATTRGRPFUNC_ID_SIZE:         22,  // サイズ         *MtSize(分析の都合でiagfunc_idだけ定義)
+	ITEMATTRGRPFUNC_ID_PRICELINE:    23,  // プライスライン *MtPriceline(集計Libの都合でiagfunc_idだけ定義)
+	ITEMATTRGRPFUNC_ID_CUSTOMER:     24   // 客層
 });
 
 
@@ -10215,28 +10215,30 @@ var clcom = {};
 
 (function () {
 	//IEでは、[console]が使えないので、回避するためのおまじない
-	if (typeof window.console != 'object') {
-		window.console = { log: function () { }, debug: function () { }, info: function () { }, warn: function () { }, error: function () { }, assert: function () { }, dir: function () { }, dirxml: function () { }, trace: function () { }, group: function () { }, groupEnd: function () { }, time: function () { }, timeEnd: function () { }, profile: function () { }, profileEnd: function () { }, count: function () { } };
-	} else if (typeof window.console.debug != 'object') {
-		window.console.debug = function () { };
+	if(typeof window.console != 'object'){
+		window.console = {log:function(){},debug:function(){},info:function(){},warn:function(){},error:function(){},assert:function(){},dir:function(){},dirxml:function(){},trace:function(){},group:function(){},groupEnd:function(){},time:function(){},timeEnd:function(){},profile:function(){},profileEnd:function(){},count:function(){}};
+	}else if (typeof window.console.debug != 'object'){
+		window.console.debug = function(){};
 	}
 	//IEでは、[console]が使えないので、回避するためのおまじない
 
 	//IE8では、[indexOf]が使えないので、回避するためのおまじない
-	if (!Array.prototype.indexOf) {
-		Array.prototype.indexOf = function (elt /*, from*/) {
+	if(!Array.prototype.indexOf){
+		Array.prototype.indexOf = function(elt /*, from*/)
+		{
 			var len = this.length;
 
 			var from = Number(arguments[1]) || 0;
 			from = (from < 0)
-				? Math.ceil(from)
-				: Math.floor(from);
+			? Math.ceil(from)
+					: Math.floor(from);
 			if (from < 0)
 				from += len;
 
-			for (; from < len; from++) {
+			for (; from < len; from++)
+			{
 				if (from in this &&
-					this[from] === elt)
+						this[from] === elt)
 					return from;
 			}
 			return -1;
@@ -10251,8 +10253,8 @@ var clcom = {};
 	}
 
 	/** ルート取得 */
-	var _getUrlRoot = function () {
-		if (location.protocol == "file:") {
+	var _getUrlRoot = function(){
+		if(location.protocol == "file:"){
 			var path = '';
 			var localtok = encodeURI('03.レビュー用');
 			if (location.pathname.indexOf(localtok) >= 0) {
@@ -10267,7 +10269,7 @@ var clcom = {};
 				url = location.protocol + "//" + location.host + path;
 			}
 			return url;
-		} else {
+		}else{
 			return location.protocol + "//" + location.host;
 		}
 	};
@@ -10282,7 +10284,7 @@ var clcom = {};
 	 * @param [options.life]
 	 * @param [options.pingerEvents]
 	 */
-	var ClKeepAlive = function (options) {
+	var ClKeepAlive = function(options){
 		var defaults = {
 			heartbeat: (60 * 1000),	// 監視間隔（ミリ秒単位）
 			life: (10 * 60 * 1000),	// 寿命（ミリ秒単位）
@@ -10296,7 +10298,7 @@ var clcom = {};
 		/**
 		 *
 		 */
-		resetTm: function () {
+		resetTm: function(){
 			var tm = Date.now();
 			store.set(this._storageKey, tm);
 			return tm;
@@ -10304,7 +10306,7 @@ var clcom = {};
 		/**
 		 *
 		 */
-		getTm: function () {
+		getTm: function(){
 			var tm = store.get(this._storageKey);
 			return tm;
 		},
@@ -10317,12 +10319,12 @@ var clcom = {};
 		 * @param {Integer} [opt.heartbeat] 監視間隔（ミリ秒）
 		 * @param {Integer} [opt.life] 生存時間（ミリ秒）
 		 */
-		start: function (opt) {
-			if (opt) {
-				if (_.isNumeric(opt.heartbeat) && opt.heartbeat > 0) {
+		start: function(opt){
+			if(opt){
+				if(_.isNumeric(opt.heartbeat) && opt.heartbeat > 0){
 					this.heartbeat = opt.heartbeat;
 				}
-				if (_.isNumeric(opt.life) && opt.life > 0) {
+				if(_.isNumeric(opt.life) && opt.life > 0){
 					this.life = opt.life;
 				}
 			}
@@ -10331,14 +10333,14 @@ var clcom = {};
 
 			// 監視タイマー
 			var tm = this.resetTm();
-			this.workingTimer = setInterval(_.bind(function () {
+			this.workingTimer = setInterval(_.bind(function(){
 				//console.log('ClKeepAlive.HP: ', this.getHP());
-				if (this._isAlive()) {
+				if(this._isAlive()){
 					return;
 				}
 				this.stop();
 				this._notifyTimedOut();
-			}, this), this.heartbeat);
+			},this), this.heartbeat);
 
 			// 発信側 - 画面に触った系イベント発生で poke するよう仕込む。
 			var pinger = {
@@ -10348,7 +10350,7 @@ var clcom = {};
 				evCallback: _.bind(this._evPoke, this)
 			};
 			var $w = $(window);
-			for (var i = 0; i < this.pingerEvents.length; i++) {
+			for(var i = 0; i < this.pingerEvents.length; i++){
 				var ev = this.pingerEvents[i];
 				$w.bind(ev, pinger.evCallback);
 			}
@@ -10363,15 +10365,15 @@ var clcom = {};
 		 * @method stop
 		 * @for ClKeepAlive
 		 */
-		stop: function () {
-			if (this.workingTimer) {
+		stop: function(){
+			if(this.workingTimer){
 				clearInterval(this.workingTimer);
 				this.workingTimer = null;
 				console.log('KeepAlive: workingTimer stop.');
 			}
-			if (this.pinger) {
+			if(this.pinger){
 				var $w = $(window);
-				for (var i = 0; i < this.pingerEvents.length; i++) {
+				for(var i = 0; i < this.pingerEvents.length; i++){
 					var ev = this.pingerEvents[i];
 					$w.unbind(ev, this.pinger.evCallback);
 				}
@@ -10385,15 +10387,15 @@ var clcom = {};
 		 * @method poke
 		 * @for ClKeepAlive
 		 */
-		poke: function () {
-			if (!this.workingTimer) {
+		poke: function(){
+			if(!this.workingTimer){
 				// 動作していない。
 				return 'not-working';
 			}
-			if (this._isAlive()) {
+			if(this._isAlive()){
 				this.resetTm();
 				return 'fine';
-			} else {
+			}else{
 				this.stop();
 				this._notifyTimedOut();
 				return 'dead';
@@ -10409,34 +10411,34 @@ var clcom = {};
 		 */
 		// window 内のマウスイベント等から poke を発信する。
 		// 頻度が多いので、発信を遅延させ間引く。
-		_evPoke: function (e) {
+		_evPoke: function(e){
 			var pinger = this.pinger;
 			var _this = this;
-			if (!pinger) {
+			if(!pinger){
 				return;
 			}
-			if (pinger.timer) {
+			if(pinger.timer){
 				//clearTimeout(pinger.timer);
 				//pinger.timer = null;
 				return;
 			}
-			pinger.timer = setTimeout(function () {
-				try {
-					if (e.type == 'mousemove') {
+			pinger.timer = setTimeout(function(){
+				try{
+					if(e.type == 'mousemove'){
 						var x0 = pinger.x, y0 = pinger.y;
 						pinger.x = e.clientX;
 						pinger.y = e.clientY;
-						if (pinger.x == x0 && pinger.y == y0) {
+						if(pinger.x == x0 && pinger.y == y0){
 							// mousemove 移動量が無いので poke しない
 							return;
 						}
 					}
 					_this.poke();
 					//console.log(e.type + ', poke!');
-				} finally {
+				}finally{
 					pinger.timer = null;
 				}
-			}, 200);
+			},200);
 		},
 		/**
 		 * 生存確認
@@ -10444,8 +10446,8 @@ var clcom = {};
 		 * @method _isAlive
 		 * @private
 		 */
-		_isAlive: function () {
-			if (!this.workingTimer) {
+		_isAlive: function(){
+			if(!this.workingTimer){
 				return false;
 			}
 			var elapsedTime = Date.now() - this.getTm();
@@ -10460,17 +10462,17 @@ var clcom = {};
 		 * @method _notifyTimedOut
 		 * @private
 		 */
-		_notifyTimedOut: function () {
+		_notifyTimedOut: function(){
 			console.log('KeepAlive: dead.');
-			if (_.isFunction(this.onTimedOut)) {
+			if(_.isFunction(this.onTimedOut)){
 				this.onTimedOut();
 			}
 		},
 		/**
 		 * タイムアウトまでの残り時間を返す。（デバグ用）
 		 */
-		getHP: function () {
-			if (!this.workingTimer) {
+		getHP: function(){
+			if(!this.workingTimer){
 				return -1;
 			}
 			var elapsedTime = Date.now() - this.getTm();
@@ -10480,23 +10482,23 @@ var clcom = {};
 		/**
 		 * タイムアウトまでの残り時間を１秒間隔で監視する（デバグ用）
 		 */
-		dbgWatchHP: function () {
-			if (!this.workingTimer) {
-				console.warn(not - working);
+		dbgWatchHP: function(){
+			if(!this.workingTimer){
+				console.warn(not-working);
 				return;
 			}
-			var _this = this, prevHP = null, intervalId = null;
-			intervalId = setInterval(function () {
+			var _this = this, prevHP = null,intervalId = null;
+			intervalId = setInterval(function(){
 				var curHP = _this.getHP();
-				if (curHP <= 0) {
+				if(curHP <= 0){
 					console.warn('already expired.');
 					clearInterval(intervalId);
 					return;
 				}
-				if (_.isNumber(prevHP) && prevHP < curHP) {
-					console.info(curHP + '  (+' + (curHP - prevHP) + ')');
-				} else {
-					console.log(curHP + '  (' + (curHP - prevHP) + ')');
+				if(_.isNumber(prevHP) && prevHP < curHP){
+					console.info(curHP + '  (+' + (curHP-prevHP) + ')');
+				}else{
+					console.log(curHP + '  (' + (curHP-prevHP) + ')');
 				}
 				prevHP = curHP;
 			});
@@ -10543,7 +10545,7 @@ var clcom = {};
 		},
 
 		/** 区分取得済みフラグ */
-		f_settype: function () {
+		f_settype: function(){
 			// TODO:
 			// 現在のログインが有効かつ、ログイン時に既に区分取得してストレージに補完済ならば・・・
 			// を判定するロジックを書く。単に、クッキーパラメタのログインチェック的なことで足りるのかも・・・
@@ -10556,15 +10558,15 @@ var clcom = {};
 		 * @param {string} key キー文字列
 		 * @param {string} [prefix] キープレフィックス。undefined でない場合は clcom.storagePrefix が適用される。
 		 */
-		hasStorageKey: function (key, prefix) {
-			if (_.isEmpty(key)) {
+		hasStorageKey: function(key, prefix){
+			if(_.isEmpty(key)){
 				// キーが空欄 or null or undefiend
 				return false;
 			}
 			var fixedKey;
-			if (_.isString(prefix)) {
+			if(_.isString(prefix)){
 				fixedKey = prefix + key;
-			} else {
+			}else{
 				fixedKey = clcom.storagePrefix + key;
 			}
 			var val = store.get(fixedKey);
@@ -10587,7 +10589,7 @@ var clcom = {};
 		/**
 		 * 権限テーブルをローカルストレージから削除する。
 		 */
-		removePermfuncMap: function () {
+		removePermfuncMap: function() {
 			var key = clcom.storagePrefix + 'permfunc';
 			return store.remove(key);
 		},
@@ -10603,7 +10605,7 @@ var clcom = {};
 		/**
 		 * 権限テーブルを取得する
 		 */
-		getPermfuncByCode: function (code) {
+		getPermfuncByCode: function(code){
 			var key = clcom.storagePrefix + 'permfunc';
 			var map = store.get(key);
 			code || (code = clcom.pageId);
@@ -10613,7 +10615,7 @@ var clcom = {};
 		/**
 		 * MtFuncRelテーブルをローカルストレージに保存する
 		 */
-		setFuncRel: function (funcRelList) {
+		setFuncRel: function(funcRelList){
 			var key = clcom.storagePrefix + 'funcrel';
 			var map = _.reduce(funcRelList, function (map, item) {
 				map[item.c_code] = item.p_code;
@@ -10625,7 +10627,7 @@ var clcom = {};
 		/**
 		 * 親機能コードを返す
 		 */
-		getFuncRelParentCode: function (code) {
+		getFuncRelParentCode: function(code){
 			var key = clcom.storagePrefix + 'funcrel';
 			var map = store.get(key);
 			code || (code = clcom.pageId);
@@ -10635,19 +10637,19 @@ var clcom = {};
 		/**
 		 * 画面コードからメニュー中分類名を取得する
 		 */
-		getMiddleMenuName: function (code, recur) {
+		getMiddleMenuName: function(code, recur){
 			code = code || clcom.pageId;
 			var map = store.get(clcom.storagePrefix + 'viewcode2menu');
 			var menu = map && map[code];
 			var title = menu && menu.name || '';
-			if (!title) {
+			if(!title){
 				code = clcom.getFuncRelParentCode(code);
-				if (code) {
+				if(code){
 					menu = map && map[code];
 					title = menu && menu.name || '';
 				}
 			}
-			if (!title && clcom.srcId && recur !== false) {
+			if(!title && clcom.srcId && recur !== false){
 				// 取得できない場合は遷移元を引き継ぐ
 				return clcom.getMiddleMenuName(clcom.srcId, false);
 			}
@@ -10659,25 +10661,25 @@ var clcom = {};
 		 * ひもづけを作成しローカルストレージに保存する
 		 * @param data AMCMV0030GetRsp
 		 */
-		setViewCode2Menu: function (data) {
+		setViewCode2Menu: function(data){
 			var key = clcom.storagePrefix + 'viewcode2menu',
 				middleMenuGrpList = data.middleMenuGrpList,
 				largeMenuGrpList = data.largeMenuGrpList,
 				viewcode2menu = {};
-			_.reduce(data.viewList, function (mapping, view) {
+			_.reduce(data.viewList, function(mapping, view){
 				var menu = _.where(middleMenuGrpList, {
 					menuNodeID: view.parentMenuNodeID
 				})[0];
-				if (menu && menu.seqNo === -1) {
+				if(menu && menu.seqNo === -1){
 					menu = _.where(largeMenuGrpList, {
 						menuNodeID: menu.parentMenuNodeID
 					})[0];
-				} else if (!menu) {
+				}else if(!menu){
 					menu = _.where(largeMenuGrpList, {
 						menuNodeID: view.parentMenuNodeID
 					})[0];
 				}
-				if (menu && menu.seqNo !== -1) {
+				if(menu && menu.seqNo !== -1){
 					mapping[view.viewCode] = {
 						name: menu.menuNodeName
 					};
@@ -10708,13 +10710,13 @@ var clcom = {};
 		 * }
 		 * </code></pre>
 		 */
-		checkPermfunc: function (ope, code, permfunc) {
+		checkPermfunc: function(ope, code, permfunc){
 			code || (code = clcom.pageId);
 			permfunc || (permfunc = clcom.getPermfuncByCode(code));
-			if (_.indexOf(["read", "write", "del", "em"], ope) < 0) {
+			if (_.indexOf(["read", "write", "del", "em"], ope) < 0){
 				throw "処理引数が不正です[" + ope + "]";
 			}
-			if (permfunc) {
+			if (permfunc){
 				return !!permfunc["f_allow_" + ope];
 			}
 		},
@@ -10722,7 +10724,7 @@ var clcom = {};
 		/**
 		 * 共通デフォルト値をストレージに保存する。
 		 */
-		setCmDefaults: function (defs) {
+		setCmDefaults: function(defs){
 			var key = clcom.storagePrefix + 'cmdefaults';
 			store.set(key, defs);
 		},
@@ -10730,7 +10732,7 @@ var clcom = {};
 		/**
 		 * 共通デフォルト値をストレージから取得する。
 		 */
-		getCmDefaults: function () {
+		getCmDefaults: function(){
 			var key = clcom.storagePrefix + 'cmdefaults';
 			return store.get(key);
 		},
@@ -10738,7 +10740,7 @@ var clcom = {};
 		/**
 		 * 共通デフォルト値を削除する。
 		 */
-		removeCmDefaults: function () {
+		removeCmDefaults: function(){
 			var key = clcom.storagePrefix + 'cmdefaults';
 			store.remove(key);
 		},
@@ -10746,7 +10748,7 @@ var clcom = {};
 		/**
 		 * システムパラメタをローカルストレージに保存する。
 		 */
-		setSysparamList: function (sysparalist) {
+		setSysparamList: function(sysparalist){
 			var key = clcom.storagePrefix + 'sysparam';
 			store.set(key, sysparalist);
 		},
@@ -10754,7 +10756,7 @@ var clcom = {};
 		/**
 		 * システムパラメタをローカルストレージから削除する。
 		 */
-		removeSysparamList: function () {
+		removeSysparamList: function(){
 			var key = clcom.storagePrefix + 'sysparam';
 			// 区分リスト
 			store.remove(key);
@@ -10763,7 +10765,7 @@ var clcom = {};
 		/**
 		 * システムパラメタをローカルストレージから取得する。
 		 */
-		getSysparamList: function () {
+		getSysparamList: function(){
 			var key = clcom.storagePrefix + 'sysparam';
 			return store.get(key);
 		},
@@ -10771,9 +10773,9 @@ var clcom = {};
 		/**
 		 * システムパラメタを取得する
 		 */
-		getSysparam: function (paramname) {
+		getSysparam: function(paramname){
 			var list = clcom.getSysparamList();
-			var sysparams = _.where(list, { param: paramname });
+			var sysparams = _.where(list, {param: paramname});
 			return (sysparams.length > 0) ? sysparams[0].value : null;
 		},
 
@@ -10791,7 +10793,7 @@ var clcom = {};
 		 * AOKI
 		 * 区分テーブルをローカルストレージから削除する。
 		 */
-		removeTypeList: function () {
+		removeTypeList: function() {
 			var key = clcom.storagePrefix + 'typelist';
 			// 区分リスト
 			store.remove(key);
@@ -10805,31 +10807,31 @@ var clcom = {};
 		 * ・ids：kind 下の特定 id または id 配列（省略可）
 		 * 引数を指定しない場合は全区分の mix を返す。
 		 */
-		getTypeList: function (kind, ids) {
-			//			↓区分未取得の場合：ひとまず getIniJSON へ区分テーブルGET処理を委譲
-			//			if (this.f_settype == false) {
-			//			this.typegetFromServer();
-			//			this.f_settype = true;
-			//			}
+		getTypeList: function(kind, ids) {
+//			↓区分未取得の場合：ひとまず getIniJSON へ区分テーブルGET処理を委譲
+//			if (this.f_settype == false) {
+//			this.typegetFromServer();
+//			this.f_settype = true;
+//			}
 			// 区分リスト
 			var key = clcom.storagePrefix + 'typelist';
 			var alllist = store.get(key);
 
 			// kind が指定されている場合は kind で絞る。
 			var list = alllist;
-			if (_.isNumber(kind)) {
-				list = _.where(alllist, { typetype: kind });
+			if(_.isNumber(kind)){
+				list = _.where(alllist, {typetype: kind});
 			}
 
 			// 区分個々の ids が指定されている場合は絞り込む
 			var fixIds = null;
-			if (_.isArray(ids)) {
+			if(_.isArray(ids)){
 				fixIds = ids;
-			} else if (ids !== null && ids !== undefined) {
-				fixIds = [ids];
+			}else if(ids !== null && ids !== undefined){
+				fixIds = [ ids ];
 			}
-			if (fixIds) {
-				list = _.filter(list, function (kbn) {
+			if(fixIds){
+				list = _.filter(list, function(kbn){
 					return _.contains(fixIds, kbn.type_id);
 				});
 			}
@@ -10841,7 +10843,7 @@ var clcom = {};
 		 * 税履歴をローカルストレージに保存する
 		 * @param taxhistlist
 		 */
-		setTaxHistList: function (taxhistlist) {
+		setTaxHistList: function(taxhistlist) {
 			clcom.removeTaxHistList();
 			// 区分リスト
 			var key = clcom.storagePrefix + 'taxhistlist';
@@ -10851,7 +10853,7 @@ var clcom = {};
 		 * AOKI
 		 * 税履歴をローカルストレージから削除する。
 		 */
-		removeTaxHistList: function () {
+		removeTaxHistList: function() {
 			var key = clcom.storagePrefix + 'taxhistlist';
 			// 区分リスト
 			store.remove(key);
@@ -10864,7 +10866,7 @@ var clcom = {};
 		 * ・iymd:検索基準日（必須）
 		 * 引数を指定しない場合は税率0 を返す。
 		 */
-		getTaxHist: function (iymd) {
+		getTaxHist: function(iymd) {
 			// 税履歴リスト
 			var key = clcom.storagePrefix + 'taxhistlist';
 			var taxhistlist = store.get(key) || [];
@@ -10884,7 +10886,7 @@ var clcom = {};
 		 * 取引先別税履歴をローカルストレージに保存する
 		 * @param vendortaxhistlist
 		 */
-		setVendorTaxHistList: function (vendortaxhistlist) {
+		setVendorTaxHistList: function(vendortaxhistlist) {
 			clcom.removeVendorTaxHistList();
 			// 区分リスト
 			var key = clcom.storagePrefix + 'vendortaxhistlist';
@@ -10894,7 +10896,7 @@ var clcom = {};
 		 * AOKI
 		 * 取引先別税履歴をローカルストレージから削除する。
 		 */
-		removeVendorTaxHistList: function () {
+		removeVendorTaxHistList: function() {
 			var key = clcom.storagePrefix + 'vendortaxhistlist';
 			// 取引先別税履歴リスト
 			store.remove(key);
@@ -10908,7 +10910,7 @@ var clcom = {};
 		 * ・iymd:検索基準日（必須）
 		 * 見つからない場合はnullを返す
 		 */
-		getVendorTaxHist: function (vendor_id, iymd) {
+		getVendorTaxHist: function(vendor_id, iymd) {
 			// 税履歴リスト
 			var key = clcom.storagePrefix + 'vendortaxhistlist';
 			var vendortaxhistlist = store.get(key) || [];
@@ -10917,7 +10919,7 @@ var clcom = {};
 			for (var i = 0; i < vendortaxhistlist.length; i++) {
 				var vtaxhist = vendortaxhistlist[i];
 				if (vtaxhist.vendor_id == vendor_id &&
-					vtaxhist.fromDate <= iymd && iymd <= vtaxhist.toDate) {
+						vtaxhist.fromDate <= iymd && iymd <= vtaxhist.toDate) {
 					tax = vtaxhist.tax;
 					break;
 				}
@@ -10942,7 +10944,7 @@ var clcom = {};
 		 * 権限テーブルをローカルストレージから削除する。
 		 * @deprecated
 		 */
-		removeFuncList: function () {
+		removeFuncList: function() {
 			var key = clcom.storagePrefix + 'funclist';
 			store.remove(key);
 			key = clcom.storagePrefix + 'funcgrp';
@@ -10954,7 +10956,7 @@ var clcom = {};
 		 * 権限テーブルをローカルストレージから取得する。
 		 * @deprecated
 		 */
-		getFuncList: function () {
+		getFuncList: function() {
 			var key = clcom.storagePrefix + 'funclist';
 			return store.get(key);
 		},
@@ -10962,7 +10964,7 @@ var clcom = {};
 		 * 権限グループ？
 		 * @deprecated
 		 */
-		getFuncGrp: function () {
+		getFuncGrp: function() {
 			var key = clcom.storagePrefix + 'funcgrp';
 			return store.get(key);
 		},
@@ -10986,7 +10988,7 @@ var clcom = {};
 		 * @param {integer} userId ユーザーID
 		 * @deprecated
 		 */
-		removeFrequentList: function (userId) {
+		removeFrequentList: function(userId) {
 			var key = clcom.storagePrefix + 'userId' + userId + 'frequent';
 			var store = window.store;
 			store.remove(key);
@@ -10998,7 +11000,7 @@ var clcom = {};
 		 * @param {integer} userId ユーザーID
 		 * @deprecated
 		 */
-		getFrequentList: function (userId) {
+		getFrequentList: function(userId) {
 			var key = clcom.storagePrefix + 'userId' + userId + 'frequent';
 			var frequentList = store.get(key);
 			clcom.removeFrequentList(userId);
@@ -11006,7 +11008,7 @@ var clcom = {};
 			if (frequentList == null || frequentList.length == 0) {
 				return [];
 			}
-			for (var i = frequentList.length - 1; i >= 0; i--) {
+			for (var i = frequentList.length-1 ; i >= 0; i--) {
 				var freq = frequentList[i];
 				// 1ヶ月前のものは消す
 				var today = clcom.getOpeDate();
@@ -11035,7 +11037,7 @@ var clcom = {};
 		 * 役職区分をローカルストレージから削除する。
 		 * @deprecated
 		 */
-		removeJobpostList: function () {
+		removeJobpostList: function() {
 			var key = clcom.storagePrefix + 'jobpost';
 			var store = window.store;
 			store.remove(key);
@@ -11046,7 +11048,7 @@ var clcom = {};
 		 * 役職区分をローカルストレージから取得する。
 		 * @deprecated
 		 */
-		getJobpostList: function () {
+		getJobpostList: function() {
 			var key = clcom.storagePrefix + 'jobpost';
 			return store.get(key);
 		},
@@ -11054,10 +11056,10 @@ var clcom = {};
 		/**
 		 * ストレージをクリアする
 		 */
-		clearStorage: function (args) {
+		clearStorage: function(args){
 			// クリア除外キー
 			var savingKeys = {};
-			if (!(args && args.removeUserData === true)) {
+			if(!(args && args.removeUserData === true)){
 				// ログイン情報をストレージ - 引数 args.removeUserData で true 明示しない場合は保護対象。
 				savingKeys[clcom.storagePrefix + 'userdata'] = true;
 			}
@@ -11065,54 +11067,54 @@ var clcom = {};
 			// キー一覧からストレージをクリアしていく。
 			var storeKeyMap = store.keys();
 			var regEx = new RegExp('^' + clcom.storagePrefix.replace(/\.*$/, '') + '\\.');
-			var delKeys = _.reduce(storeKeyMap, function (delkeys, v, k) {
-				do {
-					if (!regEx.test(k)) {
+			var delKeys = _.reduce(storeKeyMap, function(delkeys, v, k){
+				do{
+					if(!regEx.test(k)){
 						break;
 					}
-					if (savingKeys[k]) {
+					if(savingKeys[k]){
 						break;
 					}
 					delkeys.push(k);
-				} while (false);
+				}while(false);
 				return delkeys;
 			}, []);
-			if (!_.isEmpty(delKeys)) {
+			if(!_.isEmpty(delKeys)){
 				store.remove(delKeys);
 			}
 
-			//			// 共通
-			//			// 運用日をストレージから消去
-			//			clcom.removeOpeDate();
-			//			// 区分リストをストレージから消去
-			//			clcom.removeTypeList();
-			//			// システムパラメタをストレージから消去
-			//			clcom.removeSysparamList();
-			//			// 共通デフォルト値をストレージから消去
-			//			clcom.removeCmDefaults();
-			//			// 権限
-			//			clcom.removePermfuncMap();
-			//			// 権限リストをストレージから消去
-			//			clcom.removeFuncList();					// @deplicated
-			//			if(args && args.removeUserData === true){
-			//				// ログイン情報をストレージから消去
-			//				clcom.removeUserData();
-			//			}
-			//			// pushpopをストレージから消去
-			//			store.remove('clcom.pushpop');
+//			// 共通
+//			// 運用日をストレージから消去
+//			clcom.removeOpeDate();
+//			// 区分リストをストレージから消去
+//			clcom.removeTypeList();
+//			// システムパラメタをストレージから消去
+//			clcom.removeSysparamList();
+//			// 共通デフォルト値をストレージから消去
+//			clcom.removeCmDefaults();
+//			// 権限
+//			clcom.removePermfuncMap();
+//			// 権限リストをストレージから消去
+//			clcom.removeFuncList();					// @deplicated
+//			if(args && args.removeUserData === true){
+//				// ログイン情報をストレージから消去
+//				clcom.removeUserData();
+//			}
+//			// pushpopをストレージから消去
+//			store.remove('clcom.pushpop');
 		},
 
 		/**
 		 * ストレージキャッシュ情報を clcom のプロパティへロードする。
 		 */
-		loadStorage: function () {
+		loadStorage: function(){
 			// 共通デフォルト値
 			var defs = clcom.getCmDefaults();
 			_.extend(clcom.cmDefaults, defs);
 
 			// シスパラ - 旧暫定I/F互換用
 			var sysparalist = clcom.getSysparamList();
-			clcom.cmSysparamMap = _.reduce(sysparalist, function (keyValDto, item) {
+			clcom.cmSysparamMap = _.reduce(sysparalist, function(keyValDto, item){
 				var key = item.param;
 				var val = _.isFinite(item.value) ? Number(item.value) : item.value;
 				keyValDto[key] = val;
@@ -11144,7 +11146,7 @@ var clcom = {};
 		pageTitle: document.title,	// TODO DBから取得する
 
 		// 画面遷移パラメタ(clcom定義の下で設定しています)
-		pageArgs: undefined,
+		pageArgs : undefined,
 
 		// popPage でもどってきた場合、pushPage で保存されたデータが設定される
 		pageData: undefined,
@@ -11177,10 +11179,10 @@ var clcom = {};
 		userInfo: {},
 
 		// 運用日
-		ope_date: 0,
+		ope_date : 0,
 
 		// 最終日付(固定)
-		max_date: 20701231,
+		max_date : 20701231,
 
 		// 最小日付(固定)
 		min_date: 19910101,//19900102,
@@ -11189,7 +11191,7 @@ var clcom = {};
 		list_max: 1000,
 
 		// 禁則文字の定義
-		kinsokuTable: (function () {
+		kinsokuTable: (function(){
 			return "\u301C";
 		}()),
 
@@ -11208,7 +11210,7 @@ var clcom = {};
 		 * AOKI
 		 * 運用日をローカルストレージから削除する。
 		 */
-		removeOpeDate: function () {
+		removeOpeDate: function() {
 			var key = clcom.storagePrefix + 'opedate';
 			var store = window.store;
 			store.remove(key);
@@ -11218,7 +11220,7 @@ var clcom = {};
 		 * AOKI
 		 * 運用日をローカルストレージから取得する。
 		 */
-		getOpeDate: function () {
+		getOpeDate: function() {
 			var key = clcom.storagePrefix + 'opedate';
 			return store.get(key);
 		},
@@ -11228,7 +11230,7 @@ var clcom = {};
 		 * 基準商品分類体系IDを保存する
 		 * @param {Integer} 基準商品分類体系ID
 		 */
-		setItgrpFuncBasic: function (basic_itgrp_func) {
+		setItgrpFuncBasic: function(basic_itgrp_func) {
 			clcom.removeItgrpFuncBasic();
 			var store = window.store;
 			var key = clcom.storagePrefix + 'basicitgrpfunc';
@@ -11239,7 +11241,7 @@ var clcom = {};
 		 * AOKI
 		 * 基準商品分類体系IDをローカルストレージから削除する
 		 */
-		removeItgrpFuncBasic: function () {
+		removeItgrpFuncBasic: function() {
 			var key = clcom.storagePrefix + 'basicitgrpfunc';
 			var store = window.store;
 			store.remove(key);
@@ -11250,7 +11252,7 @@ var clcom = {};
 		 * 基準商品分類体系IDをローカルストレージから取得する
 		 * @returns
 		 */
-		getItgrpFuncBasic: function () {
+		getItgrpFuncBasic: function() {
 			var key = clcom.storagePrefix + 'basicitgrpfunc';
 			var store = window.store;
 			return store.get(key);
@@ -11261,7 +11263,7 @@ var clcom = {};
 		 * （品種）商品分類階層IDを保存する
 		 * @param {Integer} 基準商品分類体系ID
 		 */
-		setStdItgrpLevel: function (std_itgrp_level) {
+		setStdItgrpLevel: function(std_itgrp_level) {
 			clcom.removeStdItgrpLevel();
 			var store = window.store;
 			var key = clcom.storagePrefix + 'stditgrplevel';
@@ -11272,7 +11274,7 @@ var clcom = {};
 		 * AOKI
 		 * （品種）商品分類階層IDをローカルストレージから削除する
 		 */
-		removeStdItgrpLevel: function () {
+		removeStdItgrpLevel: function() {
 			var key = clcom.storagePrefix + 'stditgrplevel';
 			var store = window.store;
 			store.remove(key);
@@ -11283,29 +11285,29 @@ var clcom = {};
 		 * （品種）商品分類階層IDをローカルストレージから取得する
 		 * @returns
 		 */
-		getStdItgrpLevel: function () {
+		getStdItgrpLevel: function() {
 			var key = clcom.storagePrefix + 'stditgrplevel';
 			var store = window.store;
 			return store.get(key);
 		},
 
 		// AOKI:pagerselectorの初期値
-		pagerselectval: 10,
+		pagerselectval : 10,
 
 		/**
 		 * ブラウザの状態を取得する
 		 */
-		onMobile: 0,
-		onPC: 1,
+		onMobile	: 0,
+		onPC		: 1,
 
-		getAgent: function () {
+		getAgent: function() {
 			var agent = navigator.userAgent;
 
-			if (agent.search(/iPhone/) != -1) {
+			if(agent.search(/iPhone/) != -1) {
 				return clcom.onMobile;
-			} else if (agent.search(/iPad/) != -1) {
+			} else if(agent.search(/iPad/) != -1) {
 				return clcom.onMobile;
-			} else if (agent.search(/Android/) != -1) {
+			} else if(agent.search(/Android/) != -1) {
 				return clcom.onMobile;
 			} else {
 				return clcom.onPC;
@@ -11313,26 +11315,26 @@ var clcom = {};
 		},
 
 		// モバイルデバイス判定関数
-		is_iPad: function () {
+		is_iPad:function(){
 			var flag = false;
 			var agent = navigator.userAgent;
-			if (agent.search(/iPad/) != -1) {
+			if(agent.search(/iPad/) != -1) {
 				flag = true;
 			}
 			return flag;
 		},
-		is_iPhone: function () {
+		is_iPhone:function(){
 			var flag = false;
 			var agent = navigator.userAgent;
-			if (agent.search(/iPhone/) != -1) {
+			if(agent.search(/iPhone/) != -1) {
 				flag = true;
 			}
 			return flag;
 		},
-		is_Android: function () {
+		is_Android:function(){
 			var flag = false;
 			var agent = navigator.userAgent;
-			if (agent.search(/Android/) != -1) {
+			if(agent.search(/Android/) != -1) {
 				flag = true;
 			}
 			return flag;
@@ -11351,7 +11353,7 @@ var clcom = {};
 		 * AOKI
 		 * ユーザ情報
 		 */
-		removeUserData: function () {
+		removeUserData: function() {
 			var key = clcom.storagePrefix + 'userdata';
 			var store = window.store;
 			store.remove(key);
@@ -11361,7 +11363,7 @@ var clcom = {};
 		 * AOKI
 		 * ユーザ情報
 		 */
-		getUserData: function () {
+		getUserData: function() {
 			var key = clcom.storagePrefix + 'userdata';
 			return store.get(key);
 		},
@@ -11375,7 +11377,7 @@ var clcom = {};
 		 * @param {Mixed} args 遷移先ページへの引数
 		 * @param {Mixed} data 保存データ
 		 */
-		pushPage: function (url, args, data) { },
+		pushPage: function (url, args, data) {},
 
 		/**
 		 * ページスタックのトップのページに戻る。スタックは1つ減る
@@ -11383,20 +11385,20 @@ var clcom = {};
 		 * @param {Mixed} returnValue リターン値
 		 * @param {Integer} n いくつ戻るか
 		 */
-		popPage: function (returnValue, n) { },
+		popPage: function (returnValue, n) {},
 
 		/**
 		 * pushPage の別名(とりあえず)
 		 */
-		transfer: function (url, args, data) { },
+		transfer: function (url, args, data) {},
 
 		/**
 		 * 指定されたクッキーの有無を検査する。
 		 * @param cookey
 		 * @returns {Boolean} 値があれば True を返す。
 		 */
-		hasCookie: function (cookey) {
-			var arg = cookey + '=';
+		hasCookie : function(cookey) {
+			var arg = cookey+'=';
 			var alen = arg.length;
 			var clen = document.cookie.length;
 			var i = 0;
@@ -11417,7 +11419,7 @@ var clcom = {};
 		 * 指定されたクッキーを削除する。
 		 * @param cookey
 		 */
-		delCookie: function (cookey) {
+		delCookie : function(cookey) {
 			document.cookie = cookey + "=dummy;expires=Thu, 01 Jun 1970 00:00:00 GMT; path=/";
 		},
 
@@ -11425,9 +11427,9 @@ var clcom = {};
 		 * クッキーに認証情報があるかどうかを判定する。
 		 * @returns {Boolean} 認証情報がある場合は True を返す。
 		 */
-		hasAuthCookies: function () {
+		hasAuthCookies : function() {
 			// JSESSIONID 有無
-			//			if (!clcom.hasCookie('JSESSIONID')) {
+//			if (!clcom.hasCookie('JSESSIONID')) {
 			if (!clcom.hasCookie('auth_token')) {
 				return false;
 			}
@@ -11465,8 +11467,8 @@ var clcom = {};
 		},
 
 		// HOME へ戻る
-		gohome: function (url) {
-			if (_.isEmpty(url)) {
+		gohome: function(url){
+			if(_.isEmpty(url)){
 				url = clcom.homeUrl;
 			}
 
@@ -11477,14 +11479,14 @@ var clcom = {};
 		},
 
 		/** ログアウト */
-		logout: function (url/*省略可*/, keepPage/*省略可、true:ログアウト処理後、現在のページ維持*/) {
+		logout: function(url/*省略可*/, keepPage/*省略可、true:ログアウト処理後、現在のページ維持*/){
 			var o = {
 				url: clcom.urlRoot,
 				keepPage: false
 			};
-			if (arguments.length === 1 && _.isObject(arguments[0])) {
+			if(arguments.length === 1 && _.isObject(arguments[0])){
 				_.extend(o, arguments[0]);
-			} else {
+			}else{
 				o = _.defaults({
 					url: arguments[0],
 					keepPage: arguments[1]
@@ -11501,14 +11503,14 @@ var clcom = {};
 				contentType: 'application/jason',
 				cache: false,
 				timeout: 5000,
-				success: function () {
+				success: function(){
 					console.log('logout success: ', arguments);
 				},
-				error: function (xhr, status, exp) {
+				error: function(xhr, status, exp){
 					console.warn('[' + status + '] logout failed.');
 				},
-				complete: function (xhr, status) {
-					if (!o.keepPage) {
+				complete: function(xhr, status){
+					if(!o.keepPage){
 						clcom.location(o.url);
 					}
 				}
@@ -11521,7 +11523,7 @@ var clcom = {};
 			heartbeat: (60 * 1000),	// 監視間隔: 1分毎
 
 			// 離席タイムアウト時のアクション
-			onTimedOut: function () {
+			onTimedOut: function(){
 				clcom.logout(clcom.urlRoot + '/err/unauthorized.html');
 			}
 		}),
@@ -11531,14 +11533,14 @@ var clcom = {};
 		 * @param {string} target ジャンプ先の target 属性名
 		 * @param {integer} [delay] 指定ミリ秒遅らせる
 		 */
-		targetJump: function (target, delay) {
+		targetJump: function(target, delay){
 			var savedHash = location.hash;
-			if (delay < 0) {
+			if(delay < 0){
 				delay = 0;
 			}
-			return setTimeout(function () {
+			return setTimeout(function(){
 				location.hash = "#" + target;
-				if (_.isEmpty(savedHash)) {
+				if(_.isEmpty(savedHash)){
 					savedHash = '#' + Date.now();
 					console.info('clcom.targetJump: replace new location.hash[' + savedHash + ']');
 				}
@@ -11546,7 +11548,7 @@ var clcom = {};
 			}, delay);
 		},
 
-		toString: function () {
+		toString: function() {
 			return JSON.stringify(this);
 		}
 	});
@@ -11576,7 +11578,7 @@ var clcom = {};
 		url = removeHash(url);
 		window.location.href = url + '#' + hash;
 	}
-	function newWindow(url, hash, target) {
+	function newWindow(url, hash, target){
 		hash = encodeURIComponent(hash);
 		url = removeHash(url);
 		window.open(url + '#' + hash, target);
@@ -11584,18 +11586,18 @@ var clcom = {};
 	// ページ遷移用スタック操作
 	var pushpop = (function () {
 		var store = window.store,
-			stack,
-			current,
-			savedData,
-			history,
-			pushd;
+		stack,
+		current,
+		savedData,
+		history,
+		pushd;
 
 		stack = store.get('clcom.pushpop') || [];
 		// store.remove('clcom.pushpop');
 		if (stack.length > 0) {
 			var last = _.last(stack),
-				type = last.type,
-				hash = last.hash;
+			type = last.type,
+			hash = last.hash;
 
 			if (last.hash !== getPageHash() && !getPageHash()) {
 				store.remove('clcom.pushpop');
@@ -11610,21 +11612,21 @@ var clcom = {};
 		current = _.last(stack) || {};
 
 		history = _(stack)
-			.chain()
-			.filter(function (value, index) { return index % 2 === 1; })
-			.map(function (value) {
-				return {
-					url: value.srcUrl,
-					label: value.srcPageTitle // TODO
-				};
-			})
-			.value();
+		.chain()
+		.filter(function (value, index) {return index % 2 === 1;})
+		.map(function (value) {
+			return {
+				url: value.srcUrl,
+				label: value.srcPageTitle // TODO
+			};
+		})
+		.value();
 
 		function push() {
 			var opts;
-			if (arguments.length === 1 && _.isObject(arguments[0])) {
+			if(arguments.length === 1 && _.isObject(arguments[0])){
 				opts = arguments[0];
-			} else {
+			}else{
 				opts = {
 					url: arguments[0],
 					args: arguments[1],
@@ -11662,12 +11664,12 @@ var clcom = {};
 			store.set('clcom.pushpop', s);
 			var newWindowTarget = (_.isString(opts.newWindow) && !_.isEmpty(opts.newWindow)) ? opts.newWindow : null;
 			if (opts.download) {
-				if (opts.newWindow) {
+				if(opts.newWindow){
 					window.open(opts.url, newWindowTarget);
-				} else {
+				}else{
 					location.href = opts.url;
 				}
-			} else if (opts.newWindow) {
+			} else if(opts.newWindow) {
 				newWindowTarget = newWindowTarget || "_blank";
 				newWindow(opts.url, hash, newWindowTarget);
 			} else {
@@ -11753,26 +11755,26 @@ var _clInternalErrorHandler = function (message) {
 };
 
 (function () {
-	//	var getYmd =	function (ymd, format) {
-	//		if (ymd instanceof jQuery) {
-	//			ymd = ymd.val();
-	//		}
-	//		ymd = clutil.dateFormat(ymd, format || 'yyyymmdd');
-	//		return ymd;
-	//	};
-	//
-	//	var buildSelectorItems = function (template, list, firstItem, selializer) {
-	//		selializer = selializer || _.identity;
-	//		var markup = _.map(list, function (data) {
-	//			return template({d: selializer(data, list)});
-	//		}).join('');
-	//		var $select = $('<select>').html(markup);
-	//		_.each($select.children(), function (option, i) {
-	//			$(option).data('cl', list[i]);
-	//		});
-	//		$select.prepend(firstItem);
-	//		return $select.children();
-	//	};
+//	var getYmd =	function (ymd, format) {
+//		if (ymd instanceof jQuery) {
+//			ymd = ymd.val();
+//		}
+//		ymd = clutil.dateFormat(ymd, format || 'yyyymmdd');
+//		return ymd;
+//	};
+//
+//	var buildSelectorItems = function (template, list, firstItem, selializer) {
+//		selializer = selializer || _.identity;
+//		var markup = _.map(list, function (data) {
+//			return template({d: selializer(data, list)});
+//		}).join('');
+//		var $select = $('<select>').html(markup);
+//		_.each($select.children(), function (option, i) {
+//			$(option).data('cl', list[i]);
+//		});
+//		$select.prepend(firstItem);
+//		return $select.children();
+//	};
 
 	/** ユーティリティ */
 	_.extend(clutil, {
@@ -11780,26 +11782,26 @@ var _clInternalErrorHandler = function (message) {
 		forceUnselectFlag: true,
 
 		/** 今ブロッキング中かどうかフラグ	*/
-		UIBlocking: 0,
+		UIBlocking : 0,
 		/** 画面をブロックする */
-		blockUI: function (a, options) {
+		blockUI: function(a, options) {
 			console.log('blockUI called, [' + a + '], flag[' + clutil.UIBlocking + ']');
 			if (clutil.UIBlocking > 0) {
 				clutil.UIBlocking++;	// TODO:clutilはthisにすべき？
 				return;
-			} else {
+			}else{
 				clutil.UIBlocking++;
-				//				$.blockUI({ centerY: 0, css: { top:'10px', left:'', right:'10px' } });
+//				$.blockUI({ centerY: 0, css: { top:'10px', left:'', right:'10px' } });
 				var msg = '<div id="loading" class=""><img src="' + clcom.urlRoot + '/images/loader.gif"></div>';
 				$.blockUI(_.extend({
-					css: { 'backgroundColor': 'none', 'border': 'none' },
+					css: { 'backgroundColor':'none', 'border':'none' },
 					message: msg
 				}, options));
 				console.log('blockUI blocked');
 			}
 		},
 		/** 画面のブロックを解除する */
-		unblockUI: function (a) {
+		unblockUI: function(a) {
 			console.log('unblockUI called, [' + a + '], flag[' + clutil.UIBlocking + ']');
 			clutil.UIBlocking--;
 			if (clutil.UIBlocking <= 0) {
@@ -11842,16 +11844,16 @@ var _clInternalErrorHandler = function (message) {
 		 * }
 		 * @return {promise}
 		 */
-		httpcall: function (options, resId) {
+		httpcall: function(options, resId) {
 			// 引数補完
-			if (_.isUndefined(resId) && _.has(options, 'resId')) {
+			if(_.isUndefined(resId) && _.has(options, 'resId')){
 				resId = options.resId;
 			}
 
 			// セッションクッキーチェックは getIniJSON で実施済につき、ここでは省略。
 
 			// タイマーをセット
-			if (clcom.keepAlive.poke() == 'dead') {
+			if(clcom.keepAlive.poke() == 'dead'){
 				console.log('httpcall: keepAlive - dead.');
 				var fakeRsp = {
 					status: 'error',
@@ -11871,13 +11873,13 @@ var _clInternalErrorHandler = function (message) {
 				dataType: 'json',
 				async: true,
 				contentType: 'application/json'
-				// beforeSend: function(xhr){
-				//	 // リクエストヘッダ付加 - GET メソッドでの妙なキャッシュ作用を防ぐため XXXX cache オプションをfalseに指定すれば良いはず
-				//	 if (this.type == 'GET') {
-				//	   xhr.setRequestHeader("If-Modified-Since", "Thu, 01 Jun 1970 00:00:00 GMT");
-				//	   //xhr.setRequestHeader("Cache-Control", "no-cache");
-				//	 }
-				// }
+					// beforeSend: function(xhr){
+					//	 // リクエストヘッダ付加 - GET メソッドでの妙なキャッシュ作用を防ぐため XXXX cache オプションをfalseに指定すれば良いはず
+					//	 if (this.type == 'GET') {
+					//	   xhr.setRequestHeader("If-Modified-Since", "Thu, 01 Jun 1970 00:00:00 GMT");
+					//	   //xhr.setRequestHeader("Cache-Control", "no-cache");
+					//	 }
+					// }
 			}, options || {});
 
 			var reqData = options.data;
@@ -11885,14 +11887,14 @@ var _clInternalErrorHandler = function (message) {
 			var success = params.success;
 			params.success = function (data, dataType) {
 				var appStat = am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK;	//0;
-				if (data.rspHead) {
+				if(data.rspHead){
 					appStat = data.rspHead.status;
 					// AOKI 運用日を設定する
-					if (data.rspHead.ope_iymd !== 0) {
+					if(data.rspHead.ope_iymd !== 0){
 						clcom.setOpeDate(data.rspHead.ope_iymd);
 					}
 				}
-				if (data.rspPage && params.onRspPage !== false /* false を明示した場合はイベント発火させないでおく */) {
+				if(data.rspPage && params.onRspPage !== false /* false を明示した場合はイベント発火させないでおく */ ){
 					// ページャ情報の応答を通報する
 					// ページ応答は total_record しか信用しないので、ページ要求のパラメタで拡張して渡す。
 					// このイベント発火によって、
@@ -11948,80 +11950,80 @@ var _clInternalErrorHandler = function (message) {
 		ajaxErrorHandler: function (xhr, textStatus, errorThrow) {
 			var errcode = 'cl_http_status_xxx';
 			switch (xhr.status) {
-				case 0:		// unauthorized
-					errcode = "cl_http_status_0";
-					break;
-				case 401:		  // unauthorized
-					errcode = "cl_http_status_unauthorized";
-					clcom.location(clcom.urlRoot + '/err/unauthorized.html');
-					break;
-				case 501:		// Bad Gateway
-					errcode = "cl_http_status_501";
-					break;
-				case 503:		  // forbidden
-					clcom.location(clcom.urlRoot + '/err/unavailable.html');
-					break;
-				default:
-					break;
+			case 0:		// unauthorized
+				errcode = "cl_http_status_0";
+				break;
+			case 401:		  // unauthorized
+				errcode = "cl_http_status_unauthorized";
+				clcom.location(clcom.urlRoot + '/err/unauthorized.html');
+				break;
+			case 501:		// Bad Gateway
+				errcode = "cl_http_status_501";
+				break;
+			case 503:		  // forbidden
+				clcom.location(clcom.urlRoot + '/err/unavailable.html');
+				break;
+			default:
+				break;
 			}
 			var head = {
-				status: "error",		// 0 でないのを入れる
-				message: errcode,
+				status  : "error",		// 0 でないのを入れる
+				message : errcode,
 				httpStatus: xhr.status
 			};
 			return {
 				// 互換性のために残す
-				head: head,
+				head : head,
 				// 通常のAPLはこっちを見る
-				rspHead: head
+				rspHead : head
 			};
 		},
 
 		_dlDialogVer: function (url) {
 			var template = _.template(
-				'<button class="btn dlg-cancel">キャンセル</button>' +
-				'<a class="btn btn-primary dlg-apply" href="<%= url %>"' +
-				' target="_blank">ダウンロード</a>'
+					'<button class="btn dlg-cancel">キャンセル</button>' +
+					'<a class="btn btn-primary dlg-apply" href="<%= url %>"' +
+					' target="_blank">ダウンロード</a>'
 			);
 			var $dialog = new clutil.ConfirmDialog({
-				footer: template({ url: url }),
+				footer: template({url: url}),
 				message: 'ダウンロードしますか？',
 				title: 'ダウンロード'
 			});
 		},
 
 		_downloadFormTemplate: _.template(
-			'<form id="clDownloadForm" class="far-afield" method="GET"' +
-			' target="_blank" action="<%= url %>">' +
-			' <input type="submit">' +
-			' </form>'
+				'<form id="clDownloadForm" class="far-afield" method="GET"' +
+				' target="_blank" action="<%= url %>">' +
+				' <input type="submit">' +
+				' </form>'
 		),
 
 		_dlIframeVer: function (url) {
 			var template = _.template(
-				'<iframe width="1" height="1" frameborder="0"' +
-				' src="<%= url %>"></iframe>'
+					'<iframe width="1" height="1" frameborder="0"' +
+					' src="<%= url %>"></iframe>'
 			);
-			$(template({ url: encodeURI(url) })).appendTo($('body'));
+			$(template({url: encodeURI(url)})).appendTo($('body'));
 		},
 
 		_download: function (url) {
 			var $form = $('#clDownloadFrom');
 			if (!$form.length) {
-				$form = $(clutil._downloadFormTemplate({ url: encodeURI(url) }))
-					.appendTo($('body'));
+				$form = $(clutil._downloadFormTemplate({url: encodeURI(url)}))
+				.appendTo($('body'));
 			}
 			$form.submit();
 		},
 
 		download: function () {
 			var opts;
-			if (arguments.length === 1 && _.isObject(arguments[0])) {
+			if(arguments.length === 1 && _.isObject(arguments[0])){
 				opts = arguments[0];
-			} else {
+			}else{
 				opts = {
-					url: arguments[0],
-					id: arguments[1]
+						url: arguments[0],
+						id: arguments[1]
 				};
 			}
 			var url = encodeURI(opts.url);
@@ -12030,11 +12032,11 @@ var _clInternalErrorHandler = function (message) {
 				clcom._preventConfirmOnce = true;
 				if (window.navigator.standalone) {
 					clcom.pushPage("dbapi-1://" + o.url, null, null, true);
-					//					location.href = "dbapi-1://" + _url;
+//					location.href = "dbapi-1://" + _url;
 				} else {
 					o.download = true;
 					clcom.pushPage(o);
-					//					location.href = _url;
+//					location.href = _url;
 				}
 			}
 
@@ -12045,20 +12047,20 @@ var _clInternalErrorHandler = function (message) {
 
 			function createDownloadBar(_url) {
 				var $alert = $(
-					'<div id="clDownloadBar" class="clDownloadBar alert alert-info">' +
-					'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-					'<a href="' + _url + '"><strong>ダウンロードが開始されない場合はここをクリックしてください。</strong></a></div>'
+						'<div id="clDownloadBar" class="clDownloadBar alert alert-info">' +
+						'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+						'<a href="' + _url + '"><strong>ダウンロードが開始されない場合はここをクリックしてください。</strong></a></div>'
 				);
 
 				$alert
-					.on('click', 'button,a', function (e) {
-						removeDownloadBar();
-						if ($(e.currentTarget).is('a')) {
-							startDownlaod(_url);
-						}
-						e.preventDefault();
-					})
-					.appendTo('body');
+				.on('click', 'button,a', function (e) {
+					removeDownloadBar();
+					if ($(e.currentTarget).is('a')) {
+						startDownlaod(_url);
+					}
+					e.preventDefault();
+				})
+				.appendTo('body');
 				$('body').addClass('clDownloadBarAdded');
 			}
 
@@ -12066,12 +12068,12 @@ var _clInternalErrorHandler = function (message) {
 			// ファイルの存在チェック
 			if (opts.id != null) {
 				var req = {
-					cond: {
-						file_id: opts.id
-					}
+						cond : {
+							file_id : opts.id
+						}
 				};
 				// データを取得
-				clutil.postJSON('gscm_filechk', req, _.bind(function (data, dataType) {
+				clutil.postJSON('gscm_filechk', req, _.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						if ($.browser.msie && $.browser.version < 9) {
 							removeDownloadBar();
@@ -12100,7 +12102,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param appcallback アプリ固有の初期情報取得コールバック
 		 * @returns {jqXHR}
 		 */
-		getIniJSON: function (res, appcallback, completed) {
+		getIniJSON: function(res, appcallback, completed) {
 			// ユーザ情報を設定する
 			clcom.userInfo = clcom.getUserData();
 
@@ -12118,7 +12120,7 @@ var _clInternalErrorHandler = function (message) {
 				return d.reject({ head: errHd, rspHead: errHd });
 			}
 
-			if (_.isEmpty(clutil.cStr(clcom.srcId))) {
+			if (_.isEmpty(clutil.cStr(clcom.srcId))){
 				// ここは、直リンらしい。
 				// 直リンされたら、強制ログアウト？
 				//clcom.logout();					// FIXME: ポータル画面ができるまでＯＦＦ
@@ -12128,15 +12130,15 @@ var _clInternalErrorHandler = function (message) {
 			//clcom.keepAlive.start();
 
 			var defer = null;
-			if (true) {
+			if(true){
 				// 初期パラメータの取得を仕掛ける。
 				var dd = [];
 
 				// 区分＆シスパラ
-				if (!clcom.hasStorageKey('typelist')
-					|| !clcom.hasStorageKey('sysparam')
-					|| !clcom.hasStorageKey('cmdefaults')) {
-					var typDefer = clutil.postJSON('am_pa_type_get', {}).done(function (data) {
+				if(!clcom.hasStorageKey('typelist')
+						|| !clcom.hasStorageKey('sysparam')
+						|| !clcom.hasStorageKey('cmdefaults')){
+					var typDefer = clutil.postJSON('am_pa_type_get', {}).done(function(data){
 						// 区分をキャッシュに保存
 						clcom.setTypeList(data.type);
 
@@ -12151,8 +12153,8 @@ var _clInternalErrorHandler = function (message) {
 
 						// 共有デフォルト値をキャッシュに保存
 						// デフォルト税率はこちらへ統合。
-						var defaults = _.reduce(data, function (defs, val, key) {
-							if (/^default/.test(key)) {
+						var defaults = _.reduce(data, function(defs, val, key){
+							if(/^default/.test(key)){
 								defs[key] = val;
 							}
 							return defs;
@@ -12161,26 +12163,26 @@ var _clInternalErrorHandler = function (message) {
 						clcom.loadStorage();
 					});
 					dd.push(typDefer);
-				} else {
+				}else{
 					// 共通デフォルト値を clcom にロードする。
 					clcom.loadStorage();
 				}
 
 				// 権限
 				// 権限チェック用内部関数
-				var isBadPermFunc = function () {
-					if (clutil._XXXDBGGetIniPermChk === false) {
+				var isBadPermFunc = function(){
+					if(clutil._XXXDBGGetIniPermChk === false){
 						// 権限チェックをスキップする
 						return;
 					}
 					var pageId = clcom.pageId;
-					if (_.isEmpty(pageId) || !/^AM[A-Z]{2}V[0-9]{4}$/.test(pageId)) {
+					if(_.isEmpty(pageId) || !/^AM[A-Z]{2}V[0-9]{4}$/.test(pageId)){
 						// MDの画面コード体系にマッチしていないので、権限制限外（制限を受けない）と判断する。
 						return;	// OK
 					}
 
 					var pm = clcom.getPermfuncByCode(pageId);
-					if (!_.isEmpty(pm) && (pm.f_allow_del || pm.f_allow_em || pm.f_allow_read || pm.f_allow_write)) {
+					if(!_.isEmpty(pm) && (pm.f_allow_del || pm.f_allow_em || pm.f_allow_read || pm.f_allow_write)){
 						return; // OK
 					}
 
@@ -12191,51 +12193,51 @@ var _clInternalErrorHandler = function (message) {
 						httpStatus: 403
 					};
 				};
-				if (!clcom.hasStorageKey('permfunc')) {
-					var permDefer = clutil.postJSON('am_pa_perm_get', { cond: { user_id: clcom.userInfo.user_id } }).then(function (data) {
+				if(!clcom.hasStorageKey('permfunc')){
+					var permDefer = clutil.postJSON('am_pa_perm_get', {cond: {user_id: clcom.userInfo.user_id}}).then(function(data){
 						// 権限情報をキャッシュに保存
 						clcom.setPermfuncMap(data.perm_func);
 						clcom.setRfidstoreMap(data.rfid_store_list);
 
 						var permChk = isBadPermFunc();
-						if (permChk) {
+						if(permChk){
 							// 権限が無い！！！
 							var d = $.Deferred();
 							return d.reject({ head: permChk, rspHead: permChk });
 						}
 					});
 					dd.push(permDefer);
-				} else {
+				}else{
 					var permChk = isBadPermFunc();
-					if (permChk) {
+					if(permChk){
 						var d = $.Deferred();
 						return d.reject({ head: permChk, rspHead: permChk });
 					}
 				}
 				// 子機能コードから親機能コードへのマッピング作成と保存
-				if (!clcom.hasStorageKey('funcrel')) {
-					dd.push(clutil.postJSON('am_pa_funcrel_get', {}).then(function (data) {
+				if(!clcom.hasStorageKey('funcrel')){
+					dd.push(clutil.postJSON('am_pa_funcrel_get', {}).then(function(data){
 						clcom.setFuncRel(data.type);
 					}));
 				}
 				// 画面コードから中分類メニュー名のマッピング作成
-				if (!clcom.hasStorageKey('viewcode2menu')) {
+				if(!clcom.hasStorageKey('viewcode2menu')){
 					// 2016/4/20 iPadフラグを設定(メニュー構築用)
 					// 2016/11/25 iPod touch用も追加
 					var isTablet = 0;
-					if (clcom.is_iPad() || clcom.is_iPhone()) {
+					if(clcom.is_iPad() || clcom.is_iPhone()){
 						isTablet = 1;
 					}
 
 					dd.push(clutil.postJSON('AMCMV0030', {
 						reqHead: {
-							opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL
+							opeTypeId : am_proto_defs.AM_PROTO_COMMON_RTYPE_REL
 						},
 						AMCMV0030GetReq: {
-							userID: clcom.userInfo.user_id,
-							isTablet: isTablet
+							userID : clcom.userInfo.user_id,
+							isTablet : isTablet
 						}
-					}).then(function (data) {
+					}).then(function(data){
 						clcom.setViewCode2Menu(data.AMCMV0030GetRsp);
 						// ポータル画面からアクセスできるように保存しておく。
 						// 2重リクエスト防止のため
@@ -12246,22 +12248,22 @@ var _clInternalErrorHandler = function (message) {
 			}
 
 			// 画面コードから中分類メニューを取得する。
-			defer = defer.then(function () {
+			defer = defer.then(function(){
 				var title = clcom.getMiddleMenuName();
-				if (title) {
+				if(title){
 					$('title').text(clcom.getMiddleMenuName());
-				} else {
+				}else{
 					console.warn('中分類メニュー名が取得できない');
 				}
 			});
 
 			// アプリ個別コールが設定されている場合
 			if (res != null) {
-				defer = defer.then(function () {
+				defer = defer.then(function(){
 					return clutil.getJSON(res, appcallback, completed);
 				});
-			} else if (_.isFunction(completed)) {
-				defer = defer.then(function () {
+			} else if(_.isFunction(completed)){
+				defer = defer.then(function(){
 					completed();
 					return this;	// XXX これでいいのか未検証
 				});
@@ -12280,7 +12282,7 @@ var _clInternalErrorHandler = function (message) {
 		 *   アプリコールが欲しい場合は、postIniJSON の deferd に対して
 		 *   then(callback), done(callback) を使用してください。
 		 */
-		postIniJSON: function (resId, data, appcallback, completed) {
+		postIniJSON : function(resId, data, appcallback, completed) {
 			if (resId != null) {
 				clutil.postJSON(resId, data, appcallback, completed, resId);
 			} else {
@@ -12289,7 +12291,7 @@ var _clInternalErrorHandler = function (message) {
 
 			//clutil.blockUI();
 			var param = {
-				//TODO: サーバー側に/clcomを実装する
+					//TODO: サーバー側に/clcomを実装する
 			};
 
 			return $.ajax(param);
@@ -12318,43 +12320,43 @@ var _clInternalErrorHandler = function (message) {
 		 * },this));
 		 *
 		 */
-		postDLJSON: function (resId, data) {
+		postDLJSON: function(resId, data){
 			var params;
 
-			if (arguments.length === 1 && _.isObject(resId)) {
-				params = resId;
-			} else {
-				params = {
-					resId: resId,
-					data: data
-				};
+			if (arguments.length === 1 && _.isObject(resId)){
+					params = resId;
+			}else{
+					params = {
+						resId: resId,
+						data: data
+					};
 			}
 
 			data = params.data;
 
 			// リクエストヘッダ補完 - 共通ヘッダを補完
-			if (!data.reqHead) {
+			if(!data.reqHead){
 				data.reqHead = {};
 			}
-			if (!data.reqHead.opeTypeId) {
+			if(!data.reqHead.opeTypeId){
 				data.reqHead.opeTypeId = 0;
 			}
 			// 出力系以外の ope の場合は、CSV 出力へ倒す。
 			var newWindow = false;
-			switch (data.reqHead.opeTypeId) {
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF:
-					newWindow = '_blank';
+			switch(data.reqHead.opeTypeId){
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF:
+				newWindow = '_blank';
 				// fall through
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:
-					break;
-				default:
-					data.reqHead.opeTypeId = am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:
+				break;
+			default:
+				data.reqHead.opeTypeId = am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV;
 			}
 			// ページ情報を上書き：空オブジェクト
-			if (!_.isObject(data.reqPage)) {
+			if(!_.isObject(data.reqPage)){
 				data.reqPage = {
-					//start_record: 0,
-					//page_size: 2147483647	//INT_MAX
+						//start_record: 0,
+						//page_size: 2147483647	//INT_MAX
 				};
 			}
 
@@ -12364,12 +12366,12 @@ var _clInternalErrorHandler = function (message) {
 				type: 'POST',
 				url: clcom.apiRoot + '/' + params.resId,
 				onRspPage: false					// 応答時、ページャ情報の通知をやらないオプション
-			}, params)).then(function (data) {
+			}, params)).then(function(data){
 				var uri = null;
-				if (data && data.rspHead) {
+				if(data && data.rspHead){
 					uri = data.rspHead.uri;
 				}
-				if (_.isEmpty(uri)) {
+				if(_.isEmpty(uri)){
 					// ０件でした
 					// 共通応答パケットがあれば、メッセージを入れておく。
 					data.rspHead.message = 'cl_no_data';
@@ -12377,9 +12379,9 @@ var _clInternalErrorHandler = function (message) {
 					return defer.reject(data);
 				}
 				//DLメソッドを呼び出す。
-				clutil.download({ url: uri, newWindow: newWindow });
+				clutil.download({url: uri, newWindow: newWindow});
 				return defer.resolve(data);
-			}).fail(function (data) {
+			}).fail(function(data){
 				return defer.reject(data);
 			});
 			return defer.promise();
@@ -12391,7 +12393,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param appcallback
 		 * @returns {promise}
 		 */
-		getJSON: function (resId, appcallback, complete) {
+		getJSON: function(resId, appcallback, complete) {
 			return clutil.httpcall({
 				type: 'GET',
 				url: clcom.apiRoot + '/' + resId,
@@ -12423,11 +12425,11 @@ var _clInternalErrorHandler = function (message) {
 		 *
 		 * @returns {promise}
 		 */
-		postJSON: function (resId, data, success, complete) {
+		postJSON: function(resId, data, success, complete) {
 			var o = null;
-			if (arguments.length === 1 && _.isObject(arguments[0])) {
+			if(arguments.length === 1 && _.isObject(arguments[0])){
 				o = arguments[0];
-			} else {
+			}else{
 				o = {
 					resId: resId,
 					data: data,
@@ -12450,7 +12452,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param appcallback
 		 * @returns {promise}
 		 */
-		putJSON: function (resId, data, appcallback, complete) {
+		putJSON: function(resId, data, appcallback, complete) {
 			return clutil.httpcall({
 				type: 'PUT',
 				data: data,
@@ -12466,7 +12468,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param appcallback
 		 * @returns {promise}
 		 */
-		deleteJSON: function (resId, data, appcallback, complete) {
+		deleteJSON: function(resId, data, appcallback, complete) {
 			return clutil.httpcall({
 				type: 'DELETE',
 				data: data,
@@ -12482,65 +12484,65 @@ var _clInternalErrorHandler = function (message) {
 		 * @param url	// HTMLファイルのURL
 		 * @param appcallback
 		 */
-		loadHtml: function (url, appcallback) {
+		loadHtml: function(url, appcallback) {
 			$.ajax({
 				type: 'GET',
 				url: url,
 				dataType: 'html',
-				success: function (data) {
+				success: function(data) {
 					appcallback(data);
 				},
-				error: function () {
+				error:function() {
 					clutil.ErrorDialog('HTMLファイルの読み込みに失敗しました');
 				}
 			});
 		},
 
-		funcgrpname: ['search', 'tree', 'score', 'zone', 'list', 'note', 'permission', 'note', 'upload'],
+		funcgrpname : ['search', 'tree', 'score', 'zone', 'list', 'note', 'permission', 'note', 'upload'],
 
 		/** AOKI
 		 * 権限グループに応じて権限名のリストを作成する
 		 */
 		setFuncGrp: function (funclist) {
 			var funcgrp = {
-				search: false,
-				tree: false,
-				score: false,
-				zone: false,
-				list: false,
-				note: false,
-				permission: false,
-				upload: false
+					search	: false,
+					tree	: false,
+					score	: false,
+					zone	: false,
+					list	: false,
+					note	: false,
+					permission	: false,
+					upload	: false
 			};
 			for (var i = 0; i < funclist.length; i++) {
 				var func = funclist[i];
 				switch (Number(func.f_funcgrp)) {
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_STAFFSRCH:
-						funcgrp.search = true;
-						break;
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_ORGTREE:
-						funcgrp.tree = true;
-						break;
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_ESTIMATE:
-						funcgrp.score = true;
-						break;
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_PERFORM:
-						funcgrp.zone = true;
-						break;
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_STAFFLIST:
-						funcgrp.list = true;
-						break;
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_NOTE:
-						funcgrp.note = true;
-						break;
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_AUTH:
-						funcgrp.permission = true;
-						break;
-					case amdb_defs.MTCONSTTYPE_F_FUNCGRP_DATA:
-						funcgrp.upload = true;
-						break;
-					default:
-						break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_STAFFSRCH :
+					funcgrp.search = true;
+					break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_ORGTREE :
+					funcgrp.tree = true;
+					break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_ESTIMATE :
+					funcgrp.score = true;
+					break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_PERFORM :
+					funcgrp.zone = true;
+					break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_STAFFLIST :
+					funcgrp.list = true;
+					break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_NOTE :
+					funcgrp.note = true;
+					break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_AUTH :
+					funcgrp.permission = true;
+					break;
+				case amdb_defs.MTCONSTTYPE_F_FUNCGRP_DATA :
+					funcgrp.upload = true;
+					break;
+				default:
+					break;
 				}
 			}
 			var store = window.store;
@@ -12549,7 +12551,7 @@ var _clInternalErrorHandler = function (message) {
 		},
 
 		// AOKI:INT32の最大値
-		int32Max: 2147483647,
+		int32Max : 2147483647,
 
 		/**
 		 * 書式つき文字列
@@ -12562,25 +12564,25 @@ var _clInternalErrorHandler = function (message) {
 		 * </pre>
 		 * TODO:エラーメッセージをID化するか文字列化するか？
 		 */
-		fmt: function (fmt) {
+		fmt: function(fmt) {
 			var i;
 			for (i = 1; i < arguments.length; i++) {
 				var reg = new RegExp("\\{" + (i - 1) + "\\}", "g");
-				fmt = fmt.replace(reg, arguments[i]);
+				fmt = fmt.replace(reg,arguments[i]);
 			}
 			return fmt;
 		},
 
-		fmtargs: function (fmt, args) {
+		fmtargs: function(fmt, args) {
 			var i;
 
 			if (!fmt)
 				return '';
 
-			if (args instanceof Array) {
+			if(args instanceof Array){
 				for (i = 0; i < args.length; i++) {
 					var reg = new RegExp("\\{" + i + "\\}", "g");
-					fmt = fmt.replace(reg, args[i]);
+					fmt = fmt.replace(reg,args[i]);
 				}
 			}
 			return fmt;
@@ -12589,14 +12591,14 @@ var _clInternalErrorHandler = function (message) {
 		_setErrorHeader: function ($echoback, message) {
 			if ($echoback != null) {
 				clutil._clearErrorHeader($echoback);
-				//				$echoback.css('display', 'block').html(message);
+//				$echoback.css('display', 'block').html(message);
 				// アニメーションで表示するように修正 11/6
 				$echoback.html(message);
 				$echoback.fadeIn('300');
 				// なにもしなくても一定時間を過ぎるとエラーメッセージが消える
 				clutil.errHeaderTimerId = setTimeout("clutil._stopErrorHeaderTimer()", 10000);
 				clutil.err$echoback = $echoback;
-				//				$echoback.delay(10000).fadeOut(300);
+//				$echoback.delay(10000).fadeOut(300);
 				// スクロール
 				$('body').scrollTo($echoback, 800);
 			}
@@ -12607,7 +12609,7 @@ var _clInternalErrorHandler = function (message) {
 				$('.cl_error_echoback', $echoback).remove();
 				// なにもしなくても一定時間を過ぎるとエラーメッセージが消えるイベントをストップ
 				clearTimeout(clutil.errHeaderTimerId);
-				//				$echoback.stop();
+//				$echoback.stop();
 				$echoback.hide();
 			}
 		},
@@ -12621,197 +12623,197 @@ var _clInternalErrorHandler = function (message) {
 
 		/**
 		 * # 指定form領域に適用する validator インスタンスを生成する。
-		 *
-		 * 入力検証は、指定form内の全ての.cl_validな要素に対して行われ
-		 * る。はクラス属性に特定のクラスを指定するあるいは
-		 * data-validator属性に特定の値を設定することで検証の種類を指定
-		 * する。
-		 *
-		 * 指定が矛盾しないかぎり、複数の入力検証を組み合わせることがで
-		 * きる。複数の入力検証を指定するには、空白で区切って指定する。
-		 * クラス属性で指定する入力検証とdata-validator属性で指定する入
-		 * 力検証は組み合わせてもよい。
-		 *
-		 * ## 例1 小数の入力のみを許可
-		 *
-		 * ```html
-		 * <input type="text" class="cl_valid" data-validator="decimal">
-		 * ```
-		 *
-		 * ## 例2 アルファベットで10文字以内
-		 *
-		 * 複数の種類の入力検証を行う場合は、空白で区切って指定する。
-		 *
-		 * ```html
-		 * <input type="text" class="cl_valid" data-validator="alpha len:10">
-		 * ```
-		 *
-		 * ### 例3 必須チェック
-		 *
-		 * ```html
-		 * <input type="text" class="cl_valid required">
-		 * ```
-		 *
-		 * ### 例4 必須項目で0以上の整数
-		 *
-		 * ```html
-		 * <input type="text" class="cl_valid required" data-validator="int min:0">
-		 * ```
-		 *
-		 * # 検証の種類
-		 *
-		 * ## data-validator属性に指定可能な入力検証の一覧
-		 *
-		 * 以下で特記ない場合は空文字も許可する。
-		 *
-		 * ### zenkaku
-		 *
-		 * 全角文字のみであるかチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### hankaku
-		 *
-		 * 半角文字のみであるかチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### zenhan:ZENLEN,HANLEN
-		 *
-		 * 全角文字列長がZENLEN以下でかつ半角文字列長がHANLEN以下であ
-		 * るかチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### decimal:[IPART],[DPART]
-		 *
-		 * 入力が小数であるかチェック
-		 *
-		 * IPARTが指定された場合は、整数部の桁数がIPART以下であるかチェッ
-		 * ク
-		 *
-		 * DPARTが指定された場合は、小数部の桁数がDPART以下であるかチェッ
-		 * ク
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### int:[LEN]
-		 *
-		 * 入力が整数であるかチェック。
-		 *
-		 * LENが指定された場合は、桁数がLEN以下であるかチェック。
-		 *
-		 * - 先頭に-も認める
-		 * - 先頭に+は認めない
-		 * - 0001などは認めない
-		 * - 桁数に符号部分は数えない
-		 * - 空文字もOK
-		 *
-		 * ### numeric
-		 *
-		 * 入力が数字文字のみであるかチェック。
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### alpha
-		 *
-		 * 入力が`/^[a-zA-z]*$/`にマッチするかチェック
-		 *
-		 * ### alnum
-		 *
-		 * 入力が`(/^[a-zA-Z0-9]*$/`にマッチするかチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### len:[MIN],[MAX]
-		 *
-		 * 入力された文字列数がMIN以上かつMAX以下であるかチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### min:MIN
-		 *
-		 * 入力された数値がMIN以上であるかチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### max:MAX
-		 *
-		 * 入力された数値がMAX以下であるかチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ## クラス属性で指定可能な入力検証の一覧
-		 *
-		 * required以外は特記ない場合は空文字も許可する。
-		 *
-		 * ### required
-		 *
-		 * 必須チェック。空文字は許可しない。
-		 *
-		 * ### cm_code
-		 *
-		 * メンテされていません。使わないでください。
-		 *
-		 * ### cl_length
-		 *
-		 * 使わないでください。data-validator="len"を使用してください。
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### cl_email
-		 *
-		 * メールアドレス形式
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### cl_url
-		 *
-		 * URLの検証
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### cl_date
-		 *
-		 * 日付けチェック
-		 *
-		 * - 空文字もOK
-		 *
-		 * ### cl_ym
-		 *
-		 * ?
-		 *
-		 * ### cl_month
-		 *
-		 * ?
-		 *
-		 * ###  cl_time
-		 *
-		 * ?
-		 *
-		 * ### cl_regex
-		 *
-		 * 正規表現で入力の検証を行う。
-		 *
-		 * 正規表現は data-patternに指定する
-		 *
-		 *
-		 * ### cl_autocomplete
-		 *
-		 * オートコンプリート部品で入力された値がサーバから取得された
-		 * ものであるかチェック
-		 *
-		 * @method validator
-		 * @for clutil
+         *
+         * 入力検証は、指定form内の全ての.cl_validな要素に対して行われ
+         * る。はクラス属性に特定のクラスを指定するあるいは
+         * data-validator属性に特定の値を設定することで検証の種類を指定
+         * する。
+         *
+         * 指定が矛盾しないかぎり、複数の入力検証を組み合わせることがで
+         * きる。複数の入力検証を指定するには、空白で区切って指定する。
+         * クラス属性で指定する入力検証とdata-validator属性で指定する入
+         * 力検証は組み合わせてもよい。
+         *
+         * ## 例1 小数の入力のみを許可
+         *
+         * ```html
+         * <input type="text" class="cl_valid" data-validator="decimal">
+         * ```
+         *
+         * ## 例2 アルファベットで10文字以内
+         *
+         * 複数の種類の入力検証を行う場合は、空白で区切って指定する。
+         *
+         * ```html
+         * <input type="text" class="cl_valid" data-validator="alpha len:10">
+         * ```
+         *
+         * ### 例3 必須チェック
+         *
+         * ```html
+         * <input type="text" class="cl_valid required">
+         * ```
+         *
+         * ### 例4 必須項目で0以上の整数
+         *
+         * ```html
+         * <input type="text" class="cl_valid required" data-validator="int min:0">
+         * ```
+         *
+         * # 検証の種類
+         *
+         * ## data-validator属性に指定可能な入力検証の一覧
+         *
+         * 以下で特記ない場合は空文字も許可する。
+         *
+         * ### zenkaku
+         *
+         * 全角文字のみであるかチェック
+         *
+         * - 空文字もOK
+         *
+         * ### hankaku
+         *
+         * 半角文字のみであるかチェック
+         *
+         * - 空文字もOK
+         *
+         * ### zenhan:ZENLEN,HANLEN
+         *
+         * 全角文字列長がZENLEN以下でかつ半角文字列長がHANLEN以下であ
+         * るかチェック
+         *
+         * - 空文字もOK
+         *
+         * ### decimal:[IPART],[DPART]
+         *
+         * 入力が小数であるかチェック
+         *
+         * IPARTが指定された場合は、整数部の桁数がIPART以下であるかチェッ
+         * ク
+         *
+         * DPARTが指定された場合は、小数部の桁数がDPART以下であるかチェッ
+         * ク
+         *
+         * - 空文字もOK
+         *
+         * ### int:[LEN]
+         *
+         * 入力が整数であるかチェック。
+         *
+         * LENが指定された場合は、桁数がLEN以下であるかチェック。
+         *
+         * - 先頭に-も認める
+         * - 先頭に+は認めない
+         * - 0001などは認めない
+         * - 桁数に符号部分は数えない
+         * - 空文字もOK
+         *
+         * ### numeric
+         *
+         * 入力が数字文字のみであるかチェック。
+         *
+         * - 空文字もOK
+         *
+         * ### alpha
+         *
+         * 入力が`/^[a-zA-z]*$/`にマッチするかチェック
+         *
+         * ### alnum
+         *
+         * 入力が`(/^[a-zA-Z0-9]*$/`にマッチするかチェック
+         *
+         * - 空文字もOK
+         *
+         * ### len:[MIN],[MAX]
+         *
+         * 入力された文字列数がMIN以上かつMAX以下であるかチェック
+         *
+         * - 空文字もOK
+         *
+         * ### min:MIN
+         *
+         * 入力された数値がMIN以上であるかチェック
+         *
+         * - 空文字もOK
+         *
+         * ### max:MAX
+         *
+         * 入力された数値がMAX以下であるかチェック
+         *
+         * - 空文字もOK
+         *
+         * ## クラス属性で指定可能な入力検証の一覧
+         *
+         * required以外は特記ない場合は空文字も許可する。
+         *
+         * ### required
+         *
+         * 必須チェック。空文字は許可しない。
+         *
+         * ### cm_code
+         *
+         * メンテされていません。使わないでください。
+         *
+         * ### cl_length
+         *
+         * 使わないでください。data-validator="len"を使用してください。
+         *
+         * - 空文字もOK
+         *
+         * ### cl_email
+         *
+         * メールアドレス形式
+         *
+         * - 空文字もOK
+         *
+         * ### cl_url
+         *
+         * URLの検証
+         *
+         * - 空文字もOK
+         *
+         * ### cl_date
+         *
+         * 日付けチェック
+         *
+         * - 空文字もOK
+         *
+         * ### cl_ym
+         *
+         * ?
+         *
+         * ### cl_month
+         *
+         * ?
+         *
+         * ###  cl_time
+         *
+         * ?
+         *
+         * ### cl_regex
+         *
+         * 正規表現で入力の検証を行う。
+         *
+         * 正規表現は data-patternに指定する
+         *
+         *
+         * ### cl_autocomplete
+         *
+         * オートコンプリート部品で入力された値がサーバから取得された
+         * ものであるかチェック
+         *
+         * @method validator
+         * @for clutil
 		 * @param {jQuery} form
 		 * @param {Object} option
-		 * @param {jQuery} options.echoback  $(エコーバック領域を指定),
-		 * @param {Boolean} [options.writeErrorMark] 未使用
-		 * @param {Boolean} [options.withErrorMessage] 未使用
-		 *
+         * @param {jQuery} options.echoback  $(エコーバック領域を指定),
+         * @param {Boolean} [options.writeErrorMark] 未使用
+         * @param {Boolean} [options.withErrorMessage] 未使用
+         *
 		 * @example
-		 *
-		 * ```js
+         *
+         * ```js
 		 * var validator = clutil.validator($('#myForm'),{echoback:$('#echoback')});
 		 * if(validator.valid()){
 		 *	  $.post(...,
@@ -12819,94 +12821,94 @@ var _clInternalErrorHandler = function (message) {
 		 *	   error(){validator.setErrorInfo({'要素タグ.id名': メッセージ})}
 		 *	  );
 		 * }
-		 * ```
+         * ```
 		 */
-		validator: function (form, options) {
+		validator: function(form, options) {
 			var msgcd2msg = function (msgcd) {
 				var fmtargs = _.toArray(arguments);
 				var msg;
-				fmtargs[0] = clmsg['cl_' + msgcd];
+				fmtargs[0] = clmsg['cl_'+msgcd];
 				if (fmtargs[0] == null) {
 					// メッセージが整備されていない場合 => メッセージの更新が必要
-					console.warn("No message code `" + msgcd + '`');
+					console.warn("No message code `" +  msgcd + '`');
 					fmtargs[0] = "XXXX";
 				}
 				msg = clutil.fmt.apply(this, fmtargs);			   // 項目名ラベルなし
 				return msg;
 			},
 
-				setErrorMsg = function ($input, message, level) {
-					// bootstrap用に対応 AOKI ACUST
-					var cssClasses = 'cl_error_field cl_alert_field';
-					var cssClass = (level == 'alert') ? 'cl_alert_field' : 'cl_error_field';
-					if ($input.is('select') && _.isObject($input.data('selectpicker'))) {
-						var $button = $($input.next('div').find('button'));
+			setErrorMsg = function ($input, message, level) {
+				// bootstrap用に対応 AOKI ACUST
+				var cssClasses = 'cl_error_field cl_alert_field';
+				var cssClass = (level == 'alert') ? 'cl_alert_field' : 'cl_error_field';
+				if ($input.is('select') && _.isObject($input.data('selectpicker'))) {
+					var $button = $($input.next('div').find('button'));
+					$input
+					.removeClass(cssClasses).addClass(cssClass)
+					.attr('data-cl-errmsg', message);
+					$button
+					.removeClass(cssClasses).addClass(cssClass)
+					.attr('data-cl-errmsg', message);
+				} else if ($input.is('select') && _.isObject($input.data('combobox'))){
+					$input
+						.removeClass(cssClasses).addClass(cssClass)
+						.next('.combobox-wrap')
+						.find('.combobox-input')
+						.attr('data-cl-errmsg', message)
+						.end();
+				} else {
+					$input
+					.removeClass(cssClasses).addClass(cssClass)
+					.attr('data-cl-errmsg', message);
+				}
+
+			},
+
+			clearErrorHeader = function ($echoback) {
+				clutil._clearErrorHeader($echoback);
+			},
+
+			clearErrorMsg = function ($input) {
+				var cssClasses = 'cl_error_field cl_alert_field';
+				if ($input.is('select')) {
+					if (_.isObject($input.data('combobox'))) {
 						$input
-							.removeClass(cssClasses).addClass(cssClass)
-							.attr('data-cl-errmsg', message);
-						$button
-							.removeClass(cssClasses).addClass(cssClass)
-							.attr('data-cl-errmsg', message);
-					} else if ($input.is('select') && _.isObject($input.data('combobox'))) {
-						$input
-							.removeClass(cssClasses).addClass(cssClass)
+							.removeClass(cssClasses)
 							.next('.combobox-wrap')
 							.find('.combobox-input')
-							.attr('data-cl-errmsg', message)
+							.removeAttr('data-cl-errmsg')
 							.end();
-					} else {
+					} else if (_.isObject($input.data('selectpicker'))) {
 						$input
-							.removeClass(cssClasses).addClass(cssClass)
-							.attr('data-cl-errmsg', message);
-					}
-
-				},
-
-				clearErrorHeader = function ($echoback) {
-					clutil._clearErrorHeader($echoback);
-				},
-
-				clearErrorMsg = function ($input) {
-					var cssClasses = 'cl_error_field cl_alert_field';
-					if ($input.is('select')) {
-						if (_.isObject($input.data('combobox'))) {
-							$input
-								.removeClass(cssClasses)
-								.next('.combobox-wrap')
-								.find('.combobox-input')
-								.removeAttr('data-cl-errmsg')
-								.end();
-						} else if (_.isObject($input.data('selectpicker'))) {
-							$input
-								.removeClass(cssClasses)
-								.removeAttr('data-cl-errmsg')
-								.next('div').find('button')
-								.removeClass(cssClasses)
-								.removeAttr('data-cl-errmsg');
-						}
-					} else {
-						$input.removeClass('cl_error_field cl_alert_field')
+							.removeClass(cssClasses)
+							.removeAttr('data-cl-errmsg')
+							.next('div').find('button')
+							.removeClass(cssClasses)
 							.removeAttr('data-cl-errmsg');
 					}
-				},
+				} else {
+					$input.removeClass('cl_error_field cl_alert_field')
+						.removeAttr('data-cl-errmsg');
+				}
+			},
 
-				callValidator = function (s, value) {
-					var splitted = s.split(':'),
-						funcName = splitted[0],
-						args = [];
+			callValidator = function (s, value) {
+				var splitted = s.split(':'),
+					funcName = splitted[0],
+					args = [];
 
-					if (splitted[1] != null) {
-						args = (splitted[1] || '').split(',');
-					}
+				if (splitted[1] != null) {
+					args = (splitted[1] || '').split(',');
+				}
 
-					args.unshift(value);
-					var validateFunc = clutil.Validators[funcName];
-					if (!validateFunc) {
-						console.warn("Invalid validator name=", funcName);
-					}
-					if (validateFunc)
-						return validateFunc.apply(clutil.Validators, args);
-				};
+				args.unshift(value);
+				var validateFunc = clutil.Validators[funcName];
+                if (!validateFunc){
+                    console.warn("Invalid validator name=", funcName);
+                }
+				if (validateFunc)
+					return validateFunc.apply(clutil.Validators, args);
+			};
 
 			var defaultValidator = {
 
@@ -12920,7 +12922,7 @@ var _clInternalErrorHandler = function (message) {
 				 * エラー表示領域にエラー情報を設定する。エラー情報は外部から渡す。
 				 * @param {String} errMsg ヘッダーに表示するエラーメッセージ
 				 */
-				setErrorHeader: function (errMsg) {
+				setErrorHeader: function(errMsg) {
 					clutil._setErrorHeader(this.echoback, errMsg);
 					return false;
 				},
@@ -12975,35 +12977,35 @@ var _clInternalErrorHandler = function (message) {
 				 * @param {jQuery} [options.$scope] 適用範囲 -- 本メソッドにおいては table > tbody > tr を適用するので使用不可。
 				 * @param {String} options.level メッセージレベル - "error"|"alert" デフォルト"error"
 				 */
-				setErrorInfoToTable: function (fieldMessages, struct_name, $table, options) {
+				setErrorInfoToTable: function(fieldMessages, struct_name, $table, options){
 					var args;
-					if (arguments.length == 1 && _.isObject(arguments[0])) {
+					if(arguments.length == 1 && _.isObject(arguments[0])){
 						args = arguments[0];
-					} else {
+					}else{
 						args = {
-							fieldMessages: arguments[0],
-							struct_name: arguments[1],
-							$table: arguments[2],
-							options: arguments[3]
+								fieldMessages: arguments[0],
+								struct_name: arguments[1],
+								$table: arguments[2],
+								options: arguments[3]
 						};
 					}
-					if (!_.isArray(args.fieldMessages) || _.isEmpty(args.fieldMessages)) {
+					if(!_.isArray(args.fieldMessages) || _.isEmpty(args.fieldMessages)){
 						return;
 					}
-					if (!(args.$table instanceof jQuery)) {
+					if(!(args.$table instanceof jQuery)){
 						return;
 					}
 
-					var errInfos = function (fldMsgs) {
+					var errInfos = function(fldMsgs){
 						var array = [];
-						for (var i = 0; i < fldMsgs.length; i++) {
+						for(var i = 0; i < fldMsgs.length; i++){
 							var fldMsg = fldMsgs[i];
-							if (!fldMsg.lineno || fldMsg.lineno <= 0 || _.isEmpty(fldMsg.field_name)) {
+							if(!fldMsg.lineno || fldMsg.lineno <= 0 || _.isEmpty(fldMsg.field_name)){
 								continue;
 							}
 							var fldIndex = fldMsg.lineno - 1;
 							var errInfo = array[fldIndex];
-							if (errInfo == null) {
+							if(errInfo == null){
 								errInfo = {};
 								array[fldIndex] = errInfo;
 							}
@@ -13011,14 +13013,14 @@ var _clInternalErrorHandler = function (message) {
 							errInfo[fldMsg.field_name] = clutil.fmtargs(msg, fldMsg.args);
 						}
 						return array;
-					}(_.where(args.fieldMessages, { struct_name: args.struct_name }));
+					}(_.where(args.fieldMessages, {struct_name: args.struct_name}));
 					var _this = this;
 
 					args.options = args.options || {};
-					args.$table.find('tbody > tr').each(function (index, element) {
+					args.$table.find('tbody > tr').each(function(index, element){
 						var $tr = $(element);
 						var errInfo = errInfos[index];
-						if (errInfo) {
+						if(errInfo){
 							args.options.$scope = $tr;
 							_this.setErrorInfo(errInfo, args.options);
 						}
@@ -13040,24 +13042,24 @@ var _clInternalErrorHandler = function (message) {
 				 * @example
 				 * validator.errInfo({ field1.id: 'error-1', field2.id: 'error-2', ...})
 				 */
-				setErrorInfo: function (errInfo, options) {
-					options = _.defaults(options || {}, { prefix: '' });
+				setErrorInfo: function(errInfo, options) {
+					options = _.defaults(options || {}, {prefix: ''});
 
 					var hasError = false,
-						ebmsg = clmsg.cl_echoback,
-						getElement = function (key) {
-							if (options.$scope && options.$scope instanceof jQuery) {
-								return options.$scope.find('#' + options.prefix + key);
-							} else {
-								return $('#' + options.prefix + key);
-							}
-						};
+					ebmsg = clmsg.cl_echoback,
+					getElement = function(key){
+						if(options.$scope && options.$scope instanceof jQuery){
+							return options.$scope.find('#' + options.prefix + key);
+						}else{
+							return $('#' + options.prefix + key);
+						}
+					};
 
 					if (options.by === 'name') {
-						getElement = function (key) {
-							if (options.$scope && options.$scope instanceof jQuery) {
+						getElement = function(key){
+							if(options.$scope && options.$scope instanceof jQuery){
 								return options.$scope.find('[name="' + options.prefix + key + '"]');
-							} else {
+							}else{
 								return $('[name="' + options.prefix + key + '"]');
 							}
 						};
@@ -13072,7 +13074,7 @@ var _clInternalErrorHandler = function (message) {
 					// 各フィールド毎のメッセージ
 					for (var id in errInfo) {
 						var msg = errInfo[id],
-							$input = getElement(id);
+						$input = getElement(id);
 						if ($input.size() === 0) {
 							console.debug('validator.setErrorInfo(): id[' + id + '] not found, skip.');
 							continue;
@@ -13083,7 +13085,7 @@ var _clInternalErrorHandler = function (message) {
 
 					if (hasError) {
 						clutil.setFocus($('.cl_error_field,.cl_alert_field', this.form).first());
-						//							$('.cl_error_field', this.form).first().focus();
+//							$('.cl_error_field', this.form).first().focus();
 						this.setErrorHeader(ebmsg);
 					}
 					return hasError;
@@ -13093,10 +13095,10 @@ var _clInternalErrorHandler = function (message) {
 				 * エラー情報をクリアする。
 				 * @return クラス cl_valid 要素を返す。
 				 */
-				clear: function ($form) {
+				clear: function($form) {
 					clearErrorHeader(this.echoback);
 
-					if (!$form) {
+					if(!$form){
 						$form = $('.cl_valid', this.form);
 					}
 
@@ -13115,20 +13117,20 @@ var _clInternalErrorHandler = function (message) {
 				 * エラーメッセージは clmsg オブジェクトで定義されます。
 				 * @returns {Boolean} true:OK, false:入力不備を検出。
 				 */
-				valid: function (options) {
+				valid: function(options) {
 					options = options || {};
-					_.defaults(options, { $el: null, filter: function () { return true; } });
+					_.defaults(options, {$el: null, filter: function() {return true;}});
 					var hasError = false,
-						ebmsgs = [],		  // エコーバック表示用メッセージ
-						setError = function (input, msgcd) {
-							// この this は、$.each() 中の this っぽい？？？
-							setErrorMsg($(input), msgcd2msg.apply(this, Array.prototype.slice.call(arguments, 1)));
-							hasError = true;
-						};
+					ebmsgs = [],		  // エコーバック表示用メッセージ
+					setError = function (input, msgcd) {
+						// この this は、$.each() 中の this っぽい？？？
+						setErrorMsg($(input), msgcd2msg.apply(this, Array.prototype.slice.call(arguments, 1)));
+						hasError = true;
+					};
 					//alreadyErrored = (options.$el instanceof jQuery) ? options.$el.hasClass('cl_error_field') : false;
 
 					// 手抜き日本語のみ対応
-					var dateToYmd = function (date) {
+					var dateToYmd = function(date) {
 						try {
 							return date.toLocaleString().split(' ')[0];
 						} catch (e) {
@@ -13139,265 +13141,265 @@ var _clInternalErrorHandler = function (message) {
 					// '.cl_valid' クラスの入力を確認して、エラー情報を埋め込む
 					//									  $('.cl_valid', this.form)
 					this.clear(options.$el)
-						//.removeClass('cl_error_field')
-						.filter(options.filter)
-						.filter('.cl_cm_code_input')
-						.each(function () {
-							var $this = $(this),
-								val = $this.val(),
-								data = $this.data('cm_code'),
-								id = data && data.id;
-							if (val && !id) {
-								// 共通部品コードセレクターでコードは入力済みだがidが設定されていない
-								setError(this, 'cmcodeerror');
-							} else if ($this.hasClass('cl_required') && !id) {
+					//.removeClass('cl_error_field')
+					.filter(options.filter)
+					.filter('.cl_cm_code_input')
+					.each(function () {
+						var $this = $(this),
+						val = $this.val(),
+						data = $this.data('cm_code'),
+						id = data && data.id;
+						if (val && !id) {
+							// 共通部品コードセレクターでコードは入力済みだがidが設定されていない
+							setError(this, 'cmcodeerror');
+						} else if ($this.hasClass('cl_required') && !id) {
+							setError(this, 'required');
+						}
+					})
+					.end()
+					// cl_required: 入力必須 //////////////////////
+					.filter('.cl_required:not(.cl_cm_code_input)')
+					.each(function(){
+						var $this = $(this);
+						if ($this.is('select') && $this.val() === '0') {
+							setError(this, 'required');
+							// AOKI
+						} else if ($this.is('span')) {
+							if ($this.html().length === 0) {
 								setError(this, 'required');
 							}
-						})
-						.end()
-						// cl_required: 入力必須 //////////////////////
-						.filter('.cl_required:not(.cl_cm_code_input)')
-						.each(function () {
-							var $this = $(this);
-							if ($this.is('select') && $this.val() === '0') {
-								setError(this, 'required');
-								// AOKI
-							} else if ($this.is('span')) {
-								if ($this.html().length === 0) {
-									setError(this, 'required');
-								}
-							} else if ($this.is('td')) {
-								if (!clutil.chkStr($this.text())) {
-									setError(this, 'required');
-								}
-							} else if (!$this.is('div') && !$(this).val()) {
-								// selectpicker用にdivの場合は考えない
+						} else if ($this.is('td')) {
+							if (!clutil.chkStr($this.text())) {
 								setError(this, 'required');
 							}
-						})
-						.end()
-						// cl_length: 入力長制限 /////////////////////
-						.filter('.cl_length')
-						.each(function () {
-							var len = $(this).val().length;
-							var max = $(this).data('max');
-							var min = $(this).data('min');
-							var hasMax = _.isNumber(max);
-							var hasMin = _.isNumber(min);
-							if (hasMax && hasMin) {
-								if (len < min) {
-									// {0}が短すぎます。{1}～{2}文字で入力してください。
-									setError(this, 'length_short2', min, max);
-								} else if (len > max) {
-									// {0}が長すぎます。{1}～{2}文字で入力してください。
-									setError(this, 'length_long2', min, max);
-								}
-							} else if (hasMax) {
-								if (len > max) {
-									// {0}が長すぎます。{1}文字以下で入力してください。
-									setError(this, 'length_long1', max);
-								}
-							} else if (hasMin) {
-								// len == 0 は、cl_required (必須）でチェックすることとする！
-								if (len > 0 && len < min) {
-									// {0}が短すぎます。{1}文字以上で入力してください。
-									setError(this, 'length_short1', min);
-								}
+						} else if (!$this.is('div') && !$(this).val()) {
+							// selectpicker用にdivの場合は考えない
+							setError(this, 'required');
+						}
+					})
+					.end()
+					// cl_length: 入力長制限 /////////////////////
+					.filter('.cl_length')
+					.each(function(){
+						var len = $(this).val().length;
+						var max = $(this).data('max');
+						var min = $(this).data('min');
+						var hasMax = _.isNumber(max);
+						var hasMin = _.isNumber(min);
+						if (hasMax && hasMin) {
+							if (len < min) {
+								// {0}が短すぎます。{1}～{2}文字で入力してください。
+								setError(this, 'length_short2', min, max);
+							} else if (len > max) {
+								// {0}が長すぎます。{1}～{2}文字で入力してください。
+								setError(this, 'length_long2', min, max);
 							}
-						})
-						.end()
-						.filter('[data-validator]')
-						.each(function (i, el) {
-							var $el = $(el),
-								value = $el.val(),
-								validator = $el.attr('data-validator');
+						} else if (hasMax) {
+							if (len > max) {
+								// {0}が長すぎます。{1}文字以下で入力してください。
+								setError(this, 'length_long1', max);
+							}
+						} else if (hasMin) {
+							// len == 0 は、cl_required (必須）でチェックすることとする！
+							if (len > 0 && len < min) {
+								// {0}が短すぎます。{1}文字以上で入力してください。
+								setError(this, 'length_short1', min);
+							}
+						}
+					})
+					.end()
+					.filter('[data-validator]')
+					.each(function (i, el) {
+						var $el = $(el),
+							value = $el.val(),
+							validator = $el.attr('data-validator');
 
-							var error = clutil.Validators.checkAll({
-								validator: validator,
-								value: value,
-								$el: $el
-							});
-
-							if (error) {
-								setErrorMsg($el, error);
-								hasError = true;
-							}
-						})
-						.end()
-						// cl_email: メールアドレス形式 /////////////
-						.filter('.cl_email')
-						.each(function () {
-							var value = $(this).val();
-							if (value === '') {
-								// 空欄はOKとする。必須とするなら、cl_required と併用すること
-								return;
-							}
-							if (value.length > 256) {
-								setError(this, 'email_long');
-								return;
-							}
-							var reg = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
-							if (!reg.test(value)) {
-								setError(this, 'email');
-							}
-						})
-						.end()
-						// cl_url: URL形式 //////////////////////////
-						.filter('.cl_url')
-						.each(function () {
-							var value = $(this).val();
-							if (value === '') {
-								// 空欄はOKとする。必須とするなら、cl_required と併用すること
-								return;
-							}
-							var reg = /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
-							if (!reg.test(value)) {
-								setError(this, 'url');
-							}
-						})
-						.end()
-						// cl_date: 日付 - datepicker によるもの ////
-						.filter('.cl_date')
-						.each(function () {
-							var maxDate = $(this).datepicker("option", "maxDate");
-							var minDate = $(this).datepicker("option", "minDate");
-							var error = clutil.Validators.date(this.value, minDate, maxDate);
-							if (error) {
-								setErrorMsg($(this), error);
-								hasError = true;
-							}
-						})
-						.end()
-						// cl_date: YYYY/mm 形式のチェック
-						.filter('.cl_ym')
-						.each(function () {
-							var value = $(this).val();
-							if (value === '') {
-								// 空欄はOKとする。必須とするなら、cl_required と併用すること
-								return;
-							}
-							var match = value.match(/^([0-9]{4,4})\/([0-9]{2,2})$/);
-							if (!match) {
-								setError(this, 'month_inval');
-								return;
-							}
-							console.log(match);
-							var year = match[1],
-								month = match[2];
-							if (month < 1 || month > 12) {
-								setError(this, 'month_inval');
-							}
-						})
-						.end()
-						.filter('.cl_month') // 月
-						.each(function () {
-							var value = $(this).val();
-							if (value === '') {
-								// 空欄はOKとする。必須とするなら、cl_required と併用すること
-								return;
-							}
-
-							var date = value.split('/');
-							if (date.length !== 2 || !/^[0-9]+$/.test(date[0]) ||
-								!/^[0-9]+$/.test(date[1])) {
-								setError(this, 'month_inval');
-								return;
-							}
-							if (date[1] < 1 || date[1] > 12) {
-								setError(this, 'month_inval');
-								return;
-							}
-						})
-						.end()
-
-						.filter('.cl_time') // 時刻指定
-						.each(function () {
-							var value = $(this).val();
-							if (value === '') {
-								// 空欄はOKとする。必須とするなら、cl_required と併用すること
-								return;
-							}
-
-							var date = value.split(':');
-							if (date.length !== 2 || !/^[0-9]+$/.test(date[0]) ||
-								!/^[0-9]+$/.test(date[1])) {
-								setError(this, 'time_inval');
-								return;
-							}
-							if (date[0] < 0 || date[0] > 23) {
-								setError(this, 'time_inval');
-								return;
-							}
-							if (date[1] < 0 || date[1] > 59) {
-								setError(this, 'time_inval');
-								return;
-							}
-						})
-						.end()
-
-						// cl_regex: 正規表現 ///////////////////////
-						.filter('.cl_regex')
-						.each(function () {
-							var pat = $(this).data('pattern');
-							var reg = new RegExp(pat);
-							if (!reg.test($(this).val())) {
-								// {0}の形式が誤っています。
-								setError(this, 'regex');
-							}
-						})
-						.end()
-						// 社員コード
-						.filter(".cl_codeinput")
-						.each(function () {
-							var $el = $(this);
-							if ($el.is(".cl_codeinput") &&
-								$el.val() &&
-								!parseInt($el.attr("cs_id"), 10)) {
-								setError(this, 'staffcode_mismatch');
-							}
-						})
-						.end()
-
-						// cl_autocomplete オートコンプリート /////
-						.filter('.cl_autocomplete')
-						.each(function () {
-							if (!$(this).autocomplete('isValidClAutocompleteSelect')) {
-								setError(this, 'autocomplete_mismatch');
-							}
+						var error = clutil.Validators.checkAll({
+							validator: validator,
+							value: value,
+							$el: $el
 						});
 
+						if (error) {
+							setErrorMsg($el, error);
+							hasError = true;
+						}
+					})
+					.end()
+					// cl_email: メールアドレス形式 /////////////
+					.filter('.cl_email')
+					.each(function(){
+						var value = $(this).val();
+						if (value === '') {
+							// 空欄はOKとする。必須とするなら、cl_required と併用すること
+							return;
+						}
+						if (value.length > 256) {
+							setError(this, 'email_long');
+							return;
+						}
+						var reg = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
+						if (!reg.test(value)) {
+							setError(this, 'email');
+						}
+					})
+					.end()
+					// cl_url: URL形式 //////////////////////////
+					.filter('.cl_url')
+					.each(function(){
+						var value = $(this).val();
+						if (value === '') {
+							// 空欄はOKとする。必須とするなら、cl_required と併用すること
+							return;
+						}
+						var reg = /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
+						if (!reg.test(value)) {
+							setError(this, 'url');
+						}
+					})
+					.end()
+					// cl_date: 日付 - datepicker によるもの ////
+					.filter('.cl_date')
+					.each(function(){
+						var maxDate = $(this).datepicker("option", "maxDate");
+						var minDate = $(this).datepicker("option", "minDate");
+						var error = clutil.Validators.date(this.value, minDate, maxDate);
+						if (error){
+							setErrorMsg($(this), error);
+							hasError = true;
+						}
+					})
+					.end()
+					// cl_date: YYYY/mm 形式のチェック
+					.filter('.cl_ym')
+					.each(function(){
+						var value = $(this).val();
+						if (value === '') {
+							// 空欄はOKとする。必須とするなら、cl_required と併用すること
+							return;
+						}
+						var match = value.match(/^([0-9]{4,4})\/([0-9]{2,2})$/);
+						if (!match) {
+							setError(this, 'month_inval');
+							return;
+						}
+						console.log(match);
+						var year = match[1],
+						month = match[2];
+						if (month < 1 || month > 12) {
+							setError(this, 'month_inval');
+						}
+					})
+					.end()
+					.filter('.cl_month') // 月
+					.each(function(){
+						var value = $(this).val();
+						if (value === '') {
+							// 空欄はOKとする。必須とするなら、cl_required と併用すること
+							return;
+						}
+
+						var date = value.split('/');
+						if (date.length !== 2 || !/^[0-9]+$/.test(date[0]) ||
+								!/^[0-9]+$/.test(date[1])) {
+							setError(this, 'month_inval');
+							return;
+						}
+						if (date[1] < 1 || date[1] > 12) {
+							setError(this, 'month_inval');
+							return;
+						}
+					})
+					.end()
+
+					.filter('.cl_time') // 時刻指定
+					.each(function(){
+						var value = $(this).val();
+						if (value === '') {
+							// 空欄はOKとする。必須とするなら、cl_required と併用すること
+							return;
+						}
+
+						var date = value.split(':');
+						if (date.length !== 2 || !/^[0-9]+$/.test(date[0]) ||
+								!/^[0-9]+$/.test(date[1])) {
+							setError(this, 'time_inval');
+							return;
+						}
+						if (date[0] < 0 || date[0] > 23) {
+							setError(this, 'time_inval');
+							return;
+						}
+						if (date[1] < 0 || date[1] > 59) {
+							setError(this, 'time_inval');
+							return;
+						}
+					})
+					.end()
+
+					// cl_regex: 正規表現 ///////////////////////
+					.filter('.cl_regex')
+					.each(function(){
+						var pat = $(this).data('pattern');
+						var reg = new RegExp(pat);
+						if (!reg.test($(this).val())) {
+							// {0}の形式が誤っています。
+							setError(this, 'regex');
+						}
+					})
+					.end()
+					// 社員コード
+					.filter(".cl_codeinput")
+					.each(function(){
+						var $el = $(this);
+						if ($el.is(".cl_codeinput") &&
+							$el.val() &&
+							!parseInt($el.attr("cs_id"), 10)){
+							setError(this, 'staffcode_mismatch');
+						}
+					})
+					.end()
+
+					// cl_autocomplete オートコンプリート /////
+					.filter('.cl_autocomplete')
+					.each(function(){
+						if(!$(this).autocomplete('isValidClAutocompleteSelect')){
+							setError(this, 'autocomplete_mismatch');
+						}
+					});
+
 					_($('[data-required2]', this.form)).chain()
-						.reduce(function (memo, element) {
-							var attr = $(element).attr('data-required2');
-							memo[attr] = (memo[attr] || []);
-							memo[attr].push(element);
-							return memo;
-						}, {})
-						.some(function (elements, key) {
-							if (_.all(elements, function (element, id) {
-								return $(element).val() === '';
-							})) {
-								_.each(elements, function (element) {
-									setError(element, 'required2');
-								});
-								// すべてチェックするように修正 2013/07/11
-								//								return true;
-							}
+					.reduce(function (memo, element) {
+						var attr = $(element).attr('data-required2');
+						memo[attr] = (memo[attr] || []);
+						memo[attr].push(element);
+						return memo;
+					}, {})
+					.some(function (elements, key) {
+						if (_.all(elements, function (element, id) {
+							return $(element).val() === '';
+						})) {
+							_.each(elements, function (element) {
+								setError(element, 'required2');
+							});
 							// すべてチェックするように修正 2013/07/11
-							//							return false;
-						})
-						.value();
+//								return true;
+						}
+						// すべてチェックするように修正 2013/07/11
+//							return false;
+					})
+					.value();
 
 					if (hasError) {
-						if (options.$el) {
+						if(options.$el){
 							// 部品個別チェック: 正常→エラーに変わったときだけ留まる
 							// => 留まらないように変更 2014/10/24
 							// if(alreadyErrored == false){
 							// 	clutil.setFocus(options.$el.filter('.cl_error_field').first());
 							// }
-						} else {
+						}else{
 							clutil.setFocus($('.cl_error_field', this.form).first());
-							if (this.echoback != null) {
+							if(this.echoback != null){
 								this.setErrorHeader(clmsg.cl_echoback);
 							}
 						}
@@ -13425,7 +13427,7 @@ var _clInternalErrorHandler = function (message) {
 				 * ・true				: 大小チェック正常
 				 * ・false				: 大小チェック反転
 				 */
-				validFromTo: function (chkInfo) {
+				validFromTo : function(chkInfo){
 					if (chkInfo == null || chkInfo.length === 0) {
 						return true;
 					}
@@ -13433,9 +13435,9 @@ var _clInternalErrorHandler = function (message) {
 					var errInfo = {};
 					var errFlag = false;
 
-					for (var i = 0; i < chkInfo.length; i++) {
+					for (var i = 0; i < chkInfo.length; i++ ) {
 						var stval = chkInfo[i].stval;
-						var edval = chkInfo[i].edval;
+						var edval=	chkInfo[i].edval;
 						var $stval = $('#' + stval)[0];
 						var $edval = $('#' + edval)[0];
 						var orequalto = chkInfo[i].orequalto == null ? false : chkInfo[i].orequalto;
@@ -13451,7 +13453,7 @@ var _clInternalErrorHandler = function (message) {
 
 						// ヌルチェック
 						if (stvalue == null || stvalue === '' ||
-							edvalue == null || edvalue === '') {
+								edvalue == null || edvalue === '') {
 							continue;
 						}
 
@@ -13547,7 +13549,7 @@ var _clInternalErrorHandler = function (message) {
 				 * ・true				: 大小チェック正常
 				 * ・false				: 大小チェック反転
 				 */
-				validFromToObj: function (chkInfo) {
+				validFromToObj : function(chkInfo){
 					if (chkInfo == null || chkInfo.length === 0) {
 						return true;
 					}
@@ -13555,14 +13557,14 @@ var _clInternalErrorHandler = function (message) {
 					var errInfo = {};
 					var errFlag = false;
 
-					for (var i = 0; i < chkInfo.length; i++) {
+					for (var i = 0; i < chkInfo.length; i++ ) {
 						var $stval = chkInfo[i].$stval;
 						var $edval = chkInfo[i].$edval;
 						var orequalto = chkInfo[i].orequalto == null ? false : chkInfo[i].orequalto;
 
 						// ヌルチェック
 						if ($stval.val() == null || $stval.val() === '' ||
-							$edval.val() == null || $edval.val() === '') {
+								$edval.val() == null || $edval.val() === '') {
 							continue;
 						}
 
@@ -13650,7 +13652,7 @@ var _clInternalErrorHandler = function (message) {
 			 * 2013/12/25追加
 			 * クリックするとエラーメッセージが消える
 			 */
-			defaultValidator.echoback.click(function () {
+			defaultValidator.echoback.click(function() {
 				defaultValidator.echoback.stop();
 				defaultValidator.echoback.fadeOut('300');
 			});
@@ -13662,61 +13664,61 @@ var _clInternalErrorHandler = function (message) {
 		 * @param imgElem <IMG>タグ要素
 		 * @returns {___anonymous92_104}
 		 */
-		imgViewUtil: function (imgElem, errImg) {
+		imgViewUtil : function(imgElem, errImg){
 			var util = {
-				imgEl: imgElem,
-				errImg: errImg,
-				data: null,	// 任意データを一時的に預ける領域
+					imgEl : imgElem,
+					errImg : errImg,
+					data : null,	// 任意データを一時的に預ける領域
 
-				initialize: function () {
-					var me = this;
-					this.imgEl.error(function (e) {
-						me.setImage(me.errImg);
-					});
+					initialize : function() {
+						var me = this;
+						this.imgEl.error(function(e){
+							me.setImage(me.errImg);
+						});
 
-					this.imgEl.load(function () {
-						me.onImgLoaded();
-					});
-					return this;
-				},
+						this.imgEl.load(function(){
+							me.onImgLoaded();
+						});
+						return this;
+					},
 
-				/**
-				 * 再読み込みする
-				 */
-				reload: function () {
-					var curSrc = this.imgEl.attr('src');
-					if (curSrc.length > 0) {
-						// 一旦 src 属性を削除してから再設定
-						this.imgEl.removeAttr('src').attr('src', curSrc);
+					/**
+					 * 再読み込みする
+					 */
+					reload : function() {
+						var curSrc = this.imgEl.attr('src');
+						if (curSrc.length > 0) {
+							// 一旦 src 属性を削除してから再設定
+							this.imgEl.removeAttr('src').attr('src', curSrc);
+						}
+					},
+
+					/**
+					 * 画像を設定する
+					 * @param srcURI
+					 */
+					setImage : function(srcURI) {
+						return this.imgEl.attr('src', srcURI);
+					},
+					/**
+					 * 表示中の画像URIを取得する
+					 */
+					getImage : function() {
+						return this.imgEl.attr('src');
+					},
+					/**
+					 * 画像を削除する
+					 */
+					removeImage : function() {
+						return this.imgEl.removeAttr('src');
+					},
+					/**
+					 * 画像読み込み通知
+					 */
+					onImgLoaded : function() {
+						// this = imgEl
+						console.log('Loaded: ' + $(this).attr('src'));
 					}
-				},
-
-				/**
-				 * 画像を設定する
-				 * @param srcURI
-				 */
-				setImage: function (srcURI) {
-					return this.imgEl.attr('src', srcURI);
-				},
-				/**
-				 * 表示中の画像URIを取得する
-				 */
-				getImage: function () {
-					return this.imgEl.attr('src');
-				},
-				/**
-				 * 画像を削除する
-				 */
-				removeImage: function () {
-					return this.imgEl.removeAttr('src');
-				},
-				/**
-				 * 画像読み込み通知
-				 */
-				onImgLoaded: function () {
-					// this = imgEl
-					console.log('Loaded: ' + $(this).attr('src'));
-				}
 			};
 			return util.initialize();
 		},
@@ -13726,88 +13728,88 @@ var _clInternalErrorHandler = function (message) {
 		 * @param image
 		 * @returns
 		 */
-		getActualDimension: function (image) {
+		getActualDimension: function(image) {
 			var mem, w, h, key = "actual";
 
 			// for Firefox, Safari, Google Chrome
 			if ("naturalWidth" in image) {
-				return { width: image.naturalWidth, height: image.naturalHeight };
+				return {width: image.naturalWidth, height: image.naturalHeight};
 			}
 			if ("src" in image) { // HTMLImageElement
-				if (image[key] && image[key].src === image.src) { return image[key]; }
+				if (image[key] && image[key].src === image.src) {return  image[key];}
 
 				if (document.uniqueID) { // for IE
 					w = $(image).css("width");
 					h = $(image).css("height");
 				} else { // for Opera and Other
-					mem = { w: image.width, h: image.height }; // keep current style
-					$(this).removeAttr("width").removeAttr("height").css({ width: "", height: "" });    // Remove attributes in case img-element has set width  and height (for webkit browsers)
+					mem = {w: image.width, h: image.height}; // keep current style
+					$(this).removeAttr("width").removeAttr("height").css({width:"",  height:""});    // Remove attributes in case img-element has set width  and height (for webkit browsers)
 					w = image.width;
 					h = image.height;
-					image.width = mem.w; // restore
+					image.width  = mem.w; // restore
 					image.height = mem.h;
 				}
-				return image[key] = { width: w, height: h, src: image.src }; // bond
+				return image[key] = {width: w, height: h, src: image.src}; // bond
 			}
 
 			// HTMLCanvasElement
-			return { width: image.width, height: image.height };
+			return {width: image.width, height: image.height};
 		},
 
 		/**
 		 * 日付形式の判定をする
 		 */
-		checkDate: function (value, minDate, maxDate) {
+		checkDate: function(value, minDate, maxDate){
 			var o;
-			if (arguments.length === 1 && _.isObject(arguments[0])) {
+			if(arguments.length === 1 && _.isObject(arguments[0])){
 				o = arguments[0];
-			} else {
+			}else{
 				o = {
-					value: arguments[0],
-					minDate: arguments[1],
-					maxDate: arguments[2],
-					limitCheck: true
+						value: arguments[0],
+						minDate: arguments[1],
+						maxDate: arguments[2],
+						limitCheck: true
 				};
 			}
 
-			if (_.isEmpty(o.value)) {
+			if(_.isEmpty(o.value)){
 				// 空欄はOKとする。必須とするなら、cl_required と併用すること
 				return true;
 			}
 
 			var date, srcymd;
-			if (~o.value.indexOf('/')) {
+			if(~o.value.indexOf('/')){
 				// slashが含まれている場合
 				date = new Date(o.value);
 				srcymd = o.value.split('/');
-			} else {
+			}else{
 				// /なしの場合
 				date = clutil.ymd2date(o.value);
-				srcymd = [o.value.substring(0, 4), o.value.substring(4, 6), o.value.substring(6)];
+				srcymd = [o.value.substring(0,4), o.value.substring(4,6), o.value.substring(6)];
 			}
 
-			if (!_.isDate(date) || isNaN(date.getTime())) {
+			if(!_.isDate(date) || isNaN(date.getTime())){
 				return false;
 			}
 
-			var chkymd = [date.getFullYear(), date.getMonth() + 1, date.getDate()];	// [Year, Month, Day].length => 3
-			if (srcymd.length != chkymd.length) {
+			var chkymd = [date.getFullYear(), date.getMonth()+1, date.getDate()];	// [Year, Month, Day].length => 3
+			if(srcymd.length != chkymd.length){
 				return false;
-			} else {
-				for (var i = 0; i < chkymd.length; i++) {
-					if (_.isEmpty(srcymd[i])) {
+			}else{
+				for(var i=0; i<chkymd.length; i++){
+					if(_.isEmpty(srcymd[i])){
 						return false;
 					}
-					if (parseInt(srcymd[i], 10) !== chkymd[i]) {
+					if(parseInt(srcymd[i], 10) !== chkymd[i]){
 						return false;
 					}
 				}
 			}
 
-			if (o.limitCheck) {
+			if(o.limitCheck){
 				var fixMinDate = new Date(o.minDate || clutil.ymd2date(clcom.min_date));
 				var fixMaxDate = new Date(o.maxDate || clutil.ymd2date(clcom.max_date));
-				if (date.getTime() > fixMaxDate.getTime() || date.getTime() < fixMinDate.getTime()) {
+				if(date.getTime() > fixMaxDate.getTime() || date.getTime() < fixMinDate.getTime()){
 					return false;
 				}
 			}
@@ -13870,7 +13872,7 @@ var _clInternalErrorHandler = function (message) {
 		 *   });
 		 * ```
 		 */
-		ymd2week: function (ymd, differ, reverse) {
+		ymd2week: function(ymd, differ, reverse){
 			var deferred = $.Deferred();
 			differ || (differ = 0);
 			clutil.postJSON('am_pa_yearweek_srch', {
@@ -13879,8 +13881,8 @@ var _clInternalErrorHandler = function (message) {
 					yyyyww: reverse ? ymd : 0,
 					differ: differ
 				}
-			}).done(function (data) {
-				if (!data.rspHead.status && data.list[0]) {
+			}).done(function(data){
+				if (!data.rspHead.status && data.list[0]){
 					var item = data.list[0];
 					// オートコンプリート部品はid属性が必須なので設定する
 					item.id = item.yyyyww;
@@ -13888,7 +13890,7 @@ var _clInternalErrorHandler = function (message) {
 				} else {
 					deferred.reject();
 				}
-			}).fail(function () {
+			}).fail(function(){
 				deferred.reject();
 			});
 			return deferred.promise();
@@ -13899,11 +13901,11 @@ var _clInternalErrorHandler = function (message) {
 		 */
 		ymd2date: function (ymd) {
 			// 元から Date オブジェクトの場合
-			if (_.isDate(ymd)) {
+			if(_.isDate(ymd)){
 				return ymd;
 			}
 
-			var _iymd2Date = function (iymd) {
+			var _iymd2Date = function(iymd){
 				var year = Math.floor(iymd / 10000);
 				var month = (Math.floor(iymd / 100) % 100);
 				var day = iymd % 100;
@@ -13914,19 +13916,19 @@ var _clInternalErrorHandler = function (message) {
 			};
 
 			// 数値の場合
-			if (_.isNumber(ymd)) {
+			if(_.isNumber(ymd)){
 				return _iymd2Date(ymd);
 			}
 
 			// 文字列の場合
-			if (_.isString(ymd)) {
+			if(_.isString(ymd)){
 				// 数文字8桁からなる文字列
-				if (/^[0-9]{8}$/.test(ymd)) {
+				if(/^[0-9]{8}$/.test(ymd)){
 					var iymd = parseInt(ymd, 10);
 					return _iymd2Date(iymd);
 				}
 				// yyyy/mm/dd な文字列
-				if (/^[0-9]{4}\/[0-9]{1,2}\/[0-9]{1,2}$/.test(ymd)) {
+				if(/^[0-9]{4}\/[0-9]{1,2}\/[0-9]{1,2}$/.test(ymd)){
 					return new Date(ymd);
 				}
 			}
@@ -13941,7 +13943,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param days 加算する日数
 		 * @return yyyymmdd形式の計算結果
 		 */
-		addDate: function (ymd, days) {
+		addDate: function(ymd, days) {
 			var ymdDate = clutil.ymd2date(ymd);
 			ymdDate.setDate(ymdDate.getDate() + days);
 
@@ -13949,9 +13951,9 @@ var _clInternalErrorHandler = function (message) {
 			var month = ymdDate.getMonth() + 1;
 			var day = ymdDate.getDate();
 			return Number(clutil.fmt('{0}{1}{2}',
-				year,
-				_.last("0" + month, 2).join(''),
-				_.last("0" + day, 2).join('')));
+					year,
+					_.last("0" + month, 2).join(''),
+					_.last("0" + day, 2).join('')));
 		},
 
 		/**
@@ -13963,7 +13965,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {ymd] ymd2
 		 * @return {number}
 		 */
-		diffDate: function (ymd1, ymd2) {
+		diffDate: function(ymd1, ymd2){
 			var d1 = clutil.ymd2date(ymd1),
 				d2 = clutil.ymd2date(ymd2),
 				diff = d1 - d2,
@@ -13980,19 +13982,19 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {string} format yyyy-mm-dd, yyyy/mm/dd, yyyy/mm/dd hh:ss, yyyymmdd
 		 * @returns 文字列
 		 */
-		dateFormat: function (obj, format) {
+		dateFormat: function(obj, format) {
 			/*
 			 * 曜日
 			 */
 			var wdays = [
-				"日",
-				"月",
-				"火",
-				"水",
-				"木",
-				"金",
-				"土"
-			];
+			             "日",
+			             "月",
+			             "火",
+			             "水",
+			             "木",
+			             "金",
+			             "土"
+			             ];
 
 			if (typeof obj === 'string' && !~obj.indexOf('/')) {
 				obj = parseInt(obj, 10);
@@ -14002,56 +14004,56 @@ var _clInternalErrorHandler = function (message) {
 				return "";
 			} else if (typeof obj == "number") {
 				// サーバーからは8桁の数値で来る事を想定
-				var n_year = Math.floor(obj / 10000);
-				var n_month = Math.floor((obj % 10000) / 100);
-				var n_day = Math.floor(obj % 100);
+				var n_year = Math.floor(obj/10000);
+				var n_month = Math.floor((obj%10000)/100);
+				var n_day = Math.floor(obj%100);
 
 				obj = clutil.fmt('{0}/{1}/{2}', n_year, n_month, n_day);
 			}
-			var twodigit = function (obj) {
+			var twodigit = function(obj) {
 				if (obj < 10) {
 					obj = '0' + obj;
 				}
 				return obj;
 			};
 
-			if (typeof obj === 'string') { // 2014313 TODO:(w)形式の回避
+			if(typeof obj === 'string'){ // 2014313 TODO:(w)形式の回避
 				obj = obj.replace("（", "(");
 				obj = obj.replace("）", ")");
 			}
 
 			var dateObj = new Date(obj);
-			if (!dateObj.valueOf()) {
-				var sqlDateStr = obj.replace(/:| |T/g, "-");
+			if (! dateObj.valueOf()) {
+				var sqlDateStr = obj.replace(/:| |T/g,"-");
 				var YMDhms = sqlDateStr.split("-");
-				dateObj.setFullYear(parseInt(YMDhms[0], 10), parseInt(YMDhms[1], 10) - 1, parseInt(YMDhms[2], 10));
+				dateObj.setFullYear(parseInt(YMDhms[0], 10), parseInt(YMDhms[1], 10)-1, parseInt(YMDhms[2], 10));
 				dateObj.setHours(parseInt(YMDhms[3], 10), parseInt(YMDhms[4], 10), parseInt(YMDhms[5], 10), 0/*msValue*/);
 			}
 			var year = dateObj.getFullYear();
-			var month = twodigit(dateObj.getMonth() + 1);
+			var month = twodigit(dateObj.getMonth()+1);
 			var day = twodigit(dateObj.getDate());
 			var hours = twodigit(dateObj.getHours());
 			var minutes = twodigit(dateObj.getMinutes());
-			var ymddate = new Date(year, month - 1, day);
+			var ymddate = new Date(year, month-1, day);
 			var dd = ymddate.getDay();
 			var wday = wdays[dd];
 
 			switch (format) {
-				case 'yyyymmdd':		  // サーバーに送る型
-					return Number(clutil.fmt('{0}{1}{2}', year, month, day));
-				case 'yyyy-mm-dd':	  // サーバーに送る型OLD
-					return clutil.fmt('{0}-{1}-{2}', year, month, day);
-				case 'yyyy/mm/dd':
-					return clutil.fmt('{0}/{1}/{2}', year, month, day);
-				case 'yyyy/mm/dd(w)':	// 曜日付き表示用
-					return clutil.fmt('{0}/{1}/{2}（{3}）', year, month, day, wday);
+			case 'yyyymmdd':		  // サーバーに送る型
+				return Number(clutil.fmt('{0}{1}{2}', year, month, day));
+			case 'yyyy-mm-dd':	  // サーバーに送る型OLD
+				return clutil.fmt('{0}-{1}-{2}', year, month, day);
+			case 'yyyy/mm/dd':
+				return clutil.fmt('{0}/{1}/{2}', year, month, day);
+			case 'yyyy/mm/dd(w)':	// 曜日付き表示用
+				return clutil.fmt('{0}/{1}/{2}（{3}）', year, month, day, wday);
 				//case 'yyyy/mm/dd hh:ss':
-				case 'yyyymm':
-					return Number(clutil.fmt('{0}{1}', year, month));
-				case 'yyyy':
-					return Number(clutil.fmt('{0}', year));
-				default:
-					return clutil.fmt('{0}/{1}/{2} {3}:{4}'
+			case 'yyyymm':
+				return Number(clutil.fmt('{0}{1}', year, month));
+			case 'yyyy':
+				return Number(clutil.fmt('{0}', year));
+			default:
+				return clutil.fmt('{0}/{1}/{2} {3}:{4}'
 						, year, month, day, hours, minutes);
 			}
 		},
@@ -14065,13 +14067,13 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {string} format yyyy/mm, yyyymm
 		 * @returns {String}
 		 */
-		monthFormat: function (obj, format) {
+		monthFormat : function(obj, format) {
 			var year;
 			var month;
 			if (obj == null || obj === "") {
 				return "";
 			}
-			var twodigit = function (obj) {
+			var twodigit = function(obj) {
 				if (obj < 10) {
 					obj = '0' + obj;
 				}
@@ -14086,24 +14088,24 @@ var _clInternalErrorHandler = function (message) {
 
 			// 5桁の場合
 			if (date < 100000) {
-				year = Math.floor(date / 10);
-				month = twodigit(Math.floor(date % 10));
+				year = Math.floor(date/10);
+				month = twodigit(Math.floor(date%10));
 			} else if (date > 9999999) {
 				// 8桁の場合も対応
-				year = Math.floor(date / 10000);
-				month = twodigit(Math.floor((date % 10000) / 100));
+				year = Math.floor(date/10000);
+				month = twodigit(Math.floor((date%10000)/100));
 			} else {
-				year = Math.floor(date / 100);
-				month = twodigit(Math.floor(date % 100));
+				year = Math.floor(date/100);
+				month = twodigit(Math.floor(date%100));
 			}
 
 			switch (format) {
-				case 'yyyymm':		// サーバーに送る型
-					return Number(clutil.fmt('{0}{1}', year, month));
-				case 'yyyy/mm':
-					return clutil.fmt('{0}/{1}', year, month);
-				default:
-					return clutil.fmt('{0}/{1}', year, month);
+			case 'yyyymm':		// サーバーに送る型
+				return Number(clutil.fmt('{0}{1}', year, month));
+			case 'yyyy/mm':
+				return clutil.fmt('{0}/{1}', year, month);
+			default:
+				return clutil.fmt('{0}/{1}', year, month);
 			}
 		},
 
@@ -14115,13 +14117,13 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {string} format hh:mm, hhmm
 		 * @returns {String}
 		 */
-		timeFormat: function (obj, format) {
+		timeFormat : function(obj, format) {
 			var hour;
 			var minute;
 			if (obj == null || obj === "") {
 				return "";
 			}
-			var twodigit = function (obj) {
+			var twodigit = function(obj) {
 				if (obj < 10) {
 					obj = '0' + obj;
 				}
@@ -14134,15 +14136,15 @@ var _clInternalErrorHandler = function (message) {
 				time = obj.replace(":", "");
 			}
 
-			hour = Math.floor(time / 100);
-			minute = twodigit(Math.floor(time % 100));
+			hour = Math.floor(time/100);
+			minute = twodigit(Math.floor(time%100));
 
 			switch (format) {
-				case 'hhmm':		  // サーバーに送る型
-					return Number(clutil.fmt('{0}{1}', hour, minute));
-				case 'hh:mm':
-				default:
-					return clutil.fmt('{0}:{1}', hour, minute);
+			case 'hhmm':		  // サーバーに送る型
+				return Number(clutil.fmt('{0}{1}', hour, minute));
+			case 'hh:mm':
+			default:
+				return clutil.fmt('{0}:{1}', hour, minute);
 			}
 		},
 
@@ -14152,12 +14154,12 @@ var _clInternalErrorHandler = function (message) {
 		 * @param format hh:mm:ss, hhmmss
 		 * @return {String}
 		 */
-		hmsFormat: function (obj, format) {
+		hmsFormat : function(obj, format) {
 			var hour, minute, second;
 			if (obj == null || obj === "") {
 				return "";
 			}
-			var twodigit = function (obj) {
+			var twodigit = function(obj) {
 				if (obj < 10) {
 					obj = '0' + obj;
 				}
@@ -14167,16 +14169,16 @@ var _clInternalErrorHandler = function (message) {
 			if (typeof obj === 'string') {
 				hms = obj.replace(":", "");
 			}
-			hour = Math.floor(time / 10000);
-			minute = twodigit(Math.floor((time / 100) % 100));
-			second = twodigit(Math.floor(time % 100));
+			hour = Math.floor(time/10000);
+			minute = twodigit(Math.floor((time/100)%100));
+			second = twodigit(Math.floor(time%100));
 
 			switch (format) {
-				case 'hhmmss':		// サーバーに送る型
-				case 'hh:mm:ss':
-					return Number(clutil.fmt('{0}{1}{2}', hour, minute, second));
-				default:
-					return clutil.fmt('{0}:{1}:{2}', hour, minute, second);
+			case 'hhmmss':		// サーバーに送る型
+			case 'hh:mm:ss':
+				return Number(clutil.fmt('{0}{1}{2}', hour, minute, second));
+			default:
+				return clutil.fmt('{0}:{1}:{2}', hour, minute, second);
 			}
 		},
 
@@ -14205,7 +14207,7 @@ var _clInternalErrorHandler = function (message) {
 		 * clutil.parseTax(105, 5); // => {withoutTax: 100, tax: 5}
 		 * ```
 		 */
-		parseTax: function (value, taxRate) {
+		parseTax: function(value, taxRate){
 			taxRate || (taxRate = clcom.cmDefaults.defaultTax);
 			var tmp1 = value * taxRate / (taxRate + 100);
 			// 切り上げ版 -> 税額を切り捨て
@@ -14236,7 +14238,7 @@ var _clInternalErrorHandler = function (message) {
 		 * }
 		 * ```
 		 */
-		mergeTax: function (value, taxRate) {
+		mergeTax: function(value, taxRate){
 			taxRate || (tax = clcom.cmDefaults.defaultTax);
 			var tax = value * taxRate / 100;
 			// 切り捨て
@@ -14253,7 +14255,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param len チェックディジット算出の対象となるコード長
 		 * @returns -1:エラー >=0:チェックディジット
 		 */
-		getCheckDigitM10W13: function (code, len) {
+		getCheckDigitM10W13: function(code, len) {
 			var wt = 3, mod = 10;
 			var wsum = 0, ssum = 0, sum;
 			var n;
@@ -14265,7 +14267,7 @@ var _clInternalErrorHandler = function (message) {
 			var codes = code.split('');
 
 			// 重みがない桁の合計
-			for (var i = len - 2; i >= 0; i -= 2) {
+			for (var i = len-2; i >= 0; i-=2) {
 				if (!$.isNumeric(codes[i])) {
 					// 数字以外が含まれている
 					return -1;
@@ -14275,7 +14277,7 @@ var _clInternalErrorHandler = function (message) {
 			}
 
 			// 重みがある桁の合計
-			for (var i = len - 1; i >= 0; i -= 2) {
+			for (var i = len-1; i>=0; i-=2) {
 				if (!$.isNumeric(codes[i])) {
 					// 数字以外が含まれている
 					return -1;
@@ -14297,12 +14299,12 @@ var _clInternalErrorHandler = function (message) {
 		 * 引数
 		 * ・yymm			: 年月の4桁
 		 */
-		iymFmt: function (yymm) {
+		iymFmt: function(yymm) {
 			if (yymm == null) {
 				return "";
 			}
-			var yy = parseInt(yymm / 100);
-			var mm = yymm % 100;
+			var yy = parseInt(yymm/100);
+			var mm = yymm%100;
 			var yystr = yy != 0 ? yy + '年' : '';
 			var mmstr;
 			if (yy == 0) {
@@ -14317,7 +14319,7 @@ var _clInternalErrorHandler = function (message) {
 		/**
 		 * 文字列取得
 		 */
-		cStr: function (str) {
+		cStr : function(str) {
 			if (str == null || str.length === 0) {
 				return "";
 			} else {
@@ -14328,7 +14330,7 @@ var _clInternalErrorHandler = function (message) {
 		/**
 		 * 文字列判定
 		 */
-		chkStr: function (str) {
+		chkStr : function(str) {
 			if (str == null || str.length === 0) {
 				return false;
 			} else {
@@ -14339,7 +14341,7 @@ var _clInternalErrorHandler = function (message) {
 		/**
 		 * 数値取得
 		 */
-		cInt: function (intValue) {
+		cInt : function(intValue) {
 			if (typeof intValue != "number" || isNaN(intValue)) {
 				return 0;
 			} else {
@@ -14364,136 +14366,136 @@ var _clInternalErrorHandler = function (message) {
 		 * 戻り値
 		 * ・オブジェクト
 		 */
-		view2data: function ($view, prefix, resultdata) {
+		view2data: function($view, prefix, resultdata) {
 			resultdata = resultdata == null ? {} : resultdata;
 			//var _prefix = prefix ? prefix : 'ca_';
 			var _prefix = _.isRegExp(prefix) ? prefix : !_.isEmpty(prefix) ? new RegExp('^' + prefix.toString()) : clutil._v2dPrefixRegEx;
 			var _id = '';
 			$view
-				.find("input[id]")
-				.filter('[type="text"]').each(function () {
-					var $this = $(this);
-					//console.log(this);
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if ($this.hasClass('cl_date')) {
-						// datepickerの場合は日付をサーバーに送る型に変換する
-						resultdata[_id] = clutil.dateFormat(this.value, 'yyyymmdd');
-					} else if ($this.hasClass('cl_month')) {
-						// 月選択の場合は月をサーバーに送る型に変換する
-						resultdata[_id] = clutil.monthFormat(this.value, 'yyyymm');
-					} else if ($this.hasClass('cl_time')) {
-						// 時刻選択の場合は時刻をサーバーに送る型に変換する
-						resultdata[_id] = clutil.timeFormat(this.value, 'hhmm');
-					} else if ($this.hasClass('cl_autocomplete')) {
-						var data = $this.autocomplete('clAutocompleteItem');
-						if (data) {
-							var cn = _.pick(data, 'id', 'code', 'name');
-							resultdata['_view2data_' + _id + '_cn'] = cn;
-							resultdata[_id] = cn.id;
-						}
-					} else if ($this.hasClass('cl_codeinput')) {
-						var data = $(this).data('cl_codeinput_item');
-						if (data) {
-							var cn = _.pick(data, 'id', 'code', 'name');
-							resultdata['_view2data_' + _id + '_cn'] = cn;
-							resultdata[_id] = cn.id;
-						}
-					} else if ($this.hasClass('cl_store')) {
-						// TODO: 店舗のコード入力 -- ただの input[type="text"] -- いずれオートコンプリートになり代わる予定でココは暫定対処
-						var data = $this.data('cl_store_item');
-						if (data) {
-							var cn = _.pick(data, 'id', 'code', 'name');
-							resultdata['_view2data_' + _id + '_cn'] = cn;
-							resultdata[_id] = cn.id;
-						} else {
-							resultdata[_id] = $this.attr('cs_id');	// 互換
-						}
-					} else {
-						resultdata[_id] = $.inputlimiter.unmask($this.val(), {
-							limit: $this.attr('data-limit'),
-							filter: $this.attr('data-filter')
-						});
+			.find("input[id]")
+			.filter('[type="text"]').each(function(){
+				var $this = $(this);
+				//console.log(this);
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if ($this.hasClass('cl_date')) {
+					// datepickerの場合は日付をサーバーに送る型に変換する
+					resultdata[_id] = clutil.dateFormat(this.value, 'yyyymmdd');
+				} else if ($this.hasClass('cl_month')) {
+					// 月選択の場合は月をサーバーに送る型に変換する
+					resultdata[_id] = clutil.monthFormat(this.value, 'yyyymm');
+				} else  if ($this.hasClass('cl_time')) {
+					// 時刻選択の場合は時刻をサーバーに送る型に変換する
+					resultdata[_id] = clutil.timeFormat(this.value, 'hhmm');
+				} else if ($this.hasClass('cl_autocomplete')) {
+					var data = $this.autocomplete('clAutocompleteItem');
+					if (data) {
+						var cn = _.pick(data, 'id', 'code', 'name');
+						resultdata['_view2data_' + _id + '_cn'] = cn;
+						resultdata[_id] = cn.id;
 					}
-				})
-				.end()
-				.filter('[type="hidden"]').each(function () {
-					//console.log(this);
-					// hiddenのものに対しても処理を行う(idなど)
+				} else if ($this.hasClass('cl_codeinput')) {
+					var data = $(this).data('cl_codeinput_item');
+					if (data) {
+						var cn = _.pick(data, 'id', 'code', 'name');
+						resultdata['_view2data_' + _id + '_cn'] = cn;
+						resultdata[_id] = cn.id;
+					}
+				} else if ($this.hasClass('cl_store')) {
+					// TODO: 店舗のコード入力 -- ただの input[type="text"] -- いずれオートコンプリートになり代わる予定でココは暫定対処
+					var data = $this.data('cl_store_item');
+					if(data){
+						var cn = _.pick(data, 'id', 'code', 'name');
+						resultdata['_view2data_' + _id + '_cn'] = cn;
+						resultdata[_id] = cn.id;
+					}else{
+						resultdata[_id] = $this.attr('cs_id');	// 互換
+					}
+				} else {
+					resultdata[_id] = $.inputlimiter.unmask($this.val(), {
+						limit: $this.attr('data-limit'),
+						filter: $this.attr('data-filter')
+					});
+				}
+			})
+			.end()
+			.filter('[type="hidden"]').each(function(){
+				//console.log(this);
+				// hiddenのものに対しても処理を行う(idなど)
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				resultdata[_id] = this.value;
+			})
+			.end()
+			.filter('[type="password"]').each(function(){
+				//console.log(this);
+				// パスワード
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				resultdata[_id] = this.value;
+			})
+			.end()
+			.filter('[type="checkbox"]').each(function(){
+				//console.log(this);
+				// チェックボックス
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				resultdata[_id] = this.checked ? 1 : 0;
+			})
+			.end()
+			.end()
+			.find("input[name]")
+			.filter('[type="radio"]').each(function(){
+				//console.log(this);
+				// ラジオボタン
+				// nameで取得する
+				if(this.checked){
 					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
+					_id = (this.name).replace(_prefix, "");
+					// チェックされていたらデータ化する
 					resultdata[_id] = this.value;
-				})
-				.end()
-				.filter('[type="password"]').each(function () {
-					//console.log(this);
-					// パスワード
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
+				}
+			})
+			.end()
+			.end()
+			.find("textarea[id]").each(function(){
+				//console.log(this);
+				// テキストエリア
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				resultdata[_id] = this.value;
+			})
+			.end()
+			.find("select[id]").each(function(){
+				//console.log(this);
+				// コンボボックス(マルチセレクト未サポート)
+				// valueの値が取得される
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				try {
+					// selectpickerを使用している場合はselectpicker("val")を使う
+					resultdata[_id] = $(this).selectpicker("val");
+				} catch(e){
 					resultdata[_id] = this.value;
-				})
-				.end()
-				.filter('[type="checkbox"]').each(function () {
-					//console.log(this);
-					// チェックボックス
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					resultdata[_id] = this.checked ? 1 : 0;
-				})
-				.end()
-				.end()
-				.find("input[name]")
-				.filter('[type="radio"]').each(function () {
-					//console.log(this);
-					// ラジオボタン
-					// nameで取得する
-					if (this.checked) {
-						// プレフィックスを除去する
-						_id = (this.name).replace(_prefix, "");
-						// チェックされていたらデータ化する
-						resultdata[_id] = this.value;
-					}
-				})
-				.end()
-				.end()
-				.find("textarea[id]").each(function () {
-					//console.log(this);
-					// テキストエリア
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					resultdata[_id] = this.value;
-				})
-				.end()
-				.find("select[id]").each(function () {
-					//console.log(this);
-					// コンボボックス(マルチセレクト未サポート)
-					// valueの値が取得される
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					try {
-						// selectpickerを使用している場合はselectpicker("val")を使う
-						resultdata[_id] = $(this).selectpicker("val");
-					} catch (e) {
-						resultdata[_id] = this.value;
-					}
-				})
-				.end()
-				.find("span[id]").each(function () {
-					var $this = $(this);
-					//console.log(this);
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if ($this.hasClass('cl_date')) {
-						// datepickerの場合は日付をサーバーに送る型に変換する
-						resultdata[_id] = clutil.dateFormat($this.text(), 'yyyymmdd');
-					} else {
-						resultdata[_id] = $.inputlimiter.unmask($this.text(), {
-							limit: $this.attr('data-limit'),
-							filter: $this.attr('data-filter')
-						});
-					}
-				})
-				.end();
+				}
+			})
+			.end()
+			.find("span[id]").each(function(){
+				var $this = $(this);
+				//console.log(this);
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if ($this.hasClass('cl_date')) {
+					// datepickerの場合は日付をサーバーに送る型に変換する
+					resultdata[_id] = clutil.dateFormat($this.text(), 'yyyymmdd');
+				} else {
+					resultdata[_id] = $.inputlimiter.unmask($this.text(), {
+						limit: $this.attr('data-limit'),
+						filter: $this.attr('data-filter')
+					});
+				}
+			})
+			.end();
 			return resultdata;
 		},
 		/**
@@ -14508,7 +14510,7 @@ var _clInternalErrorHandler = function (message) {
 		 * 戻り値
 		 * ・なし
 		 */
-		data2view: function ($view, resultdata, prefix, skipundefined) {
+		data2view: function($view, resultdata, prefix, skipundefined) {
 			//var _prefix = prefix ? prefix : 'ca_';
 			var _prefix = _.isRegExp(prefix) ? prefix : !_.isEmpty(prefix) ? new RegExp('^' + prefix.toString()) : clutil._v2dPrefixRegEx;
 			var _id = '';
@@ -14519,10 +14521,10 @@ var _clInternalErrorHandler = function (message) {
 					filter: $el.attr('data-filter')
 				});
 			}
-			function collectCodeName(cn1, cn2) {
-				for (var i = 0; i < arguments.length; i++) {
+			function collectCodeName(cn1, cn2){
+				for(var i = 0; i < arguments.length; i++){
 					var xcn = arguments[i];
-					if (_.isObject(xcn) && _.has(xcn, 'id') && _.has(xcn, 'code') && _.has(xcn, 'name')) {
+					if(_.isObject(xcn) && _.has(xcn, 'id') && _.has(xcn, 'code') && _.has(xcn, 'name')){
 						return xcn;
 					}
 				}
@@ -14530,7 +14532,7 @@ var _clInternalErrorHandler = function (message) {
 			}
 			function fieldrelation_set($el, value) {
 				if (clutil.FieldRelation && $el.is('[data-field-cid]')) {
-					clutil.FieldRelation.$set($el, value, { changedBy: 'data2view' });
+					clutil.FieldRelation.$set($el, value, {changedBy: 'data2view'});
 					return true;
 				}
 			}
@@ -14563,237 +14565,237 @@ var _clInternalErrorHandler = function (message) {
 			resultdata = normailze_data(orgData);
 
 			$view
-				.find("input[id]")
-				.filter('[type="text"]').each(function () {
-					//console.log(this);
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
+			.find("input[id]")
+			.filter('[type="text"]').each(function(){
+				//console.log(this);
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
 
-					//		  _code = _id.replace("ID", "Code");
-					//		  _name = _id.replace("ID", "Name");
-					//		  _data = _id.replace("ID", "Data");
+				//		  _code = _id.replace("ID", "Code");
+				//		  _name = _id.replace("ID", "Name");
+				//		  _data = _id.replace("ID", "Data");
 
-					var $this = $(this);
+				var $this = $(this);
 
-					// FieldRelationで管理される入力の場合
-					if (fieldrelation_set($this, resultdata[_id])) {
-						return;
+				// FieldRelationで管理される入力の場合
+				if (fieldrelation_set($this, resultdata[_id])) {
+					return;
+				}
+				if ($this.hasClass('cl_date')) {
+					// datepickerの場合は日付を表示用に変換する
+					if($this.hasClass('hasDatepicker')){
+						$this.datepicker('setIymd', resultdata[_id]);
+					}else{
+						this.value = clutil.dateFormat(resultdata[_id], 'yyyy/mm/dd');
 					}
-					if ($this.hasClass('cl_date')) {
-						// datepickerの場合は日付を表示用に変換する
-						if ($this.hasClass('hasDatepicker')) {
-							$this.datepicker('setIymd', resultdata[_id]);
-						} else {
-							this.value = clutil.dateFormat(resultdata[_id], 'yyyy/mm/dd');
-						}
-					} else if ($this.hasClass('cl_month')) {
-						// 月指定の場合は日付を表示用に変換する
-						this.value = clutil.monthFormat(resultdata[_id], 'yyyy/mm');
-					} else if ($this.hasClass('cl_time')) {
-						// 時刻指定の場合は時刻を表示用に変換する
-						this.value = clutil.timeFormat(resultdata[_id], 'hh:mm');
-					} else if ($this.hasClass('cl_autocomplete')) {
-						var cn = collectCodeName(resultdata[_id], resultdata['_view2data_' + _id + '_cn']);
-						$this.autocomplete('clAutocompleteItem', cn);	// cn に null を入れるとクリアとして振る舞う
-					} else if ($this.hasClass('cl_codeinput')) {
-						var cn = collectCodeName(resultdata[_id], resultdata['_view2data_' + _id + '_cn']);
-						var codeOnly = $this.hasClass('cl_codeonly');
+				} else if ($this.hasClass('cl_month')) {
+					// 月指定の場合は日付を表示用に変換する
+					this.value = clutil.monthFormat(resultdata[_id], 'yyyy/mm');
+				} else if ($this.hasClass('cl_time')) {
+					// 時刻指定の場合は時刻を表示用に変換する
+					this.value = clutil.timeFormat(resultdata[_id], 'hh:mm');
+				} else if ($this.hasClass('cl_autocomplete')) {
+					var cn = collectCodeName(resultdata[_id], resultdata['_view2data_' + _id + '_cn']);
+					$this.autocomplete('clAutocompleteItem', cn);	// cn に null を入れるとクリアとして振る舞う
+				} else if ($this.hasClass('cl_codeinput')) {
+					var cn = collectCodeName(resultdata[_id], resultdata['_view2data_' + _id + '_cn']);
+					var codeOnly = $this.hasClass('cl_codeonly');
 
-						// TODO: clcodeinput を jQプラグインにするとかして、以下 setter 相当を隠蔽したい
-						if (true) {
-							var label = function (cn) {
-								var strs = [];
-								if (cn && cn.code) {
-									strs.push(cn.code);
-								}
-								if (!codeOnly) {
-									if (cn && cn.name) {
-										strs.push(cn.name);
-									}
-								}
-								return strs.join(':');
-							}(cn);
-							if (label.length > 0 && cn && cn.id > 0) {
-								//var fixCN = _.extend({value: label}, cn);	// value に label 文字列 -- 互換のためだけど、autocomplete なやり方と統一しておきたいところ。
-								$this.data('cl_codeinput_item', cn).val(label).attr('cs_id', cn.id);
-							} else {
-								$this.removeData('cl_codeinput_item').val('').removeAttr('cs_id');
+					// TODO: clcodeinput を jQプラグインにするとかして、以下 setter 相当を隠蔽したい
+					if(true){
+						var label = function(cn){
+							var strs = [];
+							if(cn && cn.code){
+								strs.push(cn.code);
 							}
+							if (!codeOnly){
+								if(cn && cn.name){
+									strs.push(cn.name);
+								}
+							}
+							return strs.join(':');
+						}(cn);
+						if(label.length > 0 && cn && cn.id > 0){
+							//var fixCN = _.extend({value: label}, cn);	// value に label 文字列 -- 互換のためだけど、autocomplete なやり方と統一しておきたいところ。
+							$this.data('cl_codeinput_item', cn).val(label).attr('cs_id', cn.id);
+						}else{
+							$this.removeData('cl_codeinput_item').val('').removeAttr('cs_id');
 						}
-					} else if ($this.hasClass('cl_store')) {
-						var rspCN = null;
-						if (_.isNumber(resultdata[_id])) {
-							var _code = _id.replace("ID", "Code");
-							var _name = _id.replace("ID", "Name");
-							//rspCN = _.pick(resultdata, _id, _code, _name);
-							rspCN = {
+					}
+				} else if ($this.hasClass('cl_store')) {
+					var rspCN = null;
+					if(_.isNumber(resultdata[_id])){
+						var _code = _id.replace("ID", "Code");
+						var _name = _id.replace("ID", "Name");
+						//rspCN = _.pick(resultdata, _id, _code, _name);
+						rspCN = {
 								id: resultdata[_id],
 								code: resultdata[_code],
 								name: resultdata[_name]
-							};
-						} else {
-							rspCN = resultdata[_id];
-						}
-						var cn = collectCodeName(rspCN, resultdata['_view2data_' + _id + '_cn']);
-						// TODO: 店舗のコード入力 -- ただの input[type="text"] -- いずれ、オートコンプリートになり代わる予定で、これは暫定対処
-						if (true) {
-							var label = function (cn) {
-								var strs = [];
-								if (cn && cn.code) {
-									strs.push(cn.code);
-								}
-								if (cn && cn.name) {
-									strs.push(cn.name);
-								}
-								return strs.join(':');
-							}(cn);
-							if (label.length > 0 && cn && cn.id > 0) {
-								$this.data('cl_store_item', cn).val(label).attr('cs_id', cn.id);
-							} else {
-								$this.removeData('cl_codeinput_item').val('').removeAttr('cs_id');
+						};
+					}else{
+						rspCN = resultdata[_id];
+					}
+					var cn = collectCodeName(rspCN, resultdata['_view2data_' + _id + '_cn']);
+					// TODO: 店舗のコード入力 -- ただの input[type="text"] -- いずれ、オートコンプリートになり代わる予定で、これは暫定対処
+					if(true){
+						var label = function(cn){
+							var strs = [];
+							if(cn && cn.code){
+								strs.push(cn.code);
 							}
+							if(cn && cn.name){
+								strs.push(cn.name);
+							}
+							return strs.join(':');
+						}(cn);
+						if(label.length > 0 && cn && cn.id > 0){
+							$this.data('cl_store_item', cn).val(label).attr('cs_id', cn.id);
+						}else{
+							$this.removeData('cl_codeinput_item').val('').removeAttr('cs_id');
 						}
-					} else {
-						this.value = clutil.cStr(mask($this, resultdata[_id]));
 					}
-				})
-				.end()
-				.filter('[type="hidden"]').each(function () {
-					//console.log(this);
-					// hidden
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					// FieldRelationで管理される入力の場合
-					if (fieldrelation_set($(this), resultdata[_id])) {
-						return;
-					}
-					this.value = clutil.cStr(resultdata[_id]);
-				})
-				.end()
-				.filter('[type="password"]').each(function () {
-					//console.log(this);
-					// パスワード
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					// FieldRelationで管理される入力の場合
-					if (fieldrelation_set($(this), resultdata[_id])) {
-						return;
-					}
-					this.value = clutil.cStr(resultdata[_id]);
-				})
-				.end()
-				.filter('[type="checkbox"]').each(function () {
-					var $this = $(this);
-					//console.log(this);
-					// チェックボックス
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					// FieldRelationで管理される入力の場合
-					if (fieldrelation_set($(this), resultdata[_id])) {
-						return;
-					}
-					if (resultdata[_id]) {
-						// チェックをつける
-						$this.attr("checked", true).closest("label").addClass("checked");
-					} else {
-						// チェックを外す
-						$this.attr("checked", false).closest("label").removeClass("checked");
-					}
+				} else {
+					this.value = clutil.cStr(mask($this, resultdata[_id]));
+				}
+			})
+			.end()
+			.filter('[type="hidden"]').each(function(){
+				//console.log(this);
+				// hidden
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				// FieldRelationで管理される入力の場合
+				if (fieldrelation_set($(this), resultdata[_id])) {
+					return;
+				}
+				this.value = clutil.cStr(resultdata[_id]);
+			})
+			.end()
+			.filter('[type="password"]').each(function(){
+				//console.log(this);
+				// パスワード
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				// FieldRelationで管理される入力の場合
+				if (fieldrelation_set($(this), resultdata[_id])) {
+					return;
+				}
+				this.value = clutil.cStr(resultdata[_id]);
+			})
+			.end()
+			.filter('[type="checkbox"]').each(function(){
+				var $this = $(this);
+				//console.log(this);
+				// チェックボックス
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				// FieldRelationで管理される入力の場合
+				if (fieldrelation_set($(this), resultdata[_id])) {
+					return;
+				}
+				if(resultdata[_id]){
+					// チェックをつける
+					$this.attr("checked", true).closest("label").addClass("checked");
+				} else {
+					// チェックを外す
+					$this.attr("checked", false).closest("label").removeClass("checked");
+				}
 
-				})
-				.end()
-				.end()
-				.find("input[name]")
-				.filter('[type="radio"]').each(function () {
-					var $this = $(this);
-					//console.log(this);
-					// ラジオボタン
-					// プレフィックスを除去する
-					_id = (this.name).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					// FieldRelationで管理される入力の場合
-					if (fieldrelation_set($(this), resultdata[_id])) {
-						return;
-					}
-					if (resultdata[_id] == $(this).val()) {
-						// 同じ値であるものにチェックをつける
-						$this.attr("checked", "checked");
-						try {
-							$this.radio('check');
-						} catch (e) { }
-					} else {
-						$this.removeAttr("checked");
-					}
-				})
-				.end()
-				.end()
-				.find("textarea[id]").each(function () {
-					//console.log(this);
-					// テキストエリア
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					// FieldRelationで管理される入力の場合
-					if (fieldrelation_set($(this), resultdata[_id])) {
-						return;
-					}
-					this.value = clutil.cStr(resultdata[_id]);
-				})
-				.end()
-				.find("select[id]").each(function () {
-					//console.log(this);
-					// コンボボックス(マルチセレクト未サポート)
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					// FieldRelationで管理される入力の場合
-					if (fieldrelation_set($(this), resultdata[_id])) {
-						return;
-					}
-					this.value = clutil.cStr(resultdata[_id]);
-					$(this).selectpicker('val', clutil.cStr(resultdata[_id]));
-					//$(this).val(clutil.cStr(resultdata[_id]));
-				})
-				.end()
-				.find("span[id]").each(function () {
-					var $this = $(this);
-					//console.log(this);
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					if ($this.hasClass('cltxtFieldLimit')) return;	// 適用しない
-					if ($this.hasClass('cl_date')) {
-						// datepickerの場合は日付を表示用に変換する
-						$this.html(clutil.dateFormat(resultdata[_id], 'yyyy/mm/dd'));
-					} else if ($this.hasClass('cl_month')) {
-						// 月指定の場合は日付を表示用に変換する
-						$this.html(clutil.monthFormat(resultdata[_id], 'yyyy/mm'));
-					} else if ($(this).hasClass('cl_time')) {
-						// 時刻指定の場合は時刻を表示用に変換する
-						$this.html(clutil.timeFormat(resultdata[_id], 'hh:mm'));
-					} else {
-						$this.text(clutil.cStr(mask($this, resultdata[_id])));
-					}
-				})
-				.end()
-				.find('button[data-toggle="dropdown"]').each(function () {
-					//console.log(this);
-					// flutui-selectbox
-					// プレフィックスを除去する
-					_id = (this.id).replace(_prefix, "");
-					if (skipundefined && !_.has(resultdata, _id)) return;	// 適用しない
-					//this.val(clutil.cStr(resultdata[_id]));
-					//this.selectpicker('val', clutil.cStr(resultdata[_id]));
-				})
-				.end();
+			})
+			.end()
+			.end()
+			.find("input[name]")
+			.filter('[type="radio"]').each(function(){
+				var $this = $(this);
+				//console.log(this);
+				// ラジオボタン
+				// プレフィックスを除去する
+				_id = (this.name).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				// FieldRelationで管理される入力の場合
+				if (fieldrelation_set($(this), resultdata[_id])) {
+					return;
+				}
+				if(resultdata[_id] == $(this).val()){
+					// 同じ値であるものにチェックをつける
+					$this.attr("checked", "checked");
+					try {
+						$this.radio('check');
+					} catch (e) {}
+				} else {
+					$this.removeAttr("checked");
+				}
+			})
+			.end()
+			.end()
+			.find("textarea[id]").each(function(){
+				//console.log(this);
+				// テキストエリア
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				// FieldRelationで管理される入力の場合
+				if (fieldrelation_set($(this), resultdata[_id])) {
+					return;
+				}
+				this.value = clutil.cStr(resultdata[_id]);
+			})
+			.end()
+			.find("select[id]").each(function(){
+				//console.log(this);
+				// コンボボックス(マルチセレクト未サポート)
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				// FieldRelationで管理される入力の場合
+				if (fieldrelation_set($(this), resultdata[_id])) {
+					return;
+				}
+				this.value = clutil.cStr(resultdata[_id]);
+				$(this).selectpicker('val', clutil.cStr(resultdata[_id]));
+				//$(this).val(clutil.cStr(resultdata[_id]));
+			})
+			.end()
+			.find("span[id]").each(function(){
+				var $this = $(this);
+				//console.log(this);
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				if ($this.hasClass('cltxtFieldLimit'))		  return;	// 適用しない
+				if ($this.hasClass('cl_date')) {
+					// datepickerの場合は日付を表示用に変換する
+					$this.html(clutil.dateFormat(resultdata[_id], 'yyyy/mm/dd'));
+				} else if ($this.hasClass('cl_month')) {
+					// 月指定の場合は日付を表示用に変換する
+					$this.html(clutil.monthFormat(resultdata[_id], 'yyyy/mm'));
+				} else if ($(this).hasClass('cl_time')) {
+					// 時刻指定の場合は時刻を表示用に変換する
+					$this.html(clutil.timeFormat(resultdata[_id], 'hh:mm'));
+				} else {
+					$this.text(clutil.cStr(mask($this, resultdata[_id])));
+				}
+			})
+			.end()
+			.find('button[data-toggle="dropdown"]').each(function() {
+				//console.log(this);
+				// flutui-selectbox
+				// プレフィックスを除去する
+				_id = (this.id).replace(_prefix, "");
+				if(skipundefined && !_.has(resultdata, _id))	  return;	// 適用しない
+				//this.val(clutil.cStr(resultdata[_id]));
+				//this.selectpicker('val', clutil.cStr(resultdata[_id]));
+			})
+			.end();
 
 			var promise = fieldrelation_complete();
 			if (promise) {
-				promise.always(function () {
+				promise.always(function(){
 					// data2viewが終了したイベントを発行
 					clutil.mediator.trigger('data2view:done');
 				});
@@ -14810,148 +14812,148 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {Object} options clutil.serializeへのオプション
 		 * @return {Object} シリアライズ結果
 		 */
-		tableview2data: function ($trobj, prefix) {
+		tableview2data: function($trobj, prefix) {
 			var resultArray = [];
 			//var _prefix = prefix ? prefix : 'ca_';
 			var _prefix = _.isRegExp(prefix) ? prefix : !_.isEmpty(prefix) ? new RegExp('^' + prefix.toString()) : clutil._v2dPrefixRegEx;
 			var _name = '';
-			$trobj.each(function () {
+			$trobj.each(function(){
 				var resultdata = {};
 				$(this)
-					.find("input[name]")
-					.filter('[type="text"]').each(function () {
-						var $this = $(this);
-						console.log(this);
-						// プレフィックスを除去する
-						_name = $this.attr("name").replace(_prefix, "");
-						if ($this.hasClass('cl_date')) {
-							// datepickerの場合は日付をサーバーに送る型に変換する
-							resultdata[_name] = clutil.dateFormat(this.value, 'yyyymmdd');
-						} else if ($this.hasClass('cl_month')) {
-							// 月選択の場合は月をサーバーに送る型に変換する
-							resultdata[_name] = clutil.monthFormat(this.value, 'yyyymm');
-						} else if ($this.hasClass('cl_time')) {
-							// 時刻選択の場合は時刻をサーバーに送る型に変換する
-							resultdata[_name] = clutil.timeFormat(this.value, 'hhmm');
-						} else if ($this.hasClass('cl_autocomplete')) {
-							// オートコンプリートの場合は $this.autocomplete('clAutocompleteItem') の取得値を使用する
-							var data = $this.autocomplete('clAutocompleteItem');
-							if (data) {
-								var cn = _.pick(data, 'id', 'code', 'name');
-								resultdata['_view2data_' + _name + '_cn'] = cn;
-								resultdata[_name] = cn.id;
-							}
-						} else if ($this.hasClass('cl_store')) {
-							// オートコンプリートの場合は'cs_id'属性の値を使用する
-							var data = $this.data('cl_store_item');
-							if (data) {
-								var cn = _.pick(data, 'id', 'code', 'name');
-								resultdata['_view2data_' + _name + '_cn'] = cn;
-								resultdata[_name] = cn.id;
-							} else {
-								resultdata[_name] = $this.attr('cs_id');	// 互換
-							}
-						} else {
-							resultdata[_name] = $.inputlimiter.unmask($this.val(), {
-								limit: $this.attr('data-limit'),
-								filter: $this.attr('data-filter')
-							});
+				.find("input[name]")
+				.filter('[type="text"]').each(function(){
+					var $this = $(this);
+					console.log(this);
+					// プレフィックスを除去する
+					_name = $this.attr("name").replace(_prefix, "");
+					if ($this.hasClass('cl_date')) {
+						// datepickerの場合は日付をサーバーに送る型に変換する
+						resultdata[_name] = clutil.dateFormat(this.value, 'yyyymmdd');
+					} else if ($this.hasClass('cl_month')) {
+						// 月選択の場合は月をサーバーに送る型に変換する
+						resultdata[_name] = clutil.monthFormat(this.value, 'yyyymm');
+					} else  if ($this.hasClass('cl_time')) {
+						// 時刻選択の場合は時刻をサーバーに送る型に変換する
+						resultdata[_name] = clutil.timeFormat(this.value, 'hhmm');
+					} else if ($this.hasClass('cl_autocomplete')) {
+						// オートコンプリートの場合は $this.autocomplete('clAutocompleteItem') の取得値を使用する
+						var data = $this.autocomplete('clAutocompleteItem');
+						if(data){
+							var cn = _.pick(data, 'id', 'code', 'name');
+							resultdata['_view2data_' + _name + '_cn'] = cn;
+							resultdata[_name] = cn.id;
 						}
-					})
-					.end()
-					.filter('[type="hidden"]').each(function () {
-						console.log(this);
-						// hiddenのものに対しても処理を行う(idなど)
+					} else if ($this.hasClass('cl_store')) {
+						// オートコンプリートの場合は'cs_id'属性の値を使用する
+						var data = $this.data('cl_store_item');
+						if(data){
+							var cn = _.pick(data, 'id', 'code', 'name');
+							resultdata['_view2data_' + _name + '_cn'] = cn;
+							resultdata[_name] = cn.id;
+						}else{
+							resultdata[_name] = $this.attr('cs_id');	// 互換
+						}
+					} else {
+						resultdata[_name] = $.inputlimiter.unmask($this.val(), {
+							limit: $this.attr('data-limit'),
+							filter: $this.attr('data-filter')
+						});
+					}
+				})
+				.end()
+				.filter('[type="hidden"]').each(function(){
+					console.log(this);
+					// hiddenのものに対しても処理を行う(idなど)
+					// プレフィックスを除去する
+					_name = $(this).attr("name").replace(_prefix, "");
+					resultdata[_name] = this.value;
+				})
+				.end()
+				.filter('[type="password"]').each(function(){
+					console.log(this);
+					// パスワード
+					// プレフィックスを除去する
+					_name = $(this).attr("name").replace(_prefix, "");
+					resultdata[_name] = this.value;
+				})
+				.end()
+				.filter('[type="checkbox"]').each(function(){
+					console.log(this);
+					// チェックボックス
+					// プレフィックスを除去する
+					_name = $(this).attr("name").replace(_prefix, "");
+					resultdata[_name] = this.checked ? 1 : 0;
+				})
+				.end()
+				.filter('[type="radio"]').each(function(){
+					console.log(this);
+					// ラジオボタン
+					// nameで取得する
+					if(this.checked){
 						// プレフィックスを除去する
 						_name = $(this).attr("name").replace(_prefix, "");
+						// チェックされていたらデータ化する
+						resultdata[_id] = this.value;
+					}
+				})
+				.end()
+				.end()
+				.find("textarea[name]").each(function(){
+					console.log(this);
+					// テキストエリア
+					// プレフィックスを除去する
+					_name = $(this).attr("name").replace(_prefix, "");
+					resultdata[_name] = this.value;
+				})
+				.end()
+				.find("select[name]").each(function(){
+					console.log(this);
+					// valueの値が取得される
+					// プレフィックスを除去する
+					_name = $(this).attr("name").replace(_prefix, "");
+					try{
+						// selectpickerを利用している場合
+						resultdata[_name] = $(this).selectpicker("val");
+					} catch(e){
 						resultdata[_name] = this.value;
-					})
-					.end()
-					.filter('[type="password"]').each(function () {
-						console.log(this);
-						// パスワード
-						// プレフィックスを除去する
-						_name = $(this).attr("name").replace(_prefix, "");
-						resultdata[_name] = this.value;
-					})
-					.end()
-					.filter('[type="checkbox"]').each(function () {
-						console.log(this);
-						// チェックボックス
-						// プレフィックスを除去する
-						_name = $(this).attr("name").replace(_prefix, "");
-						resultdata[_name] = this.checked ? 1 : 0;
-					})
-					.end()
-					.filter('[type="radio"]').each(function () {
-						console.log(this);
-						// ラジオボタン
-						// nameで取得する
-						if (this.checked) {
-							// プレフィックスを除去する
-							_name = $(this).attr("name").replace(_prefix, "");
-							// チェックされていたらデータ化する
-							resultdata[_id] = this.value;
-						}
-					})
-					.end()
-					.end()
-					.find("textarea[name]").each(function () {
-						console.log(this);
-						// テキストエリア
-						// プレフィックスを除去する
-						_name = $(this).attr("name").replace(_prefix, "");
-						resultdata[_name] = this.value;
-					})
-					.end()
-					.find("select[name]").each(function () {
-						console.log(this);
-						// valueの値が取得される
-						// プレフィックスを除去する
-						_name = $(this).attr("name").replace(_prefix, "");
-						try {
-							// selectpickerを利用している場合
-							resultdata[_name] = $(this).selectpicker("val");
-						} catch (e) {
-							resultdata[_name] = this.value;
-						}
-					})
-					.end()
-					.find("span[name]").each(function () {
-						var $this = $(this);
-						console.log(this);
-						// プレフィックスを除去する
-						_name = $(this).attr("name").replace(_prefix, "");
-						if ($(this).hasClass('cl_date')) {
-							// datepickerの場合は日付をサーバーに送る型に変換する
-							resultdata[_name] = clutil.dateFormat($(this).text(), 'yyyymmdd');
-						} else {
-							resultdata[_name] = $.inputlimiter.unmask($(this).text(), {
-								limit: $this.attr('data-limit'),
-								filter: $this.attr('data-filter')
-							});
-						}
-					})
-					.end();
+					}
+				})
+				.end()
+				.find("span[name]").each(function(){
+					var $this = $(this);
+					console.log(this);
+					// プレフィックスを除去する
+					_name = $(this).attr("name").replace(_prefix, "");
+					if ($(this).hasClass('cl_date')) {
+						// datepickerの場合は日付をサーバーに送る型に変換する
+						resultdata[_name] = clutil.dateFormat($(this).text(), 'yyyymmdd');
+					} else {
+						resultdata[_name] = $.inputlimiter.unmask($(this).text(), {
+							limit: $this.attr('data-limit'),
+							filter: $this.attr('data-filter')
+						});
+					}
+				})
+				.end();
 				resultArray.push(resultdata);
 			});
 			return resultArray;
 		},
-		//		旧版
-		//		/**
-		//		* 表示エリアよりデータオブジェクトを作成する(table版)
-		//		* 指定したプレフィックスを除去したnameの名前で作成する
-		//		* @param {jQuery} $trobj trのjQueryオブジェクト (例：$('#ca_tbody_dlv').children())
-		//		* @param {Object} options clutil.serializeへのオプション
-		//		* @return {Object} シリアライズ結果
-		//		*/
+//		旧版
+//		/**
+//		* 表示エリアよりデータオブジェクトを作成する(table版)
+//		* 指定したプレフィックスを除去したnameの名前で作成する
+//		* @param {jQuery} $trobj trのjQueryオブジェクト (例：$('#ca_tbody_dlv').children())
+//		* @param {Object} options clutil.serializeへのオプション
+//		* @return {Object} シリアライズ結果
+//		*/
 
-		//		tableview2data: function($trobj, options) {
-		//		return _.map($trobj, function (el) {
-		//		var data = clutil.serialize(el, options);
-		//		return data;
-		//		});
-		//		},
+//		tableview2data: function($trobj, options) {
+//		return _.map($trobj, function (el) {
+//		var data = clutil.serialize(el, options);
+//		return data;
+//		});
+//		},
 
 		/**
 		 * テーブル内部 input の入力チェック
@@ -14964,7 +14966,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {object} [arg.veiw2dataPrefix] 行データ使用時の prefix 引数
 		 * @return {array, null or undefined} 配列を返した場合はOK、null or undefined の場合は NG。
 		 */
-		tableview2ValidData: function (arg) {
+		tableview2ValidData: function(arg){
 			var result = clutil.tableview2ValidDataWithStat(arg);
 			return result.ngCount == 0 ? result.items : null;
 		},
@@ -14982,7 +14984,7 @@ var _clInternalErrorHandler = function (message) {
 		 * キー:行インデックス、値: 'ok', 'empty' or 'inval' 文字列を返す。.ngCount は、
 		 * 標準 validator チェックでNGになった行数を返す。
 		 */
-		tableview2ValidDataWithStat: function (arg) {
+		tableview2ValidDataWithStat: function(arg){
 			var tailEmptyCheckFunc = _.isFunction(arg.tailEmptyCheckFunc) ? arg.tailEmptyCheckFunc : null;
 			var result = {
 				allItems: [],	// エラー有無にかかわらず、全行のデータ配列
@@ -14991,23 +14993,23 @@ var _clInternalErrorHandler = function (message) {
 				ngCount: 0		// エラー行数
 			};
 			var trElems = arg.$tbody.find('tr');
-			for (var i = trElems.length - 1; i >= 0; i--) {
+			for(var i = trElems.length-1; i >= 0 ; i--){
 				var $tr = $(trElems.get(i));
 				var itemDto = _.first(clutil.tableview2data($tr, arg.veiw2dataPrefix));
-				result.allItems.splice(0, 0, itemDto);
-				if (tailEmptyCheckFunc) {
+				result.allItems.splice(0,0,itemDto);
+				if(tailEmptyCheckFunc){
 					// オートコンプリートスペシャルチェック
 					// オートコンプリートにテキスト入力アリ、かつ、選択肢から選んでいない場合、
 					// clutil.tableview2data() では未入力と判断され、codename を返さないので、
 					// 誤入力テキストを検出できない。よって特別チェックをやる。
 					var autocompleteNG = 0;
-					$tr.find('.cl_autocomplete').each(function () {
+					$tr.find('.cl_autocomplete').each(function(){
 						var $input = $(this);
-						if (!$input.autocomplete('isValidClAutocompleteSelect')) {
+						if(!$input.autocomplete('isValidClAutocompleteSelect')){
 							autocompleteNG++;
 						}
 					});
-					if (autocompleteNG === 0 && tailEmptyCheckFunc(itemDto)) {
+					if(autocompleteNG === 0 && tailEmptyCheckFunc(itemDto)){
 						arg.validator.clear($tr.find('.cl_valid'));
 						result.stat[i] = 'empty';
 						continue;	// ここで、tail から連続する空欄行と判定。次行チェックへcontinue。
@@ -15015,15 +15017,15 @@ var _clInternalErrorHandler = function (message) {
 				}
 				// ここから、値が入っている行のチェック
 				tailEmptyCheckFunc = null;
-				if (arg.validator && !arg.validator.valid({ $el: $tr.find('.cl_valid') })) {
+				if(arg.validator && !arg.validator.valid({$el: $tr.find('.cl_valid')})){
 					result.ngCount++;
 					result.stat[i] = 'inval';
-				} else {
+				}else{
 					result.stat[i] = 'ok';
 				}
-				result.items.splice(0, 0, itemDto);
+				result.items.splice(0,0,itemDto);
 			};
-			if (result.ngCount !== 0 && arg.validator) {
+			if(result.ngCount !== 0 && arg.validator){
 				arg.validator.setErrorHeader(clmsg.cl_echoback);
 			}
 			return result;
@@ -15039,22 +15041,22 @@ var _clInternalErrorHandler = function (message) {
 		 * @example
 		 *	 var isEmpty = clutil.isViewEmpty($('#ca_tbody_dlv_info_div > tr:last'), {exclude: ['ca_dlv_place_sw']});
 		 */
-		isViewEmpty: function ($view, options) {
+		isViewEmpty: function($view, options) {
 			var myOptions = options || {},
-				selectNames = _.reduce($view.find('select[name]'), function (memo, select) {
-					var name = select.name;
-					if (!~_.indexOf(myOptions.exclude || [], name))
-						memo.push(name);
-					return memo;
-				}, []),
-				data = clutil.serialize($view, _.extend({}, myOptions, {
-					exclude: selectNames.concat(myOptions.exclude)
-				})),
-				selectData = clutil.serialize($view, _.extend({}, myOptions, {
-					include: selectNames
-				})),
-				x = _.all(data, function (value) { return !value }),
-				y = _.all(selectData, function (value) { return value === '0' });
+			selectNames = _.reduce($view.find('select[name]'), function (memo, select) {
+				var name = select.name;
+				if (!~_.indexOf(myOptions.exclude || [], name))
+					memo.push(name);
+				return memo;
+			}, []),
+			data = clutil.serialize($view, _.extend({}, myOptions, {
+				exclude: selectNames.concat(myOptions.exclude)
+			})),
+			selectData = clutil.serialize($view, _.extend({}, myOptions, {
+				include: selectNames
+			})),
+			x = _.all(data, function (value) {return !value}),
+			y = _.all(selectData, function (value) {return value === '0'});
 			return x && y;
 		},
 
@@ -15065,50 +15067,50 @@ var _clInternalErrorHandler = function (message) {
 		 * 戻り値
 		 * ・なし
 		 */
-		viewClear: function ($view) {
+		viewClear: function($view) {
 			$view
-				.find("input[id]")
-				.filter('[type="text"]').each(function () {
-					console.log(this);
-					this.value = "";
-				})
-				.end()
-				.filter('[type="password"]').each(function () {
-					console.log(this);
-					// パスワード
-					this.value = "";
-				})
-				.end()
-				.filter('[type="checkbox"]').each(function () {
-					console.log(this);
-					// チェックボックス
-					$(this).attr("checked", "false");
-				})
-				.end()
-				.end()
-				.find('input[name]')
-				.filter('[type="radio"]').each(function () {
-					console.log(this);
-					// ラジオボタン
-					$(this).attr("checked", "false");
-				})
-				.end()
-				.end()
-				.find("textarea[id]").each(function () {
-					console.log(this);
-					// テキストエリア
-					this.value = "";
-				})
-				.end()
-				.find("select[id]").each(function () {
-					console.log(this);
-					// コンボボックス(マルチセレクト未サポート)
-					$(this).prop('selectedIndex', 0);
-				})
-				.end()
-				.find("span[id]").each(function () {
-					$(this).html("");
-				});
+			.find("input[id]")
+			.filter('[type="text"]').each(function(){
+				console.log(this);
+				this.value = "";
+			})
+			.end()
+			.filter('[type="password"]').each(function(){
+				console.log(this);
+				// パスワード
+				this.value = "";
+			})
+			.end()
+			.filter('[type="checkbox"]').each(function(){
+				console.log(this);
+				// チェックボックス
+				$(this).attr("checked", "false");
+			})
+			.end()
+			.end()
+			.find('input[name]')
+			.filter('[type="radio"]').each(function(){
+				console.log(this);
+				// ラジオボタン
+				$(this).attr("checked", "false");
+			})
+			.end()
+			.end()
+			.find("textarea[id]").each(function(){
+				console.log(this);
+				// テキストエリア
+				this.value = "";
+			})
+			.end()
+			.find("select[id]").each(function(){
+				console.log(this);
+				// コンボボックス(マルチセレクト未サポート)
+				$(this).prop('selectedIndex', 0);
+			})
+			.end()
+			.find("span[id]").each(function(){
+				$(this).html("");
+			});
 		},
 
 		/**
@@ -15145,32 +15147,32 @@ var _clInternalErrorHandler = function (message) {
 		 * 戻り値
 		 * ・datepicker 拡張JQueryオブジェクト
 		 */
-		datepicker: function ($view, options) {
+		datepicker: function($view, options) {
 			options || (options = {});
 			var initValue = options.initValue == null ? 0 : clcom.getOpeDate();
 			var min_date = options.min_date;
 			var date = clutil.ymd2date(clcom.getOpeDate());
-			min_date = min_date == null ? clutil.ymd2date(clcom.min_date) : clutil.ymd2date(min_date);
+			min_date = min_date == null ? clutil.ymd2date(clcom.min_date) :  clutil.ymd2date(min_date);
 			var max_date = options.max_date == null ? clutil.ymd2date(clcom.max_date) : clutil.ymd2date(options.max_date);
 			date.setFullYear(date.getFullYear() + 20);
 			$view.attr('maxlength', 10);
 			//$view.val(clutil.dateFormat(clcom.getOpeDate(), 'yyyy/mm/dd'));
-			$view.on('input', function (e) {
+			$view.on('input', function(e){
 				var $input = $(e.target);
 
 				// 曜日表示を外す
 				var $wrap = $input.closest('.datepicker_wrap')
-					.removeClass("dayOfWeek0 dayOfWeek1 dayOfWeek2 dayOfWeek3 dayOfWeek4 dayOfWeek5 dayOfWeek6");
+				.removeClass("dayOfWeek0 dayOfWeek1 dayOfWeek2 dayOfWeek3 dayOfWeek4 dayOfWeek5 dayOfWeek6");
 
 				// 入力テキストの DateFormat チェック
 				var text = $input.val();
-				if (_.isEmpty(text)) {
+				if(_.isEmpty(text)){
 					return;
 				}
 
 				// Date オブジェクトに変換
 				var dt = clutil.ymd2date(text);
-				if (!_.isDate(dt) || _.isNaN(dt.getDay())) {
+				if(!_.isDate(dt) || _.isNaN(dt.getDay())){
 					return;
 				}
 
@@ -15180,10 +15182,10 @@ var _clInternalErrorHandler = function (message) {
 
 				// 数値だけの日付フォーマットの場合は、入力が yyyy/mm/dd フォーマットに
 				// 則する場合と同様の内部値諸々のデータ同期をはかる
-				if (_.isFinite(text)) {
+				if(_.isFinite(text)){
 					var inst = $.datepicker._getInst(e.target);
-					if (text != inst.lastVal) {
-						do {
+					if(text != inst.lastVal){
+						do{
 							//$.datepicker._setDateFromField(inst); の内部を展開
 							//var dates = text;//inst.lastVal = inst.input ? inst.input.val() : null;
 							inst.selectedDay = dt.getDate();
@@ -15193,7 +15195,7 @@ var _clInternalErrorHandler = function (message) {
 							inst.currentMonth = dt.getMonth();//(dates ? dt.getMonth() : 0);
 							inst.currentYear = dt.getFullYear();//(dates ? dt.getFullYear() : 0);
 							$.datepicker._adjustInstDate(inst);
-						} while (0);
+						}while(0);
 						$.datepicker._updateAlternate(inst);
 						$.datepicker._updateDatepicker(inst);
 					}
@@ -15207,22 +15209,22 @@ var _clInternalErrorHandler = function (message) {
 				yearRange: min_date.getFullYear() + ':' + max_date.getFullYear(),
 				minDate: min_date,
 				maxDate: max_date,
-				//					autoSize: true,
+//					autoSize: true,
 				showOn: 'button',
 				buttonImage: clcom.appRoot + '/../images/icn_s_calendar.png',
 				buttonText: clmsg.cl_datepicker_button_text,
 				buttonImageOnly: true,
-				//					defaultDate: clutil.ymd2date(clcom.getOpeDate())
-				onSelect: function (text, ui) {
+//					defaultDate: clutil.ymd2date(clcom.getOpeDate())
+				onSelect: function(text, ui){
 					var dayOfWeek = new Date(ui.selectedYear, ui.selectedMonth, ui.selectedDay).getDay();
 					ui.input.closest('.datepicker_wrap')
-						.removeClass("dayOfWeek0 dayOfWeek1 dayOfWeek2 dayOfWeek3 dayOfWeek4 dayOfWeek5 dayOfWeek6")
-						.addClass('dayOfWeek' + dayOfWeek);
+					.removeClass("dayOfWeek0 dayOfWeek1 dayOfWeek2 dayOfWeek3 dayOfWeek4 dayOfWeek5 dayOfWeek6")
+					.addClass('dayOfWeek' + dayOfWeek);
 					ui.input.focus();
 					// changeイベントがとばなくて困ったのでとりあえず
 					ui.input.trigger('clDatepickerOnSelect');
 				},
-				foo: function () {
+				foo: function(){
 					return 'foo';
 				}
 			};
@@ -15234,7 +15236,7 @@ var _clInternalErrorHandler = function (message) {
 			// inputlimiterの設定
 			$view.inputlimiter('addfilter', 'datepickerFilter', {
 				// ブラー時などに20140808 => 2014/08/08に変換する
-				mask: function (value) {
+				mask: function(value){
 					// 8桁の数値のときのみフォーマットする
 					var ret = value;
 					var chkArg = {
@@ -15270,7 +15272,7 @@ var _clInternalErrorHandler = function (message) {
 					height: 'toggle',
 					opacity: 'toggle'
 				}, 'slow');
-				//				$(this).next().show();
+//				$(this).next().show();
 			});
 			$el.find('.parent>.plus').each(function () {
 				var tgt = $(this).next();
@@ -15278,12 +15280,12 @@ var _clInternalErrorHandler = function (message) {
 					height: 'toggle',
 					opacity: 'toggle'
 				}, 'slow');
-				//				$(this).next().hide();
+//				$(this).next().hide();
 			});
 
 			$el.delegate('.parent>.minus', 'click', function (ev) {
 				var $c = $(ev.currentTarget);
-				//				$c.next().hide();
+//				$c.next().hide();
 				var tgt = $c.next();
 				tgt.animate({
 					height: 'toggle',
@@ -15299,7 +15301,7 @@ var _clInternalErrorHandler = function (message) {
 					height: 'toggle',
 					opacity: 'toggle'
 				}, 'slow');
-				//				$c.next().show();
+//				$c.next().show();
 				$c.attr('class', 'minus');
 			});
 
@@ -15336,13 +15338,13 @@ var _clInternalErrorHandler = function (message) {
 					}
 					var trlist = $tbody.find('tr');
 					var chklist = [];
-					$.each($tbody.find(checkbox), function () {
+					$.each($tbody.find(checkbox), function() {
 						if ($(this).prop('checked')) {
 							chklist.push(this);
 						}
 					});
 					// データの数とチェックボックスの数が一致したとき、全選択チェックボックスをオンにする
-					if (trlist.length === chklist.length) {
+					if (trlist.length === chklist.length ){
 						$el.checkbox('check');
 					} else {
 						$el.checkbox('uncheck');
@@ -15351,20 +15353,20 @@ var _clInternalErrorHandler = function (message) {
 			});
 
 			var defaultchkbox = {
-				init: function () {
+				init: function() {
 					$table.find($(':checkbox')).checkbox('uncheck');
 					$tbody.find('tr').removeClass('checked');
 				},
-				checkall: function () {
+				checkall: function() {
 					$table.find($(':checkbox')).checkbox('check');
 					$tbody.find('tr').addClass('checked');
 				},
-				check: function () {
+				check: function() {
 					// チェックを行う
 					// データの数とチェックボックスの数が一致したとき、全選択チェックボックスをオンにする
 					var trlist = $tbody.find('tr');
 					var chklist = [];
-					$.each($tbody.find(checkbox), function () {
+					$.each($tbody.find(checkbox), function() {
 						if ($(this).prop('checked')) {
 							$(this).closest('tr').addClass('checked');
 							chklist.push(this);
@@ -15372,7 +15374,7 @@ var _clInternalErrorHandler = function (message) {
 					});
 					// データの数とチェックボックスの数が一致したとき、全選択チェックボックスをオンにする
 					if (trlist.length != 0 &&
-						(trlist.length === chklist.length)) {
+							(trlist.length === chklist.length) ){
 						$el.checkbox('check');
 					} else {
 						$el.checkbox('uncheck');
@@ -15397,7 +15399,7 @@ var _clInternalErrorHandler = function (message) {
 		controlSrchArea: function ($div_srch, $btn_srch, $div_resrch, $btn_resrch, $btn_add) {
 			var height = $div_srch.parent().height();
 			var defaultsrchArea = {
-				init: function () {
+				init: function() {
 					$btn_resrch.fadeOut();
 					$div_resrch.addClass('dispn');
 				},
@@ -15406,13 +15408,13 @@ var _clInternalErrorHandler = function (message) {
 				 * @method show_srch
 				 * @return {promise} アニメーション等のUIエフェクト完了と接続する promise オブジェクトを返す。
 				 */
-				show_srch: function () {
+				show_srch: function() {
 					if ($div_srch.css('display') != 'none') {
 						return $.Deferred().resolve();
 					}
 
 					var fadeOutDf = $.Deferred();
-					$btn_resrch.fadeOut(function () {
+					$btn_resrch.fadeOut(function(){
 						console.debug('show_srch: $div_srch.fadeOut() done.');
 						fadeOutDf.resolve();
 					});
@@ -15424,7 +15426,7 @@ var _clInternalErrorHandler = function (message) {
 						height: height
 					}, {
 						duration: 300,
-						complete: function () {
+						complete: function(){
 							console.debug('show_srch: $div_srch.parent().animate() done.');
 							$tgt.css('height', 'auto');
 							animeDf.resolve();
@@ -15435,14 +15437,14 @@ var _clInternalErrorHandler = function (message) {
 					$div_srch.parent().css('overflow', 'inherit');
 					// IE不具合対応
 					var fadeInDf = $.Deferred();
-					$div_srch.fadeIn(function () {
+					$div_srch.fadeIn(function(){
 						console.debug('show_srch: $btn_resrch.fadeIn() done.');
 						fadeInDf.resolve();
 					});
 					$btn_srch.focus();
 
 					var df = $.Deferred();
-					$.when(fadeOutDf, animeDf, fadeInDf).done(function () {
+					$.when(fadeOutDf, animeDf, fadeInDf).done(function(){
 						console.debug('show_srch: {fadeOutDf, animeDf, fadeInDf} joined.');
 						df.resolve();
 					});
@@ -15453,12 +15455,12 @@ var _clInternalErrorHandler = function (message) {
 				 * @method show_result
 				 * @return {promise} アニメーション等のUIエフェクト完了と接続する promise オブジェクトを返す。
 				 */
-				show_result: function () {
+				show_result: function() {
 					if ($div_srch.css('display') == 'none') {
 						return $.Deferred().resolve();
 					}
 					var fadeOutDf = $.Deferred();
-					$div_srch.fadeOut(function () {
+					$div_srch.fadeOut(function(){
 						console.debug('show_result: $div_srch.fadeOut() done.');
 						fadeOutDf.resolve();
 					});
@@ -15467,13 +15469,13 @@ var _clInternalErrorHandler = function (message) {
 					$div_srch.parent().animate({
 						backgroundColor: "#0fb8aa",
 						height: "40px",
-					}, 300, null, function () {
+					}, 300, null, function(){
 						console.debug('show_result: $div_srch.parent().animate() done.');
 						animeDf.resolve();
 					});
 
 					var fadeInDf = $.Deferred();
-					$btn_resrch.fadeIn(function () {
+					$btn_resrch.fadeIn(function(){
 						console.debug('show_result: $btn_resrch.fadeIn() done.');
 						fadeInDf.resolve();
 					});
@@ -15482,7 +15484,7 @@ var _clInternalErrorHandler = function (message) {
 					$btn_resrch.focus();
 
 					var df = $.Deferred();
-					$.when(fadeOutDf, animeDf, fadeInDf).done(function () {
+					$.when(fadeOutDf, animeDf, fadeInDf).done(function(){
 						console.debug('show_result: {fadeOutDf, animeDf, fadeInDf} joined.');
 						df.resolve();
 					});
@@ -15493,41 +15495,41 @@ var _clInternalErrorHandler = function (message) {
 				 * @method show_both
 				 * @return {promise} アニメーション等のUIエフェクト完了と接続する promise オブジェクトを返す。
 				 */
-				show_both: function () {
+				show_both: function(){
 					var d0 = $.Deferred(), d1 = $.Deferred(), d2 = $.Deferred();
-					if ($div_srch.css('display') == 'none') {
+					if($div_srch.css('display') == 'none'){
 						// 検索エリアを表示する
 						$div_srch.parent().animate({
 							backgroundColor: "none",
 							height: height
-						}, 300, null, function () {
+						}, 300, null, function(){
 							console.debug('show_both: $div_srch.parent().animate() done.');
 							d0.resolve();
 						});
 						// IE不具合対応
 						$div_srch.parent().css('overflow', 'inherit');
 						// IE不具合対応
-						$div_srch.fadeIn(function () {
+						$div_srch.fadeIn(function(){
 							console.debug('show_both: $div_srch.fadeOut() done.');
 							d1.resolve();
 						});
 					}
 
 					// 再検索ボタンを非表示に。
-					if ($btn_resrch.css('display') != 'none') {
-						$btn_resrch.fadeOut(function () {
+					if($btn_resrch.css('display') != 'none'){
+						$btn_resrch.fadeOut(function(){
 							console.debug('show_result: $btn_resrch.fadeOut() done.');
 							d2.resolve();
 						});
 					}
 
-					if ($div_resrch.hasClass('dispn')) {
+					if($div_resrch.hasClass('dispn')){
 						// 結果エリアを表示する
 						$div_resrch.removeClass('dispn');
 					}
 
 					var df = $.Deferred();
-					$.when(d0, d1, d2).done(function () {
+					$.when(d0,d1,d2).done(function(){
 						console.debug('show_result: {fadeOutDf, animeDf, fadeInDf} joined.');
 						df.resolve();
 					});
@@ -15538,27 +15540,27 @@ var _clInternalErrorHandler = function (message) {
 				 * @method reset
 				 * @return {promise} アニメーション等のUIエフェクト完了と接続する promise オブジェクトを返す。
 				 */
-				reset: function () {
+				reset: function() {
 					var d0 = $.Deferred(), d1 = $.Deferred(), d2 = $.Deferred();
-					if ($div_srch.css('display') == 'none') {
+					if($div_srch.css('display') == 'none'){
 						$div_srch.parent().animate({
 							backgroundColor: "none",
 							height: height
-						}, 300, null, function () {
+						}, 300, null, function(){
 							console.debug('reset: $div_srch.parent().animate() done.');
 							d0.resolve();
 						});
 						// IE不具合対応
 						$div_srch.parent().css('overflow', 'inherit');
 						// IE不具合対応
-						$div_srch.fadeIn(function () {
+						$div_srch.fadeIn(function(){
 							console.debug('reset: $div_srch.fadeIn() done.');
 							d1.resolve();
 						});
 					}
 					// 再検索ボタンを非表示に。
-					if ($btn_resrch.css('display') != 'none') {
-						$btn_resrch.fadeOut(function () {
+					if($btn_resrch.css('display') != 'none'){
+						$btn_resrch.fadeOut(function(){
 							console.debug('reset: $btn_resrch.fadeOut() done.');
 							d2.resolve();
 						});
@@ -15566,7 +15568,7 @@ var _clInternalErrorHandler = function (message) {
 					$div_resrch.addClass('dispn');
 
 					var df = $.Deferred();
-					$.when(d0, d1, d2).done(function () {
+					$.when(d0,d1,d2).done(function(){
 						console.debug('reset: {fadeOutDf, animeDf, fadeInDf} joined.');
 						df.resolve();
 					});
@@ -15590,60 +15592,54 @@ var _clInternalErrorHandler = function (message) {
 			//右ウィンドウ出し入れ関数化
 			right_side = {
 				//初回右ウインドウ表示
-				firstshow: function () {
+				firstshow : function (){
 					//					$btn_add.die("click");
 					$div_selected.animate(
-						{ 'right': '-=240px' },
-						{
-							complete: function () {
+						{'right': '-=240px'},
+						{complete: function(){
 
-								$div_selected.toggleClass("dispn");
+							$div_selected.toggleClass( "dispn");
 
-								$div_selected.animate({ 'right': '+=240px' }, { duration: 200 });
-							}, duration: 1
-						});
+							$div_selected.animate({'right': '+=240px'},{duration:200});
+						},duration:1});
 				},
 				//2回目以降右ウインドウ表示
 				//右ウインドウ範囲外と追加ボタン同時に押下された時対策として時差を持たせるために一旦10pxバックしている。
-				show: function () {
+				show : function (){
 					//					$btn_add.die("click");
 					$div_selected.animate(
-						{ 'right': '-=10px' },
-						{
-							complete: function () {
+						{'right': '-=10px'},
+						{complete: function(){
 
-								$div_selected.toggleClass("dispn");
+							$div_selected.toggleClass( "dispn");
 
-								$div_selected.animate({ 'right': '+=250px' }, { duration: 200 });
-							}, duration: 1
-						});
+							$div_selected.animate({'right': '+=250px'},{duration:200});
+						},duration:1});
 
 				},
 				//右ウインドウ非表示
-				hide: function () {
+				hide : function (){
 					$div_selected.animate(
-						{ 'right': '-=240px' },
-						{
-							complete: function () {
-								//						$btn_add.live("click");
+						{'right': '-=240px'},
+						{complete: function(){
+							//						$btn_add.live("click");
 
-								if (!$div_selected.hasClass("second")) {
+							if(!$div_selected.hasClass("second")){
 
-									$div_selected.toggleClass("second");
-								}
+								$div_selected.toggleClass( "second");
+							}
 
-								$div_selected.toggleClass("dispn");
-							}, duration: 200
-						});
+							$div_selected.toggleClass( "dispn");
+						},duration:200});
 				}
 			};
 
 			//追加ボタン押下時の処理 初回:firstshow 2回目以降:show
-			$el.click(function (e) {
+			$el.click(function(e){
 				if ($(e.target).get(0).id == $btn_add.get(0).id) {
-					if ($div_selected.hasClass("dispn")) {
+					if($div_selected.hasClass("dispn")){
 
-						if (!$div_selected.hasClass("second")) {
+						if(!$div_selected.hasClass("second")){
 							right_side.firstshow();
 							$div_selected.toggleClass(
 								"second");
@@ -15659,22 +15655,23 @@ var _clInternalErrorHandler = function (message) {
 				if ($div.length > 0) {
 					return;
 				}
-				if (!$div_selected.hasClass("dispn")) {
+				if(!$div_selected.hasClass("dispn")){
 					right_side.hide();
 				}
 			});
 
 			var defaultaddtoSelected = {
-				right_side_hide: function () {
+				right_side_hide: function() {
 					right_side.hide();
 				},
-				right_side_show: function () {
+				right_side_show: function() {
 					right_side.show();
 				},
 				// 状態を返却する
 				// 開:true 閉:false
-				right_side: function () {
-					if ($div_selected.hasClass('dispn')) {
+				right_side: function() {
+					if ($div_selected.hasClass('dispn'))
+					{
 						return false;
 					} else {
 						return true;
@@ -15694,24 +15691,24 @@ var _clInternalErrorHandler = function (message) {
 		 * 戻り値
 		 * ・区分コード：区分名
 		 */
-		gettypename: function (kind, typeid, namedisp) {
+		gettypename: function(kind, typeid, namedisp) {
 			var s = '';
 			var kbns = clcom.getTypeList(kind, typeid);
-			if (!_.isEmpty(kbns)) {
+			if(!_.isEmpty(kbns)){
 				var kbn = kbns[0];
-				if (namedisp) {
-					if (kbn.name) {
+				if(namedisp){
+					if(kbn.name){
 						s = kbn.name;
 					}
-					if (_.isEmpty(s)) {
+					if(_.isEmpty(s)){
 						s = kbn.code;	// 表示するものがないからコードで、余計なお世話カナ？
 					}
-				} else {
+				}else{
 					var ss = [];
-					if (kbn.code) {
+					if(kbn.code){
 						ss.push(kbn.code);
 					}
-					if (kbn.name) {
+					if(kbn.name){
 						ss.push(kbn.name);
 					}
 					s = ss.join(':');
@@ -15729,7 +15726,7 @@ var _clInternalErrorHandler = function (message) {
 		 * 戻り値
 		 * ・区分リスト
 		 */
-		gettypenamelist: function (kind, ids) {
+		gettypenamelist: function(kind, ids) {
 			return clcom.getTypeList(kind, ids);
 		},
 
@@ -15742,11 +15739,11 @@ var _clInternalErrorHandler = function (message) {
 		 * ・unselectedflag		: 未選択値 0:なし 1:あり
 		 * ・namedisp : 名称のみを取得したい場合1を設定。なにも指定されていない場合はコード：名称で返す
 		 */
-		cltypeselector: function ($select, kind, unselectedflag, namedisp) {
+		cltypeselector: function($select, kind, unselectedflag, namedisp) {
 			var o;
-			if (arguments.length === 1 && !(arguments[0] instanceof jQuery) && _.isObject(arguments[0])) {
+			if(arguments.length === 1 && !(arguments[0] instanceof jQuery) && _.isObject(arguments[0])){
 				o = arguments[0];
-			} else {
+			}else{
 				o = {
 					$select: arguments[0],
 					kind: arguments[1],
@@ -15767,28 +15764,28 @@ var _clInternalErrorHandler = function (message) {
 				// selectorの中身を作成する
 				if (o.namedisp == 1) {
 					html_source += '<option value=' + typename.type_id + '>' +
-						typename.name + '</option>';
+					typename.name + '</option>';
 				} else {
 					html_source += '<option value=' + typename.type_id + '>' +
-						typename.code + ':' + typename.name + '</option>';
+					typename.code + ':' + typename.name + '</option>';
 				}
 			}
 			var nitem = typenamelist.length;
 
 			// 未選択値を追加する
 			var fixUnselectFlag = o.unselectedflag;
-			if (nitem <= 0) {
+			if(nitem <= 0){
 				// 要素が無い場合は白牌を追加しておく。
 				// [clutil.forceUnselectFlag] に依らない。
 				fixUnselectFlag = true;
-			} else {
+			}else{
 				// 未選択要素を強制するフラグ評価。
-				if (clutil.forceUnselectFlag) {
+				if(clutil.forceUnselectFlag){
 					// 入力必須かつ選択肢が１つの場合は１個で選択固定するので、白牌は追加しない。
 					fixUnselectFlag = !($select.hasClass('cl_required') && nitem == 1);
 				}
 			}
-			if (fixUnselectFlag) {
+			if(fixUnselectFlag){
 				var label = (o.emptyLabel) ? o.emptyLabel : '&nbsp';
 				html_source = '<option value="0">label</option>' + html_source;
 				nitem++;
@@ -15797,7 +15794,7 @@ var _clInternalErrorHandler = function (message) {
 			o.$select.html('');
 			o.$select.html(html_source);
 
-			if (nitem <= 1) {
+			if(nitem <= 1){
 				// TODO: 選択肢が１つまたは無いので、変更できないようにする。
 			}
 		},
@@ -15815,11 +15812,11 @@ var _clInternalErrorHandler = function (message) {
 		 * ・namename			: 名称のid名（defaultは"name")
 		 * ・codename			: コードのid名（defaultは"code")
 		 */
-		cltypeselector2: function ($select, list, unselectedflag, namedisp, idname, namename, codename) {
+		cltypeselector2: function($select, list, unselectedflag, namedisp, idname, namename, codename) {
 			var o;
-			if (arguments.length === 1 && !(arguments[0] instanceof jQuery) && _.isObject(arguments[0])) {
+			if(arguments.length === 1 && !(arguments[0] instanceof jQuery) && _.isObject(arguments[0])){
 				o = arguments[0];
-			} else {
+			}else{
 				o = {
 					$select: arguments[0],
 					list: arguments[1],
@@ -15834,20 +15831,20 @@ var _clInternalErrorHandler = function (message) {
 			// unselectflag 補正
 			// $select が、入力必須（'.cl_required ' クラスを持っている）場合で、かつ、
 			// list が１アイテムの場合、選択の余地が無いため、unselectflag は false に設定する。
-			if (true) {
+			if(true){
 				var nitem = _.isEmpty(o.list) ? 0 : o.list.length;
 
 				// 未選択値を追加する=>(デフォルトを未選択ありにする)
 				var fixUnselectFlag = o.unselectedflag !== false && o.unselectedflag !== 0;
-				if (o.$select.is('[multiple]')) {
+				if(o.$select.is('[multiple]')){
 					fixUnselectFlag = false;
-				} else if (nitem <= 0) {
+				}else if(nitem <= 0){
 					// 要素が無い場合は白牌を追加しておく。
 					// [clutil.forceUnselectFlag] に依らない。
 					fixUnselectFlag = true;
-				} else {
+				}else{
 					// 未選択要素を強制するフラグ評価。
-					if (clutil.forceUnselectFlag) {
+					if(clutil.forceUnselectFlag){
 						// 入力必須かつ選択肢が１つの場合は１個で選択固定するので、白牌は追加しない。
 						fixUnselectFlag = !(o.$select.hasClass('cl_required') && nitem == 1);
 					}
@@ -15883,7 +15880,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {string}	[opt.namename]		任意の opt.list[n]要素の name プロパティ名、デフォルトは "name"
 		 * @param {object}	[opt.selectpicker] selectpickerへのオプション
 		 */
-		cltypeselector3: function (opt) {
+		cltypeselector3: function(opt){
 			if (opt.list == null) {
 				return;
 			}
@@ -15900,13 +15897,13 @@ var _clInternalErrorHandler = function (message) {
 				// selectorの中身を作成する
 				if (opt.namedisp == 1) {
 					html_source += '<option value=' + typename[id] + '>' +
-						typename[name] + '</option>';
+					typename[name] + '</option>';
 				} else {
 					var wkList = [];
-					if (!_.isEmpty(typename[code])) {
+					if(!_.isEmpty(typename[code])){
 						wkList.push(typename[code]);
 					}
-					if (!_.isEmpty(typename[name])) {
+					if(!_.isEmpty(typename[name])){
 						wkList.push(typename[name]);
 					}
 					html_source += '<option value=' + typename[id] + '>' + wkList.join(':') + '</option>';
@@ -15914,7 +15911,7 @@ var _clInternalErrorHandler = function (message) {
 				opt.idMap[typename[id]] = typename;
 			}
 			var nitem = opt.list.length;
-			if (opt.unselectedflag) {
+			if(opt.unselectedflag){
 				var emptyLabel = opt.emptyLabel || "&nbsp;";
 				html_source = '<option value="0">' + emptyLabel + '</option>' + html_source;
 				nitem++;
@@ -15924,7 +15921,7 @@ var _clInternalErrorHandler = function (message) {
 			opt.$select.html(html_source);
 			opt.$select.selectpicker(opt.selectpicker).selectpicker('refresh');
 
-			if (opt.list.length <= 1) {
+			if(opt.list.length <= 1){
 				// 選択肢が１つまたは無いので、変更できないようにする。
 				var required = opt.$select.is('.requiredSelect > div > select');
 				var multiple = opt.$select.is("[multiple]");
@@ -15948,7 +15945,7 @@ var _clInternalErrorHandler = function (message) {
 		 * ・unselectedflag		: 未選択値 0:なし 1:あり
 		 * ・namedisp : 名称のみを取得したい場合1を設定。なにも指定されていない場合はコード：名称で返す
 		 */
-		cljobpostselector: function ($select, unselectedflag, namedisp) {
+		cljobpostselector: function($select, unselectedflag, namedisp) {
 			var html_source = '';
 			// 役職区分リストを取得する
 			var jobpostlist = clcom.getJobpostList();
@@ -15965,10 +15962,10 @@ var _clInternalErrorHandler = function (message) {
 				// selectorの中身を作成する
 				if (namedisp == 1) {
 					html_source += '<option value=' + jobpost.jobpost_id + '>' +
-						jobpost.name + '</option>';
+					jobpost.name + '</option>';
 				} else {
 					html_source += '<option value=' + jobpost.jobpost_id + '>' +
-						jobpost.code + ':' + jobpost.name + '</option>';
+					jobpost.code + ':' + jobpost.name + '</option>';
 				}
 			}
 			$select.html('');
@@ -15989,12 +15986,12 @@ var _clInternalErrorHandler = function (message) {
 		 * ・f_default	: 初期表示位置（当月を0とする）
 		 * ・sortOrder	: 昇順'a' or 降順'd'、デフォルトは昇順
 		 */
-		clmonthselector: function ($select, unselectedflag, past, future, pyyyymm, fyyyymm, f_month, f_default, sortOrder) {
+		clmonthselector: function($select, unselectedflag, past, future, pyyyymm, fyyyymm, f_month, f_default, sortOrder) {
 			var html_source = '';
 
 			var ope_month = clutil.dateFormat(clcom.getOpeDate(), 'yyyymm');
-			var n_year = Math.floor(ope_month / 100);
-			var n_month = Math.floor(ope_month % 100);
+			var n_year = Math.floor(ope_month/100);
+			var n_month = Math.floor(ope_month%100);
 
 			unselectedflag = unselectedflag !== false && unselectedflag !== 0;
 
@@ -16028,21 +16025,21 @@ var _clInternalErrorHandler = function (message) {
 
 			// 年月を直接指定した場合の処理(優先)
 			if (pyyyymm != null) {
-				py = Math.floor(pyyyymm / 100);
+				py = Math.floor(pyyyymm/100);
 				n_past = n_year - py;
-				st_month = Math.floor(pyyyymm % 100);
+				st_month = Math.floor(pyyyymm%100);
 			}
 			if (fyyyymm != null) {
-				fy = Math.floor(fyyyymm / 100);
+				fy = Math.floor(fyyyymm/100);
 				n_future = fy - n_year;
-				n_month = Math.floor(fyyyymm % 100);
+				n_month = Math.floor(fyyyymm%100);
 			}
 			if (pyyyymm != null && fyyyymm != null && py == fy) {
 				ed_month = n_month;
 			}
 
 			var items = [];
-			for (var i = n_year - n_past; i <= n_year + n_future; i++) {
+			for (var i = n_year-n_past; i <= n_year+n_future; i++) {
 				// selectorの中身を作成する
 				for (var j = st_month; j <= ed_month; j++) {
 					var month = i * 100 + j, dispMonth = month;
@@ -16051,23 +16048,23 @@ var _clInternalErrorHandler = function (message) {
 
 					if (f_month == 1) {
 						items.push('<option value="' + month + '"' + selected + '>' +
-							clutil.monthFormat(dispMonth, 'yyyy/mm') + '</option>');
+								   clutil.monthFormat(dispMonth, 'yyyy/mm') + '</option>');
 					} else {
 						if (j > 0 && j < 4) {
 							dispMonth -= 100;
 						}
 						items.push('<option value="' + month + '"' + selected + '>' +
-							clutil.monthFormat(dispMonth, 'yyyy/mm') + '月度</option>');
+								   clutil.monthFormat(dispMonth, 'yyyy/mm') + '月度</option>');
 					}
 				}
 				st_month = 1;
-				ed_month = i == n_year + n_future - 1 ? n_month : 12;
+				ed_month = i == n_year+n_future-1 ? n_month : 12;
 			}
-			if (/^[dD]/.test(sortOrder)) {
+			if(/^[dD]/.test(sortOrder)){
 				// 降順
 				items.reverse();
 			}
-			if (!_.isEmpty(items)) {
+			if(!_.isEmpty(items)){
 				html_source += items.join('');
 			}
 
@@ -16091,8 +16088,8 @@ var _clInternalErrorHandler = function (message) {
 		 * ・weeklist			: 週リスト
 		 * ・getOpeWeek			: 運用週を取得する場合trueを指定
 		 */
-		clweekselector: function ($y_select, $w_div,
-			w_option, w_cls, weeklist, getOpeWeek) {
+		clweekselector: function($y_select, $w_div,
+				w_option, w_cls, weeklist, getOpeWeek) {
 			if (weeklist == null || weeklist.length == 0) {
 				$y_select.remove();
 				$w_div.remove();
@@ -16124,7 +16121,7 @@ var _clInternalErrorHandler = function (message) {
 					var week = weeklist[i];
 
 					if (clcom.getOpeDate() >= week.st_iymd &&
-						clcom.getOpeDate() <= week.ed_iymd) {
+							clcom.getOpeDate() <= week.ed_iymd) {
 						ope_y = week.year;
 						ope_w = week.period;
 						break;
@@ -16132,8 +16129,8 @@ var _clInternalErrorHandler = function (message) {
 				}
 
 				// 前週の取得
-				if (i < weeklist.length - 1) {
-					pOpe_period = weeklist[i + 1];
+				if (i < weeklist.length-1) {
+					pOpe_period = weeklist[i+1];
 				}
 				if (pOpe_period != null) {
 					pOpe_y = pOpe_period.year;
@@ -16142,23 +16139,23 @@ var _clInternalErrorHandler = function (message) {
 			}
 
 			// 年selectorの作成
-			$.each(week_hash, function (key, value) {
+			$.each(week_hash, function(key, value) {
 				html_source += '<option value="' + key + '">' +
-					key + '年' + '</option>';
+				key + '年' + '</option>';
 			});
 
 			$y_select.html('');
 			$y_select.html(html_source);
 
 			//コンボボックス変更時
-			$y_select.change(function () {
+			$y_select.change(function() {
 				html_source = "";
 				var year = $y_select.val();
 				// 週selectorの作成
 				var weeklist = week_hash[year];
 
 				html_source += '<select ';
-				$.each(w_option, function (key, value) {
+				$.each(w_option, function(key, value) {
 					html_source += key + '="' + value + '"';
 				});
 				if (w_cls != null) {
@@ -16171,7 +16168,7 @@ var _clInternalErrorHandler = function (message) {
 					var week = weeklist[i];
 
 					html_source += '<option value="' + week.period + '">' + week.period + '週(' +
-						clutil.dateFormat(week.st_iymd, 'yyyy/mm/dd') + '～' + '</option>';
+					clutil.dateFormat(week.st_iymd, 'yyyy/mm/dd') + '～' + '</option>';
 				}
 				html_source += '</select>';
 
@@ -16179,7 +16176,7 @@ var _clInternalErrorHandler = function (message) {
 				$w_div.html(html_source);
 
 				$w_div.find('select').selectpicker().selectpicker('refresh');
-				;
+;
 			});
 
 			// 初期値は運用日
@@ -16189,10 +16186,10 @@ var _clInternalErrorHandler = function (message) {
 
 			// 当週、前週を返却
 			return {
-				ope_y: ope_y,
-				ope_w: ope_w,
-				pOpe_y: pOpe_y,
-				pOpe_w: pOpe_w
+				ope_y : ope_y,
+				ope_w : ope_w,
+				pOpe_y : pOpe_y,
+				pOpe_w : pOpe_w
 			};
 		},
 
@@ -16204,7 +16201,7 @@ var _clInternalErrorHandler = function (message) {
 		 * ・yyyy		: 対象年
 		 * ・ww			: 対象週
 		 */
-		getweekdate: function (weeklist, yyyy, ww) {
+		getweekdate: function(weeklist, yyyy, ww) {
 			var retWeek = {};
 			if (weeklist == null || weeklist.length == 0) {
 				return retWeek;
@@ -16248,13 +16245,13 @@ var _clInternalErrorHandler = function (message) {
 		 * ・argtext 未使用
 		 * ・reverse=true
 		 */
-		clhalfselector: function ($select, unselectedflag, past, future, argtext, reverse) {
+		clhalfselector: function($select, unselectedflag, past, future, argtext, reverse) {
 			reverse = reverse !== false;
 			unselectedflag = unselectedflag !== false && unselectedflag !== 0;
 
 			var ope_month = clutil.dateFormat(clcom.getOpeDate(), 'yyyymm');
-			var n_year = Math.floor(ope_month / 100);
-			var n_month = Math.floor(ope_month % 100);
+			var n_year = Math.floor(ope_month/100);
+			var n_month = Math.floor(ope_month%100);
 			if (n_month >= 1 && n_month < 4) {
 				n_year -= 1;
 			}
@@ -16275,19 +16272,19 @@ var _clInternalErrorHandler = function (message) {
 			var half_2 = 2;
 			var labels = ['', '上期', '下期'];
 			var items = [];
-			for (var i = n_year - n_past; i <= n_year + n_future; i++) {
+			for (var i = n_year-n_past; i <= n_year+n_future; i++) {
 				// selectorの中身を作成する
 				for (var j = half_1; j <= half_2; j++) {
-					var half = i * 100 + j;
+					var half = i*100 + j;
 					// selectorの中身を作成する
 					items.push('<option value=' + half + '>' +
-						(i + '/' + labels[j]));
+							   (i + '/' + labels[j]));
 				}
 				half_1 = 1;
-				half_2 = i == n_year + n_future - 1 ? n_month : 2;
+				half_2 = i == n_year+n_future-1 ? n_month : 2;
 			}
 
-			if (reverse) {
+			if (reverse){
 				items = items.reverse();
 			}
 
@@ -16299,7 +16296,7 @@ var _clInternalErrorHandler = function (message) {
 
 			$select.html(html_source).selectpicker().selectpicker('refresh');
 			// 初期値は運用日
-			ope_month = n_year * 100 + n_month;
+			ope_month = n_year*100 + n_month;
 			$select.selectpicker('val', ope_month);
 		},
 
@@ -16314,13 +16311,13 @@ var _clInternalErrorHandler = function (message) {
 		 * ・argtext 未使用
 		 * ・reverse=true
 		 */
-		clhalfselector2: function ($select, unselectedflag, past, future, argtext, reverse) {
+		clhalfselector2: function($select, unselectedflag, past, future, argtext, reverse) {
 			reverse = reverse !== false;
 			unselectedflag = unselectedflag !== false && unselectedflag !== 0;
 
 			var ope_month = clutil.dateFormat(clcom.getOpeDate(), 'yyyymm');
-			var n_year = Math.floor(ope_month / 100);
-			var n_month = Math.floor(ope_month % 100);
+			var n_year = Math.floor(ope_month/100);
+			var n_month = Math.floor(ope_month%100);
 			if (n_month >= 1 && n_month < 4) {
 				n_year -= 1;
 			}
@@ -16341,8 +16338,8 @@ var _clInternalErrorHandler = function (message) {
 			var labels = ['', '上期', '下期'];
 			var items = [];
 			// 期でループ
-			for (var i = now_half - n_past; i <= now_half + n_future; i++) {
-				var half_num1 = Math.floor((i - 1) / 2) + 1990;
+			for (var i = now_half-n_past; i <= now_half+n_future; i++) {
+				var half_num1 = Math.floor((i-1)/2) + 1990;
 				var half_num2 = i % 2;
 				if (half_num2 == 0) {
 					half_num2 = 2;
@@ -16350,10 +16347,10 @@ var _clInternalErrorHandler = function (message) {
 				var half = half_num1 * 100 + half_num2;
 				// selectorの中身を作成する
 				items.push('<option value=' + half + '>' +
-					(half_num1 + '/' + labels[half_num2]));
+						   (half_num1 + '/' + labels[half_num2]));
 			}
 
-			if (reverse) {
+			if (reverse){
 				items = items.reverse();
 			}
 
@@ -16365,7 +16362,7 @@ var _clInternalErrorHandler = function (message) {
 
 			$select.html(html_source).selectpicker().selectpicker('refresh');
 			// 初期値は運用日
-			ope_month = n_year * 100 + n_month;
+			ope_month = n_year*100 + n_month;
 			$select.selectpicker('val', ope_month);
 		},
 
@@ -16380,13 +16377,13 @@ var _clInternalErrorHandler = function (message) {
 		 * ・argtext 未使用
 		 * ・reverse=true
 		 */
-		clhalfselector3: function ($select, unselectedflag, from, to, argtext, reverse) {
+		clhalfselector3: function($select, unselectedflag, from, to, argtext, reverse) {
 			reverse = reverse !== false;
 			unselectedflag = unselectedflag !== false && unselectedflag !== 0;
 
 			var ope_month = clutil.dateFormat(clcom.getOpeDate(), 'yyyymm');
-			var n_year = Math.floor(ope_month / 100);
-			var n_month = Math.floor(ope_month % 100);
+			var n_year = Math.floor(ope_month/100);
+			var n_month = Math.floor(ope_month%100);
 			if (n_month >= 1 && n_month < 4) {
 				n_year -= 1;
 			}
@@ -16399,13 +16396,13 @@ var _clInternalErrorHandler = function (message) {
 
 			var labels = ['', '上期', '下期'];
 			var items = [];
-			for (var i = from; i <= to;) {
+			for (var i = from; i <= to; ) {
 				var half_num1 = Math.floor(i / 100);
 				var half_num2 = i % 100;
 
 				var half = half_num1 * 100 + half_num2;
 				items.push('<option value=' + half + '>' +
-					(half_num1 + '/' + labels[half_num2]));
+						   (half_num1 + '/' + labels[half_num2]));
 
 				if (half_num2 == 2) {
 					half_num2 = 1;
@@ -16416,7 +16413,7 @@ var _clInternalErrorHandler = function (message) {
 				i = half_num1 * 100 + half_num2;
 			}
 
-			if (reverse) {
+			if (reverse){
 				items = items.reverse();
 			}
 
@@ -16428,17 +16425,17 @@ var _clInternalErrorHandler = function (message) {
 
 			$select.html(html_source).selectpicker().selectpicker('refresh');
 			// 初期値は運用日
-			ope_month = n_year * 100 + n_month;
+			ope_month = n_year*100 + n_month;
 			$select.selectpicker('val', ope_month);
 		},
 
-		clquarteryearselector: function ($select, unselectedflag, past, future, argtext, reverse) {
+		clquarteryearselector: function($select, unselectedflag, past, future, argtext, reverse) {
 			reverse = reverse !== false;
 			unselectedflag = unselectedflag !== false && unselectedflag !== 0;
 
 			var ope_month = clutil.dateFormat(clcom.getOpeDate(), 'yyyymm');
-			var n_year = Math.floor(ope_month / 100);
-			var n_month = Math.floor(ope_month % 100);
+			var n_year = Math.floor(ope_month/100);
+			var n_month = Math.floor(ope_month%100);
 			if (n_month >= 1 && n_month < 4) {
 				n_year -= 1;
 			}
@@ -16451,11 +16448,11 @@ var _clInternalErrorHandler = function (message) {
 			// 半期を設定 4～6: 1期, 7〜9 : 2期, 10〜12: 3期, 11～12 ,1～3 : 4期
 			if (n_month >= 4 && n_month < 7) {
 				n_month = 1;
-			} else if (n_month >= 7 && n_month < 10) {
+			} else if (n_month >= 7 && n_month < 10){
 				n_month = 2;
-			} else if (n_month >= 10 && n_month < 13) {
+			} else if (n_month >= 10 && n_month < 13){
 				n_month = 3;
-			} else if (n_month >= 1 && n_month < 4) {
+			} else if (n_month >= 1 && n_month < 4){
 				n_month = 4;
 			}
 
@@ -16463,19 +16460,19 @@ var _clInternalErrorHandler = function (message) {
 			var half_2 = 4;
 
 			var items = [];
-			for (var i = n_year - n_past; i <= n_year + n_future; i++) {
+			for (var i = n_year-n_past; i <= n_year+n_future; i++) {
 				// selectorの中身を作成する
 				for (var j = half_1; j <= half_2; j++) {
-					var half = i * 100 + j;
+					var half = i*100 + j;
 					// selectorの中身を作成する
 					items.push('<option value=' + half + '>' +
 						clutil.monthFormat(half, 'yyyy/mm') + '期</option>');
 				}
 				half_1 = 1;
-				half_2 = i == n_year + n_future - 1 ? n_month : 4;
+				half_2 = i == n_year+n_future-1 ? n_month : 4;
 			}
 
-			if (reverse) {
+			if (reverse){
 				items = items.reverse();
 			}
 
@@ -16487,7 +16484,7 @@ var _clInternalErrorHandler = function (message) {
 
 			$select.html(html_source).selectpicker().selectpicker('refresh');
 			// 初期値は運用日
-			ope_month = n_year * 100 + n_month;
+			ope_month = n_year*100 + n_month;
 			$select.selectpicker('val', ope_month);
 		},
 
@@ -16514,11 +16511,11 @@ var _clInternalErrorHandler = function (message) {
 		 * @param future		未来何年まで defaultは0年
 		 * @param argtext		年の後に付けたい文字列(例:"年度")
 		 */
-		clyearselector: function ($select, unselectedflag, past, future, argtext) {
+		clyearselector: function($select, unselectedflag, past, future, argtext) {
 			var options;
 			var ope_year = clutil.dateFormat(clcom.getOpeDate(), 'yyyy');
 
-			if ($select instanceof $ || !_.isObject($select)) {
+			if ($select instanceof $ || !_.isObject($select)){
 				options = {
 					el: $select,
 					unselectedflag: unselectedflag,
@@ -16526,7 +16523,7 @@ var _clInternalErrorHandler = function (message) {
 					future: future,
 					argtext: argtext
 				};
-			} else {
+			}else{
 				options = $select;
 			}
 
@@ -16535,7 +16532,7 @@ var _clInternalErrorHandler = function (message) {
 			});
 
 			options.$el = options.el instanceof $ ? options.el : $(options.el);
-			if (options.reverse !== false) {
+			if (options.reverse !== false){
 				options.reverse = true;
 			}
 			$select = options.$el;
@@ -16548,24 +16545,24 @@ var _clInternalErrorHandler = function (message) {
 			var n_future = options.future == null ? 0 : options.future;
 
 			var items = [];
-			var from = options.from || ope_year - n_past;
-			for (var i = from; i <= ope_year + n_future; i++) {
+			var from = options.from || ope_year-n_past;
+			for (var i = from; i <= ope_year+n_future; i++) {
 				items.push('<option value="' + i + '">' + i + text + '</option>');
 			}
-			if (options.reverse) {
+			if (options.reverse){
 				items = items.reverse();
 			}
 
 			// 未選択値を追加する
 			var nitem = items.length;
 			var fixUnselectFlag = options.unselectedflag;
-			if (nitem <= 0) {
+			if(nitem <= 0){
 				// 要素が無い場合は白牌を追加しておく。
 				// [clutil.forceUnselectFlag] に依らない。
 				fixUnselectFlag = true;
-			} else {
+			}else{
 				// 未選択要素を強制するフラグ評価。
-				if (clutil.forceUnselectFlag) {
+				if(clutil.forceUnselectFlag){
 					// 入力必須かつ選択肢が１つの場合は１個で選択固定するので、白牌は追加しない。
 					fixUnselectFlag = !($select.hasClass('cl_requied') && nitem == 1);
 				}
@@ -16573,7 +16570,7 @@ var _clInternalErrorHandler = function (message) {
 
 			var html_source = items.join('');
 
-			if (fixUnselectFlag) {
+			if(fixUnselectFlag){
 				html_source = '<option value="0">&nbsp</option>' + html_source;
 				nitem++;
 			}
@@ -16584,9 +16581,9 @@ var _clInternalErrorHandler = function (message) {
 			// bootstrap 適用
 			$select.selectpicker().selectpicker('refresh');
 
-			if (nitem <= 1) {
+			if(nitem <= 1){
 				// TODO: 選択肢が１つまたは無いので、変更できないようにする。
-			} else if (options.value !== false) {
+			}else if(options.value !== false){
 				// 初期値は運用日
 				$select.selectpicker('val', options.value);
 			}
@@ -16599,7 +16596,7 @@ var _clInternalErrorHandler = function (message) {
 		 * ・$select			: 区分selectのjQueryオブジェクト (例：$('#viewarea'))
 		 * ・unselectedflag		: 未選択値 0:なし 1:あり
 		 */
-		clymselector: function ($select, unselectedflag) {
+		clymselector: function($select, unselectedflag) {
 			var html_source = '';
 
 			// 何年分
@@ -16612,7 +16609,7 @@ var _clInternalErrorHandler = function (message) {
 			for (var i = 0; i <= n_year; i++) {
 				// selectorの中身を作成する
 				for (var j = 0; j <= 11; j++) {
-					var month = i * 100 + j;
+					var month = i*100 + j;
 					// selectorの中身を作成する
 					html_source += '<option value=' + month + '>';
 					html_source += clutil.iymFmt(month) + '</option>';
@@ -16634,7 +16631,7 @@ var _clInternalErrorHandler = function (message) {
 		 * ・selectVal			: 選択値
 		 * ・callback			: select変更時に呼ばれる関数
 		 */
-		clpagerselector: function ($viewarea, totalCount, selectVal, callback) {
+		clpagerselector: function($viewarea, totalCount, selectVal, callback) {
 			var html_source = '';
 
 			html_source += '<div class="report-count">全' + totalCount + '件中';
@@ -16674,23 +16671,23 @@ var _clInternalErrorHandler = function (message) {
 		 * @param itgrpId			: 対象商品分類ID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clitemattrselector: function ($select, iagfuncId, itgrpId, unselectedflag) {
+		clitemattrselector: function($select, iagfuncId, itgrpId, unselectedflag) {
 			var req = {
 				cond: {
 					iagfunc_id: iagfuncId,
-					itgrp_id: itgrpId
+					itgrp_id:	itgrpId
 				}
 			};
 			// データを取得
 			var uri = 'am_pa_itemattr_srch';
-			return clutil.postJSON(uri, req).then(_.bind(function (data, dataType) {
+			return clutil.postJSON(uri, req).then(_.bind(function(data, dataType) {
 				console.log("clitemattrselector callback start");
 				if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 					var busunitList = data.body.list;
 
 					clutil.cltypeselector2($select, busunitList, unselectedflag,
-						null, 'itemattr_id', 'itemattr_name', 'itemattr_code');
+							null, 'itemattr_id', 'itemattr_name', 'itemattr_code');
 				}
 				console.log("clitemattrselector callback done");
 			}, this));
@@ -16704,24 +16701,24 @@ var _clInternalErrorHandler = function (message) {
 		 * @param itgrpId			: 対象商品分類ID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clitemattrselector2: function ($select, iagfuncId, itgrpIds, unselectedflag, ids) {
+		clitemattrselector2: function($select, iagfuncId, itgrpIds, unselectedflag, ids) {
 			itgrpIds = itgrpIds || [];
 			var req = {
 				cond: {
 					iagfunc_id: iagfuncId,
-					itgrp_ids: itgrpIds
+					itgrp_ids:	itgrpIds
 				}
 			};
 			// データを取得
 			var uri = 'am_pa_itemattr_srchM';
-			return clutil.postJSON(uri, req).then(_.bind(function (data, dataType) {
+			return clutil.postJSON(uri, req).then(_.bind(function(data, dataType) {
 				console.log("clitemattrselector2 callback start");
 				if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 					var busunitList = data.body.list;
 
 					clutil.cltypeselector2($select, busunitList, unselectedflag,
-						null, 'itemattr_id', 'itemattr_name', 'itemattr_code');
+							null, 'itemattr_id', 'itemattr_name', 'itemattr_code');
 					if (ids) {
 						$select.selectpicker('val', ids);
 					}
@@ -16737,24 +16734,24 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $select			: 区分selectのjQueryオブジェクト (例：$('#viewarea'))
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clbusunitselector: function ($select, unselectedflag) {
+		clbusunitselector: function($select, unselectedflag) {
 			cond = {
 				ymd: 20140214	// XXX
 			},
-				req = {
-					cond: cond
-				};
+			req = {
+				cond: cond
+			};
 			// データを取得
 			var uri = 'am_pa_busunit_srch';
-			return clutil.postJSON(uri, req).then(_.bind(function (data, dataType) {
+			return clutil.postJSON(uri, req).then(_.bind(function(data, dataType) {
 				console.log("clbusselector callback start");
 				if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 					var busunitList = data.body.list;
 
 					clutil.cltypeselector2($select, busunitList, unselectedflag,
-						null,
-						'busunit_id', 'busunit_name', 'busunit_code');
+							null,
+							'busunit_id', 'busunit_name', 'busunit_code');
 				}
 				console.log("clbusselector callback done");
 			}, this));
@@ -16765,7 +16762,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $select : 組織体系セレクタ
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clorgfuncselector: function ($select, unselectedflag) {
+		clorgfuncselector: function($select, unselectedflag) {
 			cond = {
 				codename: ""
 			};
@@ -16774,7 +16771,7 @@ var _clInternalErrorHandler = function (message) {
 			};
 			// データを取得
 			var uri = 'am_pa_orgfunc_srch';
-			return clutil.postJSON(uri, req).done(_.bind(function (data, dataType) {
+			return clutil.postJSON(uri, req).done(_.bind(function(data, dataType) {
 				if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 					console.log("clorgfuncselector callback start");
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -16782,7 +16779,7 @@ var _clInternalErrorHandler = function (message) {
 						var orgFuncList = data.list;
 
 						clutil.cltypeselector2($select, orgFuncList, unselectedflag,
-							null, 'id', 'name', 'code');
+								null, 'id', 'name', 'code');
 					}
 					console.log("clorgfuncselector callback done");
 
@@ -16790,7 +16787,7 @@ var _clInternalErrorHandler = function (message) {
 			}, this));
 		},
 
-		_clorglevelselectorChange: function (e) {
+		_clorglevelselectorChange: function(e) {
 			var $tgt = $(e.target);
 			var id = Number($tgt.val());
 			var item = null;
@@ -16809,7 +16806,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param orgFuncId : 組織体系ID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clorglevelselector: function ($select, orgFuncId, unselectedflag) {
+		clorglevelselector: function($select, orgFuncId, unselectedflag) {
 			var cond = {
 				orgfunc_id: orgFuncId,
 				codename: ""
@@ -16825,7 +16822,7 @@ var _clInternalErrorHandler = function (message) {
 			// データを取得
 			var uri = 'am_pa_orglevel_srch';
 			if (orgFuncId != 0) {
-				return clutil.postJSON(uri, req).done(_.bind(function (data, dataType) {
+				return clutil.postJSON(uri, req).done(_.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						console.log("clorglevelselector callback start");
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -16836,7 +16833,7 @@ var _clInternalErrorHandler = function (message) {
 							}
 
 							clutil.cltypeselector2($select, clutil.orgLevelList, unselectedflag,
-								1, 'id', 'name', 'code');
+									1, 'id', 'name', 'code');
 							if (unselectedflag != 1) {
 								$select.trigger('change');
 							}
@@ -16844,12 +16841,12 @@ var _clInternalErrorHandler = function (message) {
 						console.log("clorglevelselector callback done");
 					} else {
 						clutil.cltypeselector2($select, clutil.orgLevelList, unselectedflag,
-							1, 'id', 'name', 'code');
+								1, 'id', 'name', 'code');
 					}
 				}, this));
 			} else {
 				clutil.cltypeselector2($select, clutil.orgLevelList, unselectedflag,
-					1, 'id', 'name', 'code');
+						1, 'id', 'name', 'code');
 				return $.Deferred().resolve().promise();
 			}
 		},
@@ -16859,7 +16856,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $select : 商品分類体系セレクタ
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clitgrpfuncselector: function ($select, unselectedflag) {
+		clitgrpfuncselector: function($select, unselectedflag) {
 			cond = {
 				codename: ""
 			};
@@ -16868,7 +16865,7 @@ var _clInternalErrorHandler = function (message) {
 			};
 			// データを取得
 			var uri = 'am_pa_itgrpfunc_srch';
-			clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+			clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 				if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 					console.log("clitgrpfuncselector callback start");
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -16876,7 +16873,7 @@ var _clInternalErrorHandler = function (message) {
 						var itgrpFuncList = data.list;
 
 						clutil.cltypeselector2($select, itgrpFuncList, unselectedflag,
-							null, 'id', 'name', 'code');
+								null, 'id', 'name', 'code');
 					}
 					console.log("clitgrpfuncselector callback done");
 
@@ -16890,7 +16887,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param itgrpFuncId : 商品分類体系ID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clitgrplevelselector: function ($select, itgrpFuncId, unselectedflag) {
+		clitgrplevelselector: function($select, itgrpFuncId, unselectedflag) {
 			var cond = {
 				itgrpfunc_id: itgrpFuncId,
 				codename: ""
@@ -16903,7 +16900,7 @@ var _clInternalErrorHandler = function (message) {
 			// データを取得
 			var uri = 'am_pa_itgrplevel_srch';
 			if (itgrpFuncId != 0) {
-				clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						console.log("clitgrplevelselector callback start");
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -16911,17 +16908,17 @@ var _clInternalErrorHandler = function (message) {
 							itgrpLevelList = data.list;
 
 							clutil.cltypeselector2($select, itgrpLevelList, unselectedflag,
-								1, 'id', 'name', 'code');
+									1, 'id', 'name', 'code');
 						}
 						console.log("clitgrplevelselector callback done");
 					} else {
 						clutil.cltypeselector2($select, itgrpLevelList, unselectedflag,
-							1, 'id', 'name', 'code');
+								1, 'id', 'name', 'code');
 					}
 				}, this));
 			} else {
 				clutil.cltypeselector2($select, itgrpLevelList, unselectedflag,
-					1, 'id', 'name', 'code');
+						1, 'id', 'name', 'code');
 			}
 		},
 		/**
@@ -16930,7 +16927,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param parentId : 親商品分類ID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clvarietyselector: function ($select, itgrpFuncId, parentId, unselectedflag, itgrpIDs, div_sort) {
+		clvarietyselector: function($select, itgrpFuncId, parentId, unselectedflag, itgrpIDs, div_sort) {
 			var f_div_sort = div_sort ? 1 : 0;
 			var cond = {
 				itgrpfunc_id: itgrpFuncId,
@@ -16946,7 +16943,7 @@ var _clInternalErrorHandler = function (message) {
 			// データを取得
 			var uri = 'am_pa_variety_srch';
 			if (itgrpFuncId && parentId) {
-				clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						console.log("clvarietyselector callback start");
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -16954,12 +16951,12 @@ var _clInternalErrorHandler = function (message) {
 							varietyList = data.itgrplist;
 
 							clutil.cltypeselector2($select, varietyList, unselectedflag,
-								0, 'itgrp_id', 'name', 'code');
+									0, 'itgrp_id', 'name', 'code');
 						}
 						console.log("clvarietyselector callback done");
 					} else {
 						clutil.cltypeselector2($select, varietyList, unselectedflag,
-							0, 'itgrp_id', 'name', 'code');
+								0, 'itgrp_id', 'name', 'code');
 					}
 					if (itgrpIDs) {
 						$select.selectpicker('val', itgrpIDs);
@@ -16968,7 +16965,7 @@ var _clInternalErrorHandler = function (message) {
 				}, this));
 			} else {
 				clutil.cltypeselector2($select, varietyList, unselectedflag,
-					0, 'id', 'name', 'code');
+						0, 'id', 'name', 'code');
 			}
 		},
 
@@ -16978,7 +16975,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param itgrpIDs : 商品分類ID（複数）
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clsizeptnMselector: function ($select, itgrpIDs, unselectedflag) {
+		clsizeptnMselector: function($select, itgrpIDs, unselectedflag) {
 			itgrpIDs = (itgrpIDs == null || itgrpIDs.length == 0) ? [] : itgrpIDs;
 			var req = {
 				cond: {
@@ -16990,7 +16987,7 @@ var _clInternalErrorHandler = function (message) {
 			// データを取得
 			var uri = 'am_pa_sizeptn_srchM';
 			if (itgrpIDs.length > 0) {
-				clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 					if (data.rspHead.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						console.log("clsizeptnMselector callback start");
 						var i;
@@ -17019,7 +17016,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param sizePtnId : サイズパターンID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clsizerowselector: function ($select, sizePtnId, unselectedflag) {
+		clsizerowselector: function($select, sizePtnId, unselectedflag) {
 			var cond = {
 				sizeptn_id: sizePtnId
 			};
@@ -17031,7 +17028,7 @@ var _clInternalErrorHandler = function (message) {
 			// データを取得
 			var uri = 'am_pa_sizerow_srch';
 			if (sizePtnId != 0) {
-				clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						console.log("clsizerowselector callback start");
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -17039,17 +17036,17 @@ var _clInternalErrorHandler = function (message) {
 							sizeRowList = data.list;
 
 							clutil.cltypeselector2($select, sizeRowList, unselectedflag,
-								1, 'row', 'name');
+									1, 'row', 'name');
 						}
 						console.log("clitgrplevelselector callback done");
 					} else {
 						clutil.cltypeselector2($select, sizeRowList, unselectedflag,
-							1, 'id', 'name');
+								1, 'id', 'name');
 					}
 				}, this));
 			} else {
 				clutil.cltypeselector2($select, itgrpLevelList, unselectedflag,
-					1, 'id', 'name', 'code');
+						1, 'id', 'name', 'code');
 			}
 		},
 
@@ -17059,7 +17056,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param unitId : 事業ユニットID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clmarkettypeselector: function ($select, unitId, unselectedflag) {
+		clmarkettypeselector: function($select, unitId, unselectedflag) {
 			var cond = {
 				unit_id: unitId
 			};
@@ -17071,7 +17068,7 @@ var _clInternalErrorHandler = function (message) {
 			// データを取得
 			var uri = 'am_pa_markettype_srch';
 			if (unitId != 0) {
-				clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						console.log("clmarkettypeselector callback start");
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -17094,7 +17091,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param unitId : 事業ユニットID
 		 * @param unselectedflag	: 未選択値 0:なし 1:あり
 		 */
-		clagetypeselector: function ($select, unitId, unselectedflag) {
+		clagetypeselector: function($select, unitId, unselectedflag) {
 			var cond = {
 				unit_id: unitId
 			};
@@ -17106,7 +17103,7 @@ var _clInternalErrorHandler = function (message) {
 			// データを取得
 			var uri = 'am_pa_agetype_srch';
 			if (unitId != 0) {
-				clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						console.log("clagetypeselector callback start");
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
@@ -17129,30 +17126,30 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view 備品コードinputのjQueryオブジェクト(例: $("#ca_equipID"))
 		 * @param opt オートコンプリートへのオプション。
 		 */
-		clequipcode: function ($view, opt) {
+		clequipcode: function($view, opt) {
 			var option = $.extend({
-				getUnitId: function () {
+				getUnitId: function() {
 					return 0;	// 事業ユニット
 				},
-				getEquipManTypeId: function () {
+				getEquipManTypeId: function() {
 					return 0;
 				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に備品取引先IDを設定する
-				//				var $target = $(event.target);
-				//				if (ui.item && ui.item.id){
-				//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//				} else {
-				//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//				}
-				//				},
-				//				source: [
-				//				{id: 1, code: '0001', name: 'name1', label: '0001:name1'},
-				//				{id: 2, code: '0002', name: 'name2', label: '0002:name2'},
-				//				{id: 3, code: '0003', name: 'name3', label: '0003:name3'},
-				//				{id: 4, code: '0004', name: 'name4', label: '0004:name4'},
-				//				{id: 5, code: '0005', name: 'name5', label: '0005:name5'}
-				//				]
-				source: function (request, response) {
+//				change: function(event, ui) {	// 変更時はcs_id属性に備品取引先IDを設定する
+//				var $target = $(event.target);
+//				if (ui.item && ui.item.id){
+//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//				} else {
+//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//				}
+//				},
+//				source: [
+//				{id: 1, code: '0001', name: 'name1', label: '0001:name1'},
+//				{id: 2, code: '0002', name: 'name2', label: '0002:name2'},
+//				{id: 3, code: '0003', name: 'name3', label: '0003:name3'},
+//				{id: 4, code: '0004', name: 'name4', label: '0004:name4'},
+//				{id: 5, code: '0005', name: 'name5', label: '0005:name5'}
+//				]
+				source:function(request, response) {
 					var unit_id = this.options.getUnitId();
 					var equip_man_typeid = this.options.getEquipManTypeId();
 					var cond = {
@@ -17165,7 +17162,7 @@ var _clInternalErrorHandler = function (message) {
 					};
 					// データを取得
 					var uri = 'am_pa_equip_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.equipList = [];
@@ -17192,24 +17189,24 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 備品取引先コードinputのjQueryオブジェクト（例：$("#ca_equipVendID")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getUnitId()を実装すること
 		 */
-		clequipvendcode: function ($view, opt) {
+		clequipvendcode: function($view, opt) {
 			var option = $.extend({
-				getUnitId: function () {
+				getUnitId: function() {
 					return 0;	// 事業ユニット
 				},
-				//				select: function(event, ui){
-				//	var item = (ui.item) ? ui.item : null;
-				//				$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に備品取引先IDを設定する
-				//				var $target = $(event.target);
-				//				if (ui.item && ui.item.id){
-				//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//				} else {
-				//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//				}
-				//				},
-				source: function (request, response) {
+//				select: function(event, ui){
+//	var item = (ui.item) ? ui.item : null;
+//				$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {	// 変更時はcs_id属性に備品取引先IDを設定する
+//				var $target = $(event.target);
+//				if (ui.item && ui.item.id){
+//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//				} else {
+//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//				}
+//				},
+				source:function(request, response) {
 					var unit_id = this.options.getUnitId();
 					var cond = {
 						unit_id: unit_id,
@@ -17220,12 +17217,12 @@ var _clInternalErrorHandler = function (message) {
 					};
 					// データを取得
 					var uri = 'am_pa_equipvend_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.equipList = [];
 							for (var i = 0; i < data.list.length; i++) {
-								var val = {
+							var val = {
 									label: data.list[i].equipvend_code + ":" + data.list[i].equipvend_name,
 									value: data.list[i].equipvend_code + ":" + data.list[i].equipvend_name,
 									id: data.list[i].equipvend_id,
@@ -17248,25 +17245,25 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 取引先コードinputのjQueryオブジェクト（例：$("#ca_vendor_id")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getVendorId()を実装すること
 		 */
-		clvendorcode: function ($view, opt) {
+		clvendorcode: function($view, opt) {
 			var option = $.extend({
-				getVendorTypeId: function () {
+				getVendorTypeId: function() {
 					// 取引先区分取得メソッドを実装する
 					return 0;
 				},
-				//				select: function(event, ui){
-				//				var item = (ui.item) ? ui.item : null;
-				//				$(event.target).autocomplete('clAutocompleteItem', item, 1);
-				//				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
-				//				var $target = $(event.target);
-				//				if (ui.item && ui.item.id){
-				//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//				} else {
-				//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//				}
-				//				},
-				source: function (request, response) {
+//				select: function(event, ui){
+//				var item = (ui.item) ? ui.item : null;
+//				$(event.target).autocomplete('clAutocompleteItem', item, 1);
+//				},
+//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
+//				var $target = $(event.target);
+//				if (ui.item && ui.item.id){
+//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//				} else {
+//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//				}
+//				},
+				source:function(request, response) {
 					var vendor_typeid = this.options.getVendorTypeId();
 					cond = {
 						vendor_typeid: vendor_typeid,
@@ -17277,7 +17274,7 @@ var _clInternalErrorHandler = function (message) {
 					};
 					// データを取得
 					var uri = 'am_pa_vendor_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.vendorList = [];
@@ -17303,25 +17300,25 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 品種コードinputのjQueryオブジェクト（例：$("#ca_stditgrp_id")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getParentId()を実装すること
 		 */
-		clvarietycode: function ($view, opt) {
+		clvarietycode: function($view, opt) {
 			var option = $.extend({
-				getParentId: function () {
+				getParentId: function() {
 					// 親ID（事業ユニットID）取得メソッドを実装する
 					return 0;
 				},
-				//				select: function(event, ui){
-				//				var item = (ui.item) ? ui.item : null;
-				//				$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
-				//				var $target = $(event.target);
-				//				if (ui.item && ui.item.id){
-				//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//				} else {
-				//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//				}
-				//				},
-				source: function (request, response) {
+//				select: function(event, ui){
+//				var item = (ui.item) ? ui.item : null;
+//				$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
+//				var $target = $(event.target);
+//				if (ui.item && ui.item.id){
+//				$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//				} else {
+//				$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//				}
+//				},
+				source:function(request, response) {
 					var parent_id = this.options.getParentId();
 					cond = {
 						parent_id: parent_id,
@@ -17332,7 +17329,7 @@ var _clInternalErrorHandler = function (message) {
 					};
 					// データを取得
 					var uri = 'am_pa_variety_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.varietyList = [];
@@ -17358,92 +17355,92 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: メーカーコードinputのjQueryオブジェクト（例：$("#ca_item_id")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getParentId()を実装すること
 		 */
-		clmakeritemcode: function ($view, opt) {
+		clmakeritemcode: function($view, opt) {
 			/*
 			 * TODO メーカー品番テスト用スタブ
 			 */
 			var makerItemCodeList = [
 				{
-					label: "3A-1252:２ＷＬＭＳＰＸＰストレッチ２Ｐ",
-					value: "3A-1252:２ＷＬＭＳＰＸＰストレッチ２Ｐ",
-					id: 1001,
-					code: "3A-1252",
-					name: "２ＷＬＭＳＰＸＰストレッチ２Ｐ"
+					label:	"3A-1252:２ＷＬＭＳＰＸＰストレッチ２Ｐ",
+					value:	"3A-1252:２ＷＬＭＳＰＸＰストレッチ２Ｐ",
+					id:		1001,
+					code:	"3A-1252",
+					name:	"２ＷＬＭＳＰＸＰストレッチ２Ｐ"
 				},
 				{
-					label: "M1323151:３ＷＭＪ黒Ｐストレッチ２Ｐ",
-					value: "M1323151:３ＷＭＪ黒Ｐストレッチ２Ｐ",
-					id: 1002,
-					code: "M1323151",
-					name: "３ＷＭＪ黒Ｐストレッチ２Ｐ"
+					label:	"M1323151:３ＷＭＪ黒Ｐストレッチ２Ｐ",
+					value:	"M1323151:３ＷＭＪ黒Ｐストレッチ２Ｐ",
+					id:		1002,
+					code:	"M1323151",
+					name:	"３ＷＭＪ黒Ｐストレッチ２Ｐ"
 				},
 				{
-					label: "V1922160:１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞",
-					value: "V1922160:１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞",
-					id: 1003,
-					code: "V1922160",
-					name: "１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞"
+					label:	"V1922160:１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞",
+					value:	"V1922160:１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞",
+					id:		1003,
+					code:	"V1922160",
+					name:	"１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞"
 				},
 				{
-					label: "4812221:８ＳＲＣ２Ｂ２Ｐサマー",
-					value: "4812221:８ＳＲＣ２Ｂ２Ｐサマー",
-					id: 1004,
-					code: "M1323151",
-					name: "８ＳＲＣ２Ｂ２Ｐサマー"
+					label:	"4812221:８ＳＲＣ２Ｂ２Ｐサマー",
+					value:	"4812221:８ＳＲＣ２Ｂ２Ｐサマー",
+					id:		1004,
+					code:	"M1323151",
+					name:	"８ＳＲＣ２Ｂ２Ｐサマー"
 				},
 				{
-					label: "509200A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
-					value: "509200A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
-					id: 1005,
-					code: "509200A",
-					name: "１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ"
+					label:	"509200A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
+					value:	"509200A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
+					id:		1005,
+					code:	"509200A",
+					name:	"１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ"
 				},
 				{
-					label: "509201A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
-					value: "509201A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
-					id: 1006,
-					code: "509201A",
-					name: "１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ"
+					label:	"509201A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
+					value:	"509201A:１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ",
+					id:		1006,
+					code:	"509201A",
+					name:	"１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ"
 				},
 				{
-					label: "3C-1256:２ＷＬＭＳＰＰストレッチ２パン",
-					value: "3C-1256:２ＷＬＭＳＰＰストレッチ２パン",
-					id: 1007,
-					code: "3C-1256",
-					name: "２ＷＬＭＳＰＰストレッチ２パン"
+					label:	"3C-1256:２ＷＬＭＳＰＰストレッチ２パン",
+					value:	"3C-1256:２ＷＬＭＳＰＰストレッチ２パン",
+					id:		1007,
+					code:	"3C-1256",
+					name:	"２ＷＬＭＳＰＰストレッチ２パン"
 				},
 				{
-					label: "M1223162:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
-					value: "M1223162:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
-					id: 1008,
-					code: "M1223162",
-					name: "２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ"
+					label:	"M1223162:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
+					value:	"M1223162:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
+					id:		1008,
+					code:	"M1223162",
+					name:	"２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ"
 				},
 				{
-					label: "M1223163:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
-					value: "M1223163:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
-					id: 1009,
-					code: "M1223163",
-					name: "２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ"
+					label:	"M1223163:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
+					value:	"M1223163:２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ",
+					id:		1009,
+					code:	"M1223163",
+					name:	"２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ"
 				}
 			];
 			var option = $.extend({
-				getMakerId: function () {
+				getMakerId: function() {
 					// メーカーID（取引先ID）取得メソッドを実装する
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
 				/* =================================================================================
 				source:function(request, response) {
 					var parent_id = this.options.getParentId();
@@ -17484,71 +17481,71 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: メーカーコードinputのjQueryオブジェクト（例：$("#ca_coloritem_id")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getIAGFuncId()を実装すること
 		 */
-		clitemattrgrpcode: function ($view, opt) {
+		clitemattrgrpcode: function($view, opt) {
 			/*
 			 * TODO メーカー品番テスト用スタブ
 			 */
 			var itemAttrGrpCodeList = [
 				{
-					label: "00:紺",
-					value: "00:紺",
-					id: 11,
-					code: "00",
-					name: "紺",
+					label:	"00:紺",
+					value:	"00:紺",
+					id:		11,
+					code:	"00",
+					name:	"紺",
 				},
 				{
-					label: "01:ブルー",
-					value: "01:ブルー",
-					id: 12,
-					code: "01",
-					name: "ブルー",
+					label:	"01:ブルー",
+					value:	"01:ブルー",
+					id:		12,
+					code:	"01",
+					name:	"ブルー",
 				},
 				{
-					label: "02:グレー",
-					value: "02:グレー",
-					id: 13,
-					code: "02",
-					name: "グレー",
+					label:	"02:グレー",
+					value:	"02:グレー",
+					id:		13,
+					code:	"02",
+					name:	"グレー",
 				},
 				{
-					label: "03:ベージュ",
-					value: "03:ベージュ",
-					id: 14,
-					code: "03",
-					name: "ベージュ",
+					label:	"03:ベージュ",
+					value:	"03:ベージュ",
+					id:		14,
+					code:	"03",
+					name:	"ベージュ",
 				},
 				{
-					label: "04:茶",
-					value: "02:茶",
-					id: 15,
-					code: "04",
-					name: "茶",
+					label:	"04:茶",
+					value:	"02:茶",
+					id:		15,
+					code:	"04",
+					name:	"茶",
 				},
 				{
-					label: "05:白",
-					value: "05:白",
-					id: 16,
-					code: "05",
-					name: "白",
+					label:	"05:白",
+					value:	"05:白",
+					id:		16,
+					code:	"05",
+					name:	"白",
 				},
 			];
 			var option = $.extend({
-				getIAGFuncId: function () {
+				getIAGFuncId: function() {
 					// 商品属性項目定義ID取得メソッドを実装する
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
 				/* =================================================================================
 				source:function(request, response) {
 					var parent_id = this.options.getParentId();
@@ -17589,71 +17586,71 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: メーカーコードinputのjQueryオブジェクト（例：$("#ca_color_id")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getItemId()を実装すること
 		 */
-		clcolorcode: function ($view, opt) {
+		clcolorcode: function($view, opt) {
 			/*
 			 * TODO カラーテスト用スタブ
 			 */
 			var colorList = [
 				{
-					label: "00:紺",
-					value: "00:紺",
-					id: 11,
-					code: "00",
-					name: "紺",
+					label:	"00:紺",
+					value:	"00:紺",
+					id:		11,
+					code:	"00",
+					name:	"紺",
 				},
 				{
-					label: "01:ブルー",
-					value: "01:ブルー",
-					id: 12,
-					code: "01",
-					name: "ブルー",
+					label:	"01:ブルー",
+					value:	"01:ブルー",
+					id:		12,
+					code:	"01",
+					name:	"ブルー",
 				},
 				{
-					label: "02:グレー",
-					value: "02:グレー",
-					id: 13,
-					code: "02",
-					name: "グレー",
+					label:	"02:グレー",
+					value:	"02:グレー",
+					id:		13,
+					code:	"02",
+					name:	"グレー",
 				},
 				{
-					label: "03:ベージュ",
-					value: "03:ベージュ",
-					id: 14,
-					code: "03",
-					name: "ベージュ",
+					label:	"03:ベージュ",
+					value:	"03:ベージュ",
+					id:		14,
+					code:	"03",
+					name:	"ベージュ",
 				},
 				{
-					label: "04:茶",
-					value: "02:茶",
-					id: 15,
-					code: "04",
-					name: "茶",
+					label:	"04:茶",
+					value:	"02:茶",
+					id:		15,
+					code:	"04",
+					name:	"茶",
 				},
 				{
-					label: "05:白",
-					value: "05:白",
-					id: 16,
-					code: "05",
-					name: "白",
+					label:	"05:白",
+					value:	"05:白",
+					id:		16,
+					code:	"05",
+					name:	"白",
 				},
 			];
 			var option = $.extend({
-				getItemId: function () {
+				getItemId: function() {
 					// 商品ID取得メソッドを実装する
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
 				/* =================================================================================
 				source:function(request, response) {
 					var item_id = this.options.getItemId();
@@ -17694,54 +17691,54 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: サイズコードinputのjQueryオブジェクト（例：$("#ca_size_id")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getIAGFuncId()を実装すること
 		 */
-		clsizecode: function ($view, opt) {
+		clsizecode: function($view, opt) {
 			/*
 			 * TODO カラーテスト用スタブ
 			 */
 			var sizeList = [
 				{
-					label: "42:A4",
-					value: "42:A4",
-					id: 555,
-					code: "42",
-					name: "A4",
+					label:	"42:A4",
+					value:	"42:A4",
+					id:		555,
+					code:	"42",
+					name:	"A4",
 				},
 				{
-					label: "66:A5",
-					value: "66:A5",
-					id: 556,
-					code: "66",
-					name: "A5",
+					label:	"66:A5",
+					value:	"66:A5",
+					id:		556,
+					code:	"66",
+					name:	"A5",
 				},
 				{
-					label: "32:A6",
-					value: "32:A6",
-					id: 557,
-					code: "32",
-					name: "A6",
+					label:	"32:A6",
+					value:	"32:A6",
+					id:		557,
+					code:	"32",
+					name:	"A6",
 				},
 			];
 			var option = $.extend({
-				getItemId: function () {
+				getItemId: function() {
 					// 商品ID取得メソッドを実装する
 					return 0;
 				},
-				getColorId: function () {
+				getColorId: function() {
 					// カラーID取得メソッドを実装する
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {	// 変更時はcs_id属性に取引先IDを設定する
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
 				/* =================================================================================
 				source:function(request, response) {
 					var item_id = this.options.getItemId();
@@ -17785,29 +17782,29 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 商品分類体系コードinputのjQueryオブジェクト（例：$("#ca_srchFuncID")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getItemId()を実装すること
 		 */
-		clitgrpfunccode: function ($view, opt) {
+		clitgrpfunccode : function($view, opt) {
 			var option = $.extend({
 				varietyList: [],
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else if (varietyList != null && varietyList.length == 1) {
-				//						console.log(varietyList);
-				//						$target.attr('cs_id', varietyList[0].id).data('cl_autocomplete_item', varietyList[0]);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
-				getSrchYmd: function () {
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else if (varietyList != null && varietyList.length == 1) {
+//						console.log(varietyList);
+//						$target.attr('cs_id', varietyList[0].id).data('cl_autocomplete_item', varietyList[0]);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
+				getSrchYmd: function() {
 					// マスタ検索日
 					return clcom.getOpeDate();
 				},
-				source: function (request, response) {
+				source:function(request, response) {
 					var cond = {
 						srchYmd: this.options.getSrchYmd(),
 						codename: request.term
@@ -17817,7 +17814,7 @@ var _clInternalErrorHandler = function (message) {
 					};
 					// データを取得
 					var uri = 'am_pa_itgrpfunc_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							varietyList = [];
@@ -17844,44 +17841,44 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 商品分類階層inputのjQueryオブジェクト（例：$("#ca_srchLevelID")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getItgrpFuncId()を実装すること
 		 */
-		clitgrplevel: function ($view, opt) {
+		clitgrplevel : function($view, opt) {
 			var option = $.extend({
 				/**
 				 * 商品分類体系IDを返すメソッドを実装する
 				 * @returns {Number} 商品分類体系ID
 				 */
-				getItgrpFuncId: function () {
+				getItgrpFuncId: function() {
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
-				getSrchYmd: function () {
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
+				getSrchYmd: function() {
 					// マスタ検索日
 					return clcom.getOpeDate();
 				},
-				source: function (request, response) {
+				source:function(request, response) {
 					var itgrpfunc_id = this.options.getItgrpFuncId();
 					cond = {
 						srchYmd: this.options.getSrchYmd(),
 						itgrpfunc_id: itgrpfunc_id,
-						codename: request.term
+						codename:     request.term
 					};
 					req = {
 						cond: cond
 					};
 					// データを取得
 					var uri = 'am_pa_itgrplevel_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.itgrpLevelList = [];
@@ -17913,16 +17910,16 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 商品分類コードinputのjQueryオブジェクト（例：$("#ca_srchItgrpID")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getItgrpFuncId(),getItgrpLevelId()を実装すること
 		 */
-		clitgrpcode: function ($view, opt) {
+		clitgrpcode : function($view, opt) {
 			var option = $.extend({
 				/**
 				 * 商品分類体系IDを返すメソッドを実装する
 				 * @returns {Number} 商品分類体系ID
 				 */
-				getItgrpFuncId: function () {
+				getItgrpFuncId: function() {
 					return 0;
 				},
-				getSrchYmd: function () {
+				getSrchYmd: function() {
 					// マスタ検索日
 					return clcom.getOpeDate();
 				},
@@ -17930,44 +17927,44 @@ var _clInternalErrorHandler = function (message) {
 				 * 商品分類階層IDを返すメソッドを実装する
 				 * @returns {Number} 商品分類階層ID
 				 */
-				getItgrpLevelId: function () {
+				getItgrpLevelId: function() {
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
-				source: function (request, response) {
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
+				source:function(request, response) {
 					var itgrpfunc_id = this.options.getItgrpFuncId();
 					var itgrplevel_id = this.options.getItgrpLevelId();
 					var cond = {
 						srchYmd: this.options.getSrchYmd(),
 						itgrpfunc_id: itgrpfunc_id,
 						itgrplevel_id: itgrplevel_id,
-						codename: request.term
+						codename:     request.term
 					};
 					var req = {
 						cond: cond
 					};
 					// データを取得
 					var uri = 'am_pa_itgrp_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.itgrpList = [];
 							for (var i = 0; i < data.list.length; i++) {
 								var dl = data.list[i];
 								var val = {
-									label: dl.code + ":" + dl.name,
-									value: dl.code + ":" + dl.name,
+									label: dl.code + ":" +  dl.name,
+									value: dl.code + ":" +  dl.name,
 									id: dl.id,
 									code: dl.code,
 									name: dl.name,
@@ -17990,26 +17987,26 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 組織体系コードinputのjQueryオブジェクト（例：$("#ca_srchFuncID")）
 		 * @param opt		: オートコンプリートへのオプション。
 		 */
-		clorgfunccode: function ($view, opt) {
+		clorgfunccode : function($view, opt) {
 			var option = $.extend({
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
 
-				getSrchYmd: function () {
+				getSrchYmd: function() {
 					// マスタ検索日
 					return clcom.getOpeDate();
 				},
-				source: function (request, response) {
+				source:function(request, response) {
 					cond = {
 						srchYmd: this.options.getSrchYmd(),
 						codename: request.term
@@ -18019,7 +18016,7 @@ var _clInternalErrorHandler = function (message) {
 					};
 					// データを取得
 					var uri = 'am_pa_orgfunc_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.orgFuncList = [];
@@ -18046,8 +18043,8 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 組織階層inputのjQueryオブジェクト（例：$("#ca_srchLevelID")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getOrgFuncId()を実装すること
 		 */
-		clorglevel: function ($view, opt) {
-			var getLabel = function (item) {
+		clorglevel : function($view, opt) {
+			var getLabel = function(item){
 				return (item && item.name) ? item.name : '';
 			};
 			var option = $.extend({
@@ -18057,33 +18054,33 @@ var _clInternalErrorHandler = function (message) {
 				 * 組織体系IDを返すメソッドを実装する
 				 * @returns {Number} 組織体系ID
 				 */
-				getOrgFuncId: function () {
+				getOrgFuncId: function() {
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
-				source: function (request, response) {
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
+				source:function(request, response) {
 					var orgfunc_id = this.options.getOrgFuncId();
 					cond = {
 						orgfunc_id: orgfunc_id,
-						codename: request.term
+						codename:   request.term
 					};
 					req = {
 						cond: cond
 					};
 					// データを取得
 					var uri = 'am_pa_orglevel_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.orgLevelList = [];
@@ -18115,48 +18112,48 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view		: 組織コードinputのjQueryオブジェクト（例：$("#ca_srchOrgID")）
 		 * @param opt		: オートコンプリートへのオプション。最低限 getOrgFuncId(),getOrgLevelId()を実装すること
 		 */
-		clorgcode: function ($view, opt) {
+		clorgcode : function($view, opt) {
 			var option = $.extend({
 				/**
 				 * 商品分類体系IDを返すメソッドを実装する
 				 * @returns {Number} 商品分類体系ID
 				 */
-				getOrgFuncId: function () {
+				getOrgFuncId: function() {
 					return 0;
 				},
 				/**
 				 * 商品分類階層IDを返すメソッドを実装する
 				 * @returns {Number} 商品分類階層ID
 				 */
-				getOrgLevelId: function () {
+				getOrgLevelId: function() {
 					return 0;
 				},
-				//				select: function(event, ui){
-				//					var item = (ui.item) ? ui.item : null;
-				//					$(event.target).autocomplete('clAutocompleteItem', item);
-				//				},
-				//				change: function(event, ui) {
-				//					var $target = $(event.target);
-				//					if (ui.item && ui.item.id){
-				//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
-				//					} else {
-				//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
-				//					}
-				//				},
-				source: function (request, response) {
+//				select: function(event, ui){
+//					var item = (ui.item) ? ui.item : null;
+//					$(event.target).autocomplete('clAutocompleteItem', item);
+//				},
+//				change: function(event, ui) {
+//					var $target = $(event.target);
+//					if (ui.item && ui.item.id){
+//						$target.attr('cs_id', ui.item.id).data('cl_autocomplete_item', ui.item);
+//					} else {
+//						$target.attr('cs_id', 0).removeData('cl_autocomplete_item');
+//					}
+//				},
+				source:function(request, response) {
 					var orgfunc_id = this.options.getOrgFuncId();
 					var orglevel_id = this.options.getOrgLevelId();
 					cond = {
 						orgfunc_id: orgfunc_id,
 						orglevel_id: orglevel_id,
-						codename: request.term
+						codename:     request.term
 					};
 					req = {
 						cond: cond
 					};
 					// データを取得
 					var uri = 'am_pa_org_srch';
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+					clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
 							this.orgList = [];
@@ -18204,7 +18201,7 @@ var _clInternalErrorHandler = function (message) {
 		 * 入力されたコードを検証するためにこの部品はクラスにcl_validを
 		 * 追加します。
 		 *
-		 * イベント
+         * イベント
 		 * - change item
 		 *	 itemは未社員確定時にはnull
 		 *
@@ -18217,10 +18214,10 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {Object} [options]
 		 * @return {Backbone.Events}
 		 */
-		clusercode: function ($view) {
+		clusercode : function($view) {
 			var vent = new clutil.EventAggregator();
 
-			var setCode = function (code, item) {
+			var setCode = function(code, item){
 				if (!item) {
 					// 短いので何もしない
 					$view.attr('cs_id', 0).removeData('cl_codeinput_item');
@@ -18237,7 +18234,7 @@ var _clInternalErrorHandler = function (message) {
 				clutil.mediator.trigger("validation:require", $view);
 			};
 
-			$view.addClass("cl_valid_auto_off").change(function (e) {
+			$view.addClass("cl_valid_auto_off").change(function(e) {
 				var $target = $(e.target);
 				var code = $target.val();
 				// 入力されたコードの長さを確認
@@ -18254,7 +18251,7 @@ var _clInternalErrorHandler = function (message) {
 					code: code
 				};
 				var uri = "am_pa_user_srch";
-				clutil.postJSON(uri, req, _.bind(function (data, dataType) {
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
 					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 						if (data.list == null || data.list.length != 1) {
 							setCode(code);
@@ -18272,11 +18269,11 @@ var _clInternalErrorHandler = function (message) {
 
 		/**
 		 * ユーザーコード→ユーザーID、名称取得
-		 *
+         *
 		 * 入力されたコードを検証するためにこの部品はクラスにcl_validを
 		 * 追加します。
 		 *
-		 * イベント
+         * イベント
 		 * - change item
 		 *	 itemは未確定時にはnull
 		 *
@@ -18288,15 +18285,15 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {Object} [options]
 		 * @return {Backbone.Events}
 		 */
-		clusercode2: function ($view, options) {
+		clusercode2 : function($view, options) {
 			options || (options = {});
 			var vent = new clutil.EventAggregator();
 
-			vent.remove = function () {
+			vent.remove = function(){
 				vent.stopListening();
 			};
 
-			var setCode = function (code, item) {
+			var setCode = function(code, item){
 				if (!item) {
 					// 短いので何もしない
 					$view.attr('cs_id', 0).removeData('cl_codeinput_item');
@@ -18314,12 +18311,12 @@ var _clInternalErrorHandler = function (message) {
 				clutil.mediator.trigger("validation:require", $view);
 			};
 
-			var isEnabled = function () {
+			var isEnabled = function(){
 				return !$view.prop('readonly') && !$view.prop('disabled');
 			};
 
-			var removeOverlay = function (focus) {
-				if (!isEnabled()) {
+			var removeOverlay = function(focus){
+				if (!isEnabled()){
 					return true;
 				}
 				$view
@@ -18328,37 +18325,37 @@ var _clInternalErrorHandler = function (message) {
 					.remove();
 			};
 
-			var addOverlay = function () {
+			var addOverlay = function(){
 				// 検索中は何もしない
 				if (vent._pending) return;
 
 				var code = '';
 				var item = $view.data('cl_codeinput_item');
 
-				if (item == null) {
+				if(item == null){
 					code = $view.val();
-				} else if (item.code) {
+				}else if(item.code){
 					code = item.code + '：＊＊＊＊';
 				}
 
 				// 削除できない場合は追加しない
-				if (removeOverlay()) return;
+				if(removeOverlay()) return;
 
-				if (code) {
+				if(code){
 					// プレイスホルダー表示のために入力済みの場合のみオーバーレイ
 					$view
 						.addClass('clInputOverlaying')
 						.after('<span class="clInputOverlay">' + code + '</span>')
 						.next()
-						.click(function () {
-							if (isEnabled()) {
+						.click(function(){
+							if (isEnabled()){
 								$view.focus();
 							}
 						})
-						.on('mouseenter', function () {
+						.on('mouseenter', function(){
 							$view.trigger('mouseenter');
 						})
-						.on('mouseleave', function () {
+						.on('mouseleave', function(){
 							$view.trigger('mouseleave');
 						});
 				}
@@ -18373,16 +18370,16 @@ var _clInternalErrorHandler = function (message) {
 
 				.addClass("cl_valid")
 				.attr('placeholder', 'コードのみ入力')
-				.on("blur", function (e) {
-					_.defer(function () {
+				.on("blur", function(e){
+					_.defer(function(){
 						// changeイベントの後に実行したいからdefer
 						addOverlay();
 					});
 				})
-				.on('focusin', function () {
+				.on('focusin', function(){
 					removeOverlay();
 				})
-				.on("change", function () {
+				.on("change", function(){
 					var code = $view.val();
 
 					// 入力されたコードの長さを確認
@@ -18400,41 +18397,41 @@ var _clInternalErrorHandler = function (message) {
 					var uri = "am_pa_user_srch";
 					vent._pending = true;
 					clutil.postJSON(uri, req)
-						.always(function () {
+						.always(function(){
 							vent._pending = false;
 						})
-						.done(function (data, dataType) {
+						.done(function(data, dataType) {
 							if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK &&
-								data.list && data.list.length == 1) {
-								var item = data.list[0];
-								setCode(code, item);
+							   data.list && data.list.length == 1) {
+							   var item = data.list[0];
+							   setCode(code, item);
 							} else {
 								setCode();
 							}
 						})
-						.fail(function () { setCode() });
+						.fail(function(){setCode()});
 				});
 
 			// cl_codeinputでいいかな
 			$view.addClass('cl_codeinput').addClass('cl_codeonly');
 
-			vent.listenTo(clutil.mediator, 'data2view:done', function () {
-				if (!$view.is(':focus')) {
+			vent.listenTo(clutil.mediator, 'data2view:done', function(){
+				if (!$view.is(':focus')){
 					addOverlay();
 				}
 			});
-			return vent;
+            return vent;
 		},
 
 		/**
 		 * 社員コード→ユーザーID、名称取得
-		 *
+         *
 		 * ※ clstaffcode2を使用してください。
 		 *
 		 * 入力されたコードを検証するためにこの部品はクラスにcl_validを
 		 * 追加します。
 		 *
-		 * イベント
+         * イベント
 		 * - change item
 		 *	 itemは未社員確定時にはnull
 		 *
@@ -18446,11 +18443,11 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {Object} [options]
 		 * @return {Backbone.Events}
 		 */
-		clstaffcode: function ($view, options) {
+		clstaffcode : function($view, options) {
 			options || (options = {});
 			var vent = new clutil.EventAggregator();
 
-			var setCode = function (code, item) {
+			var setCode = function(code, item){
 				if (!item) {
 					// 短いので何もしない
 					$view.attr('cs_id', 0).removeData('cl_codeinput_item');
@@ -18468,51 +18465,51 @@ var _clInternalErrorHandler = function (message) {
 			};
 
 			$view.addClass("cl_valid")
-				.on("blur", function (e) {
+				.on("blur", function(e){
 					e.stopPropagation();
 				})
-				.on("change", function () {
-					var code = $view.val();
+				.on("change", function(){
+				var code = $view.val();
 
-					// 入力されたコードの長さを確認
-					if (code == null || code.length < 6) {
-						setCode(code);
-						return false;
-					};
-					var reqHead = {
-						opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL
-					};
-					var req = {
-						reqHead: reqHead,
-						code: code
-					};
-					var uri = "am_pa_staff_srch";
-					clutil.postJSON(uri, req, _.bind(function (data, dataType) {
-						if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
+				// 入力されたコードの長さを確認
+				if (code == null || code.length < 6) {
+					setCode(code);
+					return false;
+				};
+				var reqHead = {
+					opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL
+				};
+				var req = {
+					reqHead: reqHead,
+					code: code
+				};
+				var uri = "am_pa_staff_srch";
+				clutil.postJSON(uri, req, _.bind(function(data, dataType) {
+					if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK) {
 
-							if (data.list == null || data.list.length != 1) {
-								setCode(code);
-								return false;
-							}
-							var item = data.list[0];
-							setCode(code, item);
+						if (data.list == null || data.list.length != 1) {
+							setCode(code);
+							return false;
 						}
+						var item = data.list[0];
+						setCode(code, item);
+					}
 
-					}, this));
-				});
+				}, this));
+			});
 
 			// cl_codeinputでいいかな
 			$view.addClass('cl_codeinput').addClass('cl_codeonly');
-			return vent;
+            return vent;
 		},
 
 		/**
 		 * 社員コード→ユーザーID、名称取得
-		 *
+         *
 		 * 入力されたコードを検証するためにこの部品はクラスにcl_validを
 		 * 追加します。
 		 *
-		 * イベント
+         * イベント
 		 * - change item
 		 *	 itemは未社員確定時にはnull
 		 *
@@ -18524,15 +18521,15 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {Object} [options]
 		 * @return {Backbone.Events}
 		 */
-		clstaffcode2: function ($view, options) {
+		clstaffcode2 : function($view, options) {
 			options || (options = {});
 			var vent = new clutil.EventAggregator();
 
-			vent.remove = function () {
+			vent.remove = function(){
 				vent.stopListening();
 			};
 
-			var setCode = function (code, item) {
+			var setCode = function(code, item){
 				if (!item) {
 					// 短いので何もしない
 					$view.attr('cs_id', 0).removeData('cl_codeinput_item');
@@ -18550,12 +18547,12 @@ var _clInternalErrorHandler = function (message) {
 				clutil.mediator.trigger("validation:require", $view);
 			};
 
-			var isEnabled = function () {
+			var isEnabled = function(){
 				return !$view.prop('readonly') && !$view.prop('disabled');
 			};
 
-			var removeOverlay = function (focus) {
-				if (!isEnabled()) {
+			var removeOverlay = function(focus){
+				if (!isEnabled()){
 					return true;
 				}
 				$view
@@ -18564,37 +18561,37 @@ var _clInternalErrorHandler = function (message) {
 					.remove();
 			};
 
-			var addOverlay = function () {
+			var addOverlay = function(){
 				// 検索中は何もしない
 				if (vent._pending) return;
 
 				var code = '';
 				var item = $view.data('cl_codeinput_item');
 
-				if (item == null) {
+				if(item == null){
 					code = $view.val();
-				} else if (item.code) {
+				}else if(item.code){
 					code = item.code + '：＊＊＊＊';
 				}
 
 				// 削除できない場合は追加しない
-				if (removeOverlay()) return;
+				if(removeOverlay()) return;
 
-				if (code) {
+				if(code){
 					// プレイスホルダー表示のために入力済みの場合のみオーバーレイ
 					$view
 						.addClass('clInputOverlaying')
 						.after('<span class="clInputOverlay">' + code + '</span>')
 						.next()
-						.click(function () {
-							if (isEnabled()) {
+						.click(function(){
+							if (isEnabled()){
 								$view.focus();
 							}
 						})
-						.on('mouseenter', function () {
+						.on('mouseenter', function(){
 							$view.trigger('mouseenter');
 						})
-						.on('mouseleave', function () {
+						.on('mouseleave', function(){
 							$view.trigger('mouseleave');
 						});
 				}
@@ -18609,17 +18606,17 @@ var _clInternalErrorHandler = function (message) {
 
 				.addClass("cl_valid")
 				.attr('placeholder', 'コードのみ入力')
-				.on("blur", function (e) {
+				.on("blur", function(e){
 					clutil.mediator.trigger("validation:require", $view);
-					_.defer(function () {
+					_.defer(function(){
 						// changeイベントの後に実行したいからdefer
 						addOverlay();
 					});
 				})
-				.on('focusin', function () {
+				.on('focusin', function(){
 					removeOverlay();
 				})
-				.on("change", function () {
+				.on("change", function(){
 					var code = $view.val();
 
 					// 入力されたコードの長さを確認
@@ -18637,30 +18634,30 @@ var _clInternalErrorHandler = function (message) {
 					var uri = "am_pa_staff_srch";
 					vent._pending = true;
 					clutil.postJSON(uri, req)
-						.always(function () {
+						.always(function(){
 							vent._pending = false;
 						})
-						.done(function (data, dataType) {
+						.done(function(data, dataType) {
 							if (data.head.status == am_proto_defs.AM_PROTO_COMMON_RSP_STATUS_OK &&
-								data.list && data.list.length == 1) {
+							   data.list && data.list.length == 1) {
 								var item = data.list[0];
 								setCode(code, item);
 							} else {
 								setCode();
 							}
 						})
-						.fail(function () { setCode() });
+						.fail(function(){setCode()});
 				});
 
 			// cl_codeinputでいいかな
 			$view.addClass('cl_codeinput').addClass('cl_codeonly');
 
-			vent.listenTo(clutil.mediator, 'data2view:done', function () {
-				if (!$view.is(':focus')) {
+			vent.listenTo(clutil.mediator, 'data2view:done', function(){
+				if (!$view.is(':focus')){
 					addOverlay();
 				}
 			});
-			return vent;
+            return vent;
 		},
 
 		/**
@@ -18688,23 +18685,23 @@ var _clInternalErrorHandler = function (message) {
 		 * 		// data に結果が帰ってきている
 		 * });
 		 */
-		cltag2variety: function (tagcode, e) {
+		cltag2variety : function(tagcode, e) {
 			var reqHead = {
 				opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL
 			};
 			var req = {
 				reqHead: reqHead
 			};
-			if (_.isObject(tagcode)) {
+			if (_.isObject(tagcode)){
 				_.extend(req, tagcode);
-			} else {
+			}else{
 				req.code = tagcode;
 			}
 			var uri = "am_pa_taginfo";
-			clutil.postJSON(uri, req).done(_.bind(function (data) {
-				clutil.mediator.trigger('onCLtag2varietyCompleted', { status: 'OK', data: data }, e);
-			}, this)).fail(_.bind(function (data) {
-				clutil.mediator.trigger('onCLtag2varietyCompleted', { status: 'NG', data: data }, e);
+			clutil.postJSON(uri, req).done(_.bind(function(data) {
+				clutil.mediator.trigger('onCLtag2varietyCompleted', {status: 'OK', data: data}, e);
+			}, this)).fail(_.bind(function(data) {
+				clutil.mediator.trigger('onCLtag2varietyCompleted', {status: 'NG', data: data}, e);
 			}, this));
 		},
 
@@ -18717,7 +18714,7 @@ var _clInternalErrorHandler = function (message) {
 		 * 		// data に結果が帰ってきている
 		 * });
 		 */
-		clmakeritemcode2item: function (makeritemcode, e) {
+		clmakeritemcode2item : function(makeritemcode, e) {
 			var itgrp_id = null;
 			var maker_id = null;
 			var code = null;
@@ -18755,7 +18752,7 @@ var _clInternalErrorHandler = function (message) {
 
 			var deferred = $.Deferred();
 
-			clutil.postJSON(uri, req).then(function (data) {
+			clutil.postJSON(uri, req).then(function(data) {
 				var rspData = {
 					status: 'OK',
 					data: data,
@@ -18763,7 +18760,7 @@ var _clInternalErrorHandler = function (message) {
 				};
 				clutil.mediator.trigger('onCLmakerItemCodeCompleted', rspData, e);
 				deferred.resolveWith(this, [data, e, rspData]);
-			}, function (data) {
+			}, function(data){
 				var rspData = {
 					status: 'NG',
 					data: data,
@@ -18786,7 +18783,7 @@ var _clInternalErrorHandler = function (message) {
 		 * 		// data に結果が帰ってきている
 		 * });
 		 */
-		clcolor2size: function (itemID, colorID, e) {
+		clcolor2size : function(itemID, colorID, e) {
 			var reqHead = {
 				opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL
 			};
@@ -18796,10 +18793,10 @@ var _clInternalErrorHandler = function (message) {
 				colorID: colorID
 			};
 			var uri = "am_pa_color2size";
-			return clutil.postJSON(uri, req).done(_.bind(function (data) {
-				clutil.mediator.trigger('onCLcolor2sizeCompleted', { status: 'OK', data: data }, e);
-			}, this)).fail(_.bind(function (data) {
-				clutil.mediator.trigger('onCLcolor2sizeCompleted', { status: 'NG', data: data }, e);
+			return clutil.postJSON(uri, req).done(_.bind(function(data) {
+				clutil.mediator.trigger('onCLcolor2sizeCompleted', {status: 'OK', data: data}, e);
+			}, this)).fail(_.bind(function(data) {
+				clutil.mediator.trigger('onCLcolor2sizeCompleted', {status: 'NG', data: data}, e);
 			}, this));
 		},
 
@@ -18820,48 +18817,48 @@ var _clInternalErrorHandler = function (message) {
 		 * 		// data に結果が帰ってきている
 		 * });
 		 */
-		clpriceline: function (itgrpID, e) {
+		clpriceline : function(itgrpID, e) {
 			var reqHead = {
 				opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL
 			};
 			var req = {
 				reqHead: reqHead,
 			};
-			if (_.isObject(itgrpID)) {
+			if (_.isObject(itgrpID)){
 				_.extend(req, itgrpID);
-			} else {
+			}else{
 				req.itgrpID = itgrpID;
 			}
 			var uri = "am_pa_priceline";
-			return clutil.postJSON(uri, req).done(_.bind(function (data) {
-				clutil.mediator.trigger('onCLpricelineCompleted', { status: 'OK', data: data }, e);
-			}, this)).fail(_.bind(function (data) {
-				clutil.mediator.trigger('onCLpricelineCompleted', { status: 'NG', data: data }, e);
+			return clutil.postJSON(uri, req).done(_.bind(function(data) {
+				clutil.mediator.trigger('onCLpricelineCompleted', {status: 'OK', data: data}, e);
+			}, this)).fail(_.bind(function(data) {
+				clutil.mediator.trigger('onCLpricelineCompleted', {status: 'NG', data: data}, e);
 			}, this));
 		},
 
 		/**
 		 * JANコードから、品種、メーカー、商品、サブクラス１・２情報を取得する。
 		 */
-		cljancode: function (args, e) {
-			if (!args) {
+		cljancode: function(args, e){
+			if(!args){
 				console.warn('clcom.cljancode: invalid arguments.');
 				return;
 			}
 			var completed = _.isFunction(args.completed)
 				? args.completed
-				: function (resArgs, e) {
+				: function(resArgs, e){
 					clutil.mediator.trigger('onCLjancode_srchCompleted', resArgs, e);
 				};
 			var srchYmd = _.isNumber(args.srchYmd) ? args.srchYmd : clcom.getOpeDate();
 			var req;
-			if (_.has(args, 'janCode')) {
+			if(_.has(args, 'janCode')){
 				// JANコードで検索 /////////////////////////////////////////
 				var fixJanCode = _.isString(args.janCode) ? $.trim(args.janCode) : null;
 				// JanCode 長さは 8桁 or 13桁。
 				// 旧タグコード対応で15桁も許容。
-				if (fixJanCode.length !== 8 && fixJanCode.length !== 13 && fixJanCode.length !== 15) {
-					completed({ status: 'NG' }, e);
+				if(fixJanCode.length !== 8 && fixJanCode.length !== 13 && fixJanCode.length !== 15){
+					completed({status: 'NG'}, e);
 					return;
 				}
 				req = {
@@ -18871,12 +18868,12 @@ var _clInternalErrorHandler = function (message) {
 					janCode: fixJanCode,
 					srchYmd: srchYmd
 				};
-			} else {
+			}else{
 				// 品種ID, メーカーID, メーカー品番で検索 //////////////////
 				var pickArgs = _.pick(args, 'itgrpID', 'makerID', 'makerItemCode');
-				if (_.isEmpty(pickArgs)) {
+				if(_.isEmpty(pickArgs)){
 					// 引数不十分
-					completed({ status: 'NG' }, e);
+					completed({status: 'NG'}, e);
 					return;
 				}
 				req = _.extend({
@@ -18887,11 +18884,11 @@ var _clInternalErrorHandler = function (message) {
 				}, pickArgs);
 			}
 			var resId = 'am_pa_jancode_srch';
-			clutil.postJSON(resId, req).done(function (data) {
+			clutil.postJSON(resId, req).done(function(data){
 				var status = (data.rec && !_.isEmpty(data.rec.janCode)) ? 'OK' : 'NG';	// ここの NG は not found に相当
-				completed({ status: status, data: data }, e);
-			}).fail(function (data) {
-				completed({ status: 'NG', data: data }, e);
+				completed({status: status, data: data}, e);
+			}).fail(function(data){
+				completed({status: 'NG', data: data}, e);
 			});
 
 		},
@@ -18902,7 +18899,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view_input テキストフィールドビュー
 		 * @param limit 制限文字数 省略時はテキストフィールドのdata-tflimit属性を用いる
 		 */
-		cltxtFieldLimit: function ($view_input, $view_span, limit) {
+		cltxtFieldLimit : function($view_input, $view_span, limit) {
 			if ($view_span == null) {
 				$view_span = $view_input.prev();
 			}
@@ -18912,9 +18909,9 @@ var _clInternalErrorHandler = function (message) {
 
 			if (limit == null) {
 				limit = $view_input.data('tflimit');
-				if (limit != null) {
+				if(limit != null){
 					limit = parseInt(limit, 10);
-				} else {
+				}else{
 					datalimit = $view_input.data('limit');
 					if (datalimit != null) {
 						datalimits = datalimit.split(' ');
@@ -18934,7 +18931,7 @@ var _clInternalErrorHandler = function (message) {
 			var remain = limit - len;
 			$view_span.text(remain);
 
-			var updateRemain = function () {
+			var updateRemain = function() {
 				len = $view_input.val().length;
 				remain = limit - len;
 				$view_span.text(remain);
@@ -18946,7 +18943,7 @@ var _clInternalErrorHandler = function (message) {
 			};
 
 			var prevInst = $view_input.data('cltxtFieldLimit');
-			if (prevInst) {
+			if (prevInst){
 				clutil.mediator.off('cltxtFieldLimit:requireUpdateRemain', null, prevInst);
 			}
 			var inst = _.extend({}, Backbone.Events);
@@ -18963,10 +18960,10 @@ var _clInternalErrorHandler = function (message) {
 				.addClass("cltxtFieldLimit");
 			$view_span
 				.off(".cltxtFieldLimit")
-				.on("mouseover.cltxtFieldLimit", function () {
+				.on("mouseover.cltxtFieldLimit", function(){
 					$view_input.trigger('mouseover');
 				})
-				.on('mouseout.cltxtFieldLimit', function () {
+				.on('mouseout.cltxtFieldLimit', function(){
 					$view_input.trigger('mouseout');
 				});
 
@@ -18979,7 +18976,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view_input
 		 * @param limit
 		 */
-		cltxtFieldLimitReset: function ($view_input, $view_span, limit) {
+		cltxtFieldLimitReset: function($view_input, $view_span, limit) {
 			if ($view_span == null) {
 				$view_span = $view_input.prev();
 			}
@@ -18990,9 +18987,9 @@ var _clInternalErrorHandler = function (message) {
 
 			if (limit == null) {
 				limit = $view_input.data('tflimit');
-				if (limit != null) {
+				if(limit != null){
 					limit = parseInt(limit, 10);
-				} else {
+				}else{
 					datalimit = $view_input.data('limit');
 					if (datalimit != null) {
 						datalimits = datalimit.split(' ');
@@ -19024,7 +19021,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param chkClass チェックボックスのid
 		 * @returns 選択されている行数
 		 */
-		chkcount: function (tbody, chkClass) {
+		chkcount : function(tbody, chkClass) {
 			var chkRec = $(tbody + " input[name=" + chkClass + "]:checked");
 			return chkRec.length;
 		},
@@ -19047,7 +19044,7 @@ var _clInternalErrorHandler = function (message) {
 		 *          正常値：チェックされたデータの配列
 		 *          ボタンモードが起動できないエラー：null
 		 */
-		chkmode: function (tbody, searchData, chkClass, ope_mode, validator, id, st_ymd, ed_ymd, id2) {
+		chkmode : function(tbody, searchData, chkClass, ope_mode, validator, id, st_ymd, ed_ymd, id2){
 			var chkRec = $(tbody + " input[name=" + chkClass + "]:checked");
 			var chkData = [];
 			var data;
@@ -19061,23 +19058,23 @@ var _clInternalErrorHandler = function (message) {
 					var compare;
 					//kaba ：keyが１個じゃ足りなくなったので追加
 					if (st_ymd) {
-						if (id2) {
+						if(id2) {
 							compare = data[id] + "_" + data[id2] + "_" + data[st_ymd];
 						} else {
 							compare = data[id] + "_" + data[st_ymd];
 						}
 					} else {
 						// st_dateが無い場合に対応
-						if (id2) {
+						if(id2) {
 							compare = data[id] + "_" + data[id2];
 						} else {
 							compare = data[id];
 						}
 					}
 					if (selectId == compare) {
-						//if (selectId == data[id] + "_" + data[st_ymd]) {
+					//if (selectId == data[id] + "_" + data[st_ymd]) {
 						if (ope_mode != am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW &&
-							ope_mode != am_proto_defs.AM_PROTO_COMMON_RTYPE_REL) {
+								ope_mode != am_proto_defs.AM_PROTO_COMMON_RTYPE_REL) {
 							// 新規登録、予約参照以外はtrオブジェクトを保管しておく
 							data.tr_obj = $(chkRec[i].parentElement);
 						}
@@ -19091,73 +19088,73 @@ var _clInternalErrorHandler = function (message) {
 
 			// 新規登録はチェックしない
 			if (ope_mode == am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW ||
-				ope_mode == am_proto_defs.AM_PROTO_COMMON_RTYPE_REL) {
+					ope_mode == am_proto_defs.AM_PROTO_COMMON_RTYPE_REL) {
 				return chkData;
 			}
 
 			for (i = 0; i < chkData.length; i++) {
 				data = chkData[i];
-				switch (ope_mode) {
-					case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-						// 新規登録
+				switch (ope_mode){
+				case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
+					// 新規登録
 
-						break;
-					case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-						// 編集
+					break;
+				case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
+					// 編集
 
-						/* ==========================
+					/* ==========================
+					// 最終日付のチェック
+					if (ed_ymd) {
+						if (data[ed_ymd] <= clcom.max_date) {
+							// チェックボックスの背景色を赤にする
+							data.tr_obj.css("background-color", "red");
+							// エラー内容を表示
+							// TODO
+							//validator.setErrorHeader(clmsg.cl_rtype_r_add);
+							retStat = false;
+						}
+					}
+					// 適用開始日のチェック
+					if (st_ymd) {
+						if (data[st_ymd] < clcom.ope_date) {
+							// チェックボックスの背景色を赤にする
+							data.tr_obj.css("background-color", "red");
+							// エラー内容を表示
+							// TODO
+							//validator.setErrorHeader(clmsg.cl_rtype_r_upd);
+							retStat = false;
+						}
+					}
+					//========================== */
+					break;
+				case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
+					// 参照
+
+					break;
+				case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+					// 削除
+
+					/* ==========================
+					// 適用開始日のチェック
+					if (st_ymd) {
+						if (data[st_ymd] < clcom.ope_date) {
+							// チェックボックスの背景色を赤にする
+							data.tr_obj.css("background-color", "red");
+							retStat = false;
+						}
+					}
+					if (ed_ymd) {
 						// 最終日付のチェック
-						if (ed_ymd) {
-							if (data[ed_ymd] <= clcom.max_date) {
-								// チェックボックスの背景色を赤にする
-								data.tr_obj.css("background-color", "red");
-								// エラー内容を表示
-								// TODO
-								//validator.setErrorHeader(clmsg.cl_rtype_r_add);
-								retStat = false;
-							}
+						if (data[ed_ymd] <= clcom.max_date) {
+							// チェックボックスの背景色を赤にする
+							data.tr_obj.css("background-color", "red");
+							retStat = false;
 						}
-						// 適用開始日のチェック
-						if (st_ymd) {
-							if (data[st_ymd] < clcom.ope_date) {
-								// チェックボックスの背景色を赤にする
-								data.tr_obj.css("background-color", "red");
-								// エラー内容を表示
-								// TODO
-								//validator.setErrorHeader(clmsg.cl_rtype_r_upd);
-								retStat = false;
-							}
-						}
-						//========================== */
-						break;
-					case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:
-						// 参照
-
-						break;
-					case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-						// 削除
-
-						/* ==========================
-						// 適用開始日のチェック
-						if (st_ymd) {
-							if (data[st_ymd] < clcom.ope_date) {
-								// チェックボックスの背景色を赤にする
-								data.tr_obj.css("background-color", "red");
-								retStat = false;
-							}
-						}
-						if (ed_ymd) {
-							// 最終日付のチェック
-							if (data[ed_ymd] <= clcom.max_date) {
-								// チェックボックスの背景色を赤にする
-								data.tr_obj.css("background-color", "red");
-								retStat = false;
-							}
-						}
-						//========================== */
-						break;
-					default:
-						break;
+					}
+					//========================== */
+					break;
+				default:
+					break;
 				}
 
 				// trオブジェクトをヌルにする
@@ -19167,21 +19164,21 @@ var _clInternalErrorHandler = function (message) {
 
 			if (!retStat) {
 				// エラー内容を表示する
-				switch (ope_mode) {
-					case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-						// 予約追加
-						validator.setErrorHeader(clmsg.cl_rtype_r_add);
-						break;
-					case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-						// 予約編集
-						validator.setErrorHeader(clmsg.cl_rtype_r_upd);
-						break;
-					case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-						// 予約削除
-						validator.setErrorHeader(clmsg.cl_rtype_r_del);
-						break;
-					default:
-						break;
+				switch (ope_mode){
+				case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
+					// 予約追加
+					validator.setErrorHeader(clmsg.cl_rtype_r_add);
+					break;
+				case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
+					// 予約編集
+					validator.setErrorHeader(clmsg.cl_rtype_r_upd);
+					break;
+				case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+					// 予約削除
+					validator.setErrorHeader(clmsg.cl_rtype_r_del);
+					break;
+				default:
+					break;
 				}
 
 				document.location = '#';
@@ -19196,7 +19193,7 @@ var _clInternalErrorHandler = function (message) {
 		 * bootstrap対応
 		 * 選択画面起動時などに呼ぶ
 		 */
-		initUIelement: function ($view) {
+		initUIelement: function($view) {
 			$view.find('[data-toggle="checkbox"]').each(function () {
 				$(this).checkbox();
 			});
@@ -19208,39 +19205,39 @@ var _clInternalErrorHandler = function (message) {
 				$(this).selectpicker('refresh');
 			});
 			var tdovercells = $("table.hilight td"),
-				hoverClass = "hover",
-				current_r,
-				current_c;
+			hoverClass = "hover",
+			current_r,
+			current_c;
 			tdovercells.hover(
-				function () {
-					var $this = $(this);
-					(current_r = $this.parent().children("table td")).addClass(hoverClass);
-					(current_c = tdovercells.filter(":nth-child(" + (current_r.index($this) + 1) + ")")).addClass(hoverClass);
-				},
-				function () {
-					if (current_r) current_r.removeClass(hoverClass);
-					if (current_c) current_c.removeClass(hoverClass);
-				}
+					function(){
+						var $this = $(this);
+						(current_r = $this.parent().children("table td")).addClass(hoverClass);
+						(current_c = tdovercells.filter(":nth-child("+ (current_r.index($this)+1) +")")).addClass(hoverClass);
+					},
+					function(){
+						if (current_r) current_r.removeClass(hoverClass);
+						if (current_c) current_c.removeClass(hoverClass);
+					}
 			);
 			var tdRovercells = $("table.hilightRow td"),
-				hoverClass = "hover",
-				current_r,
-				current_c;
+			hoverClass = "hover",
+			current_r,
+			current_c;
 			tdRovercells.hover(
-				function () {
-					var $this = $(this);
-					(current_r = $this.parent().children("table td")).addClass(hoverClass);
-				},
-				function () {
-					if (current_r) current_r.removeClass(hoverClass);
-				}
+					function(){
+						var $this = $(this);
+						(current_r = $this.parent().children("table td")).addClass(hoverClass);
+					},
+					function(){
+						if (current_r) current_r.removeClass(hoverClass);
+					}
 			);
 
 			$view.undelegate('td :checkbox', 'toggle');
 			$view.undelegate('td :radio', 'toggle');
 
 			//チェックされた行をハイライト
-			$view.delegate('td :checkbox', 'toggle', function (e) {
+			$view.delegate('td :checkbox', 'toggle', function(e) {
 				var tr = $(this).closest('tr');
 				if ($(this).prop('checked')) {
 					$(tr).addClass('checked');
@@ -19248,8 +19245,8 @@ var _clInternalErrorHandler = function (message) {
 					$(tr).removeClass('checked');
 				}
 			});
-			$view.delegate('td :radio', 'toggle', function (e) {
-				$.each($(this).closest('table').find('tr'), function () {
+			$view.delegate('td :radio', 'toggle', function(e) {
+				$.each($(this).closest('table').find('tr'), function() {
 					$(this).removeClass('checked')
 				});
 				$(this).closest('tr').addClass('checked');
@@ -19259,13 +19256,13 @@ var _clInternalErrorHandler = function (message) {
 			$view.off('mouseout', '#selected .btn-delete');
 			$view.off('mousedown', '#selected .btn-delete');
 			//選択した内容の削除ボタン
-			$view.on('mouseover', '#selected .btn-delete', function () {
+			$view.on('mouseover', '#selected .btn-delete', function(){
 				$(this).parent('li').toggleClass('ovr');
 			});
-			$view.on('mouseout', '#selected .btn-delete', function () {
+			$view.on('mouseout', '#selected .btn-delete', function(){
 				$(this).parent('li').toggleClass('ovr');
 			});
-			$view.on('mousedown', '#selected .btn-delete', function () {
+			$view.on('mousedown', '#selected .btn-delete', function(){
 				$(this).parent('li').addClass('active');
 			});
 		},
@@ -19274,15 +19271,15 @@ var _clInternalErrorHandler = function (message) {
 		/*
 		 * 選択画面起動時の複数選択または単数選択起動モード
 		 */
-		cl_single_select: 0,
-		cl_multiple_select: 1,
+		cl_single_select : 0,
+		cl_multiple_select : 1,
 
 		/**
 		 * AOKI
 		 * 権限によってボタンなどのオブジェクトを使用可、不可に設定する
 		 */
-		setFuncObj: function ($view) {
-			var isFunc = function (func_code) {
+		setFuncObj: function($view) {
+			var isFunc = function(func_code) {
 				var funclist = clcom.getFuncList();
 				var flag = false;
 				for (var i = 0; i < funclist.length; i++) {
@@ -19295,7 +19292,7 @@ var _clInternalErrorHandler = function (message) {
 				return flag;
 			};
 
-			$.each($view.find('.cl_func'), function () {
+			$.each($view.find('.cl_func'), function() {
 				var func_code = $(this).attr('func-code');
 				if (!isFunc(func_code)) {
 					$(this).remove();
@@ -19309,7 +19306,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param {Integer} item 登録するアイテム
 		 * @param {Integer} userId ユーザーID
 		 */
-		setFrequency: function (item, userId) {
+		setFrequency: function(item, userId) {
 			var frequentList = clcom.getFrequentList(userId);
 			if (frequentList == null) {
 				// 初期化
@@ -19334,7 +19331,7 @@ var _clInternalErrorHandler = function (message) {
 			}
 
 			// countUpでソート
-			frequentList.sort(function (a, b) { return (Number(b.countUp) - Number(a.countUp)); });
+			frequentList.sort(function(a, b) {return (Number(b.countUp) - Number(a.countUp));});
 
 			clcom.setFrequentList(frequentList, userId);
 		},
@@ -19342,7 +19339,7 @@ var _clInternalErrorHandler = function (message) {
 		/**
 		 * 初期フォーカスの設定をする
 		 */
-		setFirstFocus: function ($obj) {
+		setFirstFocus: function($obj){
 			var agent = clcom.getAgent();
 			// PCの場合はフォーカス設定
 			if (agent == clcom.onPC) {
@@ -19354,15 +19351,15 @@ var _clInternalErrorHandler = function (message) {
 		/**
 		 * フォーカスの設定をする
 		 */
-		setFocus: function ($obj) {
+		setFocus: function($obj){
 			var agent = clcom.getAgent();
 			var $button = $obj;
 
 			// bootstrap対応 AOKI ACUST
 			if ($obj.is('select')) {
-				if ($obj.is('._clcombobox')) {
+				if($obj.is('._clcombobox')){
 					$button = $obj.next('div').find('>input');
-				} else {
+				}else{
 					$button = $obj.next('div').find('button');
 				}
 			}
@@ -19382,12 +19379,12 @@ var _clInternalErrorHandler = function (message) {
 			}
 		},
 
-		han_txt: "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｧｨｩｪｫｬｭｮｯ､｡ｰ｢｣0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZﾞﾟ ",
-		zen_txt: "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンァィゥェォャュョッ、。ー「」０１２３４５６７８９ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ" +
-			"　　　　　ガギグゲゴザジズゼゾダヂヅデド　　　　　バビブベボ　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" +
-			"　　　　　　　　　　　　　　　　　　　　　　　　　パピプペポ　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
+		han_txt : "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｧｨｩｪｫｬｭｮｯ､｡ｰ｢｣0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZﾞﾟ ",
+		zen_txt : "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンァィゥェォャュョッ、。ー「」０１２３４５６７８９ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ" +
+				  "　　　　　ガギグゲゴザジズゼゾダヂヅデド　　　　　バビブベボ　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" +
+				  "　　　　　　　　　　　　　　　　　　　　　　　　　パピプペポ　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
 
-		zen2han: function (txt) {
+		zen2han: function(txt) {
 			var retStr = "";
 			for (var i = 0; i < txt.length; i++) {
 				var c = txt.charAt(i);
@@ -19397,10 +19394,10 @@ var _clInternalErrorHandler = function (message) {
 					// 空白対応
 					c = clutil.han_txt.charAt(124);
 				} else if (n >= 182) {
-					c = clutil.han_txt.charAt(n - 182);
+					c = clutil.han_txt.charAt(n-182);
 					c += clutil.han_txt.charAt(123);
 				} else if (n >= 122) {
-					c = clutil.han_txt.charAt(n - 122);
+					c = clutil.han_txt.charAt(n-122);
 					c += clutil.han_txt.charAt(122);
 				} else if (n >= 0) {
 					c = clutil.han_txt.charAt(n);
@@ -19411,19 +19408,19 @@ var _clInternalErrorHandler = function (message) {
 			return retStr;
 		},
 
-		han2zen: function (txt) {
+		han2zen: function(txt) {
 			var retStr = "";
 			for (var i = 0; i < txt.length; i++) {
 				var c = txt.charAt(i);
-				var cnext = txt.charAt(i + 1);
+				var cnext = txt.charAt(i+1);
 				var n = clutil.han_txt.indexOf(c, 0);
-				var nnext = clutil.han_txt.indexOf(cnext, 0);
+				var nnext = clutil.han_txt.indexOf(cnext,0);
 				if (n >= 0) {
 					if (nnext == 122) {
-						c = clutil.zen_txt.charAt(n + 122);
+						c = clutil.zen_txt.charAt(n+122);
 						i++;
 					} else if (nnext == 123) {
-						c = clutil.zen_txt.charAt(n + 182);
+						c = clutil.zen_txt.charAt(n+182);
 						i++;
 					} else {
 						c = clutil.zen_txt.charAt(n);
@@ -19464,7 +19461,7 @@ var _clInternalErrorHandler = function (message) {
 		 * @param $view2 下部ページャー
 		 * @param method 各ページャーの設定値
 		 */
-		pagination2: function ($view1, $view2, method) {
+		pagination2: function($view1, $view2, method) {
 			var method1 = $.extend({
 				items: 1,
 				itemsOnPage: 10,
@@ -19478,20 +19475,20 @@ var _clInternalErrorHandler = function (message) {
 				ellipseText: '&hellip;',
 				//cssStyle: 'light-theme',
 				selectOnClick: true,
-				onPageClick: function (pageNumber, itemsOnPage) {
+				onPageClick: function(pageNumber, itemsOnPage) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onSelectChange: function (itemsOnPage) {
+				onSelectChange: function(itemsOnPage) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onInit: function () {
+				onInit: function() {
 					// Callback triggered immediately after initialization
 				},
-				displaypanel: 'displaypanel',
-				pagination_select: 'pagination_select',
-				pagination_store: true,	// true:件数を10,50に false:件数を25,100に
+				displaypanel : 'displaypanel',
+				pagination_select : 'pagination_select',
+				pagination_store : true,	// true:件数を10,50に false:件数を25,100に
 			}, method || {});
 			if (method.displaypanel1 != null) {
 				method1.displaypanel = method.displaypanel1;
@@ -19512,20 +19509,20 @@ var _clInternalErrorHandler = function (message) {
 				ellipseText: '&hellip;',
 				//cssStyle: 'light-theme',
 				selectOnClick: true,
-				onPageClick: function (pageNumber, itemsOnPage) {
+				onPageClick: function(pageNumber, itemsOnPage) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onSelectChange: function (itemsOnPage) {
+				onSelectChange: function(itemsOnPage) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onInit: function () {
+				onInit: function() {
 					// Callback triggered immediately after initialization
 				},
-				displaypanel: 'displaypanel',
-				pagination_select: 'pagination_select',
-				pagination_store: true,	// true:件数を10,50に false:件数を25,100に
+				displaypanel : 'displaypanel',
+				pagination_select : 'pagination_select',
+				pagination_store : true,	// true:件数を10,50に false:件数を25,100に
 			}, method || {});
 			if (method.displaypanel2 != null) {
 				method2.displaypanel = method.displaypanel2;
@@ -19538,13 +19535,13 @@ var _clInternalErrorHandler = function (message) {
 		},
 
 		// エラーメッセージ定義を取るためのラッパ関数
-		getclmsg: function (key) {
+		getclmsg: function(key) {
 			var msg = clmsg[key];
 			return _.isEmpty(msg) ? key : msg;
 		},
 
 		// システムパラメータを取るためのラッパ関数
-		getclsysparam: function (key, defaultvalue) {
+		getclsysparam: function(key, defaultvalue){
 			var val = clcom.cmSysparamMap[key];
 			return (val != undefined) ? val : defaultvalue;
 		},
@@ -19552,36 +19549,36 @@ var _clInternalErrorHandler = function (message) {
 		/**
 		 * イベント中継用の Backbone.Event インスタンス
 		 */
-		mediator: _.extend({}, Backbone.Events),
+		 mediator: _.extend({}, Backbone.Events),
 
-		/**
-		 * イベントアグリゲータ
-		 *
-		 * インスタンスはBackbone.Eventsのメソッドを持つ。
-		 *
-		 * コードはMarionette.EventAggregatorから借りた
-		 *
-		 * @class EventAggregator
-		 * @for clutil
-		 * @constructor
-		 * @example
-		 * ```js
-		 * var vent = new clutil.EventAggregator();
-		 * vent.on("foo", function(){alert("foo")});
-		 * vent.trigger("foo");
-		 * ```
-		 */
-		EventAggregator: (function () {
-			var EA = function () { };
+        /**
+         * イベントアグリゲータ
+         *
+         * インスタンスはBackbone.Eventsのメソッドを持つ。
+         *
+         * コードはMarionette.EventAggregatorから借りた
+         *
+         * @class EventAggregator
+         * @for clutil
+         * @constructor
+         * @example
+         * ```js
+         * var vent = new clutil.EventAggregator();
+         * vent.on("foo", function(){alert("foo")});
+         * vent.trigger("foo");
+         * ```
+         */
+        EventAggregator: (function(){
+            var EA = function(){};
 
-			EA.extend = Backbone.Model.extend;
+            EA.extend = Backbone.Model.extend;
 
-			_.extend(EA.prototype, Backbone.Events);
+            _.extend(EA.prototype, Backbone.Events);
 
-			return EA;
-		}()),
+            return EA;
+        }()),
 
-		_eof: '-- end of extend(clutil)//'
+		 _eof: '-- end of extend(clutil)//'
 	});
 }());
 
@@ -19593,9 +19590,9 @@ var _clInternalErrorHandler = function (message) {
 	var tabbableSelector = 'input,select,a,button,textarea,[tabindex]';
 	function tabbable(el) {
 		var $el = $(el),
-			exclude = $el.is('[readonly],[type="hidden"]'),
-			isTabbable = $el.is(':tabbable'),
-			isCmButton = $el.hasClass('cm_button_single');
+		exclude = $el.is('[readonly],[type="hidden"]'),
+		isTabbable = $el.is(':tabbable'),
+		isCmButton = $el.hasClass('cm_button_single');
 		return !exclude && isTabbable && !isCmButton;
 	}
 
@@ -19628,7 +19625,7 @@ var _clInternalErrorHandler = function (message) {
 		}
 		var nowIndex = i;
 		var n1, n2, inc = shift < 0 ? -1 : 1,
-			nextIndex = nowIndex + (shift || 0);
+				nextIndex = nowIndex + (shift||0);
 
 		if (nowIndex === numElements) {
 			nextIndex = inc > 0 ? 0 : -1;
@@ -19703,7 +19700,7 @@ var _clInternalErrorHandler = function (message) {
 	 * ```
 	 */
 	var focus = function ($input, shift, options) {
-		if (!($input instanceof $) && _.isObject($input)) {
+		if (!($input instanceof $) && _.isObject($input)){
 			options = $input;
 			$input = options.el;
 			shift = options.shift;
@@ -19758,10 +19755,10 @@ var _clInternalErrorHandler = function (message) {
 		return cache[(index + shift + l) % l];
 	}
 
-	var checkButton = function ($el, tagName) {
-		if ((tagName === 'button' &&
-			$el.is('.dropdown-toggle.selectpicker')) ||
-			(tagName === 'a' && $el.is('.dropdown-menu>li>a'))) {
+	var checkButton = function($el, tagName){
+		if((tagName === 'button' &&
+				$el.is('.dropdown-toggle.selectpicker')) ||
+		   (tagName === 'a' && $el.is('.dropdown-menu>li>a'))){
 			return false;
 		}
 
@@ -19771,7 +19768,7 @@ var _clInternalErrorHandler = function (message) {
 			tagName === 'a';
 	};
 
-	var parseEvent = function (ev, options) {
+	var parseEvent = function(ev, options) {
 		var el = ev.target,
 			$el = $(el),
 			tagName = el.tagName.toLowerCase(),
@@ -19781,7 +19778,7 @@ var _clInternalErrorHandler = function (message) {
 			keyCode = ev.which,
 			shiftKey = ev.shiftKey;
 
-		var parsed = {
+		var parsed =  {
 			el: el,
 			$el: $el,
 			tagName: tagName,
@@ -19797,11 +19794,11 @@ var _clInternalErrorHandler = function (message) {
 		}
 
 		switch (keyCode) {
-			case 9:	 // TAB
-			case 108:				// NUMPAD ENTER
-			case 13: // ENTER
-				shift = shiftKey ? -1 : 1;
-				break;
+		case 9:	 // TAB
+		case 108:				// NUMPAD ENTER
+		case 13: // ENTER
+			shift = shiftKey ? -1 : 1;
+			break;
 			//	 case 39: // 右
 			//	   if (isButton) {
 			//		 shift = 1;
@@ -19848,7 +19845,7 @@ var _clInternalErrorHandler = function (message) {
 	 * @param {Event} ev - keydownイベントでのevent
 	 * @return {Boolean}フォーカス遷移を抑止した場合はtrue、そうでない場合はfalse
 	 */
-	var stopFocus = function (ev) {
+	var stopFocus = function(ev) {
 		var parsed = parseEvent(ev, {});
 		if (parsed.shift) {
 			ev.stopPropagation();
@@ -19856,9 +19853,9 @@ var _clInternalErrorHandler = function (message) {
 		return !!parsed.shift;
 	};
 
-	var triggerFocusBefore = function (e) {
+	var triggerFocusBefore = function(e){
 		var events = _.extend({
-			stop: function () {
+			stop: function(){
 				this.stopped = true;
 			},
 			stopped: false
@@ -19867,7 +19864,7 @@ var _clInternalErrorHandler = function (message) {
 		return events.stopped;
 	};
 
-	var focusCallback = function (options, ev) {
+	var focusCallback = function(options, ev) {
 		var parsed = parseEvent(ev, options);
 
 		var el = parsed.el,
@@ -19940,7 +19937,7 @@ var _clInternalErrorHandler = function (message) {
 			}
 			if (target) {
 				parsed.nextTarget = target;
-				if (!triggerFocusBefore(parsed)) {
+				if (!triggerFocusBefore(parsed)){
 					$(target).focus();
 				}
 			}
@@ -19968,7 +19965,7 @@ var _clInternalErrorHandler = function (message) {
 	 * });
 	 * ```
 	 */
-	var focus2 = function (ev, options) {
+	var focus2 = function(ev, options) {
 		return focusCallback(options || {}, ev);
 	};
 
@@ -19995,15 +19992,15 @@ var _clInternalErrorHandler = function (message) {
 			if (!options)
 				options = el;
 			options = options || {};
-			_.defaults(options, { filter: function () { return true } });
+			_.defaults(options, {filter: function () {return true}});
 			options.convtab = options.convtab && $.browser.msie;
 
 			$(document).off('.clEnterFocusMode')
-				.on('clfocusing', function (ev) {
-					console.log('^^^^^^^^clfocusing');
-					var $el = $(ev.target);
-					$el.addClass('clEnterFocusMode_focusing');
-				});
+			.on('clfocusing', function (ev) {
+				console.log('^^^^^^^^clfocusing');
+				var $el = $(ev.target);
+				$el.addClass('clEnterFocusMode_focusing');
+			});
 			var cb = _.bind(focusCallback, null, options);
 			if (options.convtab) {
 				$(document).on('keydown.clEnterFocusMode', cb);
@@ -20043,93 +20040,93 @@ var _clInternalErrorHandler = function (message) {
 (function () {
 	_.extend(clutil, (function (Syphon) {
 		var inputReaders = new Syphon.InputReaderSet(),
-			inputWriters = new Syphon.InputWriterSet(),
-			keyExtractors = new Syphon.KeyExtractorSet(),
-			elementExtractor = function ($view) {
-				return $view.find('input,textarea,select,span[data-name]');
-			},
-			defaultOptions = {
+		inputWriters = new Syphon.InputWriterSet(),
+		keyExtractors = new Syphon.KeyExtractorSet(),
+		elementExtractor = function ($view) {
+			return $view.find('input,textarea,select,span[data-name]');
+		},
+		defaultOptions = {
 				inputReaders: inputReaders,
 				inputWriters: inputWriters,
 				keyExtractors: keyExtractors,
 				elementExtractor: elementExtractor
-			},
-			unmaskValue = function ($el, value) {
-				if ($el.hasClass('cl_date')) {
-					value = clutil.dateFormat(value, 'yyyymmdd');
-				} else if ($el.hasClass('cl_month')) {
-					value = clutil.monthFormat(value, 'yyyymm');
-				} else if ($el.hasClass('cl_time')) {
-					value = clutil.timeFormat(value, 'hhmm');
-				} else {
-					value = $.inputlimiter.unmask(value, {
-						limit: $el.attr('data-limit'),
-						filter: $el.attr('data-filter')
-					});
-				}
-				return clutil.cStr(value);
-			},
-			maskValue = function ($el, value) {
-				if ($el.hasClass('cl_date')) {
-					value = clutil.dateFormat(value, 'yyyy/mm/dd');
-				} else if ($el.hasClass('cl_month')) {
-					value = clutil.monthFormat(value, 'yyyy/mm');
-				} else if ($el.hasClass('cl_time')) {
-					value = clutil.timeFormat(value, 'hh:mm');
-				} else {
-					value = $.inputlimiter.mask(value, {
-						limit: $el.attr('data-limit'),
-						filter: $el.attr('data-filter')
-					});
-				}
-				return clutil.cStr(value);
-			},
+		},
+		unmaskValue = function ($el, value) {
+			if ($el.hasClass('cl_date')) {
+				value = clutil.dateFormat(value, 'yyyymmdd');
+			} else if ($el.hasClass('cl_month')) {
+				value = clutil.monthFormat(value, 'yyyymm');
+			} else if ($el.hasClass('cl_time')) {
+				value = clutil.timeFormat(value, 'hhmm');
+			} else {
+				value = $.inputlimiter.unmask(value, {
+					limit: $el.attr('data-limit'),
+					filter: $el.attr('data-filter')
+				});
+			}
+			return clutil.cStr(value);
+		},
+		maskValue = function ($el, value) {
+			if ($el.hasClass('cl_date')) {
+				value = clutil.dateFormat(value, 'yyyy/mm/dd');
+			} else if ($el.hasClass('cl_month')) {
+				value = clutil.monthFormat(value, 'yyyy/mm');
+			} else if ($el.hasClass('cl_time')) {
+				value = clutil.timeFormat(value, 'hh:mm');
+			} else {
+				value = $.inputlimiter.mask(value, {
+					limit: $el.attr('data-limit'),
+					filter: $el.attr('data-filter')
+				});
+			}
+			return clutil.cStr(value);
+		},
 
-			buildOptions = function () {
+		buildOptions = function () {
 
-				// inputReaders
-				inputReaders.registerDefault(function ($el) {
-					return $el.val();
-				});
-				inputReaders.register('checkbox', function ($el) {
-					return $el.prop('checked') ? 1 : 0;
-				});
-				inputReaders.register('text', function ($el) {
-					var val = $el.val();
-					return unmaskValue($el, val);
-				});
-				inputReaders.register('span', function ($el) {
-					var val = $el.text();
-					return unmaskValue($el, val);
-				});
+			// inputReaders
+			inputReaders.registerDefault(function ($el) {
+				return $el.val();
+			});
+			inputReaders.register('checkbox', function ($el) {
+				return $el.prop('checked') ? 1 : 0;
+			});
+			inputReaders.register('text', function ($el) {
+				var val = $el.val();
+				return unmaskValue($el, val);
+			});
+			inputReaders.register('span', function ($el) {
+				var val = $el.text();
+				return unmaskValue($el, val);
+			});
 
-				// inputWriters
-				inputWriters.registerDefault(function ($el, value) {
-					$el.val(clutil.cStr(value));
-				});
-				inputWriters.register('text', function ($el, value) {
-					value = maskValue($el, value);
-					clutil.inputlimiter($el, 'set', value);
-				});
-				inputWriters.register('checkbox', function ($el, value) {
-					$el.prop('checked', value);
-				});
-				inputWriters.register('radio', function ($el, value) {
-					$el.prop('checked', $el.val() === value);
-				});
-				inputWriters.register('span', function ($el, value) {
-					value = maskValue($el, value);
-					$el.text(value);
-				});
+			// inputWriters
+			inputWriters.registerDefault(function ($el, value) {
+				$el.val(clutil.cStr(value));
+			});
+			inputWriters.register('text', function ($el, value) {
+				value = maskValue($el, value);
+				clutil.inputlimiter($el, 'set', value);
+			});
+			inputWriters.register('checkbox', function ($el, value) {
+				$el.prop('checked', value);
+			});
+			inputWriters.register('radio', function ($el, value) {
+				$el.prop('checked', $el.val() === value);
+			});
+			inputWriters.register('span', function ($el, value) {
+				value = maskValue($el, value);
+				$el.text(value);
+			});
 
-				// KeyExtractor
-				keyExtractors.registerDefault(function ($el) {
-					return $el.prop('name');
-				});
-				keyExtractors.register('span', function ($el) {
-					return $el.attr('data-name');
-				});
-			};
+			// KeyExtractor
+			keyExtractors.registerDefault(function ($el) {
+				return $el.prop('name');
+			});
+			keyExtractors.register('span', function ($el) {
+				return $el.attr('data-name');
+			});
+		};
 
 		buildOptions();
 
@@ -20175,19 +20172,19 @@ var _clInternalErrorHandler = function (message) {
 	var makeKeyvent = (function () {
 
 		var keyMap = {
-			//function keys
-			"112": ["f1"],
-			"113": ["f2"],
-			"114": ["f3"],
-			"115": ["f4"],
-			"116": ["f5"],
-			"117": ["f6"],
-			"118": ["f7"],
-			"119": ["f8"],
-			"120": ["f9"],
-			"121": ["f10"],
-			"122": ["f11"],
-			"123": ["f12"]
+				//function keys
+				"112": ["f1"],
+				"113": ["f2"],
+				"114": ["f3"],
+				"115": ["f4"],
+				"116": ["f5"],
+				"117": ["f6"],
+				"118": ["f7"],
+				"119": ["f8"],
+				"120": ["f9"],
+				"121": ["f10"],
+				"122": ["f11"],
+				"123": ["f12"]
 		};
 
 		//a-z and A-Z
@@ -20198,48 +20195,48 @@ var _clInternalErrorHandler = function (message) {
 		return function ($el) {
 			var registeredKeys = {},
 
-				vent = _.extend({}, Backbone.Events),
+			vent = _.extend({}, Backbone.Events),
 
-				toKeyStr = function (ev, key) {
-					var code = ev.keyCode,// || e.which;
-						codes = [];
-					if (ev.ctrlKey)
-						codes.push('C');
-					if (ev.shiftKey)
-						codes.push('S');
-					if (ev.altKey)
-						codes.push('M');
-					codes.sort();
-					codes.push(key);
-					return codes.join('-');
-				},
+			toKeyStr = function (ev, key) {
+				var code = ev.keyCode,// || e.which;
+				codes = [];
+				if (ev.ctrlKey)
+					codes.push('C');
+				if (ev.shiftKey)
+					codes.push('S');
+				if (ev.altKey)
+					codes.push('M');
+				codes.sort();
+				codes.push(key);
+				return codes.join('-');
+			},
 
-				normalizeKey = function (key) {
-					var codes = key.split('-'),
-						k = codes.pop();
-					codes.sort();
-					codes.push(k);
-					return codes.join('-');
-				},
+			normalizeKey = function (key) {
+				var codes = key.split('-'),
+				k = codes.pop();
+				codes.sort();
+				codes.push(k);
+				return codes.join('-');
+			},
 
-				keydownCallback = function (ev) {
-					var code = ev.keyCode,// || e.which;
-						keys = keyMap[code] || [];
+			keydownCallback = function (ev) {
+				var code = ev.keyCode,// || e.which;
+				keys = keyMap[code] || [];
 
-					if (_.any(keys, function (key) { return registeredKeys[toKeyStr(ev, key)] })) {
-						ev.preventDefault();
-					}
-				},
+				if (_.any(keys, function (key) {return registeredKeys[toKeyStr(ev, key)]})) {
+					ev.preventDefault();
+				}
+			},
 
-				keyupCallback = function (ev) {
-					var code = ev.keyCode,// || e.which;
-						keys = keyMap[code];
+			keyupCallback = function (ev) {
+				var code = ev.keyCode,// || e.which;
+				keys = keyMap[code];
 
-					_.each(keys, function (key) {
-						key = toKeyStr(ev, key);
-						vent.trigger(key, ev, key);
-					});
-				};
+				_.each(keys, function (key) {
+					key = toKeyStr(ev, key);
+					vent.trigger(key, ev, key);
+				});
+			};
 
 			vent.on = function (name, callback, context) {
 				if (typeof name !== 'object') {
@@ -20329,23 +20326,23 @@ $(function () {
 	// AOKI
 	NaviView = Backbone.View.extend({
 		// 要素
-		el: $('#cl_navi'),
+		el	: $('#cl_navi'),
 
 		// Events
 		events: {
-			//			"click .a"		:	"_onAClick"
+//			"click .a"		:	"_onAClick"
 		},
 
-		initialize: function () {
+		initialize: function() {
 
 		},
 
-		render: function (navi_class, appCallback, option) {
+		render: function(navi_class, appCallback, option) {
 			var _this = this;
 			$('#cl_navi').empty();
-			$('#cl_navi').load(clcom.appRoot + '/menu/navi.html', function () {
+			$('#cl_navi').load(clcom.appRoot + '/menu/navi.html', function(){
 				$(this).find('#cl_' + navi_class).addClass('on');
-				$(this).find('a').click(function () {
+				$(this).find('a').click(function(){
 					var screenId = $(this).attr('data-tgt');
 					clcom.pushPage(clcom.appRoot + '/' + screenId + '/' + screenId + '.html');
 				});
@@ -20367,7 +20364,7 @@ $(function () {
 			});
 		},
 
-		navi_load: function (option, navi_class) {
+		navi_load: function(option, navi_class) {
 			var _this = this;
 			var navi = '#navi';
 			if (option != null && option.naviname != null) {
@@ -20383,15 +20380,15 @@ $(function () {
 			wrapper = wrapper.replace("px", "");
 
 			//一番最初の処理
-			if (w > wrapper) {
-				jQuery('#navi').offset({ left: (w - wrapper) / 2 });
+			if(w > wrapper){
+				jQuery( '#navi' ).offset( { left : ( w - wrapper ) / 2  } );
 				var start_flg = true;
 			}
-			if (option != null && option.carte == true) {
-				jQuery('#navi').offset({ left: navileft });
+			if(option != null && option.carte == true) {
+				jQuery( '#navi' ).offset( { left : navileft } );
 			}
-			if (option != null && option.liquid == true) {
-				jQuery('#navi').offset({ left: navileft });
+			if(option != null && option.liquid == true) {
+				jQuery( '#navi' ).offset( { left : navileft } );
 			}
 
 			// ナビの下の部分位置を調整 2013/09/27
@@ -20399,73 +20396,73 @@ $(function () {
 
 			//scrollした時
 			$(window).scroll(function () {
-				if (!start_flg) {
+				if(!start_flg){
 					var scrleft = $(document).scrollLeft();
-					if (scrleft > 0 && w < wrapper) {
-						jQuery('#navi').offset({ left: navileft - scrleft });
+					if(scrleft > 0 && w < wrapper){
+						jQuery( '#navi' ).offset( { left : navileft - scrleft } );
 						$('#intervalValue').val(navileft);
 						scroll_flg = true;
-					} else if (w < wrapper) {
-						jQuery('#navi').offset({ left: navileft });
+					}else if(w < wrapper){
+						jQuery( '#navi' ).offset( { left : navileft} );
 					}
-				} else {
+				}else{
 					start_flg = false;
 				}
 			});
 
 			//画面サイズ変更した時
-			$(window).resize(function () {
+			$(window).resize(function(){
 				w = $(window).width();
-				if (w > wrapper) {
-					if (option != null && option.liquid == true) {
-						jQuery('#navi').offset({ left: navileft });
+				if(w > wrapper){
+					if(option != null && option.liquid == true) {
+						jQuery( '#navi' ).offset( { left : navileft } );
 					} else {
-						jQuery('#navi').offset({ left: (w - wrapper) / 2 });
+						jQuery( '#navi' ).offset( { left : ( w - wrapper ) / 2 } );
 					}
 					scroll_flg = false;
-				} else if (!scroll_flg) {
-					jQuery('#navi').offset({ left: navileft });
+				} else if(!scroll_flg){
+					jQuery( '#navi' ).offset( { left : navileft } );
 				}
 				_this.calcNavi(navi_class);
 			});
 		},
 
-		calcNavi: function (navi_class) {
+		calcNavi: function(navi_class) {
 			// ナビの下の部分位置を調整 2013/09/27
 			switch (navi_class) {
-				case 'carte':
-					var h_navi_main = $('#navi-main').height()
-					var h = $(window).height() - h_navi_main;
-					h = h < h_navi_main + 40 ? h_navi_main + 40 : h;
-					h = h > 495 ? 495 : h;
-					$('#navi-sub').css("top", h + 20);
-					break;
-				case 'home':
-					var h_sub = $(window).height() - $('#navi-sub').height();
-					var min_sub = $('#navi-main').height() + 8;
-					var max_sub = 515 - 60 * (4 - $('#navi-main li').length)
-					h_sub = h_sub < min_sub ? min_sub : h_sub;
-					h_sub = h_sub > max_sub ? max_sub : h_sub;
-					$('#lbl_navi-sub').css('top', h_sub + 8);
-				default:
-					var h = $(window).height() -
-						$('#navi-sub').height() -
-						$('#navi-main').height();
-					h = h < 0 ? 0 : h;
-					h = h > 275 ? 275 : h;
-					$('#navi-main').css("margin-bottom", h);
-					break;
+			case 'carte' :
+				var h_navi_main = $('#navi-main').height()
+				var h = $(window).height() - h_navi_main;
+				h = h < h_navi_main+40 ? h_navi_main+40 : h;
+				h = h > 495 ? 495 : h;
+				$('#navi-sub').css("top", h+20);
+				break;
+			case 'home' :
+				var h_sub = $(window).height() - $('#navi-sub').height();
+				var min_sub = $('#navi-main').height() + 8;
+				var max_sub = 515 - 60 * (4-$('#navi-main li').length)
+				h_sub = h_sub < min_sub ? min_sub : h_sub;
+				h_sub = h_sub > max_sub ? max_sub : h_sub;
+				$('#lbl_navi-sub').css('top', h_sub + 8);
+			default:
+				var h = $(window).height() -
+				$('#navi-sub').height() -
+				$('#navi-main').height();
+			h = h < 0 ? 0 : h;
+			h = h > 275 ? 275 : h;
+			$('#navi-main').css("margin-bottom", h);
+			break;
 			}
 		},
 
 		/**
 		 * @deprecated
 		 */
-		setFunc: function (_this) {
+		setFunc: function(_this) {
 			// 権限データを取得
 			var funcgrp = clcom.getFuncGrp();
 			var agent = clcom.getAgent();
-			$.each(clutil.funcgrpname, function () {
+			$.each(clutil.funcgrpname, function() {
 				// 権限に応じてタブを隠す
 				if (!funcgrp[this.toString()]) {
 					$(_this).find('li.' + this.toString()).remove();
@@ -20483,23 +20480,23 @@ $(function () {
 
 //AOKI
 $(function () {
-	$('.cl_check').click(function (e) {
+	$('.cl_check').click(function(e){
 		var $chkbox = $(this).find('input:checkbox');
 		if ($(e.target).get(0).type == 'checkbox') {
 			return;
 		}
-		if ($chkbox.is(":checked")) {
+		if ($chkbox.is(":checked")){
 			$chkbox.attr('checked', false);
 		} else {
 			$chkbox.attr('checked', true);
 		}
 	});
-	$('.cl_radio').click(function (e) {
+	$('.cl_radio').click(function(e){
 		var $chkbox = $(this).find('input:radio');
 		if ($(e.target).get(0).type == 'radio') {
 			return;
 		}
-		if (!$chkbox.is(":checked")) {
+		if (!$chkbox.is(":checked")){
 			$chkbox.attr('checked', true);
 		}
 	});
@@ -20510,15 +20507,15 @@ $(function () {
 	$.fn.tablesort = function (options) {
 		$(this).each(function (i) {
 			var $this = $(this),
-				order = [];
+			order = [];
 
 			function onClick(ev) {
 				var $th = $(ev.currentTarget);
 				var columnName = $th.attr('data-column'),
-					iterator = function (column) {
-						return column.name === columnName;
-					},
-					column = _.find(order, iterator);
+				iterator = function (column) {
+					return column.name === columnName;
+				},
+				column = _.find(order, iterator);
 
 				if (column) {
 					if (column === order[0]) {
@@ -20526,8 +20523,8 @@ $(function () {
 					}
 				} else {
 					column = {
-						name: columnName,
-						order: 1
+							name: columnName,
+							order: 1
 					};
 				}
 
@@ -20535,8 +20532,8 @@ $(function () {
 				order.unshift(column);
 
 				$this.find('thead tr th')
-					.removeClass('tableSortDown')
-					.removeClass('tableSortUp');
+				.removeClass('tableSortDown')
+				.removeClass('tableSortUp');
 
 				$th.addClass(order[0].order > 0 ? 'tableSortDown' : 'tableSortUp');
 
@@ -20616,18 +20613,18 @@ $(function () {
 			});
 
 			var $area = $(options.el),
-				$elements = $area.find('input.cl_required');
+			$elements = $area.find('input.cl_required');
 
 			$('.cl_required_mark').removeClass('cl_required_mark');
 			$elements
-				.closest('th + td')
-				.prev('th')
-				.addClass('cl_required_mark');
+			.closest('th + td')
+			.prev('th')
+			.addClass('cl_required_mark');
 
 			$elements
-				.closest('.control-group')
-				.find('.control-label')
-				.addClass('cl_required_mark');
+			.closest('.control-group')
+			.find('.control-label')
+			.addClass('cl_required_mark');
 		}
 		showRequiredMark();
 		clutil.showRequiredMark = showRequiredMark;
@@ -20638,8 +20635,8 @@ $(function () {
 				$el = ensure$($el);
 				// $el.append('<button class="btn btn-mini less-link btn-hide">非表示</button>');
 				$el.append('<span class="more-link-block">' +
-					'<a class="more-link pull-right" href="javascript:void(0);">続きを表示...</a><' +
-					'/span>');
+						'<a class="more-link pull-right" href="javascript:void(0);">続きを表示...</a><' +
+				'/span>');
 				showSearchArea($el);
 			}
 
@@ -20671,20 +20668,20 @@ $(function () {
 
 //tablefix を無効にする。
 (function () {
-	$.fn.tablefix = function () { };
+	$.fn.tablefix = function () {};
 	$.inputlimiter.start();
 
-	//	// cl_dateクラスのblur時に日付けフォーマットを実行する
-	//	$(document).on('blur', 'input[type=text].cl_date.hasDatepicker', function (event) {
-	//		var $input = $(event.currentTarget),
-	//		value = $input.val();
-	//
-	//		// 8桁の数値のときのみフォーマットする
-	//		if (clutil.checkDate(value) != false && /^[0-9]{8,8}$/.test(value)) {
-	//			var s = value.replace(/([0-9]{4,4})([0-9]{2,2})([0-9]{2,2})/, '$1/$2/$3');
-	//			$input.val(s);
-	//		}
-	//	});
+//	// cl_dateクラスのblur時に日付けフォーマットを実行する
+//	$(document).on('blur', 'input[type=text].cl_date.hasDatepicker', function (event) {
+//		var $input = $(event.currentTarget),
+//		value = $input.val();
+//
+//		// 8桁の数値のときのみフォーマットする
+//		if (clutil.checkDate(value) != false && /^[0-9]{8,8}$/.test(value)) {
+//			var s = value.replace(/([0-9]{4,4})([0-9]{2,2})([0-9]{2,2})/, '$1/$2/$3');
+//			$input.val(s);
+//		}
+//	});
 
 	// 全角を半角に変換する
 	$(document).on('keydown', 'input[type=text].cl_hankaku', function (e) {
@@ -20699,22 +20696,22 @@ $(function () {
 	});
 
 	//Enterキーによるフォーカスをする。
-	//	clutil.enterFocusMode();
+//	clutil.enterFocusMode();
 }());
 
-(function (exports) {
+(function(exports){
 	////////////////////////////////////////////////////////////////
-	var keyPathSeparator = '.';
-	/**
-	 * Takes a nested object and returns a shallow object keyed with the path names
-	 * e.g. { "level1.level2": "value" }
-	 *
-	 * @param  {Object}      Nested object e.g. { level1: { level2: 'value' } }
-	 * @return {Object}      Shallow object with path names e.g. { 'level1.level2': 'value' }
-	 */
-	function objToPaths(obj) {
+    var keyPathSeparator = '.';
+    /**
+     * Takes a nested object and returns a shallow object keyed with the path names
+     * e.g. { "level1.level2": "value" }
+     *
+     * @param  {Object}      Nested object e.g. { level1: { level2: 'value' } }
+     * @return {Object}      Shallow object with path names e.g. { 'level1.level2': 'value' }
+     */
+    function objToPaths(obj) {
 		var ret = {},
-			separator = keyPathSeparator;
+      separator = keyPathSeparator;
 
 		for (var key in obj) {
 			var val = obj[key];
@@ -20734,14 +20731,14 @@ $(function () {
 		}
 
 		return ret;
-	}
+    }
 
-	/**
-	 * @param {Object}  Object to fetch attribute from
-	 * @param {String}  Object path e.g. 'user.name'
-	 * @return {Mixed}
-	 */
-	function getNested(obj, path, return_exists) {
+    /**
+     * @param {Object}  Object to fetch attribute from
+     * @param {String}  Object path e.g. 'user.name'
+     * @return {Mixed}
+     */
+    function getNested(obj, path, return_exists) {
 		var separator = keyPathSeparator;
 
 		var fields = path.split(separator);
@@ -20758,33 +20755,35 @@ $(function () {
 			}
 
 			if (typeof result === 'undefined') {
-				if (return_exists) {
+				if (return_exists)
+				{
 					return true;
 				}
 				return result;
 			}
 		}
-		if (return_exists) {
+		if (return_exists)
+		{
 			return true;
 		}
 		return result;
-	}
+    }
 
-	/**
-	 * @param {Object} obj                Object to fetch attribute from
-	 * @param {String} path               Object path e.g. 'user.name'
-	 * @param {Object} [options]          Options
-	 * @param {Boolean} [options.unset]   Whether to delete the value
-	 * @param {Mixed}                     Value to set
-	 */
-	function setNested(obj, path, val, options) {
+    /**
+     * @param {Object} obj                Object to fetch attribute from
+     * @param {String} path               Object path e.g. 'user.name'
+     * @param {Object} [options]          Options
+     * @param {Boolean} [options.unset]   Whether to delete the value
+     * @param {Mixed}                     Value to set
+     */
+    function setNested(obj, path, val, options) {
 		options = options || {};
 
 		var separator = keyPathSeparator;
 
 		var fields = path.split(separator);
 		var result = obj;
-		for (var i = 0, n = fields.length; i < n && result !== undefined; i++) {
+		for (var i = 0, n = fields.length; i < n && result !== undefined ; i++) {
 			var field = fields[i];
 
 			//If the last in the path, set the value
@@ -20792,7 +20791,7 @@ $(function () {
 				options.unset ? delete result[field] : result[field] = val;
 			} else {
 				//Create the child object if it doesn't exist, or isn't an object
-				if (typeof result[field] === 'undefined' || !_.isObject(result[field])) {
+				if (typeof result[field] === 'undefined' || ! _.isObject(result[field])) {
 					result[field] = {};
 				}
 
@@ -20800,15 +20799,15 @@ $(function () {
 				result = result[field];
 			}
 		}
-	}
+    }
 
-	function deleteNested(obj, path) {
+    function deleteNested(obj, path) {
 		setNested(obj, path, null, { unset: true });
-	}
+    }
 
 	////////////////////////////////////////////////////////////////
 	// The code bellow is borrowed from backbone.syphon
-
+	
 	// Assigns `value` to a parsed JSON key.
 	//
 	// The first parameter is the object which will be
@@ -20830,19 +20829,19 @@ $(function () {
 	// becomes an array, and values are pushed in to the array,
 	// allowing multiple fields with the same name to be
 	// assigned to the array.
-	var assignKeyValue = function (obj, keychain, value) {
-		if (!keychain) { return obj; }
+	var assignKeyValue = function(obj, keychain, value) {
+		if (!keychain){ return obj; }
 
 		var key = keychain.shift();
 
 		// build the current object we need to store data
-		if (!obj[key]) {
+		if (!obj[key]){
 			obj[key] = _.isArray(key) ? [] : {};
 		}
 
 		// if it's the last key in the chain, assign the value directly
-		if (keychain.length === 0) {
-			if (_.isArray(obj[key])) {
+		if (keychain.length === 0){
+			if (_.isArray(obj[key])){
 				obj[key].push(value);
 			} else {
 				obj[key] = value;
@@ -20850,7 +20849,7 @@ $(function () {
 		}
 
 		// recursive parsing of the array, depth-first
-		if (keychain.length > 0) {
+		if (keychain.length > 0){
 			assignKeyValue(obj[key], keychain, value);
 		}
 
@@ -20888,22 +20887,22 @@ $(function () {
 	//  "foo[quux]": ["foo", "bar"]
 	// }
 	// ```
-	var flattenData = function (config, data, parentKey) {
+	var flattenData = function(config, data, parentKey){
 		var flatData = {};
 
-		_.each(data, function (value, keyName) {
+		_.each(data, function(value, keyName){
 			var hash = {};
 
 			// If there is a parent key, join it with
 			// the current, child key.
-			if (parentKey) {
+			if (parentKey){
 				keyName = config.keyJoiner(parentKey, keyName);
 			}
 
-			if (_.isArray(value)) {
+			if (_.isArray(value)){
 				keyName += "[]";
 				hash[keyName] = value;
-			} else if (_.isObject(value)) {
+			} else if (_.isObject(value)){
 				hash = flattenData(config, value, keyName);
 			} else {
 				hash[keyName] = value;
@@ -20918,19 +20917,19 @@ $(function () {
 	};
 
 	var config = {
-		keyJoiner: function (parentKey, keyName) {
+		keyJoiner: function(parentKey, keyName){
 			return parentKey + "." + keyName;
 		},
-		keySplitter: function (key) {
+		keySplitter: function(key){
 			return key.split(".");
 		}
 	};
 	exports.nested = {
-		flatten: function (data) {
+		flatten: function(data){
 			return objToPaths(data);
 		},
-		unflatten: function (data) {
-			return _.reduce(data, function (memo, value, key) {
+		unflatten: function(data){
+			return _.reduce(data, function(memo, value, key){
 				var keychain = config.keySplitter(key);
 				assignKeyValue(memo, keychain, value);
 				return memo;
@@ -20942,14 +20941,14 @@ $(function () {
 	};
 }(clutil));
 
-(function (clutil) {
+(function(clutil){
 	var msgcd2msg = function (msgcd) {
 		var fmtargs = _.toArray(arguments);
 		var msg;
-		fmtargs[0] = clmsg['cl_' + msgcd];
+		fmtargs[0] = clmsg['cl_'+msgcd];
 		if (fmtargs[0] == null) {
 			// メッセージが整備されていない場合 => メッセージの更新が必要
-			console.warn("No message code `" + msgcd + '`');
+			console.warn("No message code `" +  msgcd + '`');
 			fmtargs[0] = "XXXX";
 		}
 		msg = clutil.fmt.apply(this, fmtargs);			   // 項目名ラベルなし
@@ -20962,7 +20961,7 @@ $(function () {
 	 * @static
 	 */
 	var Validators = (function () {
-		var safeString = function (value) {
+		var safeString = function(value){
 			if (value == null) {
 				value = '';
 			}
@@ -20998,7 +20997,7 @@ $(function () {
 
 		var isHalfForZenkaku_cr = function (c) {
 			c = c.charCodeAt(0);
-			return (c >= 0x0 && c < 0x09) || (c >= 0x0b && c < 0x81)
+			return (c >= 0x0 && c < 0x09)|| (c >= 0x0b && c < 0x81)
 				|| (c == 0xf8f0) || (c >= 0xff61 && c < 0xffa0)
 				|| (c >= 0xf8f1 && c < 0xf8f4);
 		};
@@ -21016,9 +21015,9 @@ $(function () {
 			max = parseInt(max, 10);
 			var len = _.reject(value.split(''), isHalfForZenkaku).length;
 			if ((max && len > max) || len !== value.length) {
-				if (arguments.length === 2) {
+				if (arguments.length === 2){
 					return msgcd2msg('zenkaku_long', max);
-				} else {
+				}else{
 					return msgcd2msg('zenkaku');
 				}
 			}
@@ -21036,9 +21035,9 @@ $(function () {
 			max = parseInt(max, 10);
 			var len = _.reject(value.split(''), isHalfForZenkaku_cr).length;
 			if ((max && len > max) || len !== value.length) {
-				if (arguments.length === 2) {
+				if (arguments.length === 2){
 					return msgcd2msg('zenkaku_long', max);
-				} else {
+				}else{
 					return msgcd2msg('zenkaku');
 				}
 			}
@@ -21057,9 +21056,9 @@ $(function () {
 			max = parseInt(max, 10);
 			var len = _.reject(value.split(''), isHalfForZenkaku).length;
 			if ((max && len > max)) {
-				if (arguments.length === 2) {
+				if (arguments.length === 2){
 					return msgcd2msg('zenkaku_long', max);
-				} else {
+				}else{
 					return msgcd2msg('zenkaku');
 				}
 			}
@@ -21078,9 +21077,9 @@ $(function () {
 			max = parseInt(max, 10);
 			var len = _.filter(value.split(''), isHalf).length;
 			if ((max && len > max) || len !== value.length) {
-				if (arguments.length === 2) {
+				if (arguments.length === 2){
 					return msgcd2msg('hankaku_long', max);
-				} else {
+				}else{
 					return msgcd2msg('hankaku');
 				}
 			}
@@ -21099,9 +21098,9 @@ $(function () {
 			max = parseInt(max, 10);
 			var len = _.filter(value.split(''), isHalf_cr).length;
 			if ((max && len > max) || len !== value.length) {
-				if (arguments.length === 2) {
+				if (arguments.length === 2){
 					return msgcd2msg('hankaku_long', max);
-				} else {
+				}else{
 					return msgcd2msg('hankaku');
 				}
 			}
@@ -21120,9 +21119,9 @@ $(function () {
 			max = parseInt(max, 10);
 			var len = _.filter(value.split(''), isHalf2).length;
 			if ((max && len > max) || len !== value.length) {
-				if (arguments.length === 2) {
+				if (arguments.length === 2){
 					return msgcd2msg('hankaku_long', max);
-				} else {
+				}else{
 					return msgcd2msg('hankaku');
 				}
 			}
@@ -21141,9 +21140,9 @@ $(function () {
 			max = parseInt(max, 10);
 			var len = _.filter(value.split(''), isHalf).length;
 			if ((max && len > max)) {
-				if (arguments.length === 2) {
+				if (arguments.length === 2){
 					return msgcd2msg('hankaku_long', max);
-				} else {
+				}else{
 					return msgcd2msg('hankaku');
 				}
 			}
@@ -21189,8 +21188,8 @@ $(function () {
 			}
 
 			var match = value.match(/^(?:-?(0|[1-9][0-9]*))?(?:\.([0-9]*))?$/);
-			if (!match || (ipart && (match[1] || '').length > ipart) ||
-				(dpart && (match[2] || '').length > dpart)) {
+			if (!match || (ipart && (match[1]||'').length > ipart) ||
+				(dpart && (match[2]||'').length > dpart)) {
 				return msg;
 			}
 		}
@@ -21212,7 +21211,7 @@ $(function () {
 			len = parseInt(len, 10);
 			var errcode = len ? 'int1' : 'int2';
 			var match = value.match(/^(?:-?(0|[1-9][0-9]*))?$/);
-			if (!match || (len && (match[1] || '').length > len)) {
+			if (!match || (len && (match[1]||'').length > len)) {
 				return msgcd2msg(errcode, len);
 			}
 		}
@@ -21235,7 +21234,7 @@ $(function () {
 			len = parseInt(len, 10);
 			var errcode = len ? 'int1' : 'int2';
 			var match = value.match(/^(?:(0|[1-9][0-9]*))?$/);
-			if (!match || (len && (match[1] || '').length > len)) {
+			if (!match || (len && (match[1]||'').length > len)) {
 				return msgcd2msg(errcode, len);
 			}
 		}
@@ -21582,7 +21581,7 @@ $(function () {
 	 *
 	 * @return {String|undefined} エラーメッセージ
 	 */
-	Validators.required = function (value, type) {
+	Validators.required = function(value, type){
 		var hasError = false;
 		if (type === 'id') {
 			hasError = !value || !value.id;
@@ -21601,7 +21600,7 @@ $(function () {
 		}
 	};
 
-	Validators.accheck = function (value) {
+	Validators.accheck = function(value){
 		if (value && !value.id && value.name) {
 			return msgcd2msg('autocomplete_mismatch');
 		}
@@ -21612,8 +21611,8 @@ $(function () {
 	 * @param {String} value
 	 * @return {String|undefined} エラーメッセージ
 	 */
-	Validators.selected = function (value) {
-		if (!parseInt(value, 10)) {
+	Validators.selected = function(value){
+		if (!parseInt(value, 10)){
 			return msgcd2msg('required');
 		}
 	};
@@ -21621,14 +21620,14 @@ $(function () {
 	/**
 	 * @method required_ac
 	 */
-	Validators['required_ac'] = function (value) {
-		if (!value || !parseInt(value.id, 10)) {
+	Validators['required_ac'] = function(value){
+		if (!value || !parseInt(value.id, 10)){
 			return msgcd2msg('required');
 		}
 	};
 
 	// 手抜き日本語のみ対応
-	var dateToYmd = function (date) {
+	var dateToYmd = function(date) {
 		try {
 			return date.toLocaleString().split(' ')[0];
 		} catch (e) {
@@ -21636,24 +21635,24 @@ $(function () {
 		}
 	};
 
-	Validators.date = function (value, minDate, maxDate) {
-		if (!clutil.checkDate({ value: value })) {
+	Validators.date = function(value, minDate, maxDate){
+		if(!clutil.checkDate({ value: value })){
 			return msgcd2msg('date_inval');
 		}
 
 		var date = new Date(value);
 		// minDate
-		if (!_.isDate(maxDate)) {
+		if (!_.isDate(maxDate)){
 			maxDate = clutil.ymd2date(maxDate);
 		}
-		if (!_.isDate(maxDate) || isNaN(maxDate)) {
+		if(!_.isDate(maxDate) || isNaN(maxDate)){
 			maxDate = null;
 		}
 		// maxDate
-		if (!_.isDate(minDate)) {
+		if (!_.isDate(minDate)){
 			minDate = clutil.ymd2date(minDate);
 		}
-		if (!_.isDate(minDate) || isNaN(minDate)) {
+		if(!_.isDate(minDate) || isNaN(minDate)){
 			maxDate = null;
 		}
 
@@ -21663,7 +21662,7 @@ $(function () {
 				return msgcd2msg('date_max', dateToYmd(maxDate));
 			} else {
 				return msgcd2msg('date_range', dateToYmd(minDate),
-					dateToYmd(maxDate));
+								 dateToYmd(maxDate));
 			}
 		}
 		if (minDate != null && date.getTime() < minDate.getTime()) {
@@ -21687,28 +21686,28 @@ $(function () {
 	 * clutils.Validators.check('int', '12345');
 	 * ```
 	 */
-	var check = function (validateFunc, value) {
+	var check = function(validateFunc, value){
 		var splitted, args, funcName;
 		if (_.isString(validateFunc)) {
 			splitted = validateFunc.split(':');
-			if (splitted.length === 2) {
+			if (splitted.length === 2){
 				args = splitted[1].split(',');
 			}
 			funcName = splitted[0];
 			validateFunc = clutil.Validators[funcName];
 		}
 
-		if (!args) {
+		if (!args){
 			args = [];
 		}
 
 		args.unshift(value == null ? '' : value);
-		if (!validateFunc) {
+        if (!validateFunc){
 			if (funcName) {
 				console.warn("Invalid validator[name=" + funcName + "]");
 			}
 			return;
-		}
+        }
 		if (validateFunc)
 			return validateFunc.apply(this, args);
 	};
@@ -21724,30 +21723,30 @@ $(function () {
 	 * clutils.Validators.checkAll('int required', '12345');
 	 * ```
 	 */
-	var checkAll = function (validators, value) {
+	var checkAll = function(validators, value){
 		var opt;
 
 		if (_.isObject(validators) && !_.isArray(validators)) {
 			opt = validators;
 			validators = opt.validator;
 			value = opt.value;
-		} else {
+		}else{
 			opt = {
 				validators: validators,
 				value: value
 			};
 		}
 
-		if (_.isString(validators)) {
-			validators = opt.validators = _.compact((validators || "").split(/ +/));
+		if (_.isString(validators)){
+			validators = opt.validators = _.compact((validators||"").split(/ +/));
 		}
 
 		var error;
 		_.some(validators, function (validator) {
-			try {
+			try{
 				error = check.call(opt, validator, value);
 				return error;
-			} catch (e) {
+			}catch(e){
 				console.error(e, validators, validator, value);
 			}
 		});
@@ -21755,7 +21754,7 @@ $(function () {
 		return error;
 	};
 
-	var getValidation = function (validation, name) {
+	var getValidation = function(validation, name){
 		var arr = validation.split(/ +/), args, n;
 		for (var i = 0; i < arr.length; i++) {
 			args = arr[i].split(':');
@@ -21773,7 +21772,7 @@ $(function () {
 		};
 	};
 
-	var _setValidationArgs = function (validations, name) {
+	var _setValidationArgs = function(validations, name) {
 		var vs = validations;
 		var isStr = false;
 		if (_.isString(vs)) {
@@ -21784,10 +21783,10 @@ $(function () {
 		var newArgs = _.rest(arguments, 2).join(',');
 		var newDef = newArgs ? name + ':' + newArgs : name;
 
-		_.each(vs, function (d) {
+		_.each(vs, function(d){
 			if (_.isString(d) && d.split(':')[0] === name) {
 				newValidations.push(newDef);
-			} else {
+			}else{
 				newValidations.push(d);
 			}
 		});
@@ -21798,7 +21797,7 @@ $(function () {
 		}
 	};
 
-	var replaceValidation = function ($el) {
+	var replaceValidation = function($el) {
 		var validations = $el,
 			setAttr = false;
 		if ($el instanceof jQuery) {
@@ -21821,14 +21820,14 @@ $(function () {
 	 * @param {String} name バリデーション名
 	 * @param [args...] 引数
 	 */
-	var addValidation = function ($el, name) {
+	var addValidation = function($el, name){
 		// 引数部を組み立てる
 		var args = _.rest(arguments, 2).join(',');
 		// 現在のバリデーションを取る
 		var v = $el.attr('data-validator') || '';
 		var vs = v.split(/ +/);
 		// 既存バリデーションを取り除く
-		vs = _.filter(vs, function (d) {
+		vs = _.filter(vs, function(d){
 			var n = d.split(':')[0];
 			return name !== n;
 		});
@@ -21846,12 +21845,12 @@ $(function () {
 	 * @param {jQuery} $el エレメント
 	 * @param {String} name バリデーション名
 	 */
-	var removeValidation = function ($el, name) {
+	var removeValidation = function($el, name){
 		// 現在のバリデーション
 		var v = $el.attr('data-validator') || '';
 		var vs = v.split(/ +/);
 		// 既存バリデーションを取り除く
-		vs = _.filter(vs, function (d) {
+		vs = _.filter(vs, function(d){
 			var n = d.split(':')[0];
 			return name !== n;
 		});
@@ -21869,8 +21868,8 @@ $(function () {
 	clutil.Validators = Validators;
 }(clutil));
 
-(function (clutil) {
-	var $getElement = function (el) {
+(function(clutil){
+	var $getElement = function(el){
 		return el instanceof $ ? el : $(el);
 	};
 
@@ -21881,7 +21880,7 @@ $(function () {
 	 * @namespace clutil
 	 * @constructor
 	 */
-	var ViewStateSwitcher = function () {
+	var ViewStateSwitcher = function(){
 		this._handlers = {};
 	};
 
@@ -21891,7 +21890,7 @@ $(function () {
 		 * @method clone
 		 * @return {ViewStateSwitcher}
 		 */
-		clone: function () {
+		clone: function(){
 			var viewStateSwitcher = new this.constructor();
 			viewStateSwitcher.setHandlers(this._handlers);
 			return viewStateSwitcher;
@@ -21923,12 +21922,12 @@ $(function () {
 		 * }
 		 * ```
 		 */
-		setHandlers: function (handlers) {
+		setHandlers: function(handlers){
 			_.extend(this._handlers, handlers);
 		},
 
-		buildHandler: function (def) {
-			return function (mode) {
+		buildHandler: function(def){
+			return function(mode){
 				var args = _.toArray(arguments);
 				return def[mode].apply(this, args);
 			};
@@ -21943,20 +21942,20 @@ $(function () {
 		 * @param {string} [options.filter]
 		 * @return {Array} コマンド配列 restoreViewState()に渡す
 		 */
-		saveViewState: function ($view, options) {
+		saveViewState: function($view, options){
 			$view = $getElement($view);
-			options = _.defaults(options || {}, { filter: '*' });
+			options = _.defaults(options || {}, {filter: '*'});
 
 			var filter = options.filter, commands = [];
-			_.each(this._handlers, function (spec, is) {
+			_.each(this._handlers, function(spec, is){
 				$view.find(is)
 					.filter(filter)
-					.each(function () {
+					.each(function(){
 						var el = this, $el = $(el), command, name;
-						if (spec.check($el, options)) {
+						if (spec.check($el, options)){
 							command = spec.on;
 							name = 'on';
-						} else {
+						}else{
 							command = spec.off;
 							name = 'off';
 						}
@@ -21976,12 +21975,12 @@ $(function () {
 		 * @method restoreViewState
 		 * @param {array} commands saveViewStateの戻り値
 		 */
-		restoreViewState: function (commands, options) {
+		restoreViewState: function(commands, options){
 			options = _.defaults(options || {});
 			var that = this;
-			_.each(commands.reverse(), function (command) {
+			_.each(commands.reverse(), function(command){
 				var $el = $(command.el);
-				if (command.name === 'on' && that.isFixed($el, options)) {
+				if (command.name === 'on' && that.isFixed($el, options)){
 					return;
 				}
 				command.command($(command.el), options);
@@ -21994,7 +21993,7 @@ $(function () {
 		 * @param {jquery} $el
 		 * @return {boolean} 固定されているかどうか
 		 */
-		isFixed: function () { return false; },
+		isFixed: function(){return false;},
 
 		/**
 		 * 指定エレメントの状態をonに変更する
@@ -22003,11 +22002,11 @@ $(function () {
 		 * @param {object} [options]
 		 * @param {string} [options.filter]
 		 */
-		turnOn: function ($el, options) {
+		turnOn: function($el, options){
 			$el = $getElement($el);
 			options || (options = {});
-			_.each(this._handlers, function (spec, is) {
-				if ($el.is(is)) {
+			_.each(this._handlers, function(spec, is){
+				if ($el.is(is)){
 					spec.on.call(null, $el, options);
 				}
 			});
@@ -22021,13 +22020,13 @@ $(function () {
 		 * @param {object} [options]
 		 * @param {string} [options.filter]
 		 */
-		turnOff: function ($el, options) {
+		turnOff: function($el, options){
 			$el = $getElement($el);
 			options || (options = {});
 			// 固定されている場合はoffにできない
 			if (this.isFixed($el, options)) return;
-			_.each(this._handlers, function (spec, is) {
-				if ($el.is(is)) {
+			_.each(this._handlers, function(spec, is){
+				if ($el.is(is)){
 					spec.off.call(null, $el, options);
 				}
 			});
@@ -22041,15 +22040,15 @@ $(function () {
 		 * @param {object} [options]
 		 * @param {string} [options.filter]
 		 */
-		turnOnAll: function ($view, options) {
+		turnOnAll: function($view, options){
 			$view = $getElement($view);
-			options = _.defaults(options || {}, { filter: '*' });
+			options = _.defaults(options || {}, {filter: '*'});
 
 			var filter = options.filter;
-			_.each(this._handlers, function (spec, is) {
+			_.each(this._handlers, function(spec, is){
 				$view.find(is)
 					.filter(filter)
-					.each(function () {
+					.each(function(){
 						var el = this, $el = $(el);
 						spec.on.call(null, $el, options);
 					});
@@ -22065,15 +22064,15 @@ $(function () {
 		 * @param {object} [options]
 		 * @param {string} [options.filter]
 		 */
-		turnOffAll: function ($view, options) {
+		turnOffAll: function($view, options){
 			$view = $getElement($view);
-			options = _.defaults(options || {}, { filter: '*' });
+			options = _.defaults(options || {}, {filter: '*'});
 
 			var filter = options.filter, that = this;
-			_.each(this._handlers, function (spec, is) {
+			_.each(this._handlers, function(spec, is){
 				$view.find(is)
 					.filter(filter)
-					.each(function () {
+					.each(function(){
 						var el = this, $el = $(el);
 						// 固定されている場合はoffにできない
 						if (that.isFixed($el, options)) return;
@@ -22089,7 +22088,7 @@ $(function () {
 	clutil.ViewStateSwitcher = ViewStateSwitcher;
 }(clutil));
 
-(function (clutil) {
+(function(clutil){
 	/**
 	 * リードオンリー状態を切り替える
 	 *
@@ -22099,7 +22098,7 @@ $(function () {
 	 * @constructor
 	 */
 	var ReadonlySwitcher = clutil.ViewStateSwitcher.extend({
-		isFixed: function ($el) {
+		isFixed: function($el){
 			return $el.attr("cl-rofixed");
 		}
 	});
@@ -22131,23 +22130,23 @@ $(function () {
 		//, input[type=file]'
 		'.cl-file-attach': {
 			on: function ($el) {
-				if ($el.is('input')) {
+				if($el.is('input')){
 					$el.prop('disabled', true);
-				} else {
+				}else{
 					$el.attr('disabled', true);
 				}
 			},
-			off: function ($el) {
-				if ($el.is('input')) {
+			off: function($el) {
+				if($el.is('input')){
 					$el.prop('disabled', false);
-				} else {
+				}else{
 					$el.removeAttr('disabled');
 				}
 			},
 			check: function ($el) {
-				if ($el.is('input')) {
+				if($el.is('input')){
 					return $el.prop('disabled');
-				} else {
+				}else{
 					return $el.attr('disabled');
 				}
 			}
@@ -22157,20 +22156,20 @@ $(function () {
 			on: function ($el) {
 				$el.prev('.cltxtFieldLimit').addClass('disabled');
 				$el.prop('readonly', true).datepicker('disable');
-				if ($el.hasClass('hasDatepicker')) {
+				if($el.hasClass('hasDatepicker')){
 					$el.parent('.datepicker_wrap').addClass('disabled');
 				}
-				if ($el.hasClass('cl_autocomplete')) {
+				if($el.hasClass('cl_autocomplete')){
 					$el.prev('.autofill').hide();
 				}
 			},
 			off: function ($el) {
 				$el.prev('.cltxtFieldLimit').removeClass('disabled');
 				$el.prop('readonly', false).datepicker('enable');
-				if ($el.hasClass('hasDatepicker')) {
+				if($el.hasClass('hasDatepicker')){
 					$el.parent('.datepicker_wrap').removeClass('disabled');
 				}
-				if ($el.hasClass('cl_autocomplete')) {
+				if($el.hasClass('cl_autocomplete')){
 					$el.prev('.autofill').show();
 				}
 			},
@@ -22187,13 +22186,13 @@ $(function () {
 				// ここから照会モード用のためのひと手間
 				var $clReadonlyContainer = $el.closest('.cl_readonly');
 				var $fieldGroupInBox = $el.closest('.fieldgroupInBox ');
-				if ($clReadonlyContainer.length > 0 && $fieldGroupInBox.length > 0) {
+				if($clReadonlyContainer.length > 0 && $fieldGroupInBox.length > 0){
 					// 照会モード表示を表すマーキング
 					$fieldGroupInBox.addClass('view');
 					$el.data('cl_readonly', true);
 
 					var val = $el.val().replace(/[\n\r]/g, "<br />");
-					if (_.isEmpty(val)) {
+					if(_.isEmpty(val)){
 						val = '&nbsp;';		// 高さがつぶれるため空白1個入れておく
 					}
 					var $p = $('<p class="txtbox multiline">' + val + '</p>');
@@ -22203,7 +22202,7 @@ $(function () {
 			},
 			off: function ($el) {
 				var isReferenceMode = $el.data('cl_readonly');
-				if (isReferenceMode) {
+				if(isReferenceMode){
 					// readonly なテキストエリア view を削除する
 					$el.prev('p.txtbox.multiline').remove();
 
@@ -22234,13 +22233,13 @@ $(function () {
 		},
 		// チェックボックス：ON/OFF
 		'input[type=checkbox][data-toggle=switch]': {
-			on: function ($el) {
+			on: function($el){
 				$el.closest('.switch').bootstrapSwitch('setActive', false);
 			},
-			off: function ($el) {
+			off: function($el){
 				$el.closest('.switch').bootstrapSwitch('setActive', true);
 			},
-			check: function ($el) {
+			check: function($el){
 				return $el.closest('.switch').bootstrapSwitch('isActive') == false;
 			}
 		},
@@ -22260,13 +22259,13 @@ $(function () {
 		'input[type=radio]': {
 			on: function ($el) {
 				$el.prop('disabled', true);
-				if ($el.is("label.radio>")) {
+				if ($el.is("label.radio>")){
 					$el.parent("label.radio").addClass("disabled");
 				}
 			},
 			off: function ($el) {
 				$el.prop('disabled', false);
-				if ($el.is("label.radio>")) {
+				if ($el.is("label.radio>")){
 					$el.parent("label.radio").removeClass("disabled");
 				}
 			},
@@ -22281,11 +22280,11 @@ $(function () {
 				// て非常に遅くなるので下のコメントのような軽量な実装に
 				// 切り替えたいが、selectpickerはli要素にdisableを設定
 				// するのでこれではうまくいかない
-				if ($el.is('._clcombobox')) {
+				if($el.is('._clcombobox')){
 					$el.combobox('setEnable', false);
-				} else {
+				}else{
 					$el.prop('disabled', true)
-						// .selectpicker('refresh');
+					// .selectpicker('refresh');
 						.next()
 						.find('>button')
 						.addClass('disabled')
@@ -22293,9 +22292,9 @@ $(function () {
 				}
 			},
 			off: function ($el) {
-				if ($el.is('._clcombobox')) {
+				if($el.is('._clcombobox')){
 					$el.combobox('setEnable', true);
-				} else {
+				}else{
 					$el.prop('disabled', false);
 					// .next()
 					// .find('>button')
@@ -22307,7 +22306,7 @@ $(function () {
 					$button
 						.removeClass('disabled')
 						.prop('disabled', false);
-					if ($button.attr('tabindex') == -1) {
+					if ($button.attr('tabindex') == -1){
 						$button.removeAttr('tabindex');
 					}
 				}
@@ -22331,7 +22330,7 @@ $(function () {
 	});
 
 	_.extend(clutil, {
-		getReadonlySwitcher: function () {
+		getReadonlySwitcher: function(){
 			return readonlySwitcher;
 		},
 
@@ -22343,7 +22342,7 @@ $(function () {
 		 * @param {jQuery|String} el
 		 * @return リードオンリーが固定されているかどうかを返す
 		 */
-		isFixedReadonly: function (el) {
+		isFixedReadonly: function(el){
 			var $el = el instanceof $ ? el : $(el);
 			return clutil.getReadonlySwitcher().isFixed($el);
 		},
@@ -22359,7 +22358,7 @@ $(function () {
 		 * @for clutil
 		 * @param {jQuery|String} el
 		 */
-		fixReadonly: function (el) {
+		fixReadonly: function(el){
 			var $el = el instanceof $ ? el : $(el);
 			$el.attr("cl-rofixed", true);
 		},
@@ -22374,7 +22373,7 @@ $(function () {
 		 * @for clutil
 		 * @param {jQuery|String} el
 		 */
-		unfixReadonly: function (el) {
+		unfixReadonly: function(el){
 			var $el = el instanceof $ ? el : $(el);
 			$el.removeAttr("cl-rofixed", true);
 		},
@@ -22400,7 +22399,7 @@ $(function () {
 		 * @param {Object} [options] オプション
 		 * @param {String,Function} [options.filter] jQuery.filter関数への引数
 		 */
-		saveReadonlyState: function ($view, options) {
+		saveReadonlyState: function($view, options){
 			return clutil.getReadonlySwitcher().saveViewState($view, options);
 		},
 
@@ -22413,7 +22412,7 @@ $(function () {
 		 * @param {Object} [options] オプション
 		 * @param {String,Function} [options.filter] jQuery.filter関数への引数
 		 */
-		viewRemoveReadonly: function ($view, options) {
+		viewRemoveReadonly: function($view, options) {
 			return clutil.getReadonlySwitcher().turnOffAll($view, options);
 		},
 
@@ -22432,7 +22431,7 @@ $(function () {
 		 * viewRestoreState(state);
 		 * ```
 		 */
-		viewRestoreState: function (state, options) {
+		viewRestoreState: function(state, options) {
 			if (!state)
 				return;
 
@@ -22461,18 +22460,18 @@ $(function () {
 		 * @return viewRestoreState()の引数に渡すための復元コマンド配列
 		 */
 		inputReadonly: function ($input, sw) {
-			if (sw === false) {
+			if (sw === false){
 				return clutil.getReadonlySwitcher().turnOff($input);
-			} else {
+			}else{
 				return clutil.getReadonlySwitcher().turnOn($input);
 			}
 		}
 	});
 }(clutil));
 
-(function (clcom, clutil) {
+(function(clcom, clutil){
 	// require clutil.readonlyswitcher
-
+	
 	/**
 	 * 権限制御に関する基本操作
 	 *
@@ -22497,7 +22496,7 @@ $(function () {
 		 * @method getReadonlySwitcher
 		 * @return {ViewStateSwitcher}
 		 */
-		getReadonlySwitcher: function () {
+		getReadonlySwitcher: function(){
 			return this.readonlySwitcher;
 		},
 
@@ -22506,10 +22505,10 @@ $(function () {
 		 * @method setReadonlySwitcher
 		 * @param {ViewStateSwitcher} readonlySwitcher リードオンリー状態切り替え
 		 */
-		setReadonlySwitcher: function (readonlySwitcher) {
+		setReadonlySwitcher: function(readonlySwitcher){
 			this.readonlySwitcher = readonlySwitcher;
 		},
-
+		
 		/**
 		 * DOMエレメントに処理種別を割り当て権限制御対象リストに設定す
 		 * る。その後permRefleshUI()を実行してUIの更新を行う。
@@ -22536,7 +22535,7 @@ $(function () {
 		 *   });
 		 * ```
 		 */
-		set: function (perms, refresh) {
+		set: function(perms, refresh){
 			this.controled = {};
 			_.extend(this.controled, perms);
 			if (refresh !== false) {
@@ -22560,7 +22559,7 @@ $(function () {
 		 * });
 		 * ```
 		 */
-		add: function (perms, refresh) {
+		add: function(perms, refresh){
 			_.extend(this.controled, perms);
 			if (refresh !== false) {
 				this.refresh();
@@ -22575,12 +22574,12 @@ $(function () {
 		 * @param {Bolean} [removeReadonly=false] true設定時にはクリア
 		 * されるエレメントに対してclutil.inputRemoveReadonly()を行う。
 		 */
-		clear: function (removeReadonly) {
+		clear: function(removeReadonly){
 			var readonlySwitcher = this.getReadonlySwitcher();
-			_.each(this.controled, function (role, el) {
+			_.each(this.controled, function(role, el){
 				// jshint unused: false
 				clutil.unfixReadonly(el);
-				if (removeReadonly) {
+				if (removeReadonly){
 					readonlySwitcher.trunOff(el);
 				}
 			}, this);
@@ -22593,15 +22592,15 @@ $(function () {
 		 * る。
 		 * @method refresh
 		 */
-		refresh: function () {
+		refresh: function(){
 			var permfunc = clcom.getPermfuncByCode();
 			if (!permfunc) {
 				return;
 			}
 			var readonlySwitcher = this.getReadonlySwitcher();
-			_.each(this.controled, function (role, el) {
+			_.each(this.controled, function(role, el){
 				var allowed = clcom.checkPermfunc(role, null, permfunc);
-				if (!allowed) {
+				if (!allowed){
 					clutil.fixReadonly(el);
 					readonlySwitcher.turnOn(el);
 				} else {
@@ -22613,7 +22612,7 @@ $(function () {
 		/**
 		 * かくにん用コード
 		 */
-		boo: function () {
+		boo: function(){
 			clcom.setPermfuncMap([
 				{
 					func_code: "AMMSV0310",
@@ -22630,7 +22629,7 @@ $(function () {
 		 * 
 		 * booのあとにやると
 		 */
-		booo: function () {
+		booo: function(){
 			clutil.viewReadonly('#ca_main');
 			clutil.permcntl.set({
 				// リード権限があるのでreadonlyが解除される
@@ -22649,392 +22648,392 @@ $(function () {
 /**
  * @module Relation
  */
-(function (root) {
-	var previousRelation = root.Relation;
-	var Relation = {};
+(function(root){
+  var previousRelation = root.Relation;
+  var Relation = {};
 
-	Relation.noConflict = function () {
-		root.Relation = previousRelation;
-		return this;
-	};
+  Relation.noConflict = function(){
+    root.Relation = previousRelation;
+    return this;
+  };
+  
+  Relation.tsort = function(nodes) {
+    var i, sorted = [], visited = {};
+    function visit(depends, id) {
+      var i, nextId, deps;
+      if (!visited[id]) {
+        depends = depends || [];
+        visited[id] = true;
+        for (i = 0; i < depends.length; i++) {
+	  nextId = depends[i];
+	  visit(nodes[nextId], nextId);
+        }
+        sorted.push(id);
+      }
+    }
+    _.each(nodes, visit);
+    return sorted;
+  };
+  
+  Relation.buildTemplate = function(text){
+    return _.template(text, null, {variable: 'it'});
+  };
 
-	Relation.tsort = function (nodes) {
-		var i, sorted = [], visited = {};
-		function visit(depends, id) {
-			var i, nextId, deps;
-			if (!visited[id]) {
-				depends = depends || [];
-				visited[id] = true;
-				for (i = 0; i < depends.length; i++) {
-					nextId = depends[i];
-					visit(nodes[nextId], nextId);
-				}
-				sorted.push(id);
-			}
-		}
-		_.each(nodes, visit);
-		return sorted;
-	};
+  Relation.getOption = Marionette.getOption;
 
-	Relation.buildTemplate = function (text) {
-		return _.template(text, null, { variable: 'it' });
-	};
-
-	Relation.getOption = Marionette.getOption;
-
-	Relation.triggerMethod = Marionette.triggerMethod;
-
-	root.Relation = Relation;
+  Relation.triggerMethod = Marionette.triggerMethod;
+  
+  root.Relation = Relation;
 }(window));
 
-(function (Relation) {
-	Relation.buildAsync = function (target, doneContext, funcContext) {
-		target.setAsync = function () {
-			this.async = function () {
-				var deferred = $.Deferred();
-				if (!this.promises) {
-					this.promises = [];
-				}
-				this.promises.push(deferred.promise());
-				return function () {
-					deferred.resolve();
-				};
-			};
-		};
-
-		target.asyncTrigger = function (name, args) {
-			args = [name, this].concat(_.rest(arguments, 1));
-			this.setAsync();
-			var deferred = $.Deferred();
-			try {
-				Relation.triggerMethod.apply(funcContext, args);
-				$.when.apply($, this.promises).done(function () {
-					deferred.resolveWith(doneContext);
-				});
-			} catch (e) {
-				console.error('An exception occured while processing the callback function:', e.stack);
-				$.when.apply($, this.promises).done(function () {
-					deferred.rejectWith(doneContext);
-				});
-			}
-			return deferred.promise();
-		};
-	};
+(function(Relation){
+  Relation.buildAsync = function(target, doneContext, funcContext){
+    target.setAsync = function(){
+      this.async = function(){
+        var deferred = $.Deferred();
+        if (!this.promises){
+          this.promises = [];
+        }
+        this.promises.push(deferred.promise());
+        return function(){
+          deferred.resolve();
+        };
+      };
+    };
+    
+    target.asyncTrigger = function(name, args){
+      args = [name, this].concat(_.rest(arguments, 1));
+      this.setAsync();
+      var deferred = $.Deferred();
+      try{
+        Relation.triggerMethod.apply(funcContext, args);
+        $.when.apply($, this.promises).done(function(){
+          deferred.resolveWith(doneContext);
+        });
+      }catch(e){
+        console.error('An exception occured while processing the callback function:', e.stack);
+        $.when.apply($, this.promises).done(function(){
+          deferred.rejectWith(doneContext);
+        });
+      }
+      return deferred.promise();
+    };
+  };
 }(Relation));
 
-(function (Relation) {
-	var DependModel = Backbone.Model.extend({
-		isSynced: false,
+(function(Relation){
+  var DependModel = Backbone.Model.extend({
+    isSynced: false,
 
-		constructor: function () {
-			this.setAttrs = {};
-			this.clearAttrs = {};
-			Backbone.Model.prototype.constructor.apply(this, arguments);
-			this.synced = new Backbone.Model(this.attributes);
-			this.store();
-		},
+    constructor: function(){
+      this.setAttrs = {};
+      this.clearAttrs = {};
+      Backbone.Model.prototype.constructor.apply(this, arguments);
+      this.synced = new Backbone.Model(this.attributes);
+      this.store();
+    },
+    
+    set: function(key, val, options){
+      var attrs;
+      
+      // Handle both `"key", value` and `{key: value}` -style arguments.
+      if (typeof key === 'object') {
+        attrs = key;
+        options = val;
+      } else {
+        (attrs = {})[key] = val;
+      }
 
-		set: function (key, val, options) {
-			var attrs;
+      options || (options = {});
 
-			// Handle both `"key", value` and `{key: value}` -style arguments.
-			if (typeof key === 'object') {
-				attrs = key;
-				options = val;
-			} else {
-				(attrs = {})[key] = val;
-			}
+      if (options.unset){
+        this.setAttrs = _.omit(this.setAttrs, _.keys(attrs));
+        _.extend(this.clearAttrs, attrs);
+      } else {
+        _.extend(this.setAttrs, attrs);
+        this.clearAttrs = _.omit(this.clearAttrs, _.keys(attrs));
+      }
+      if (this.isSynced && !_.isEmpty(attrs)){
+        this.isSynced = false;
+      }
+      
+      var ret = Backbone.Model.prototype.set.call(this, attrs, options);
+      
+      return ret;
+    },
 
-			options || (options = {});
+    store: function(){
+      this.setAttrs = {};
+      this.clearAttrs = {};
+      this.synced = new Backbone.Model(this.attributes);
+      this.isSynced = true;
+    },
 
-			if (options.unset) {
-				this.setAttrs = _.omit(this.setAttrs, _.keys(attrs));
-				_.extend(this.clearAttrs, attrs);
-			} else {
-				_.extend(this.setAttrs, attrs);
-				this.clearAttrs = _.omit(this.clearAttrs, _.keys(attrs));
-			}
-			if (this.isSynced && !_.isEmpty(attrs)) {
-				this.isSynced = false;
-			}
+    diff: function(attrs){
+      return this.synced.changedAttributes(this.attributes);
+    }
+  });
 
-			var ret = Backbone.Model.prototype.set.call(this, attrs, options);
-
-			return ret;
-		},
-
-		store: function () {
-			this.setAttrs = {};
-			this.clearAttrs = {};
-			this.synced = new Backbone.Model(this.attributes);
-			this.isSynced = true;
-		},
-
-		diff: function (attrs) {
-			return this.synced.changedAttributes(this.attributes);
-		}
-	});
-
-	Relation.DependModel = DependModel;
+  Relation.DependModel = DependModel;
 }(Relation));
 
 /**
  * @module Relation
  */
-Relation.DependGraph = (function (Relation) {
+Relation.DependGraph = (function(Relation){
 
-	var Handlers = Backbone.Wreqr.Handlers.extend({
-		execute: function (name, args) {
-			args = _.rest(arguments, 1);
-			if (this.hasHandler(name)) {
-				return this.getHandler(name).apply(this, args);
-			}
-		}
-	});
+  var Handlers = Backbone.Wreqr.Handlers.extend({
+    execute: function(name, args){
+      args = _.rest(arguments, 1);
+      if (this.hasHandler(name)){
+        return this.getHandler(name).apply(this, args);
+      }
+    }
+  });
 
-	/**
-	 * @class DependGraph
-	 * @constructor
-	 */
-	var DependGraph = function (options) {
-		_.bindAll(this, 'handle');
-		this.options = options || {};
-		this.nodes = {};
-		this.model = new Relation.DependModel();
-		this.handlers = new Handlers();
-		this.stack = [];
-	};
+  /**
+   * @class DependGraph
+   * @constructor
+   */
+  var DependGraph = function(options){
+    _.bindAll(this, 'handle');
+    this.options = options || {};
+    this.nodes = {};
+    this.model = new Relation.DependModel();
+    this.handlers = new Handlers();
+    this.stack = [];
+  };
 
-	DependGraph.handlers = new Handlers();
+  DependGraph.handlers = new Handlers();
+  
+  _.extend(DependGraph.prototype, Backbone.Events, {
+    triggerMethod: Relation.triggerMethod,
 
-	_.extend(DependGraph.prototype, Backbone.Events, {
-		triggerMethod: Relation.triggerMethod,
+    clear: function(){
+      this.model.clear.apply(this.model, arguments);
+    },
+      
+    set: function(){
+      this.model.set.apply(this.model, arguments);
+    },
 
-		clear: function () {
-			this.model.clear.apply(this.model, arguments);
-		},
+    /**
+     * @method sync
+     * @param [name]
+     * @param [options]
+     * @param [options.silent=false]
+     * @param [options.ev] 
+     */
+    sync: function(name, options){
+      if (_.isObject(name)){
+        options = name;
+        name = options.name;
+      }
+      name || (name = "sync");
+      options || (options = {});
 
-		set: function () {
-			this.model.set.apply(this.model, arguments);
-		},
+      // return if silent=true
+      if (options.silent) {
+        this.model.store();
+        return;
+      }
 
-		/**
-		 * @method sync
-		 * @param [name]
-		 * @param [options]
-		 * @param [options.silent=false]
-		 * @param [options.ev] 
-		 */
-		sync: function (name, options) {
-			if (_.isObject(name)) {
-				options = name;
-				name = options.name;
-			}
-			name || (name = "sync");
-			options || (options = {});
+      return this.call(name, options.ev).done(function(){
+        // sync model
+        this.model.store();
+      });
+    },
 
-			// return if silent=true
-			if (options.silent) {
-				this.model.store();
-				return;
-			}
+    propagate: function(){
+      return this.call("propagate");
+    },
 
-			return this.call(name, options.ev).done(function () {
-				// sync model
-				this.model.store();
-			});
-		},
+    handle: function(name, e){
+      if (this.handlers.hasHandler(name)){
+        return this.handlers.execute.call(this.handlers, name, e);
+      } else {
+        return DependGraph.handlers.execute.call(DependGraph.handlers, name, e);
+      }
+    },
+      
+    call: function(name, ev){
+      if (!this.sortedNodes){
+        this._sortNode();
+      }
+      this.triggerMethod("before", this);
+      
+      var deferred = _.reduce(this.sortedNodes, function(prev, node){
+        return prev.then(function(){
+          var events = this.buildEvent(name, node, ev);
+          return this.handle(name, events);
+        });
+      }, $.Deferred().resolveWith(this).promise(), this);
+      
+      return deferred.then(function(){
+        this.triggerMethod("after", this);
+		return ev;
+      });
+    },
 
-		propagate: function () {
-			return this.call("propagate");
-		},
+    // ノードを追加する
+    add: function(node){
+      this.nodes[node.id] = node;
+      delete this.sortedNodes;
+      return this;
+    },
 
-		handle: function (name, e) {
-			if (this.handlers.hasHandler(name)) {
-				return this.handlers.execute.call(this.handlers, name, e);
-			} else {
-				return DependGraph.handlers.execute.call(DependGraph.handlers, name, e);
-			}
-		},
+    // ノードを削除する
+    clearNode: function(){
+      this.nodes = {};
+      delete this.sortedNodes;
+      return this;
+    },
+    
+    /**
+     * @param {Object} [name]
+     * @param {Boolean} [node]
+     * @param {Object} [ev]
+     * @return {Object}
+     * e.name イベント名
+     * e.graph このグラフのインスタンス
+     * e.node 当該ノード
+     * e.model model
+     * e.params ノードの依存パラメータ
+     * e.changes 当該nodeの依存パラメータの変更パラメータ名のリスト
+     * e.newVal ノードの更新値
+     * e.needSet ノードの値を更新するべきか
+     * e.needClear 値がクリアされるべきか
+     * e.setAsync
+     * e.trigger
+     */
+    buildEvent: function(name, node, ev){
+      var model = this.model;
+      var e = _.extend({}, ev);
+      e.name = name;
+      e.graph = this;
+      e.node = node;
+      e.model = model;
+      e.params = model.pick(node.depends);
 
-		call: function (name, ev) {
-			if (!this.sortedNodes) {
-				this._sortNode();
-			}
-			this.triggerMethod("before", this);
+      // e.changes
+      var changedAttrs = model.diff() || {};
+      var changes = _.intersection(node.depends, _.keys(changedAttrs));
+      if (!_.isEmpty(changes)) {
+        e.changes = changes;
+      }
 
-			var deferred = _.reduce(this.sortedNodes, function (prev, node) {
-				return prev.then(function () {
-					var events = this.buildEvent(name, node, ev);
-					return this.handle(name, events);
-				});
-			}, $.Deferred().resolveWith(this).promise(), this);
+      // e.needSet, e.newVal, e.needClear
+      if (_.has(model.setAttrs||{}, node.id)) {
+        e.needSet = true;
+        e.newVal = model.get(node.id);
+      } else if (e.changes) {
+        e.needClear = true;
+      }
 
-			return deferred.then(function () {
-				this.triggerMethod("after", this);
-				return ev;
-			});
-		},
+      // e.setAsync, e.trigger
+      Relation.buildAsync(e, this, node);
 
-		// ノードを追加する
-		add: function (node) {
-			this.nodes[node.id] = node;
-			delete this.sortedNodes;
-			return this;
-		},
+      return e;
+    },
 
-		// ノードを削除する
-		clearNode: function () {
-			this.nodes = {};
-			delete this.sortedNodes;
-			return this;
-		},
+    _sortNode: function(){
+      // build id => depends mapping.
+      var deps = _.reduce(this.nodes, function(deps, node){
+        deps[node.id] = node.depends;
+        return deps;
+      }, {});
 
-		/**
-		 * @param {Object} [name]
-		 * @param {Boolean} [node]
-		 * @param {Object} [ev]
-		 * @return {Object}
-		 * e.name イベント名
-		 * e.graph このグラフのインスタンス
-		 * e.node 当該ノード
-		 * e.model model
-		 * e.params ノードの依存パラメータ
-		 * e.changes 当該nodeの依存パラメータの変更パラメータ名のリスト
-		 * e.newVal ノードの更新値
-		 * e.needSet ノードの値を更新するべきか
-		 * e.needClear 値がクリアされるべきか
-		 * e.setAsync
-		 * e.trigger
-		 */
-		buildEvent: function (name, node, ev) {
-			var model = this.model;
-			var e = _.extend({}, ev);
-			e.name = name;
-			e.graph = this;
-			e.node = node;
-			e.model = model;
-			e.params = model.pick(node.depends);
+      var sorted = Relation.tsort(deps);
 
-			// e.changes
-			var changedAttrs = model.diff() || {};
-			var changes = _.intersection(node.depends, _.keys(changedAttrs));
-			if (!_.isEmpty(changes)) {
-				e.changes = changes;
-			}
+      // build sorted array of node.
+      this.sortedNodes = [];
+      _.each(sorted, function(id){
+        var node = this.nodes[id];
+        if (node) {
+          this.sortedNodes.push(node);
+        }
+      }, this);
+    }
+  });
 
-			// e.needSet, e.newVal, e.needClear
-			if (_.has(model.setAttrs || {}, node.id)) {
-				e.needSet = true;
-				e.newVal = model.get(node.id);
-			} else if (e.changes) {
-				e.needClear = true;
-			}
-
-			// e.setAsync, e.trigger
-			Relation.buildAsync(e, this, node);
-
-			return e;
-		},
-
-		_sortNode: function () {
-			// build id => depends mapping.
-			var deps = _.reduce(this.nodes, function (deps, node) {
-				deps[node.id] = node.depends;
-				return deps;
-			}, {});
-
-			var sorted = Relation.tsort(deps);
-
-			// build sorted array of node.
-			this.sortedNodes = [];
-			_.each(sorted, function (id) {
-				var node = this.nodes[id];
-				if (node) {
-					this.sortedNodes.push(node);
-				}
-			}, this);
-		}
-	});
-
-	return DependGraph;
+  return DependGraph;
 }(Relation));
 
 
-(function (Relation) {
-	Relation.DependGraph.handlers.setHandlers({
-		"sync": function (e) {
+(function(Relation){
+  Relation.DependGraph.handlers.setHandlers({
+    "sync": function(e){
 
-			return e.asyncTrigger("visit")
-				.then(function () {
-					if (e.changes) {
-						return e.asyncTrigger("depend:change");
-					}
-				})
-				.then(function () {
-					if (e.needClear) {
-						return e.asyncTrigger("clear");
-					}
-				})
-				.then(function () {
-					if (e.needSet) {
-						return e.asyncTrigger("set");
-					}
-				})
-				.then(function () {
-					return e.asyncTrigger("after:visit");
-				});
-		},
-		"propagate": function (e) {
-			e.changes = e.node.depends;
-			e.needSet = true;
-			e.newVal = e.model.get(e.node.id);
-			return e.graph.handle("sync", e);
-		}
-	});
+      return e.asyncTrigger("visit")
+        .then(function(){
+          if (e.changes){
+            return e.asyncTrigger("depend:change");
+          }
+        })
+        .then(function(){
+          if (e.needClear){
+            return e.asyncTrigger("clear");
+          }
+        })
+        .then(function(){
+          if (e.needSet){
+            return e.asyncTrigger("set");
+          }
+        })
+        .then(function(){
+          return e.asyncTrigger("after:visit");
+        });
+    },
+    "propagate": function(e){
+      e.changes = e.node.depends;
+      e.needSet = true;
+      e.newVal = e.model.get(e.node.id);
+      return e.graph.handle("sync", e);
+    }
+  });
 
 }(Relation));
 
-(function (Relation) {
-	var handle = Relation.DependGraph.prototype.handle;
-	_.extend(Relation.DependGraph.prototype, {
-		use: function (route, fn) {
-			// default route to 'sync'
-			if ('string' != typeof route) {
-				fn = route;
-				route = 'sync';
-			}
+(function(Relation){
+  var handle = Relation.DependGraph.prototype.handle;
+  _.extend(Relation.DependGraph.prototype, {
+    use: function(route, fn){
+      // default route to 'sync'
+      if ('string' != typeof route) {
+        fn = route;
+        route = 'sync';
+      }
 
-			// add the middleware
-			this.stack.push({ route: route, handle: fn });
+      // add the middleware
+      this.stack.push({route: route, handle: fn});
+      
+      return this;
+    },
+    
+    handle: function(name, e){
+      var stack = this.stack,
+          graph = this,
+          index = 0;
+      function next(){
+        var layer;
+        
+        // next callback
+        layer = stack[index++];
 
-			return this;
-		},
+        // all done
+        if (!layer) {
+          // delegate to parent
+          return handle.call(graph, name, e);
+        }
 
-		handle: function (name, e) {
-			var stack = this.stack,
-				graph = this,
-				index = 0;
-			function next() {
-				var layer;
-
-				// next callback
-				layer = stack[index++];
-
-				// all done
-				if (!layer) {
-					// delegate to parent
-					return handle.call(graph, name, e);
-				}
-
-				if (name.indexOf(layer.route) !== 0)
-					return next();
-
-				return layer.handle(e, next);
-			}
-			return next();
-		}
-	});
+        if (name.indexOf(layer.route) !== 0)
+          return next();
+        
+        return layer.handle(e, next);
+      }
+      return next();
+    }
+  });
 }(Relation));
 
 clutil.Relation = Relation.noConflict();
@@ -23631,13 +23630,11 @@ clutil.fieldDefs = {
 					'sizeName': 'name',
 					'sizeCode': 'code'
 				},
-				fakeData: {
-					list: [
-						{ id: 11, code: "00", name: "紺" },
-						{ id: 12, code: "01", name: "ブルー" },
-						{ id: 13, code: "02", name: "グレー" }
-					]
-				}
+				fakeData: {list:[
+					{id: 11, code: "00", name: "紺"},
+					{id: 12, code: "01", name: "ブルー"},
+					{id: 13, code: "02", name: "グレー"}
+				]}
 			}
 		},
 
@@ -23700,15 +23697,11 @@ clutil.fieldDefs = {
 					'busunit_name': 'name',
 					'busunit_code': 'code'
 				},
-				fakeData: {
-					body: {
-						list: [
-							{ busunit_id: 1, busunit_code: '0001', busunit_name: 'name1' },
-							{ busunit_id: 2, busunit_code: '0002', busunit_name: 'name2' },
-							{ busunit_id: 3, busunit_code: '0003', busunit_name: 'name3' }
-						]
-					}
-				}
+				fakeData: {body:{list:[
+					{busunit_id:1,busunit_code:'0001',busunit_name:'name1'},
+					{busunit_id:2,busunit_code:'0002',busunit_name:'name2'},
+					{busunit_id:3,busunit_code:'0003',busunit_name:'name3'}
+				]}}
 			},
 			clMediatorEvents: {
 				change: 'clutil:clbusunitselector:change'
@@ -23724,13 +23717,11 @@ clutil.fieldDefs = {
 				prepRequest: {
 					'cond.codename': ''
 				},
-				fakeData: {
-					list: [
-						{ id: 1, code: "0001", name: "name1" },
-						{ id: 2, code: "0002", name: "name2" },
-						{ id: 3, code: "0003", name: "name3" }
-					]
-				}
+				fakeData: {list:[
+					{id:1,code:"0001",name:"name1"},
+					{id:2,code:"0002",name:"name2"},
+					{id:3,code:"0003",name:"name3"}
+				]}
 			},
 			args: ['el', 'unselectedflag']
 		},
@@ -23744,20 +23735,18 @@ clutil.fieldDefs = {
 					'cond.codename': ''
 				},
 				itemTemplate: '<%- it.name %>',
-				fakeData: {
-					list: [
-						{ id: 1, code: "0001", name: "name1" },
-						{ id: 2, code: "0002", name: "name2" },
-						{ id: 3, code: "0003", name: "name3" }
-					]
-				}
+				fakeData: {list:[
+					{id:1,code:"0001",name:"name1"},
+					{id:2,code:"0002",name:"name2"},
+					{id:3,code:"0003",name:"name3"}
+				]}
 			},
 			viewOptions: {
 				nameOnly: true
 			},
 			args: ['el',
-				'orgfunc_id dependAttrs.@',
-				'unselectedflag'],
+				   'orgfunc_id dependAttrs.@',
+				   'unselectedflag'],
 			clMediatorEvents: {
 				change: 'onClOrgLevelSelectorChanged'
 			}
@@ -23799,7 +23788,7 @@ clutil.fieldDefs = {
 			provide: 'org_id',
 			query: {
 				url: 'am_pa_org_srch',
-				itemTemplate: function (attrs) {
+				itemTemplate: function(attrs){
 					if (!attrs) return '';
 					var code = attrs.code || '',
 						name = attrs.name || '',
@@ -23814,12 +23803,12 @@ clutil.fieldDefs = {
 
 					return code + (name && code && ':' || '') + name;
 				},
-				serializeItem: function (item) {
+				serializeItem: function(item){
 					// unit_id属性を付与する
 					var parentList = item.parentList;
 					var unitLevelId = parseInt(
 						clcom.getSysparam('PAR_AMMS_UNIT_LEVELID'), 10);
-					var unit = _.where(parentList, { orglevel_id: unitLevelId })[0];
+					var unit = _.where(parentList, {orglevel_id: unitLevelId})[0];
 					item.unit_id = unit && unit.id;
 					return item;
 				},
@@ -23842,13 +23831,11 @@ clutil.fieldDefs = {
 				prepRequest: {
 					'cond.codename': ''
 				},
-				fakeData: {
-					list: [
-						{ id: 1, code: "0001", name: "name1" },
-						{ id: 2, code: "0002", name: "name2" },
-						{ id: 3, code: "0003", name: "name3" }
-					]
-				}
+				fakeData: {list:[
+					{id:1,code:"0001",name:"name1"},
+					{id:2,code:"0002",name:"name2"},
+					{id:3,code:"0003",name:"name3"}
+				]}
 			},
 			args: ['el', 'unselectedflag']
 		},
@@ -23861,17 +23848,15 @@ clutil.fieldDefs = {
 				prepRequest: {
 					'cond.codename': ''
 				},
-				fakeData: {
-					list: [
-						{ id: 1, code: "0001", name: "name1" },
-						{ id: 2, code: "0002", name: "name2" },
-						{ id: 3, code: "0003", name: "name3" }
-					]
-				}
+				fakeData: {list:[
+					{id:1,code:"0001",name:"name1"},
+					{id:2,code:"0002",name:"name2"},
+					{id:3,code:"0003",name:"name3"}
+				]}
 			},
 			args: ['el',
-				'itgrpfunc_id dependAttrs.@',
-				'unselectedflag']
+				   'itgrpfunc_id dependAttrs.@',
+				   'unselectedflag']
 		},
 		/**
 		 * 商品属性コードのプルダウン
@@ -23898,13 +23883,13 @@ clutil.fieldDefs = {
 		itemattr: {
 			depends: ['iagfunc_id', 'itgrp_id', '!level'],
 			provide: 'itemattr_id',
-			defaultCond: function (attrs) {
+			defaultCond: function(attrs){
 				var iagfunc_id = attrs.iagfunc_id;
 				if (iagfunc_id === clconst.ITEMATTRGRPFUNC_ID_COLOR ||
-					iagfunc_id === clconst.ITEMATTRGRPFUNC_ID_BRAND) {
+					iagfunc_id === clconst.ITEMATTRGRPFUNC_ID_BRAND){
 					// カラーかブランドの場合はlevelのデフォルト値を2に
 					// 設定する
-					return { level: 2 };
+					return {level: 2};
 				}
 			},
 			query: {
@@ -23916,20 +23901,16 @@ clutil.fieldDefs = {
 					'itemattr_name': 'name',
 					'itemattr_code': 'code'
 				},
-				fakeData: {
-					body: {
-						list: [
-							{ itemattr_id: 1, itemattr_code: "0001", itemattr_name: "name1" },
-							{ itemattr_id: 2, itemattr_code: "0002", itemattr_name: "name2" },
-							{ itemattr_id: 3, itemattr_code: "0003", itemattr_name: "name3" }
-						]
-					}
-				}
+				fakeData: {body:{list:[
+					{itemattr_id:1,itemattr_code:"0001",itemattr_name:"name1"},
+					{itemattr_id:2,itemattr_code:"0002",itemattr_name:"name2"},
+					{itemattr_id:3,itemattr_code:"0003",itemattr_name:"name3"}
+				]}}
 			},
 			args: ['el',
-				'iagfunc_id dependAttrs.@',
-				'itgrp_id dependAttrs.@',
-				'unselectedflag']
+				   'iagfunc_id dependAttrs.@',
+				   'itgrp_id dependAttrs.@',
+				   'unselectedflag']
 		},
 		color: {
 			depends: ['!ymd', '!srchFromDate', '!srchToDate', 'itemID'],
@@ -23944,13 +23925,11 @@ clutil.fieldDefs = {
 					'color.name': 'name',
 					'color.code': 'code'
 				},
-				fakeData: {
-					list: [
-						{ id: 11, code: "00", name: "紺" },
-						{ id: 12, code: "01", name: "ブルー" },
-						{ id: 13, code: "02", name: "グレー" }
-					]
-				}
+				fakeData: {list:[
+					{id: 11, code: "00", name: "紺"},
+					{id: 12, code: "01", name: "ブルー"},
+					{id: 13, code: "02", name: "グレー"}
+				]}
 			}
 		},
 
@@ -23996,13 +23975,11 @@ clutil.fieldDefs = {
 				itemMapping: {
 					row: 'id'
 				},
-				fakeData: {
-					list: [
-						{ id: 11, code: "00", name: "紺" },
-						{ id: 12, code: "01", name: "ブルー" },
-						{ id: 13, code: "02", name: "グレー" }
-					]
-				}
+				fakeData: {list:[
+					{id: 11, code: "00", name: "紺"},
+					{id: 12, code: "01", name: "ブルー"},
+					{id: 13, code: "02", name: "グレー"}
+				]}
 			}
 		},
 		/**
@@ -24143,7 +24120,7 @@ clutil.fieldDefs = {
 		 */
 		posize: {
 			depends: ['ymd', '!srchFromDate', '!srchToDate', 'poBrandID',
-				'poBrandStyleID', '!ladysStyleOptClassTypeID'],
+					  'poBrandStyleID', '!ladysStyleOptClassTypeID'],
 			provide: 'poSizeID',
 			query: {
 				url: 'am_pa_posize_srch',
@@ -24189,21 +24166,21 @@ clutil.fieldDefs = {
 			provide: 'inventcntsch_id',
 			depends: ['unit_id'],
 			itemTemplate: '<option value="<%- it.id %>"><%- it.year %>年<%- it.month %>月期</option>',
-			defaultValue: function () {
+			defaultValue: function(){
 				// 最後を選択する
 				var model = this.collection.last();
-				if (model) {
+				if(model){
 					return model.id;
-				} else {
+				}else{
 					return 0;
 				}
 			},
 			query: {
 				url: 'am_pa_inventcntsch_get',
 				itemPath: "inventcntsch",
-				getList: function (data) {
+				getList: function(data){
 					return _(data.inventcntsch).chain()
-						.map(function (item) {
+						.map(function(item){
 							return {
 								id: item.year * 100 + item.month,
 								inventId: item.id,
@@ -24212,18 +24189,18 @@ clutil.fieldDefs = {
 								unit_id: item.unit_id
 							};
 						})
-						.sortBy(function (item) {
+						.sortBy(function(item){
 							return item.id;
 						})
-						.uniq(false, function (item) {
+						.uniq(false, function(item){
 							return item.id;
 						})
 						.value();
 				}
 			},
-			onAfterInitialize: function () {
+			onAfterInitialize: function(){
 				// 降順をデフォルトにする
-				if (this.options.reverse !== false) {
+				if (this.options.reverse !== false){
 					this.options.reverse = true;
 				}
 			}
@@ -24521,9 +24498,9 @@ clutil.fieldDefs = {
 			query: {
 				url: 'am_pa_storerankptn_srch',
 				itemMapping: {
-					'storerankptn_id': 'id',
-					'storerankptn_code': 'code',
-					'storerankptn_name': 'name'
+					'storerankptn_id'		: 'id',
+					'storerankptn_code'		: 'code',
+					'storerankptn_name'		: 'name'
 				}
 			}
 		},
@@ -24534,9 +24511,9 @@ clutil.fieldDefs = {
 			query: {
 				url: 'am_pa_basestockptn_srch',
 				itemMapping: {
-					'basestockptn_id': 'id',
-					'basestockptn_code': 'code',
-					'basestockptn_name': 'name'
+					'basestockptn_id'		: 'id',
+					'basestockptn_code'		: 'code',
+					'basestockptn_name'		: 'name'
 				}
 			}
 		},
@@ -24568,17 +24545,15 @@ clutil.fieldDefs = {
 			query: {
 				url: 'am_pa_equip_srch',
 				itemMapping: {
-					'equip_id': 'id',
-					'equip_code': 'code',
-					'equip_name': 'name'
+					'equip_id'		: 'id',
+					'equip_code'	: 'code',
+					'equip_name'	: 'name'
 				},
-				fakeData: {
-					list: [
-						{ vendor_id: 1, vendor_code: "0001", vendor_name: "name1" },
-						{ vendor_id: 2, vendor_code: "0002", vendor_name: "name2" },
-						{ vendor_id: 3, vendor_code: "0003", vendor_name: "name3" }
-					]
-				}
+				fakeData: {list:[
+					{vendor_id:1,vendor_code:"0001",vendor_name:"name1"},
+					{vendor_id:2,vendor_code:"0002",vendor_name:"name2"},
+					{vendor_id:3,vendor_code:"0003",vendor_name:"name3"}
+				]}
 			}
 		},
 		// 備品取引先コード入力
@@ -24592,9 +24567,9 @@ clutil.fieldDefs = {
 			query: {
 				url: 'am_pa_equipvend_srch',
 				itemMapping: {
-					'equipvend_id': 'id',
-					'equipvend_code': 'code',
-					'equipvend_name': 'name'
+					'equipvend_id'		: 'id',
+					'equipvend_code'	: 'code',
+					'equipvend_name'	: 'name'
 				}
 			}
 		},
@@ -24645,15 +24620,11 @@ clutil.fieldDefs = {
 					vendor_code: 'code',
 					vendor_name: 'name'
 				},
-				fakeData: {
-					body: {
-						list: [
-							{ vendor_id: 1, vendor_code: "0001", vendor_name: "name1" },
-							{ vendor_id: 2, vendor_code: "0002", vendor_name: "name2" },
-							{ vendor_id: 3, vendor_code: "0003", vendor_name: "name3" }
-						]
-					}
-				}
+				fakeData: {body:{list:[
+					{vendor_id:1,vendor_code:"0001",vendor_name:"name1"},
+					{vendor_id:2,vendor_code:"0002",vendor_name:"name2"},
+					{vendor_id:3,vendor_code:"0003",vendor_name:"name3"}
+				]}}
 			}
 		},
 		/**
@@ -24720,22 +24691,18 @@ clutil.fieldDefs = {
 				itemMapping: {
 					itgrp_id: 'id'
 				},
-				fakeData: {
-					body: {
-						list: [
-							{ itgrp_id: 1, code: "0001", name: "name1" },
-							{ itgrp_id: 2, code: "0002", name: "name2" },
-							{ itgrp_id: 3, code: "0003", name: "name3" }
-						]
-					}
-				}
+				fakeData: {body:{list:[
+					{itgrp_id:1,code:"0001",name:"name1"},
+					{itgrp_id:2,code:"0002",name:"name2"},
+					{itgrp_id:3,code:"0003",name:"name3"}
+				]}}
 			}
 		},
 
 		// メーカー品番入力
 		makeritemcode: {
 			depends: ['!ymd', '!srchFromDate', '!srchToDate',
-				'maker_id', 'itgrp_id'],
+					  'maker_id', 'itgrp_id'],
 			provide: 'itemID',
 			compat: {
 				maker_id: 'getMakerId',
@@ -24749,19 +24716,17 @@ clutil.fieldDefs = {
 					'itemID.name': 'name',
 					'itemID.code': 'code'
 				},
-				fakeData: {
-					list: [
-						{ id: 1001, code: "3A-1252", name: "２ＷＬＭＳＰＸＰストレッチ２Ｐ" },
-						{ id: 1002, code: "M1323151", name: "３ＷＭＪ黒Ｐストレッチ２Ｐ" },
-						{ id: 1003, code: "V1922160", name: "１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞" },
-						{ id: 1004, code: "M1323151", name: "８ＳＲＣ２Ｂ２Ｐサマー" },
-						{ id: 1005, code: "509200A", name: "１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ" },
-						{ id: 1006, code: "509201A", name: "１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ" },
-						{ id: 1007, code: "3C-1256", name: "２ＷＬＭＳＰＰストレッチ２パン" },
-						{ id: 1008, code: "M1223162", name: "２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ" },
-						{ id: 1009, code: "M1223163", name: "２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ" }
-					]
-				}
+				fakeData: {list: [
+					{id:1001,code:"3A-1252",name:"２ＷＬＭＳＰＸＰストレッチ２Ｐ"},
+					{id:1002,code:"M1323151",name:"３ＷＭＪ黒Ｐストレッチ２Ｐ"},
+					{id:1003,code:"V1922160",name:"１１ＳＳＭＦＧＰＷ２ＰＡＮ黒縞"},
+					{id:1004,code:"M1323151",name:"８ＳＲＣ２Ｂ２Ｐサマー"},
+					{id:1005,code:"509200A",name:"１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ"},
+					{id:1006,code:"509201A",name:"１０ＳＡＦＯＲＴＵＮＡ２Ｂ２Ｐ"},
+					{id:1007,code:"3C-1256",name:"２ＷＬＭＳＰＰストレッチ２パン"},
+					{id:1008,code:"M1223162",name:"２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ"},
+					{id:1009,code:"M1223163",name:"２ＷＭＪ白Ｐストレッチ２Ｂ２Ｐ"}
+				]}
 			}
 		},
 
@@ -24813,13 +24778,13 @@ clutil.fieldDefs = {
 		itemattrgrpcode: {
 			depends: ['iagfunc_id', 'itgrp_id', '~level', '!ymd', '!srchFromDate', '!srchToDate'],
 			provide: 'itemattr_id',
-			defaultCond: function (attrs) {
+			defaultCond: function(attrs){
 				var iagfunc_id = attrs.iagfunc_id;
 				if (iagfunc_id === clconst.ITEMATTRGRPFUNC_ID_COLOR ||
-					iagfunc_id === clconst.ITEMATTRGRPFUNC_ID_BRAND) {
+					iagfunc_id === clconst.ITEMATTRGRPFUNC_ID_BRAND){
 					// カラーかブランドの場合はlevelのデフォルト値を2に
 					// 設定する
-					return { level: 2 };
+					return {level: 2};
 				}
 			},
 			query: {
@@ -24830,16 +24795,14 @@ clutil.fieldDefs = {
 					'itemattr_name': 'name',
 					'itemattr_code': 'code'
 				},
-				fakeData: {
-					list: [
-						{ id: 11, code: "00", name: "紺" },
-						{ id: 12, code: "01", name: "ブルー" },
-						{ id: 13, code: "02", name: "グレー" },
-						{ id: 14, code: "03", name: "ベージュ" },
-						{ id: 15, code: "04", name: "茶" },
-						{ id: 16, code: "05", name: "白" }
-					]
-				}
+				fakeData: {list:[
+					{id: 11, code: "00", name: "紺"},
+					{id: 12, code: "01", name: "ブルー"},
+					{id: 13, code: "02", name: "グレー"},
+					{id: 14, code: "03", name: "ベージュ"},
+					{id: 15, code: "04", name: "茶"},
+					{id: 16, code: "05", name:	"白"}
+				]}
 			}
 		},
 
@@ -24877,8 +24840,8 @@ clutil.fieldDefs = {
 		colorcode: {
 			depends: ['iagfunc_id', 'itgrp_id', '~level', '!ymd', '!srchFromDate', '!srchToDate'],
 			provide: 'itemattr_id',
-			defaultCond: function (attrs) {
-				return { iagfunc_id: amcm_type.AMCM_VAL_ITEM_ATTR_TYPE_COLOR, level: 2 };
+			defaultCond: function(attrs){
+				return {iagfunc_id: amcm_type.AMCM_VAL_ITEM_ATTR_TYPE_COLOR, level: 2};
 			},
 			query: {
 				url: 'am_pa_itemattr_srch',
@@ -24888,16 +24851,14 @@ clutil.fieldDefs = {
 					'itemattr_name': 'name',
 					'itemattr_code': 'code'
 				},
-				fakeData: {
-					list: [
-						{ id: 11, code: "00", name: "紺" },
-						{ id: 12, code: "01", name: "ブルー" },
-						{ id: 13, code: "02", name: "グレー" },
-						{ id: 14, code: "03", name: "ベージュ" },
-						{ id: 15, code: "04", name: "茶" },
-						{ id: 16, code: "05", name: "白" }
-					]
-				}
+				fakeData: {list:[
+					{id: 11, code: "00", name: "紺"},
+					{id: 12, code: "01", name: "ブルー"},
+					{id: 13, code: "02", name: "グレー"},
+					{id: 14, code: "03", name: "ベージュ"},
+					{id: 15, code: "04", name: "茶"},
+					{id: 16, code: "05", name:	"白"}
+				]}
 			}
 		},
 
@@ -24938,13 +24899,11 @@ clutil.fieldDefs = {
 					'sizeCode': 'code'
 				},
 				codename: 'codename',
-				fakeData: {
-					list: [
-						{ id: 11, code: "00", name: "紺" },
-						{ id: 12, code: "01", name: "ブルー" },
-						{ id: 13, code: "02", name: "グレー" }
-					]
-				}
+				fakeData: {list:[
+					{id: 11, code: "00", name: "紺"},
+					{id: 12, code: "01", name: "ブルー"},
+					{id: 13, code: "02", name: "グレー"}
+				]}
 			}
 		},
 
@@ -25184,7 +25143,7 @@ clutil.fieldDefs = {
 			provide: 'org_id',
 			query: {
 				url: 'am_pa_org_srch',
-				itemTemplate: function (attrs) {
+				itemTemplate: function(attrs){
 					if (!attrs) return '';
 					var code = attrs.code || '',
 						name = attrs.name || '',
@@ -25199,12 +25158,12 @@ clutil.fieldDefs = {
 
 					return code + (name && code && ':' || '') + name;
 				},
-				serializeItem: function (item) {
+				serializeItem: function(item){
 					// unit_id属性を付与する
 					var parentList = item.parentList;
 					var unitLevelId = parseInt(
 						clcom.getSysparam('PAR_AMMS_UNIT_LEVELID'), 10);
-					var unit = _.where(parentList, { orglevel_id: unitLevelId })[0];
+					var unit = _.where(parentList, {orglevel_id: unitLevelId})[0];
 					item.unit_id = unit && unit.id;
 					return item;
 				},
@@ -25541,7 +25500,7 @@ clutil.fieldDefs = {
 		 */
 		posize: {
 			depends: ['ymd', '!srchFromDate', '!srchToDate', 'poBrandID',
-				'poBrandStyleID', '~ladysStyleOptClassTypeID'],
+					  'poBrandStyleID', '~ladysStyleOptClassTypeID'],
 			provide: 'poSizeID',
 			query: {
 				url: 'am_pa_posize_srch',
@@ -25597,7 +25556,7 @@ clutil.fieldDefs = {
 			autocomplete: {
 				minLength: 4,
 				maxItems: 12,
-				source: function (request, response, view) {
+				source: function(request, response, view){
 					var startYearMonth = view.options.startYearMonth,
 						endYearMonth = view.options.endYearMonth;
 					if (startYearMonth == null)
@@ -25607,7 +25566,7 @@ clutil.fieldDefs = {
 
 					var term = request.term || '';
 					var reg = /^([0-9]{4,4})(月)?([0-9]{0,2})/;
-					if (!reg.test(term)) {
+					if (!reg.test(term)){
 						return;
 					}
 					term = term.replace(reg, '$1$3');
@@ -25619,10 +25578,10 @@ clutil.fieldDefs = {
 						var month = i + 1;
 						var id = year * 100 + month;
 
-						if (String(id).indexOf(term) < 0) {
+						if (String(id).indexOf(term) < 0){
 							continue;
 						}
-						if (id < startYearMonth || id > endYearMonth) {
+						if (id < startYearMonth || id > endYearMonth){
 							continue;
 						}
 						data.push({
@@ -25633,22 +25592,22 @@ clutil.fieldDefs = {
 				}
 			},
 
-			onAfterInitialize: function (view) {
+			onAfterInitialize: function(view){
 				// フォーカスしたときに yyyymm 形式、ブラーしたときは
 				// yyyy年mm月を表示
 				view.$el.inputlimiter('addfilter', '__yearmonthcode', {
-					mask: function (value) {
+					mask: function(value){
 						var attrs = view.getAttrs();
-						if (attrs && attrs.id) {
+						if (attrs && attrs.id){
 							return view.itemTemplate(attrs);
-						} else {
+						}else{
 							return value;
 						}
 					},
-					unmask: function (value, options) {
+					unmask: function(value, options){
 						var attrs = view.getAttrs();
 						if (options.eventType !== 'keypress' &&
-							attrs && attrs.id) {
+							attrs && attrs.id){
 							value = String(attrs.id);
 						}
 						return value;
@@ -25698,21 +25657,21 @@ clutil.fieldDefs = {
 				minLength: 5
 			},
 
-			onAfterInitialize: function (view) {
+			onAfterInitialize: function(view){
 				// フォーカスしたときに yyyyww 形式、ブラーしたときはnameを表示するinputlimiterを設定する
 				view.$el.inputlimiter('addfilter', '__yearweekcode', {
-					mask: function (value) {
+					mask: function(value){
 						var attrs = view.getAttrs();
-						if (attrs && attrs.name) {
+						if (attrs && attrs.name){
 							return attrs.name;
-						} else {
+						}else{
 							return value;
 						}
 					},
-					unmask: function (value, options) {
+					unmask: function(value, options){
 						var attrs = view.getAttrs();
 						if (options.eventType !== 'keypress' &&
-							attrs && attrs.yyyyww) {
+							attrs && attrs.yyyyww){
 							value = String(attrs.yyyyww);
 						}
 						return value;
@@ -25758,18 +25717,18 @@ clutil.fieldDefs = {
 		 */
 		autocomplete1: {
 			autocomplete: {
-				source: function (request, response, view) {
+				source: function(request, response, view){
 					var term = request.term;
 					var template = view.itemTemplate;
 					var candidate = view.options.candidate;
-					if (_.isFunction(candidate)) {
+					if(_.isFunction(candidate)){
 						candidate = candidate.call(view);
 					}
-					var filter = function (item) {
+					var filter = function(item){
 						var label = template(item);
 						return label.indexOf(term) >= 0;
 					};
-					if (view.options.getFilter) {
+					if(view.options.getFilter){
 						filter = view.options.getFilter.call(view, request);
 					}
 					response(_.filter(candidate, filter));
@@ -25794,7 +25753,7 @@ clutil.fieldDefs = {
 	//
 	// `this.triggerMethod("foo:bar") will trigger the "foo:bar" event and
 	// call the "onFooBar" method.
-	var triggerMethod = (function () {
+	var triggerMethod = (function(){
 
 		// split the event name on the :
 		var splitter = /(^|:)(\w)/gi;
@@ -25806,7 +25765,7 @@ clutil.fieldDefs = {
 		}
 
 		// actual triggerMethod name
-		var triggerMethod = function (event) {
+		var triggerMethod = function(event) {
 			// get the method name from the event name
 			var methodName = 'on' + event.replace(splitter, getEventName);
 			var method = this[methodName];
@@ -25836,7 +25795,7 @@ clutil.fieldDefs = {
 	 */
 	function objToPaths(obj) {
 		var ret = {},
-			separator = keyPathSeparator;
+      separator = keyPathSeparator;
 
 		for (var key in obj) {
 			var val = obj[key];
@@ -25880,13 +25839,15 @@ clutil.fieldDefs = {
 			}
 
 			if (typeof result === 'undefined') {
-				if (return_exists) {
+				if (return_exists)
+				{
 					return true;
 				}
 				return result;
 			}
 		}
-		if (return_exists) {
+		if (return_exists)
+		{
 			return true;
 		}
 		return result;
@@ -25906,7 +25867,7 @@ clutil.fieldDefs = {
 
 		var fields = path.split(separator);
 		var result = obj;
-		for (var i = 0, n = fields.length; i < n && result !== undefined; i++) {
+		for (var i = 0, n = fields.length; i < n && result !== undefined ; i++) {
 			var field = fields[i];
 
 			//If the last in the path, set the value
@@ -25914,7 +25875,7 @@ clutil.fieldDefs = {
 				options.unset ? delete result[field] : result[field] = val;
 			} else {
 				//Create the child object if it doesn't exist, or isn't an object
-				if (typeof result[field] === 'undefined' || !_.isObject(result[field])) {
+				if (typeof result[field] === 'undefined' || ! _.isObject(result[field])) {
 					result[field] = {};
 				}
 
@@ -25930,18 +25891,18 @@ clutil.fieldDefs = {
 	////////////////////////////////////////////////////////////////
 	function buildTemplate(text) {
 		if (_.isFunction(text)) return text;
-		return _.template(text, null, { variable: 'it' });
+		return _.template(text, null, {variable: 'it'});
 	}
 
 	// this code is borrowed from backbone.marionette
 
 	// Retrieve an object, function or other value from a target
 	// object or its `options`, with `options` taking precedence.
-	var getOption = function (target, optionName) {
-		if (!target || !optionName) { return; }
+	var getOption = function(target, optionName){
+		if (!target || !optionName){ return; }
 		var value;
 
-		if (target.options && (optionName in target.options) && (target.options[optionName] !== undefined)) {
+		if (target.options && (optionName in target.options) && (target.options[optionName] !== undefined)){
 			value = target.options[optionName];
 		} else {
 			value = target[optionName];
@@ -25952,11 +25913,11 @@ clutil.fieldDefs = {
 
 	var objKeyConv = function (src, mapping, result) {
 		result || (result = {});
-		var converted = _.reduce(mapping, function (memo, newKey, key) {
+		var converted = _.reduce(mapping, function(memo, newKey, key){
 			var value;
 			if (/ +/.test(newKey)) {
 				value = getNested(src, key);
-				_.each(newKey.split(/ +/), function (newKey) {
+				_.each(newKey.split(/ +/), function(newKey){
 					setNested(memo, newKey, value);
 				});
 			} else {
@@ -25968,7 +25929,7 @@ clutil.fieldDefs = {
 		return _.extend(result, src, converted);
 	};
 
-	var tsort = function (nodes) {
+	var tsort = function(nodes) {
 		var i, sorted = [], visited = {};
 		function visit(depends, id) {
 			var i, nextId, deps;
@@ -26020,7 +25981,7 @@ clutil.fieldDefs = {
 	_.extend(FieldRelation.prototype, Backbone.Events, {
 
 		createField: function (funcName, fieldOptions) {
-			if (_.isString(fieldOptions)) {
+			if(_.isString(fieldOptions)) {
 				// fieldOptionsはjQuery selectorのときもある
 				fieldOptions = {
 					el: fieldOptions
@@ -26036,17 +25997,17 @@ clutil.fieldDefs = {
 			}
 
 			fieldOptions || (fieldOptions = {});
-			if (_.isFunction(fieldOptions)) {
+			if (_.isFunction(fieldOptions)){
 				func = fieldOptions;
 				var options = {};
-				if (name) {
+				if (name){
 					options.name = name;
 				}
 				field = func();
-			} else {
+			}else{
 				fieldOptions.hasFieldRelation = true;
 				fieldOptions.render = false;
-				if (name) {
+				if (name){
 					fieldOptions.name = name;
 				}
 				func = clutil.fields[funcName];
@@ -26085,9 +26046,9 @@ clutil.fieldDefs = {
 				this.listenTo(field, 'fr:change', this.onFieldChange);
 				this.listenTo(field, 'fr:remove', this.onFieldRemove);
 				this.listenTo(field, {
-					all: function (name) {
+					all: function(name){
 						var args = _.toArray(arguments);
-						if (!/^field:/.test(name)) {
+						if(!/^field:/.test(name)){
 							args[0] = 'field:' + name;
 						}
 						this.trigger.apply(this, args);
@@ -26097,7 +26058,7 @@ clutil.fieldDefs = {
 		},
 
 		setFields: function (fields) {
-			_.each(fields, function (fieldOptions, funcName) {
+			_.each(fields, function(fieldOptions, funcName) {
 				var field = this.createField(funcName, fieldOptions);
 				this.addField(field);
 			}, this);
@@ -26110,7 +26071,7 @@ clutil.fieldDefs = {
 			this.model.set(attrs);
 			_.extend(this._changes, this.model.changed);
 			if (!options.noreset && this.model.hasChanged()) {
-				this.reset({ set: false, resetBy: options.changedBy });
+				this.reset({set: false, resetBy: options.changedBy});
 			}
 		},
 
@@ -26118,7 +26079,7 @@ clutil.fieldDefs = {
 			this.removeField(field);
 		},
 
-		removeField: function (field) {
+		removeField: function(field) {
 			_.each(field.branches, function (name) {
 				delete this._fields[name];
 				delete this._deps[name];
@@ -26131,8 +26092,8 @@ clutil.fieldDefs = {
 		_setFlag: function () {
 			var i, name, sw, args = _.toArray(arguments);
 			_.each(this._fields, function (field) {
-				for (i = 0; i < args.length; i += 2) {
-					name = args[i], sw = args[i + 1];
+				for (i=0; i<args.length; i+=2) {
+					name = args[i], sw = args[i+1];
 					field[name] = sw;
 				}
 			});
@@ -26154,19 +26115,19 @@ clutil.fieldDefs = {
 
 			var when = [];
 			var done = _.reduce(sorted, _.bind(function (prevResult, id) {
-				var result = { id: id, field: this._fields[id] };
+				var result = {id: id, field: this._fields[id]};
 				result.deferred = prevResult.deferred.then(function () {
 					debug('* FR#resolve id:', id,
-						'model:', JSON.stringify(that.model),
-						'changed:', that._changes);
+						  'model:', JSON.stringify(that.model),
+						  'changed:', that._changes);
 
 					if (prevResult.field) {
 						that.model.set(prevResult.field.getProvideAttrs());
 						_.extend(that._changes, that.model.changedAttributes());
 
 						debug('** resolve: provide:', prevResult.field.provide,
-							'attrs:', prevResult.field.getProvideAttrs(),
-							'model.cheanged:', that.model.changedAttributes());
+							  'attrs:', prevResult.field.getProvideAttrs(),
+							  'model.cheanged:', that.model.changedAttributes());
 					}
 
 					var field = that._fields[id];
@@ -26201,36 +26162,36 @@ clutil.fieldDefs = {
 					} else if (options.set) {
 						// callBy => debuging purpose
 						if (options.changeReadonlyState !== false &&
-							_.isFunction(field._checkAttrs)) {
-							field._checkAttrs({ callBy: 'fr#reset' });
+							_.isFunction(field._checkAttrs)){
+							field._checkAttrs({callBy: 'fr#reset'});
 						}
-						field.renderValue({ callBy: 'fr#reset' });
+						field.renderValue({callBy: 'fr#reset'});
 					}
 
 					debug('** FR#reset id:', id,
-						'depends:', depends,
-						'changedNodes:', changedNodes,
-						'changeDependant:', changeDependant);
+						  'depends:', depends,
+						  'changedNodes:', changedNodes,
+						  'changeDependant:', changeDependant);
 
 					if (_.isFunction(field.invalidate)) {
-						$.when(ret).done(function () {
-							field.invalidate({ noreset: true });
+						$.when(ret).done(function() {
+							field.invalidate({noreset: true});
 						});
 					}
 
 					// options.setのときは同期的
 					if (!options.set) {
 						return ret;
-					} else {
+					}else{
 						when.push(ret);
 					}
 				});
 				return result;
-			}, this), { deferred: $.Deferred().resolve() });
+			}, this), {deferred: $.Deferred().resolve()});
 
 			when.push(done.deferred);
 			$.when.apply($, when)
-				.always(function () {
+				.always(function(){
 					console.warn('FieldRelation#reset done');
 					// リセット中フラグの解除
 					that._setFlag('_resetting', false);
@@ -26287,9 +26248,9 @@ clutil.fieldDefs = {
 			var field = this._fields[id];
 			if (field) {
 				this.trigger('change:' + field.id,
-					field.getValue(),
-					field.getAttrs(),
-					field);
+							 field.getValue(),
+							 field.getAttrs(),
+							 field);
 			}
 		},
 
@@ -26305,7 +26266,7 @@ clutil.fieldDefs = {
 		},
 
 		_set: function (field, value, options) {
-			var setOptions = _.extend({ noreset: true, render: false }, options);
+			var setOptions = _.extend({noreset: true, render: false}, options);
 			this._resolveDeferred = this._setDeferred.then(function () {
 				field.setValue(value, setOptions);
 				// setValueは同期的なのでreturn undefined;
@@ -26314,7 +26275,7 @@ clutil.fieldDefs = {
 			return this;
 		},
 
-		get: function (field) {
+		get: function(field) {
 			if (_.isString(field)) {
 				field = this.fields[field];
 			}
@@ -26324,7 +26285,7 @@ clutil.fieldDefs = {
 			console.error('No such field `' + field + "'");
 		},
 
-		_get: function (field) {
+		_get: function(field) {
 			return field.getValue();
 		},
 
@@ -26355,14 +26316,14 @@ clutil.fieldDefs = {
 		// 全Fieldのインスタンス
 		_bycid: {},
 
-		addFieldRelation: function (fieldRelation) {
+		addFieldRelation: function(fieldRelation) {
 			if (!fieldRelation.id) {
 				fieldRelation.id = _.uniqueId('fr');
 			}
 			this._fieldRelations[fieldRelation.id] = fieldRelation;
 		},
 
-		removeFieldRelation: function (fieldRelation) {
+		removeFieldRelation: function(fieldRelation) {
 			delete this._fieldRelations[fieldRelation.id];
 		},
 
@@ -26372,7 +26333,7 @@ clutil.fieldDefs = {
 		// $elのdata-field-cid属性を見てfieldインスタンスが割
 		// りあてずみいの場合に開放を行う。それから新fieldインスタンス
 		// のcidを同属性に設定する。
-		manageField: function (field) {
+		manageField: function(field) {
 			var cid = field.$el.attr('data-field-cid');
 			if (cid) {
 				var old = this._bycid[cid];
@@ -26383,16 +26344,16 @@ clutil.fieldDefs = {
 				}
 			}
 			field.$el.attr('data-field-cid', field.cid);
-			this._bycid[field.cid] = field;
+			this._bycid[field.cid]	= field;
 		},
 
-		_removeField: function (field) {
+		_removeField: function(field) {
 			var cid = field.$el.attr('data-field-cid');
 			field.$el.removeAttr('data-field-cid');
 			delete this._bycid[cid];
 		},
 
-		removeField: function (field) {
+		removeField: function(field) {
 			var fr = this.getFieldRelation(field);
 			if (fr) {
 				fr.removeField(field);
@@ -26443,7 +26404,7 @@ clutil.fieldDefs = {
 		resetAll: function (resetOptions) {
 			console.log('XXXX resetAll');
 			return $.when.apply($, _.map(this._fieldRelations, function (fr) {
-				return fr.reset(_.extend({ set: true }, resetOptions));
+				return fr.reset(_.extend({set: true}, resetOptions));
 			}, this));
 		},
 
@@ -26469,7 +26430,7 @@ clutil.fieldDefs = {
 			options.id = id;
 			var fr = new FieldRelation(fields, options);
 			// 全フィールドの依存関係の解決
-			fr.reset({ init: true });
+			fr.reset({init: true});
 			return fr;
 		}
 	});
@@ -26501,7 +26462,7 @@ clutil.fieldDefs = {
 					deferred.resolveWith(
 						context, [response, options, data, dataType]);
 				})
-				.fail(function () {
+				.fail(function(){
 					deferred.rejectWith(context);
 				});
 			return deferred.promise();
@@ -26509,8 +26470,8 @@ clutil.fieldDefs = {
 		postJSON: function () {
 			return clutil.postJSON.apply(clutil, arguments);
 		},
-		createRequest: function () { },
-		createResponse: function () { }
+		createRequest: function () {},
+		createResponse: function () {}
 	});
 
 	Query.extend = Backbone.Model.extend;
@@ -26523,7 +26484,7 @@ clutil.fieldDefs = {
 
 	var AcQueryDefaultItemTemplate = _.template(
 		'<%- it.code %><% it.code && it.name && print(":") %>' +
-		'<%- it.name %>', null, { variable: 'it' }
+			'<%- it.name %>', null, {variable:'it'}
 	);
 	var AcQueryBase = Query.extend({
 		initialize: function () {
@@ -26535,7 +26496,7 @@ clutil.fieldDefs = {
 		createRequest: function (params, options) {
 			options = options || {};
 			var condMapping = this.options.condMapping || {};
-			var request = { cond: {} };
+			var request = {cond: {}};
 
 			// XXXX ymdが設定されている場合は srchFromDate, srchToDateにも設定する。
 			if (params.ymd !== undefined) {
@@ -26566,7 +26527,7 @@ clutil.fieldDefs = {
 			var itemMapping = this.options.itemMapping || {};
 			var itemTemplate = this.itemTemplate;
 			return _.map(list, function (item) {
-				if (_.isFunction(serializeItem)) {
+				if (_.isFunction(serializeItem)){
 					item = serializeItem(item, data);
 				}
 				var o = objKeyConv(item, itemMapping);
@@ -26584,7 +26545,7 @@ clutil.fieldDefs = {
 
 	var acBlockUIEvents = 'mousedown mouseup keydown keypress keyup touchstart touchend touchmove';
 
-	var acBlockUIHandler = function (e) {
+	var acBlockUIHandler = function(e){
 		// console.log('**** onBlockUIHandler', e.type, e.target, e.data.input);
 
 		if (e.which === 9) {
@@ -26594,7 +26555,7 @@ clutil.fieldDefs = {
 			return;
 		}
 
-		if (e.target === e.data.input) {
+		if (e.target === e.data.input){
 			// イベント対象が当該オートコンプリートのインプット
 
 			return;
@@ -26607,12 +26568,12 @@ clutil.fieldDefs = {
 
 	var AcQuery = AcQueryBase.extend({
 
-		initialize: function () {
+		initialize: function(){
 			_.bindAll(this, 'onBlock', 'onUnblock');
 			AcQueryBase.prototype.initialize.apply(this, arguments);
 		},
 
-		postJSON: function (options) {
+		postJSON: function(options){
 			options.blockUIOptions = {
 				message: false,
 				overlayCSS: {
@@ -26631,17 +26592,17 @@ clutil.fieldDefs = {
 			return clutil.postJSON(options);
 		},
 
-		onBlock: function () {
+		onBlock: function(){
 			// console.log('***** onBlock');
 			$(document).on(acBlockUIEvents, this, acBlockUIHandler);
 		},
 
-		onUnblock: function () {
+		onUnblock: function(){
 			// console.log('***** onUnblockBlock');
 			$(document).off(acBlockUIEvents, acBlockUIHandler);
 		},
 
-		setInput: function (el) {
+		setInput: function(el){
 			this.input = el;
 		}
 	});
@@ -26735,10 +26696,10 @@ clutil.fieldDefs = {
 		if (_.isString(rmDepends)) rmDepends = [rmDepends];
 		depends = _.bind(_.without, _, depends)
 			.apply(null, (rmDepends.concat(
-				_.map(rmDepends, function (s) { return '~' + s }),
-				_.map(rmDepends, function (s) { return '!' + s }))));
+				_.map(rmDepends, function(s){return '~' + s}),
+				_.map(rmDepends, function(s){return '!' + s}))));
 
-		var dependsMap = _.reduce(depends, function (memo, depend) {
+		var dependsMap = _.reduce(depends, function(memo, depend){
 			var req = true;		// 必須
 			var nop = false;	// 伝搬しない
 			while (true) {
@@ -26754,11 +26715,11 @@ clutil.fieldDefs = {
 				}
 			}
 
-			memo[depend] = { req: req, nop: nop };
+			memo[depend] = {req: req, nop: nop};
 			return memo;
 		}, {});
 
-		dependsMap = _.reduce(dependsMap, function (memo, attr, depend) {
+		dependsMap = _.reduce(dependsMap, function(memo, attr, depend){
 			if (options.dependSrc && _.has(options.dependSrc, depend)) {
 				depend = options.dependSrc[depend];
 			}
@@ -26770,7 +26731,7 @@ clutil.fieldDefs = {
 		var required = [];
 		// 伝搬しないパラメータ
 		var nopropagete = [];
-		_.each(dependsMap, function (attr, depend) {
+		_.each(dependsMap, function(attr, depend){
 			if (attr.req) required.push(depend);
 			if (attr.nop) nopropagete.push(depend);
 		});
@@ -26786,15 +26747,15 @@ clutil.fieldDefs = {
 	}
 
 	var fieldOptions = ['provide', 'defaultValue', 'reqres',
-		'dependAttrs', 'checker', 'branches',
-		'isCompoundValue',
-		'renderDependencies', 'renderValue', 'behaviors',
-		'onAfterInitialize'];
+						'dependAttrs', 'checker', 'branches',
+						'isCompoundValue',
+						'renderDependencies', 'renderValue', 'behaviors',
+						'onAfterInitialize'];
 
 	var Field = Backbone.View.extend({
 		idName: 'id',
 
-		constructor: function (options) {
+		constructor: function(options){
 			this.options = options || {};
 			Backbone.View.prototype.constructor.apply(this, arguments);
 		},
@@ -26862,7 +26823,7 @@ clutil.fieldDefs = {
 				}, {});
 			}
 			var attrs = _.extend({}, this.dependencies.attributes,
-				dependAttrs);
+								dependAttrs);
 			if (options.addUserAttrs) {
 				_.each(this.options.compat, function (v, k) {
 					if (this[v]) {
@@ -26882,8 +26843,8 @@ clutil.fieldDefs = {
 			options.dependenciesChanged = true;
 			var deferred;
 			debug('^^^^^^^^ field#setDependencies', this._seq, this.id,
-				this.requestOnSetDependencies,
-				options.setDefault, options.deferReset, options.setOnly);
+				  this.requestOnSetDependencies,
+				  options.setDefault, options.deferReset, options.setOnly);
 			this.dependencies.set(dependencies);
 			if (options.setOnly) {
 				// 日付けの更新などの場合はここでリターン
@@ -26893,7 +26854,7 @@ clutil.fieldDefs = {
 			if (this._checkAttrs(options)) {
 				return;
 			}
-			var resetOptions = { render: false, setDefault: options.setDefault };
+			var resetOptions = {render: false, setDefault: options.setDefault};
 			// 遅延しない場合はここでデフォルト値に設定する。
 			if (!options.deferReset) {
 				this.resetValue(null, resetOptions);
@@ -26916,7 +26877,7 @@ clutil.fieldDefs = {
 		},
 
 		setValue: function (value, options) {
-			if (value == null) {
+			if (value == null){
 				value = _.result(this, 'defaultValue');
 			}
 			debug('^^^^^^^^ field#setValue', this._seq, this.id, value);
@@ -26924,7 +26885,7 @@ clutil.fieldDefs = {
 			options.set = false;
 			var attrs = this.toAttrs(value);
 			var oldId = this.model.id;
-			this.model.clear({ silent: true });
+			this.model.clear({silent: true});
 			this.model.set(attrs, options);
 			if (!_.isEqual(this.model.id, oldId)) {
 				var provideAttrs = this.toProvideAttrs(attrs);
@@ -26935,7 +26896,7 @@ clutil.fieldDefs = {
 			}
 		},
 
-		getValue: function () {
+		getValue: function() {
 			var value = this.toValue(this.model.toJSON());
 			return value;
 		},
@@ -26973,7 +26934,7 @@ clutil.fieldDefs = {
 
 		// @param [options.addUserAttrs=false]
 		isValid: function (options) {
-			var errors = this._isValid(options || { addUserAttrs: false });
+			var errors = this._isValid(options || {addUserAttrs: false});
 			return !errors;
 		},
 
@@ -27021,13 +26982,13 @@ clutil.fieldDefs = {
 			}
 			// デフォルト値の設定
 			var defaults = this.options.defaultCond;
-			if (_.isFunction(defaults)) {
+			if (_.isFunction(defaults)){
 				defaults = defaults.call(this, attrs, options);
 			}
 			_.defaults(attrs, defaults);
 			this.beforeCallRequest();
 			var buildAttrs = Marionette.getOption(this, 'buildAttrs');
-			if (_.isFunction(buildAttrs)) {
+			if (_.isFunction(buildAttrs)){
 				attrs = buildAttrs.call(this, attrs, options);
 			}
 			return this.callRequest(attrs, options, this.getFieldRelation());
@@ -27037,7 +26998,7 @@ clutil.fieldDefs = {
 			return FieldRelation.getFieldRelation(this);
 		},
 
-		beforeCallRequest: function () { },
+		beforeCallRequest: function () {},
 
 		callRequest: function (attrs, options) {
 			return $.Deferred().resolveWith(this, [attrs, options]).promise();
@@ -27066,7 +27027,7 @@ clutil.fieldDefs = {
 			}
 			// responseが1つのときにもリセットする
 			if (options.deferReset) {
-				this.resetValue(response, { render: false, setDefault: options.setDefault });
+				this.resetValue(response, {render: false, setDefault: options.setDefault});
 			}
 			this.renderValue(options);
 			if (this.onAfterRender) {
@@ -27081,7 +27042,7 @@ clutil.fieldDefs = {
 			var onClearValue = getOption(this, 'onClearValue');
 			if ((options.setDefault !== false || (_.isArray(items) && items.length === 1)) && onClearValue) {
 				onClearValue.call(this, items, _.bind(function (value) {
-					this.setValue(value, _.extend({ noreset: true }, options));
+					this.setValue(value, _.extend({noreset: true}, options));
 				}, this));
 			}
 		},
@@ -27090,7 +27051,7 @@ clutil.fieldDefs = {
 			if (this.isCompoundValue) {
 				return value || {};
 			} else if (this.isMultiple) {
-				return _.map(value, function (v) {
+				return _.map(value, function(v){
 					var attrs = {};
 					attrs[this.idName] = v;
 					return attrs;
@@ -27135,11 +27096,11 @@ clutil.fieldDefs = {
 			set(_.result(this, 'defaultValue'));
 		},
 
-		renderDependencies: function (response, options) { },
-		renderValue: function (options) { },
+		renderDependencies: function (response, options) {},
+		renderValue: function (options) {},
 
 		remove: function (force) {
-			if (force) {
+			if (force){
 				Backbone.View.prototype.remove.call(this);
 			} else {
 				this.stopListening();
@@ -27149,7 +27110,7 @@ clutil.fieldDefs = {
 			return this;
 		},
 
-		onCheckError: function () { }
+		onCheckError: function () {}
 	});
 
 	var ListField = Field.extend({
@@ -27222,7 +27183,7 @@ clutil.fieldDefs = {
 			_.extend(this, _.pick(this.reqres, 'itemTemplate'));
 			_.bindAll(this, 'onChange', 'buildSource');
 
-			if (this.reqres.setInput) this.reqres.setInput(this.el);
+			if(this.reqres.setInput) this.reqres.setInput(this.el);
 
 			var acOptions = _.extend({
 				getLabel: _.bind(function (item) {
@@ -27251,33 +27212,33 @@ clutil.fieldDefs = {
 		onChange: function (event, ui) {
 			this._seq = _.uniqueId();
 			console.log('^^^^^^^^ ac#clchange', this._seq, this.id, ui.item && ui.item.id);
-			var setValueOptions = { render: false, changedByUI: true, changedBy: 'ui' };
-			if (this.isCompoundValue) {
+			var setValueOptions = {render: false, changedByUI: true, changedBy: 'ui'};
+			if (this.isCompoundValue){
 				this.setValue(ui.item, setValueOptions);
-			} else {
+			}else{
 				this.setValue(ui.item && ui.item[this.idName], setValueOptions);
 			}
-			this.triggerChangeEvent({ changedByUI: true, changedBy: 'ui' });
+			this.triggerChangeEvent({changedByUI: true, changedBy: 'ui'});
 			// this.trigger('change', ui && ui.item);
 		},
 
 		buildSource: function (request, response) {
-			if (this.options.autocomplete && this.options.autocomplete.source) {
+			if (this.options.autocomplete && this.options.autocomplete.source){
 				return this.buildSource2(request, response);
 			}
 
 			request.check = false;
 			var collection = this.collection;
-			this.doRequest(request).done(function (items) {
+			this.doRequest(request).done(function(items){
 				collection.reset(items);
 				response(items);
 			});
 		},
 
-		buildSource2: function (request, response) {
+		buildSource2: function(request, response){
 			var itemTemplate = this.itemTemplate;
-			this.options.autocomplete.source(request, function (list) {
-				response(_.map(list, function (item) {
+			this.options.autocomplete.source(request, function(list){
+				response(_.map(list, function(item){
 					item.label = itemTemplate(item || {});
 					return item;
 				}));
@@ -27287,17 +27248,17 @@ clutil.fieldDefs = {
 		renderValue: function () {
 			var attrs = this.model.toJSON();
 			debug('^^^^^^^^ field#renderValue', this._seq, this.id, attrs);
-			try {
+			try{
 				this.$el.autocomplete('clAutocompleteItem', attrs);
-			} catch (e) {
-				if (!this._removed) { // remove()後に呼びだしの暫定対処
+			}catch(e){
+				if(!this._removed){ // remove()後に呼びだしの暫定対処
 					console.error(e.stack);
 				}
 			}
 		},
 
 		onCheckError: function () {
-			this.setValue(_.result(this, 'defaultValue'), { noreset: true });
+			this.setValue(_.result(this, 'defaultValue'), {noreset: true});
 		}
 	});
 
@@ -27311,7 +27272,7 @@ clutil.fieldDefs = {
 	_.extend(Multitable.prototype, {
 		toAttrs: function (values) {
 			var attrs = {};
-			attrs[this.idName] = _.map(values, function (value) {
+			attrs[this.idName] = _.map(values, function(value) {
 				var model = this.view.collection.get(value);
 				if (model) {
 					return model.toJSON();
@@ -27324,7 +27285,7 @@ clutil.fieldDefs = {
 			return attrs;
 		},
 
-		setValue: function (values, options) {
+		setValue: function(values, options) {
 			values == null && (values = []);
 			if (!_.isArray(values)) {
 				values = [values];
@@ -27332,9 +27293,9 @@ clutil.fieldDefs = {
 			this.view.orgSetValue(values, options);
 		},
 
-		getValue: function () {
+		getValue: function() {
 			var value = this.origGetValue();
-			return _.map(value, function (v) {
+			return _.map(value, function(v) {
 				return v && v[this.idName];
 			}, this);
 		}
@@ -27360,7 +27321,7 @@ clutil.fieldDefs = {
 				if (this._resetting) return;
 				var val = this.$el.val();
 				// console.log('^^^^^^^^ sel#change', this._seq, this.id, val, this.$el.val());
-				this.setValue(val, { render: false, changedByUI: true, changedBy: 'ui' });
+				this.setValue(val, {render: false, changedByUI: true, changedBy: 'ui'});
 			}
 		},
 
@@ -27372,7 +27333,7 @@ clutil.fieldDefs = {
 			this.emptyFlag = this.options.unselectedflag !== false &&
 				this.options.unselectedflag !== 0;
 
-			if (this.options.container) {
+			if (this.options.container){
 				this.$el.appendTo(this.options.container);
 			}
 			this.isMultiple = !!this.options.multiple || this.$el.is('[multiple]');
@@ -27428,16 +27389,16 @@ clutil.fieldDefs = {
 		onClearValue: function (items, set) {
 			var value = _.result(this, 'defaultValue');
 			var total = this.collection.length;
-			if (this.emptyFlag) {
+			if (this.emptyFlag){
 				total += 1;
 			}
 
-			if (items && this.collection.get(this.model.id)) {
+			if (items && this.collection.get(this.model.id)){
 				value = this.model.id;
 			}
 
 			if (this.options.disableOnNoChoice !== false &&
-				this.collection.length <= 1) {
+				this.collection.length <= 1){
 
 				if (!this.isMultiple &&
 					this.collection.length === 1 &&
@@ -27446,7 +27407,7 @@ clutil.fieldDefs = {
 				}
 
 				if ((!this.isMultiple &&
-					(this.isRequiredField || total <= 1)) ||
+					 (this.isRequiredField || total <= 1)) ||
 					total === 0) {
 					clutil.inputReadonly(this.$el);
 					this.trigger('readonly:change', this, true, {
@@ -27468,7 +27429,7 @@ clutil.fieldDefs = {
 			this._selectpickerVal(id);
 		},
 
-		_selectpickerVal: function (val) {
+		_selectpickerVal: function(val) {
 			this.$el.attr('preventValhooks', '1');
 			this.$el.selectpicker('val', val);
 			this.$el.removeAttr('preventValhooks');
@@ -27482,10 +27443,10 @@ clutil.fieldDefs = {
 				markup += '<option value="0">' + emptyLabel + '</option>';
 			}
 			var chain = _(items).chain();
-			if (this.options.filter) {
+			if (this.options.filter){
 				chain = chain.filter(this.options.filter);
 			}
-			if (this.options.reverse) {
+			if (this.options.reverse){
 				chain = chain.reverse();
 			}
 			chain.each(function (item) {
@@ -27493,34 +27454,34 @@ clutil.fieldDefs = {
 			}, this).value();
 			this.$el.html(markup)
 				.selectpicker('refresh');
-			if (!this.collection.get(this.getValue())) {
+			if (!this.collection.get(this.getValue())){
 				this.resetValue(items);
 			}
 		},
 
 		onCheckError: function () {
 			console.warn('* Field#onCheckError', this.id);
-			var options = { render: false, noreset: true };
+			var options = {render: false, noreset: true};
 			this.setValue(_.result(this, 'defaultValue'), options);
 			this.$el.html('<option value="0">&nbsp;</option>')
 				.selectpicker('refresh');
 			this._selectpickerVal(0);
 		},
 
-		getItems: function () {
+		getItems: function(){
 			return this.collection.toJSON();
 		},
 
-		invalidate: function (options) {
+		invalidate: function(options){
 			if (this.isValid() &&
 				(!this.collection || !this.collection.get(this.getValue()))) {
 				var defaultValue;
-				if (this.emptyFlag) {
+				if (this.emptyFlag){
 					defaultValue = 0;
 				} else if (this.collection && this.collection.length) {
 					defaultValue = this.collection.first().id;
 				}
-				if (defaultValue != null) {
+				if (defaultValue != null){
 					this.setValue(defaultValue, options);
 				}
 			}
@@ -27565,7 +27526,7 @@ clutil.fieldDefs = {
 					return getItems;
 				}
 			}
-			return $.Deferred().resolveWith(this, [getItems || []]).promise();
+			return $.Deferred().resolveWith(this, [getItems||[]]).promise();
 		}
 	});
 
@@ -27574,15 +27535,15 @@ clutil.fieldDefs = {
 		defaultValue: '',
 		events: {
 			change: function () {
-				this.setValue(this.$el.val(), { render: false });
+				this.setValue(this.$el.val(), {render: false});
 			}
 		},
 		renderValue: function () {
 			var value = this.getValue();
 			this.$el.val(value);
 		},
-		onCheckError: function () {
-			this.setValue(_.result(this, 'defaultValue'), { noreset: true });
+		onCheckError: function(){
+			this.setValue(_.result(this, 'defaultValue'), {noreset: true});
 		}
 	});
 
@@ -27591,7 +27552,7 @@ clutil.fieldDefs = {
 		defaultValue: false,
 		events: {
 			change: function () {
-				this.setValue(this.$el.prop('checked'), { render: false });
+				this.setValue(this.$el.prop('checked'), {render: false});
 			}
 		},
 		renderValue: function () {
@@ -27605,7 +27566,7 @@ clutil.fieldDefs = {
 		defaultValue: false,
 		events: {
 			change: function () {
-				this.setValue(this.$el.prop('checked'), { render: false });
+				this.setValue(this.$el.prop('checked'), {render: false});
 			}
 		},
 		renderValue: function () {
@@ -27630,7 +27591,7 @@ clutil.fieldDefs = {
 			} else {
 				ymd = null;
 			}
-			this.setValue(ymd, { render: false });
+			this.setValue(ymd, {render:false});
 		},
 		initialize: function () {
 			Field.prototype.initialize.apply(this, arguments);
@@ -27679,26 +27640,26 @@ clutil.fieldDefs = {
 		 *
 		 * @method initialize
 		 */
-		initialize: function () { },
+		initialize: function(){},
 		/**
 		 * 変更を通知する
 		 * @method triggerChange
 		 */
-		triggerChange: function (options) {
+		triggerChange: function(options){
 			options = (options || {});
 
 			this.trigger('fr:change', this, this.getProvideAttrs(), options);
 		},
-		setValue: function (/*value*/) { },
+		setValue: function (/*value*/) {},
 
-		renderValue: function () { },
+		renderValue: function(){},
 
 		/**
 		 * Nodeの値を返す。通常はこれをオーバーライドする。
 		 *
 		 * @method getValue
 		 */
-		getValue: function () { },
+		getValue: function () {},
 
 		/**
 		 * Nodeの値を返す。
@@ -27727,15 +27688,15 @@ clutil.fieldDefs = {
 		 */
 		setDependencies: function (attrs, options) {
 			var relation = FieldRelation.getFieldRelation(this);
-			options = _.extend({}, options, { relation: relation });
+			options = _.extend({}, options, {relation: relation});
 			clutil.Relation.buildAsync(options, this, this);
 			options.setAsync();
 			this.triggerMethod('visit', options);
 			this.triggerMethod('depend:change', attrs, options);
-			if (options.setDefault) {
+			if (options.setDefault){
 				this.triggerMethod('clear', attrs, options);
 			}
-			if (options.setOnly) {
+			if (options.setOnly){
 				this.triggerMethod('set', options);
 			}
 			this.triggerMethod('after:visit', options);
@@ -27745,9 +27706,9 @@ clutil.fieldDefs = {
 
 	Node.extend = Backbone.Model.extend;
 
-	Node.create = function (proto) {
+	Node.create = function(proto){
 		var type = Node.extend(proto);
-		return function (options) {
+		return function(options){
 			return new type(options);
 		};
 	};
@@ -27839,11 +27800,11 @@ clutil.fieldDefs = {
 	var AMPAV0010Controller = Node.extend({
 		depends: ['unit_id', 'orgfunc_id'],
 
-		initialize: function () {
+		initialize: function(){
 			_.bindAll(this, 'onButtonClick');
 			var button = this.options.button;
-			this.$button = button instanceof $ ? button : $(button);
-			if (this.options.view) {
+			this.$button = button instanceof $ ?  button : $(button);
+			if (this.options.view){
 				this.view = this.options.view;
 				this.func_id = clcom.getSysparam('PAR_AMMS_DEFAULT_ORG_FUNCID');
 				this.$button.on('click.AMPAV0010Controller.', this.onButtonClick);
@@ -27852,27 +27813,27 @@ clutil.fieldDefs = {
 			});
 		},
 
-		onDependChange: function (attrs) {
+		onDependChange: function(attrs){
 			var unit_id = Number(attrs.unit_id),
 				orgfunc_id = Number(attrs.orgfunc_id);
 
-			if (unit_id && orgfunc_id) {
+			if (unit_id && orgfunc_id){
 				clutil.inputRemoveReadonly(this.$button);
-			} else {
+			}else{
 				clutil.inputReadonly(this.$button);
 			}
 			this.unit_id = unit_id;
 			this.orgfunc_id = orgfunc_id;
 		},
 
-		onButtonClick: function () {
+		onButtonClick: function(){
 			var showOptions = this.getShowOptions();
 			this.view.show(showOptions);
 		},
 
-		getShowOptions: function () {
+		getShowOptions: function(){
 			var showOptions = getOption(this, 'showOptions') || {};
-			if (_.isFunction(showOptions)) {
+			if (_.isFunction(showOptions)){
 				showOptions = showOptions.call(this);
 			}
 			_.defaults(showOptions, {
@@ -27882,7 +27843,7 @@ clutil.fieldDefs = {
 			return showOptions;
 		},
 
-		remove: function () {
+		remove: function(){
 			this.stopListening();
 			this.$button.off('click.AMPAV0010Controller');
 		}
@@ -27897,8 +27858,8 @@ clutil.fieldDefs = {
 	};
 
 	_.extend(Branch.prototype, Backbone.Events, {
-		setValue: function () { },
-		renderValue: function () { },
+		setValue: function () {},
+		renderValue: function(){},
 		getValue: function () {
 			return this.dependencies.get(this.provide);
 		},
@@ -27979,14 +27940,14 @@ clutil.fieldDefs = {
 
 				var options = {
 					reqres: reqres,
-					defaultValue: { id: 0, name: '', code: '' }
+					defaultValue: {id: 0, name: '', code: ''}
 				};
 
 				addCommonOptions(options, def, userOptions);
-				if (options.itemTemplate) {
+				if (options.itemTemplate){
 					options.reqres.itemTemplate = buildTemplate(options.itemTemplate);
 				}
-				if (!options.isCompoundValue) {
+				if (!options.isCompoundValue){
 					options.defaultValue = 0;
 				}
 				var field = new AutoCompleteField(options);
@@ -28012,7 +27973,7 @@ clutil.fieldDefs = {
 					reqres = new StubQuery(def.query);
 				}
 				var userOptions = buildOptions(def.args || ['el', 'unselectedflag'],
-					arguments);
+											   arguments);
 				var options = {
 					reqres: reqres,
 					funcName: funcName
@@ -28084,12 +28045,12 @@ clutil.fieldDefs = {
 			checkRequiredSelect(field);
 			return field;
 		};
-		exports.node = function (opt) {
+		exports.node = function(opt){
 			var MyNode = Node.extend(opt);
 			return new MyNode();
 		};
 
-		exports.AMPAV0010 = function (opt) {
+		exports.AMPAV0010 = function(opt){
 			return new AMPAV0010Controller(opt);
 		};
 	}
@@ -28164,14 +28125,14 @@ clutil.fieldDefs = {
 	buildAllFields(clutil.fields);
 
 	// clではじまる関数だけclutilにexportする
-	_.each(clutil.fields, function (func, name) {
+	_.each(clutil.fields, function(func, name) {
 		if (/^cl/.test(name)) {
 			clutil[name] = func;
 		}
 	});
 	// _.extend(clutil, clutil.fields);
 
-	(function () {
+	(function(){
 		var origSet, origGet;
 		if ($.valHooks.select) {
 			origSet = $.valHooks.select.set;
@@ -28181,15 +28142,15 @@ clutil.fieldDefs = {
 		}
 
 		$.valHooks.select = {
-			set: function (el, value) {
+			set: function(el, value){
 				var $el = $(el), cid = $el.attr('data-field-cid');
 				if (cid) {
 					var fr = clutil.FieldRelation.getFieldRelationByCid(cid);
 					var field = clutil.FieldRelation.getFieldByCid(cid);
 					if (field && !fr && !$el.attr('preventValhooks')
-					) {
-						clutil.FieldRelation.$set($el, value, { render: false });
-					}
+					   ) {
+						   clutil.FieldRelation.$set($el, value, {render:false});
+					   }
 				}
 				if (origSet) {
 					return origSet.call(this, el, value);
@@ -28207,39 +28168,39 @@ clutil.fieldDefs = {
 /*
  * 本 JS は、clcom.js の後に召喚してください。
  */
-$(function () {
+$(function(){
 
 	// clutil 拡張
 	_.extend(clutil, {
 		/**
 		 * 処理区分値に対するラベル名を返します。
 		 */
-		opeTypeIdtoString: function (opeTypeId, _btnlabel) {
+		opeTypeIdtoString: function(opeTypeId, _btnlabel){
 			var s = '';
-			switch (opeTypeId) {
-				//case -1:											s = '';			break;
-				//case 0:												s = '一覧';		break;	// SPECIAL
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-					s = (_btnlabel <= 1) ? '登録' : '新規登録';
-					break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
-					s = (_btnlabel == 1) ? '登録' : '編集';
-					break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL: s = '削除'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL: s = '照会'; break; //'参照'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV: s = 'Excelデータ出力'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT: s = 'Excelデータ取込'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:
-					s = (_btnlabel == 1) ? '登録' : '複製';
-					break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF: s = '帳票出力'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL: s = '削除復活'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL: s = '予約取消'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE: s = '一時保存'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY: s = '申請'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL: s = '承認'; break;
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK: s = '差戻し'; break;
-				default:
+			switch(opeTypeId){
+			//case -1:											s = '';			break;
+			//case 0:												s = '一覧';		break;	// SPECIAL
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
+				s = (_btnlabel <= 1) ? '登録' : '新規登録';
+				break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:
+				s = (_btnlabel == 1) ? '登録' : '編集';
+				break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:		s = '削除';		break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:		s = '照会';		break; //'参照'; break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:		s = 'Excelデータ出力';	break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT:	s = 'Excelデータ取込';	break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:
+				s = (_btnlabel == 1) ? '登録' : '複製';
+				break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF:		s = '帳票出力';	break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL:	s = '削除復活'; break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:	s = '予約取消';	break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE:	s = '一時保存';	break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY:		s = '申請';		break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL:	s = '承認';		break;
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK:	s = '差戻し';	break;
+			default:
 			}
 			return s;
 		},
@@ -28247,31 +28208,31 @@ $(function () {
 		/**
 		 * 処理区分値に対する権限分類
 		 */
-		opeTypeIdPerm: function (opeTypeId) {
-			switch (opeTypeId) {
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW: return 'write';	// 新規登録
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD: return 'write';	// 編集
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL: return 'del';	// 削除
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL: return 'read';	// 参照
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV: return 'read';	// CSV出力
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT: return 'write';	// CSV取込
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY: return 'write';	// 複製
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF: return 'read';	// PDF出力
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL: return 'write';	// 削除復活
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL: return 'del';	// 予約取消
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE: return 'write';	// 一時保存
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY: return 'write';	// 申請
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL: return 'write';	// 承認
-				case am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK: return 'del';	// 差し戻し
+		opeTypeIdPerm: function(opeTypeId){
+			switch(opeTypeId){
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:		return 'write';	// 新規登録
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:		return 'write';	// 編集
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:		return 'del';	// 削除
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:		return 'read';	// 参照
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:		return 'read';	// CSV出力
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT:	return 'write';	// CSV取込
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:		return 'write';	// 複製
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF:		return 'read';	// PDF出力
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL:	return 'write';	// 削除復活
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:	return 'del';	// 予約取消
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE:	return 'write';	// 一時保存
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY:		return 'write';	// 申請
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL:	return 'write';	// 承認
+			case am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK:	return 'del';	// 差し戻し
 
-				case 101:	// 保存
-				case 102:	// タグ発行申請
-				case 103:	// タグ発行差戻し
-				case 104:	// タグ発行承認
-				case 105:	// 最終承認申請
-				case 106:	// 最終承認差戻し
-				case 107:	// 最終承認
-					return 'write';
+			case 101:	// 保存
+			case 102:	// タグ発行申請
+			case 103:	// タグ発行差戻し
+			case 104:	// タグ発行承認
+			case 105:	// 最終承認申請
+			case 106:	// 最終承認差戻し
+			case 107:	// 最終承認
+				return 'write';
 			}
 			return '';
 		},
@@ -28279,32 +28240,32 @@ $(function () {
 		/**
 		 * ボタンタグ id に対する処理区分値を返します。定型の id 名を用いていない場合は -1 を返します。
 		 */
-		btnOpeTypeId: function (btn) {
+		btnOpeTypeId: function(btn){
 			var btnId = null;
-			if (btn instanceof jQuery && btn.length > 0) {
+			if(btn instanceof jQuery && btn.length > 0){
 				btnId = btn[0].id;
-			} else if (_.isElement(btn)) {
+			}else if(_.isElement(btn)){
 				btnId = btn.id;
-			} else if (_.isString(btn)) {
+			}else if(_.isString(btn)){
 				btnId = $.trim(btn);
 			}
-			if (!_.isEmpty(btnId)) {
-				switch (btnId) {
-					case 'cl_new': return am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW;			// 新規登録
-					case 'cl_edit': return am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD;			// 編集
-					case 'cl_delete': return am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL;			// 削除
-					case 'cl_rel': return am_proto_defs.AM_PROTO_COMMON_RTYPE_REL;			// 参照
-					case 'cl_csv': return am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV;			// CSV出力
-					case 'cl_csvinput': return am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT;	// CSV取込
-					case 'cl_copy': return am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY;		// 複製
-					case 'cl_pdf': return am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF;			// PDF出力
-					case 'cl_delcancel': return am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL;	// 削除復活
-					case 'cl_rsvcancel': return am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL;	// 予約取消
-					case 'cl_tmpsave': return am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE;		// 一時保存
-					case 'cl_apply': return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY;		// 申請
-					case 'cl_approval': return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL;	// 承認
-					case 'cl_passback': return am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK;	// 差し戻し
-					default:
+			if(!_.isEmpty(btnId)){
+				switch(btnId){
+				case 'cl_new':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW;			// 新規登録
+				case 'cl_edit':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD;			// 編集
+				case 'cl_delete':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL;			// 削除
+				case 'cl_rel':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_REL;			// 参照
+				case 'cl_csv':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV;			// CSV出力
+				case 'cl_csvinput':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT;	// CSV取込
+				case 'cl_copy':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY;		// 複製
+				case 'cl_pdf':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF;			// PDF出力
+				case 'cl_delcancel':return am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL;	// 削除復活
+				case 'cl_rsvcancel':return am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL;	// 予約取消
+				case 'cl_tmpsave':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE;		// 一時保存
+				case 'cl_apply':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY;		// 申請
+				case 'cl_approval':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL;	// 承認
+				case 'cl_passback':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK;	// 差し戻し
+				default:
 				}
 			}
 			return -1;
@@ -28313,7 +28274,7 @@ $(function () {
 		/**
 		 * 処理区分値が有効かどうか検査
 		 */
-		isValidOpeTypeId: function (opeTypeId) {
+		isValidOpeTypeId: function(opeTypeId){
 			// ラベルが取れないものは opeTypeId 範疇の外
 			return !_.isEmpty(clutil.opeTypeIdtoString(opeTypeId));
 		},
@@ -28328,35 +28289,35 @@ $(function () {
 		 * val1 要素のプロパティを正とし、val2 要素と比較する。
 		 * val1 に無い余分なプロパティが val2 側に含んでいる場合、その余剰プロパティは検査対象外とする。
 		 */
-		protoIsEqual: function (val1, val2) {
-			if (val1 === val2) {
+		protoIsEqual: function(val1, val2){
+			if(val1 === val2){
 				// 参照先が同一。
 				return true;
 			}
-			if (_.isArray(val1)) {
+			if(_.isArray(val1)){
 				// 配列: 各要素を再帰比較する。
-				if (!_.isArray(val2)) {
+				if(!_.isArray(val2)){
 					return false;
 				}
-				if (val1.length !== val2.length) {
+				if(val1.length !== val2.length){
 					return false;
 				}
-				for (var i = 0; i < val1.length; i++) {
-					if (!clutil.protoIsEqual(val1[i], val2[i])) {
+				for(var i = 0; i < val1.length; i++){
+					if(!clutil.protoIsEqual(val1[i], val2[i])){
 						return false;
 					}
 				}
-			} else if (_.isObject(val1)) {
+			}else if(_.isObject(val1)){
 				// Object: 各プロパティを再帰比較する。
-				for (var key in val1) {
-					if (!_.has(val2, key)) {
+				for(var key in val1){
+					if(!_.has(val2, key)){
 						return false;
 					}
-					if (!clutil.protoIsEqual(val1[key], val2[key])) {
+					if(!clutil.protoIsEqual(val1[key], val2[key])){
 						return false;
 					}
 				}
-			} else {
+			}else{
 				return val1 == val2;
 			}
 			return true;
@@ -28365,23 +28326,23 @@ $(function () {
 		/**
 		 * 当該オブジェクトから、prefix で指定したプロパティを削除する。
 		 */
-		delPrefixedProperty: function (obj, prefix) {
-			if (_.isEmpty(prefix)) {
+		delPrefixedProperty: function(obj, prefix){
+			if(_.isEmpty(prefix)){
 				return obj;
 			}
 			var regex;
-			if (_.isRegExp(prefix)) {
+			if(_.isRegExp(prefix)){
 				regex = prefix;
-			} else {
+			}else{
 				regex = new RegExp('^' + prefix.toString());
 			}
-			if (_.isArray(obj)) {
-				for (var i = 0; i < obj.length; i++) {
+			if(_.isArray(obj)){
+				for(var i = 0; i < obj.length; i++){
 					clutil.deletePrefixedProperty(obj[i], regex);
 				}
-			} else if (_.isObject(obj)) {
-				for (var key in obj) {
-					if (key.match(regex)) {
+			}else if(_.isObject(obj)){
+				for(var key in obj){
+					if(key.match(regex)){
 						delete obj[key];
 					}
 				}
@@ -28393,7 +28354,7 @@ $(function () {
 	/**
 	 * 共通で使える View クラス
 	 */
-	if (!clutil.View) {
+	if(!clutil.View){
 		clutil.View = {};
 	}
 	_.extend(clutil.View, {
@@ -28404,34 +28365,34 @@ $(function () {
 		CommonHeaderView: Backbone.View.extend({
 			id: 'header',
 			template: _.template(''
-				+ '<% if(backBtnURL){ %>'
-				+ '<p class="back"></p>'
-				+ '<% } %>'
-				+ '<% if(!_.isEmpty(category)) { %>'
-				+ '<h1><%- category %></h1>'
-				+ '<% } %>'
-				+ '<div class="rightBox">'
-				+ '	<span class="logo"></span>'
-				+ '	<span class="logout"><a style="cursor: pointer;">ログアウト</a></span>'
-				+ '	<span class="user"><%- clcom.userInfo.user_code %>:<%- clcom.userInfo.user_name %></span>'
-				+ '	<span class="date"><%- clutil.dateFormat(clcom.getOpeDate(), "yyyy/mm/dd(w)") %></span>'
-				+ '</div>'),
+					+ '<% if(backBtnURL){ %>'
+					+	'<p class="back"></p>'
+					+ '<% } %>'
+					+ '<% if(!_.isEmpty(category)) { %>'
+					+	'<h1><%- category %></h1>'
+					+ '<% } %>'
+					+ '<div class="rightBox">'
+					+ '	<span class="logo"></span>'
+					+ '	<span class="logout"><a style="cursor: pointer;">ログアウト</a></span>'
+					+ '	<span class="user"><%- clcom.userInfo.user_code %>:<%- clcom.userInfo.user_name %></span>'
+					+ '	<span class="date"><%- clutil.dateFormat(clcom.getOpeDate(), "yyyy/mm/dd(w)") %></span>'
+					+ '</div>'),
 			events: {
 				// ログアウト
-				'click .back:not([disabled])': '_onBackClick',	// 戻るボタン押下時
-				'click .logout a:not([disabled])': '_onLogout'		// ログアウト
+				'click .back:not([disabled])'		: '_onBackClick',	// 戻るボタン押下時
+				'click .logout a:not([disabled])'	: '_onLogout'		// ログアウト
 			},
-			initialize: function (opt) {
+			initialize: function(opt){
 				// オプション補完
-				this.options = _.defaults(opt || {}, {
+				this.options = _.defaults(opt||{}, {
 					category: '',
 					backBtnURL: clcom.homeUrl
 				});
 			},
-			initUIElement: function () {
+			initUIElement: function(){
 				return this;
 			},
-			render: function () {
+			render: function(){
 				this.$el.html(this.template(this.options));
 				return this;
 			},
@@ -28439,11 +28400,11 @@ $(function () {
 			/**
 			 * 戻るボタン押下時
 			 */
-			_onBackClick: function (e) {
-				if (_.isFunction(this.options.backBtnURL)) {
+			_onBackClick: function(e) {
+				if(_.isFunction(this.options.backBtnURL)){
 					// 関数指定の場合はコールバックする。
 					this.options.backBtnURL(e);
-				} else {
+				}else{
 					// メニュー画面へ
 					clcom.pushPage(this.options.backBtnURL, null, null, null, true);
 				}
@@ -28452,7 +28413,7 @@ $(function () {
 			/**
 			 * ログアウト
 			 */
-			_onLogout: function (e) {
+			_onLogout: function(e){
 				clcom.logout();
 			},
 
@@ -28462,7 +28423,7 @@ $(function () {
 		/**
 		 * MDBaseView -- MD共通画面におけるデフォルトのオプション定義
 		 */
-		MDBaseViewDefaultOptions: function () {
+		MDBaseViewDefaultOptions: function(){
 			var map = new Object();
 
 			var headTagTitle = $('head > title').text();
@@ -28470,77 +28431,77 @@ $(function () {
 			// 一覧画面
 			map[0] = {
 				// ヘッダ部
-				opeTypeId: 0,				// 処理区分値、一覧は定義されていないので 0 とする。
-				btn_new: true,			// 新規作成ボタン有無
-				category: headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
-				title: '○○マスタ',	// タイトル名
-				subtitle: '一覧',			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
+				opeTypeId:		0,				// 処理区分値、一覧は定義されていないので 0 とする。
+				btn_new:		true,			// 新規作成ボタン有無
+				category:		headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
+				title:			'○○マスタ',	// タイトル名
+				subtitle:		'一覧',			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
 
 				// フッタ部[A]
-				btn_submit: false,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
-				btn_cancel: false,			// True: [キャンセル] ボタンあり、False:なし。
+				btn_submit:		false,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
+				btn_cancel:		false,			// True: [キャンセル] ボタンあり、False:なし。
 
 				// フッタ部[B]
-				pageCount: 0,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
-				pageIndex: 0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
-				btn_csv: true,			// True: CSV出力ボタンがつく。
-				btn_pdf: false,			// True: PDF出力ボタンがつく。	[4/10 New!]
+				pageCount:		0,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
+				pageIndex:		0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
+				btn_csv:		true,			// True: CSV出力ボタンがつく。
+				btn_pdf:		false,			// True: PDF出力ボタンがつく。	[4/10 New!]
 
 				// UI制御オプション
-				opebtn_auto_enable: true,		// 行選択にともなう class="cl_opebtngroup" 要素配下のボタンの活性化/非活性化を自動で行う。
-				auto_cl_validate: true,		// 個々の入力部品における blur イベントでの validation をするかどうか	[4/10 New!]
-				updMessageDialog: true		// 「登録」完了時に「登録が完了しました」ダイアログを、true:表示する、false:しない
+				opebtn_auto_enable:	true,		// 行選択にともなう class="cl_opebtngroup" 要素配下のボタンの活性化/非活性化を自動で行う。
+				auto_cl_validate:	true,		// 個々の入力部品における blur イベントでの validation をするかどうか	[4/10 New!]
+				updMessageDialog:	true		// 「登録」完了時に「登録が完了しました」ダイアログを、true:表示する、false:しない
 			};
 
 			// 編集画面
 			map[am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD] = {
 				// ヘッダ部
-				opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD,
-				btn_new: false,			// 新規作成ボタン有無
-				category: headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
-				title: '○○マスタ',	// タイトル名
-				subtitle: '編集',			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
+				opeTypeId:		am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD,
+				btn_new:		false,			// 新規作成ボタン有無
+				category:		headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
+				title:			'○○マスタ',	// タイトル名
+				subtitle:		'編集',			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
 
 				// フッタ部[A]
-				btn_submit: true,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
-				btn_cancel: true,			// True: [キャンセル] ボタンあり、False:なし。
+				btn_submit:		true,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
+				btn_cancel:		true,			// True: [キャンセル] ボタンあり、False:なし。
 
 				// フッタ部[B]
-				pageCount: 1,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
-				pageIndex: 0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
-				btn_csv: false,			// True: CSV出力ボタンがつく。
-				btn_pdf: false,			// True: PDF出力ボタンがつく。
+				pageCount:		1,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
+				pageIndex:		0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
+				btn_csv:		false,			// True: CSV出力ボタンがつく。
+				btn_pdf:		false,			// True: PDF出力ボタンがつく。
 
 				// UI制御オプション
-				opebtn_auto_enable: false,
-				auto_cl_validate: true,
-				updMessageDialog: true,
-				confirmLeaving: true		// 画面から離れるときに確認ダイアログを表示する
+				opebtn_auto_enable:	false,
+				auto_cl_validate:	true,
+				updMessageDialog:	true,
+				confirmLeaving:		true		// 画面から離れるときに確認ダイアログを表示する
 			};
 
 			// 参照モード
 			map[am_proto_defs.AM_PROTO_COMMON_RTYPE_REL] = {
 				// ヘッダ部
-				opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_REL,
-				btn_new: false,			// 新規作成ボタン有無
-				category: headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
-				title: '○○マスタ',	// タイトル名
-				subtitle: '照会',			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
+				opeTypeId:		am_proto_defs.AM_PROTO_COMMON_RTYPE_REL,
+				btn_new:		false,			// 新規作成ボタン有無
+				category:		headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
+				title:			'○○マスタ',	// タイトル名
+				subtitle:		'照会',			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
 
 				// フッタ部[A]
-				btn_submit: false,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
-				btn_cancel: false,			// True: [キャンセル] ボタンあり、False:なし。
+				btn_submit:		false,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
+				btn_cancel:		false,			// True: [キャンセル] ボタンあり、False:なし。
 
 				// フッタ部[B]
-				pageCount: 1,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
-				pageIndex: 0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
-				btn_csv: false,			// True: CSV出力ボタンがつく。
-				btn_pdf: false,			// True: PDF出力ボタンがつく。
+				pageCount:		1,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
+				pageIndex:		0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
+				btn_csv:		false,			// True: CSV出力ボタンがつく。
+				btn_pdf:		false,			// True: PDF出力ボタンがつく。
 
 				// UI制御オプション
-				opebtn_auto_enable: false,
-				auto_cl_validate: false,
-				updMessageDialog: true,
+				opebtn_auto_enable:	false,
+				auto_cl_validate:	false,
+				updMessageDialog:	true,
 
 				// 参照モードスペシャル
 				backBtnURL: false,				// 「＜」戻るボタンを使わない
@@ -28550,26 +28511,26 @@ $(function () {
 			// その他、処理区分が明示されたもの：参照系標準(defaultRefTmpl)、更新系標準(defaultUpdTmpl)
 			var defaultRefTmpl = {
 				// ヘッダ部
-				opeTypeId: -1,
-				btn_new: false,			// 新規作成ボタン有無
-				category: headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
-				title: '○○マスタ',	// タイトル名
-				subtitle: null,			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
+				opeTypeId:		-1,
+				btn_new:		false,			// 新規作成ボタン有無
+				category:		headTagTitle,	// カテゴリ名：「商品」とか、「補正」とか・・・省略時は <title> 要素のテキストを適用する。
+				title:			'○○マスタ',	// タイトル名
+				subtitle:		null,			// サブタイトル名 -- 省略可、opeTypeId 値から補完する。
 
 				// フッタ部[A]
-				btn_submit: true,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
-				btn_cancel: true,			// True: [キャンセル] ボタンあり、False:なし。
+				btn_submit:		true,			// True: [キャンセル|処理区分ボタン] がつく。False:なし。
+				btn_cancel:		true,			// True: [キャンセル] ボタンあり、False:なし。
 
 				// フッタ部[B]
-				pageCount: 1,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
-				pageIndex: 0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
-				btn_csv: false,			// True: CSV出力ボタンがつく。
-				btn_pdf: false,			// True: PDF出力ボタンがつく。
+				pageCount:		1,				// 2以上を指定すると、＜前へ｜次へ＞ボタンがつく。
+				pageIndex:		0,				// pageCount >= 2 の場合の、表示中アイテムに対する index
+				btn_csv:		false,			// True: CSV出力ボタンがつく。
+				btn_pdf:		false,			// True: PDF出力ボタンがつく。
 
 				// UI制御オプション
-				opebtn_auto_enable: false,
-				auto_cl_validate: true,
-				updMessageDialog: true
+				opebtn_auto_enable:	false,
+				auto_cl_validate:	true,
+				updMessageDialog:	true
 			};
 			var defaultUpdTmpl = _.defaults({
 				confirmLeaving: true			// 画面から離れるときに確認ダイアログを表示する
@@ -28591,18 +28552,18 @@ $(function () {
 
 			return {
 				map: map,
-				get: _.bind(function (opetype) {
-					if (_.isArray(opetype) && opetype.length > 1) {
+				get: _.bind(function(opetype){
+					if(_.isArray(opetype) && opetype.length > 1){
 						opetype = opetype[0];
 					}
-					if (_.isObject(opetype) && _.has(opetype, 'opeTypeId')) {
+					if(_.isObject(opetype) && _.has(opetype, 'opeTypeId')){
 						opetype = opetype.opeTypeId;
 					}
 					var dfopt = null;
-					if (_.isFinite(opetype)) {
+					if(_.isFinite(opetype)){
 						dfopt = this[opetype];
 					}
-					if (dfopt == null) {
+					if(dfopt == null){
 						dfopt = this['*'];
 					}
 					return dfopt;
@@ -28625,17 +28586,17 @@ $(function () {
 
 			// タイトル用テンプレート
 			title_tmpl: _.template(''
-				+ '<div id="title">'
-				+ '<h2><%- title %><% if(!_.isEmpty(subtitle)){ %><span class="divider">|</span><%- subtitle %><% } %></h2>'
-				+ '<div class="titleInBoxRight">'
-				+ '<% if(btn_new){ %>'
-				+ '<p class="addNew"><a id="cl_new">新規作成</a></p>'
-				+ '<% } %>'
-				+ '<% if(pageCount > 1){ %>'
-				+ '<p><a id="cl_step"><%- (pageIndex+1) %>/<%- pageCount %></a></p>'
-				+ '<% } %>'
-				+ '</div>'
-				+ '</div>'
+					+ '<div id="title">'
+					+	 '<h2><%- title %><% if(!_.isEmpty(subtitle)){ %><span class="divider">|</span><%- subtitle %><% } %></h2>'
+					+	 '<div class="titleInBoxRight">'
+					+	 '<% if(btn_new){ %>'
+					+		 '<p class="addNew"><a id="cl_new">新規作成</a></p>'
+					+	 '<% } %>'
+					+	 '<% if(pageCount > 1){ %>'
+					+		 '<p><a id="cl_step"><%- (pageIndex+1) %>/<%- pageCount %></a></p>'
+					+	 '<% } %>'
+					+	 '</div>'
+					+ '</div>'
 			),
 
 			// 確定済ラベルとか・・・ ==> $('#title').after(!ココに差し込む!)
@@ -28644,112 +28605,112 @@ $(function () {
 			// フッタ部ナビペインテンプレート ==> this.$('#mainColumnFooter') の中身を構成する
 			// 2段構成の場合は、this.$('#mainColumnFooter').addClass('x2') をセットする。
 			footernav2_tmpl: _.template(''
-				+ '<% if(btn_submit){ %>'
-				+ '<% if(btn_cancel){ %>'
-				+ '<p class="cancel"><a id="cl_cancel"><%- btn_cancel.label %></a></p>'
-				+ '<% } %>'
-				+ '<div class="submit_btn_group"></div>'
-				+ '<div class="clear"></div>'
-				+ '<% } %>'
-				+ '<% if(pageCount > 1){ %>'
-				+ '<p class="left"><a id="cl_prev" <% if(pageIndex <= 0){ %>style="display: none;"<% } %>>前へ</a></p>'
-				+ '<% } %>'
-				+ '<div class="dl_btn_group"></div>'
-				+ '<% if(pageCount > 1){ %>'
-				+ '<p class="right"><a id="cl_next" <% if(pageIndex >= pageCount-1){ %>style="display: none;"<% } %>>次へ</a></p>'
-				+ '<% } %>'
-				+ '<div class="clear"></div>'
+					+ '<% if(btn_submit){ %>'
+					+ 	'<% if(btn_cancel){ %>'
+					+ 		'<p class="cancel"><a id="cl_cancel"><%- btn_cancel.label %></a></p>'
+					+ 	'<% } %>'
+					+ 	'<div class="submit_btn_group"></div>'
+					+ 	'<div class="clear"></div>'
+					+ '<% } %>'
+					+ '<% if(pageCount > 1){ %>'
+					+ 	'<p class="left"><a id="cl_prev" <% if(pageIndex <= 0){ %>style="display: none;"<% } %>>前へ</a></p>'
+					+ '<% } %>'
+					+	'<div class="dl_btn_group"></div>'
+					+ '<% if(pageCount > 1){ %>'
+					+ 	'<p class="right"><a id="cl_next" <% if(pageIndex >= pageCount-1){ %>style="display: none;"<% } %>>次へ</a></p>'
+					+ '<% } %>'
+					+ '<div class="clear"></div>'
 			),
 			// フッタ部ナビ：Submit ボタン系
 			footernav2_submitbtn_tmpl: _.template(''
-				+ '<p class="flleft <%= classNames %>" style="width: <%- width %>;">'
-				+ '<a class="cl_submit" data-opetypeid="<%= opeTypeId %>"><%- label %></a>'
-				+ '</p>'
+					+ '<p class="flleft <%= classNames %>" style="width: <%- width %>;">'
+					+ 	'<a class="cl_submit" data-opetypeid="<%= opeTypeId %>"><%- label %></a>'
+					+ '</p>'
 			),
 			// フッタ部ナビ：DL ボタン系
 			footernav2_dlbtn_tmpl: _.template(''
-				+ '<p class="flleft" style="width: <%- width %>;">'
-				+ '<a class="cl_download" data-opetypeid="<%= opeTypeId %>"><%- label %></a>'
-				+ '</p>'
+					+ '<p class="flleft" style="width: <%- width %>;">'
+					+	 '<a class="cl_download" data-opetypeid="<%= opeTypeId %>"><%- label %></a>'
+					+ '</p>'
 			),
 
 			events: {
 				// イベント伝播しないもの
-				'click #cl_cancel:not([disabled])': '_onCancelClick',	// キャンセル
+				'click #cl_cancel:not([disabled])'			: '_onCancelClick',	// キャンセル
 
 				// 以下、clutil.mediator を通してイベント伝播させるもの
 				// ope_btn 系 --------------------------------------------------------------//
-				'click #cl_new:not([disabled])': '_onNewClick',		// 新規登録
-				'click #cl_edit:not([disabled])': '_onEditClick',		// 編集
-				'click #cl_delete:not([disabled])': '_onDelClick',		// 削除
-				'click #cl_rel:not([disabled])': '_onCSVClick',		// 参照
-				'click #cl_csv:not([disabled])': '_onCSVClick',		// CSV出力
-				'click #cl_csvinput:not([disabled])': '_onCSVInputClick',	// CSV取込
-				'click #cl_copy:not([disabled])': '_onCopyClick',		// 複製		// これはクラスセレクタのような・・・
-				'click #cl_pdf:not([disabled])': '_onPDFClick',		// PDF出力
-				'click #cl_delcancel:not([disabled])': '_onDelCancelClick',	// 削除復活
-				'click #cl_rsvcancel:not([disabled])': '_onRsvCancelClick',	// 予約取消
-				'click #cl_tmpsave:not([disabled])': '_onTmpSaveClick',	// 一時保存
-				'click #cl_apply:not([disabled])': '_onApplyClick',		// 申請
-				'click #cl_approval:not([disabled])': '_onApprovalClick',	// 承認
-				'click #cl_passback:not([disabled])': '_onPassbackClick',	// 差し戻し
+				'click #cl_new:not([disabled])'				: '_onNewClick',		// 新規登録
+				'click #cl_edit:not([disabled])'			: '_onEditClick',		// 編集
+				'click #cl_delete:not([disabled])'			: '_onDelClick',		// 削除
+				'click #cl_rel:not([disabled])'				: '_onCSVClick',		// 参照
+				'click #cl_csv:not([disabled])'				: '_onCSVClick',		// CSV出力
+				'click #cl_csvinput:not([disabled])'		: '_onCSVInputClick',	// CSV取込
+				'click #cl_copy:not([disabled])'			: '_onCopyClick',		// 複製		// これはクラスセレクタのような・・・
+				'click #cl_pdf:not([disabled])'				: '_onPDFClick',		// PDF出力
+				'click #cl_delcancel:not([disabled])'		: '_onDelCancelClick',	// 削除復活
+				'click #cl_rsvcancel:not([disabled])'		: '_onRsvCancelClick',	// 予約取消
+				'click #cl_tmpsave:not([disabled])'			: '_onTmpSaveClick',	// 一時保存
+				'click #cl_apply:not([disabled])'			: '_onApplyClick',		// 申請
+				'click #cl_approval:not([disabled])'		: '_onApprovalClick',	// 承認
+				'click #cl_passback:not([disabled])'		: '_onPassbackClick',	// 差し戻し
 
 				// 画面制御系 --------------------------------------------------------------//
 				//'click #cl_submit:not([disabled])'			: '_onSubmitClick',	// 登録/削除
-				'click #mainColumnFooter .cl_submit:not([disabled])': '_onFooterNavSubmitClick',	// Submit 系ボタン
-				'click #mainColumnFooter .cl_download:not([disabled])': '_onFooterNavDownloadClick',	// DL 系ボタン
-				'click #cl_prev:not([disabled])': '_onPrevClick',	// 前へ
-				'click #cl_next:not([disabled])': '_onNextClick',	// 次へ
-				//				'focus .cl_valid'							: '_onFocusClValidate',		// 自動 validation: フォーカス
+				'click #mainColumnFooter .cl_submit:not([disabled])'	: '_onFooterNavSubmitClick',	// Submit 系ボタン
+				'click #mainColumnFooter .cl_download:not([disabled])'	: '_onFooterNavDownloadClick',	// DL 系ボタン
+				'click #cl_prev:not([disabled])'			: '_onPrevClick',	// 前へ
+				'click #cl_next:not([disabled])'			: '_onNextClick',	// 次へ
+//				'focus .cl_valid'							: '_onFocusClValidate',		// 自動 validation: フォーカス
 				'focusout .cl_valid': '_onBlurClValidate',		// 自動 validation: ブラー
-				'focus :focusable': '_onFocusForScrollAdjust'	// body スクロール位置補正
+				'focus :focusable'	: '_onFocusForScrollAdjust'	// body スクロール位置補正
 			},
 
 			// 必須要素が無かった場合の補完
-			_prepareUIElement: function () {
+			_prepareUIElement: function(){
 				var $main = this.$('#ca_main');
-				if ($main.length === 0) {
+				if($main.length === 0){
 					$main = this.$el;	// $el は <body>
-				} else {
+				}else{
 					// モーダルダイアログでボカシエリア定義（⇒ #ca_main）を page-wrap する。
 					var $pgWrap = this.$('#page-wrap');
-					if ($pgWrap.length === 0) {
-						// メモ：
-						// この時点で #ca_main に対する View のインスタンス（MainView）は既に生成されている。
-						// View インスタンスが出来た後で MainView.$el の構造を変化させると不具合がでる。
-						// <div id="page-wrap">を入れたければ、最初から HTML に入れておくべき！！！！
-						//						$main.wrap('<div id="page-wrap">');
+					if($pgWrap.length === 0){
+// メモ：
+// この時点で #ca_main に対する View のインスタンス（MainView）は既に生成されている。
+// View インスタンスが出来た後で MainView.$el の構造を変化させると不具合がでる。
+// <div id="page-wrap">を入れたければ、最初から HTML に入れておくべき！！！！
+//						$main.wrap('<div id="page-wrap">');
 					}
 				}
 
 				// ヘッダのエコーバック領域
 				var $echoback = this.$('.cl_echoback').hide();
-				if ($echoback.length === 0) {
+				if($echoback.length === 0){
 					$echoback = $('<div class="cl_echoback msgBox error"></div>').hide();
 					$main.prepend($echoback);
 					console.log('attatch: $echoback element.');
 				}
 				// ダイアログ表示用領域
 				var $dialog = this.$('#cl_dialog_area');
-				if ($dialog.length === 0) {
+				if($dialog.length === 0){
 					$dialog = $('<div id="cl_dialog_area" class="cl_dialog"></div>');
 					this.$el.append($dialog);
 					console.log('attatch: $dialog element.');
 				}
 			},
 
-			initialize: function (opt) {
+			initialize: function(opt){
 				_.bindAll(this);
 
 				// 必須要素を準備する。
 				this._prepareUIElement();
 
 				// オプションを整理する
-				var fixopt = function (opt) {
+				var fixopt = function(opt){
 					var o = opt || {};
 
 					// 一覧系かどうか -- opeTypeId の指定が無い場合は、一覧画面扱いとする。・・・やりすぎか？
-					if (_.isNull(o.opeTypeId) || _.isUndefined(o.opeTypeId)) {
+					if(_.isNull(o.opeTypeId) || _.isUndefined(o.opeTypeId)){
 						o.opeTypeId = 0;
 					}
 
@@ -28759,59 +28720,59 @@ $(function () {
 
 					// カテゴリをこの画面のメニュー中分類名に設定する
 					var title = clcom.getMiddleMenuName();
-					if (title) {
+					if(title){
 						o.category = title;
 					}
 
 					// タイトル補完
-					if (_.isNull(o.title) || _.isUndefined(o.title)) {
+					if(_.isNull(o.title) || _.isUndefined(o.title)){
 						o.title = '';						// template の関係で、無い場合は空文字入れておく
 					}
 
 					// サブタイトル補完
-					if (_.isNull(o.subtitle) || _.isUndefined(o.subtitle)) {
+					if(_.isNull(o.subtitle) || _.isUndefined(o.subtitle)){
 						var s = clutil.opeTypeIdtoString(o.opeTypeId);
 						o.subtitle = _.isEmpty(s) ? '' : s;	// template の関係で、無い場合は空文字入れておく
 					}
 
 					// pageCount 補正
 					// 処理区分が「編集」以外は「＜前へ」「次へ＞」ナビを強制 OFF にする。
-					//					if(o.opeTypeId !== am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD && o.pageCount > 1){
-					//						o.pageCount = 1;
-					//					}
-					switch (o.opeTypeId) {
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:			// 新規登録
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:			// 削除
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:			// 参照
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:			// CSV出力
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT:		// CSV取込
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:			// 複製
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF:			// PDF出力
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL:		// 削除復活
-						case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:		// 予約取消
-							if (o.pageCount > 1) {
-								o.pageCount = 1;
-							}
-							break;
-						//					case 'cl_edit':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD;			// 編集
-						//					case 'cl_tmpsave':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE;		// 一時保存
-						//					case 'cl_apply':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY;		// 申請
-						//					case 'cl_approval':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL;	// 承認
-						//					case 'cl_passback':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK;	// 差し戻し
+//					if(o.opeTypeId !== am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD && o.pageCount > 1){
+//						o.pageCount = 1;
+//					}
+					switch(o.opeTypeId){
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:			// 新規登録
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:			// 削除
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_REL:			// 参照
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV:			// CSV出力
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT:		// CSV取込
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:			// 複製
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF:			// PDF出力
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL:		// 削除復活
+					case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:		// 予約取消
+						if(o.pageCount > 1){
+							o.pageCount = 1;
+						}
+						break;
+//					case 'cl_edit':		return am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD;			// 編集
+//					case 'cl_tmpsave':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE;		// 一時保存
+//					case 'cl_apply':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY;		// 申請
+//					case 'cl_approval':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL;	// 承認
+//					case 'cl_passback':	return am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK;	// 差し戻し
 					}
 
 					// キャンセルボタン拡張
-					if (o.btn_cancel) {
+					if(o.btn_cancel){
 						var btnCancel = {
 							label: '一覧に戻る'
 						};
-						if (o.btn_cancel === true) {
+						if(o.btn_cancel === true){
 							// boolean で true 明示 ⇒ デフォルト
 							; //o.btn_cancel = btnCancel;
-						} else if (_.isFunction(o.btn_cancel)) {
+						}else if(_.isFunction(o.btn_cancel)){
 							// 関数 ⇒ キャンセルボタンクリックアクション
 							btnCancel.action = o.btn_cancel;
-						} else if (_.isObject(o.btn_cancel)) {
+						}else if(_.isObject(o.btn_cancel)){
 							// Objectで指定 ⇒ 拡張する。
 							_.extend(btnCancel, o.btn_cancel);
 						}
@@ -28824,48 +28785,48 @@ $(function () {
 
 				// clcom コンフィギュレーション - 参照モードならブラウザ戻るボタン、［×］ボタンの Confirm を行わない。
 				var xOpeTypeId = this.getRepresentOpeTypeId(fixopt.opeTypeId, NaN);
-				if (xOpeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_REL) {
+				if(xOpeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_REL){
 					// 照会モードの場合はブラウザ戻るボタン、［×］ボタンの Confirm を行わない。
 					clcom._preventConfirm = true;
-				} else if (_.isNaN(xOpeTypeId)) {
+				}else if(_.isNaN(xOpeTypeId)){
 					console.warn('opeTypeId: 照会モードかどうか判断できない！');
 				}
 
 				// 共通ヘッダ
 				var cmHeaderOpt = _.pick(fixopt, 'category', 'backBtnURL');
-				if (cmHeaderOpt.backBtnURL !== false) {
+				if(cmHeaderOpt.backBtnURL !== false){
 					this.options.backBtnURL = cmHeaderOpt.backBtnURL || clcom.homeUrl;
-					cmHeaderOpt.backBtnURL = _.bind(function (e) {
+					cmHeaderOpt.backBtnURL = _.bind(function(e){
 						var backURL = this.options.backBtnURL;
-						if (this.options.confirmLeaving) {
+						if(this.options.confirmLeaving){
 							// メニュー画面へ
 							this._ConfirmLeaving(clcom.pushPage, backURL, null, null, null, true);
-						} else {
+						}else{
 							clcom.pushPage(backURL, null, null, null, true);
 						}
 					}, this);
-				} else {
+				}else{
 					// backBtnURL 明示 false の場合、黒帯ヘッダ左上「＜」は表示しないモード。
 				}
 				this.commonHeader = new clutil.View.CommonHeaderView(cmHeaderOpt);
 
 				// ページ: ＜前へ：次へ＞
 				this.pagesStat = [];
-				if (!fixopt.pageCount || fixopt.pageCount < 0) {
+				if(!fixopt.pageCount || fixopt.pageCount < 0){
 					this.pagesStat.push({
 						comment: null,	// 当該ページを開いた時点でエラーメッセージを表示 -- 「登録済です」みたいな・・
 						ribbon: null,	// リボンエリアのメッセージ
 						status: null,	// データ取得状態
-						// null			未取得
-						// 'OK'			データ取得済、
-						// 'DONE'		登録/削除完了 何の処理が完了したのかは、this.options.opeTypeId で判断。
-						// 'CONFLICT'	他者が更新済
-						// 'DELETED'	他者が削除済
+								// null			未取得
+								// 'OK'			データ取得済、
+								// 'DONE'		登録/削除完了 何の処理が完了したのかは、this.options.opeTypeId で判断。
+								// 'CONFLICT'	他者が更新済
+								// 'DELETED'	他者が削除済
 						block: false,	// 「登録」/「削除」ボタンが操作可能かどうか
 						data: null		// GET の応答データ
 					});
-				} else {
-					for (var i = 0; i < fixopt.pageCount; i++) {
+				}else{
+					for(var i = 0; i < fixopt.pageCount; i++){
 						this.pagesStat.push({
 							comment: null,
 							ribbon: null,
@@ -28876,16 +28837,16 @@ $(function () {
 					}
 				}
 				// ページインデックス
-				if (_.isNumber(fixopt.pageIndex)) {
+				if(_.isNumber(fixopt.pageIndex)){
 					var idx = Math.max(fixopt.pageIndex, 0);
-					idx = Math.min(idx, this.pagesStat.length - 1);
+					idx = Math.min(idx, this.pagesStat.length-1);
 					fixopt.pageIndex = idx;
 				}
 
 				// イベント
 				// ヘッダ表示のエラーメッセージを受け取る
 				clutil.mediator.on('onTicker', this._onTicker);
-				if (fixopt.opebtn_auto_enable) {
+				if(fixopt.opebtn_auto_enable){
 					// 行選択の変更イベントを受け取る
 					clutil.mediator.on('onRowSelectChanged', this._setOpeButtonUI);
 				}
@@ -28895,12 +28856,12 @@ $(function () {
 				});
 
 				// 全体スタイル
-				if (fixopt.cssClasses) {
+				if(fixopt.cssClasses){
 					this.$el.addClass(fixopt.cssClasses);
 				}
 			},
 
-			initUIElement: function () {
+			initUIElement: function(){
 				this.commonHeader.initUIElement();
 
 				/*
@@ -28909,31 +28870,31 @@ $(function () {
 				 * 各アプリフィールドのチェックのための validator は clutil.validator を別途立ててもらう。
 				 */
 				this.validator = clutil.validator(this.$el, {
-					echoback: this.$('.cl_echoback').hide()
+					echoback		: this.$('.cl_echoback').hide()
 				});
 
 				// 権限仕込み
-				var permAdd = function () {
+				var permAdd = function(){
 					var permadd = {
 						// Ope ボタン
-						'#cl_new': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW),		// 新規登録
-						'#cl_edit': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD),		// 編集
-						'#cl_delete': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL),		// 削除
-						'#cl_rel': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_REL),		// 参照
-						'#cl_csv': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV),		// CSV出力
-						'#cl_csvinput': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT),	// CSV取込
-						'#cl_copy': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY),		// 複製
-						'#cl_pdf': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF),		// PDF出力
-						'#cl_delcancel': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL),	// 削除復活
-						'#cl_rsvcancel': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL),	// 予約取消
-						'#cl_tmpsave': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE),	// 一時保存
-						'#cl_apply': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY),		// 申請
-						'#cl_approval': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL),	// 承認
-						'#cl_passback': clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK)	// 差し戻し
+						'#cl_new'		: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW),		// 新規登録
+						'#cl_edit'		: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD),		// 編集
+						'#cl_delete'	: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL),		// 削除
+						'#cl_rel'		: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_REL),		// 参照
+						'#cl_csv'		: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV),		// CSV出力
+						'#cl_csvinput'	: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT),	// CSV取込
+						'#cl_copy'		: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY),		// 複製
+						'#cl_pdf'		: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF),		// PDF出力
+						'#cl_delcancel'	: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL),	// 削除復活
+						'#cl_rsvcancel'	: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL),	// 予約取消
+						'#cl_tmpsave'	: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE),	// 一時保存
+						'#cl_apply'		: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY),		// 申請
+						'#cl_approval'	: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL),	// 承認
+						'#cl_passback'	: clutil.opeTypeIdPerm(am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK)	// 差し戻し
 					};
 
 					// フッターナビ部（Submit）
-					var naviOpeBtnAddPerm = function (permadd, opeTypeId) {
+					var naviOpeBtnAddPerm = function(permadd, opeTypeId){
 						var selector = '#mainColumnFooter .cl_submit[data-opetypeid="' + opeTypeId + '"]';
 						var perm = clutil.opeTypeIdPerm(opeTypeId);
 						permadd[selector] = perm;
@@ -28963,40 +28924,40 @@ $(function () {
 				return this;
 			},
 
-			render: function () {
+			render: function(){
 				// this.$('#header') 要素全部をここで作り直す <== CommonHeaderView.el をはめ込む。
-				if (true) {
+				if(true){
 					var $hd = this.$('#header');
 					var $newHd = this.commonHeader.render().$el;
 					var $ca_main = this.$('#ca_main');
-					if ($hd.length > 0) {
+					if($hd.length > 0){
 						// 既に id="header" 要素が存在する場合は共通ヘッダ要素を入れ替える
 						var $wrap = $hd.wrap('<div>').parent();
 						$wrap.prepend($newHd);
 						$hd.unwrap().remove();
-					} else if ($ca_main.length > 0) {
+					}else if($ca_main.length > 0){
 						// <div id="ca_main"> 要素が存在する場合は直下に共通ヘッダを入れる
 						$ca_main.prepend($newHd);
-					} else {
+					}else{
 						this.$el.prepend($newHd);
 					}
 				}
 
 				// タイトルのレンダリング
-				if (true) {
+				if(true){
 					var $title = this.$('#title');
 					var $newTitle = $(this.title_tmpl(this.options));
-					if ($title.length > 0) {
+					if($title.length > 0){
 						// 既に id="title" 要素が存在する場合はタイトル要素を入れ替える
 						var $wrap = $title.wrap('<div>').parent();
 						$wrap.prepend($newTitle);
 						$title.unwrap().remove();
-					} else {
+					}else{
 						var $mainColBox = $('#mainColumninBox');
-						if ($mainColBox.length === 0) {
-							//							alert('処理を中断します：<div id="mainColumninBox"> 要素を入れてください。');
-							//							return this;
-						} else {
+						if($mainColBox.length === 0){
+//							alert('処理を中断します：<div id="mainColumninBox"> 要素を入れてください。');
+//							return this;
+						}else{
 							$mainColBox.prepend($newTitle);
 						}
 					}
@@ -29009,14 +28970,14 @@ $(function () {
 				this.clear();
 
 				// Body 部表示
-				_.defer(function (myView) {
-					if (false) {
-						myView.fadeIn(myView.$el, 500, 50, function () {
+				_.defer(function(myView){
+					if(false){
+						myView.fadeIn(myView.$el, 500, 50, function(){
 							// firstStep: 初期表示時、Datepicker の表示がズレる場合があるのでリフレッシュしておく
 							myView.$('.hasDatepicker').datepicker('refresh');
-						}, function () {
+						}, function(){
 						});
-					} else {
+					}else{
 						/* 2014-12-01
 						 * Chrome バージョン 39.0.2171.71 m の更新で描画欠損が起こることが認められたため、
 						 * 独自実装 fadeIn エフェクトを廃止する。
@@ -29041,14 +29002,14 @@ $(function () {
 			 * @param {function} [firstStep] 初回表示ステップのときのコールバック関数。
 			 * @param {function} [complete] 表示しきった後で呼び出すコールバック関数。
 			 */
-			fadeIn: function ($el, term, freqTm, firstStep, complete) {
+			fadeIn: function($el, term, freqTm, firstStep, complete){
 				var iniOpac = $el.css('opacity');
-				var style = { opacity: _.isFinite(iniOpac) ? Number(iniOpac) : 1 };
-				if (style.opacity >= 1) {
-					if (_.isFunction(firstStep)) {
+				var style = {opacity: _.isFinite(iniOpac) ? Number(iniOpac) : 1};
+				if(style.opacity >= 1){
+					if(_.isFunction(firstStep)){
 						firstStep();
 					}
-					if (_.isFunction(complete)) {
+					if(_.isFunction(complete)){
 						complete();
 					}
 					return;
@@ -29056,23 +29017,23 @@ $(function () {
 				var step = Math.ceil(term / freqTm), dOpac = 1 / step;
 				var stTm = Date.now();
 				var isWorking = true;
-				var intervalID = setInterval(function () {
+				var intervalID = setInterval(function(){
 					var elapsedTm = Date.now() - stTm;
 					style.opacity += dOpac;
-					if (style.opacity >= 1 || elapsedTm >= term) {
+					if(style.opacity >= 1 || elapsedTm >= term){
 						console.info('fadeIn: interval[#' + intervalID + '] end, elapsedTm=' + elapsedTm);
 						clearInterval(intervalID);
 						style.opacity = 1;
 						isWorking = false;
-					} else {
+					}else{
 						//console.log('fadeIn: opacity[' + style.opacity + '], elapsedTm=' + elapsedTm);
 					}
 					$el.css('opacity', style.opacity);
-					if (_.isFunction(firstStep)) {
+					if(_.isFunction(firstStep)){
 						firstStep();
 						firstStep = null;
 					}
-					if (!isWorking && _.isFunction(complete)) {
+					if(!isWorking && _.isFunction(complete)){
 						complete();
 						complete = null;
 					}
@@ -29084,39 +29045,39 @@ $(function () {
 			/**
 			 * フッター部ナビボタンを描画（再描画）する。
 			 */
-			renderFooterNavi: function (opt) {
+			renderFooterNavi: function(opt){
 				// 現在のページに応じて、＜前へ：次へ＞ ボタンの visible 制御する
 				var $mainColumnFooter = this.$('#mainColumnFooter');
-				if ($mainColumnFooter.length === 0) {
-					//					alert('処理を中断します：<div id="mainColumnFooter"> 要素を入れてください。');
-					//					return this;
+				if($mainColumnFooter.length === 0){
+//					alert('処理を中断します：<div id="mainColumnFooter"> 要素を入れてください。');
+//					return this;
 					console.warn('MDBaseView.renderFooterNavi: Element <div id="mainColumnFooter"> not found, skip!');
-				} else {
-					var footerLineCount = function (o) {
+				}else{
+					var footerLineCount = function(o){
 						var n = 0;
-						if (o.btn_submit/*Submit ボタンあるよ*/) {
+						if(o.btn_submit/*Submit ボタンあるよ*/){
 							n++;
 						}
-						if (o.pageCount > 1/*複数選択だよ*/) {
+						if(o.pageCount > 1/*複数選択だよ*/){
 							n++;
 						}
-						if (o.btn_csv || o.btn_pdf || (o.btns_dl && o.btns_dl.length > 0) /*出力系ボタンあるよ*/) {
+						if(o.btn_csv || o.btn_pdf || (o.btns_dl && o.btns_dl.length > 0) /*出力系ボタンあるよ*/){
 							n++;
 						}
 						return Math.min(n, 2);
 					}(this.options);
 
-					if (footerLineCount <= 0) {
+					if(footerLineCount <= 0){
 						// フッタ部のコンテントが無いので削除
 						//$mainColumnFooter.remove();
 						$mainColumnFooter.empty().hide();
-					} else {
-						try {
+					}else{
+						try{
 							$mainColumnFooter.css('visibility', 'hidden').show();
 
-							if (footerLineCount === 1) {
+							if(footerLineCount === 1){
 								$mainColumnFooter.addClass('noLeftColumn').removeClass('x2');
-							} else {
+							}else{
 								// ＜前へ｜次へ＞ボタンか、CSV出力ボタンがあれば、height 2行分
 								$mainColumnFooter.addClass('noLeftColumn x2');
 							}
@@ -29126,26 +29087,26 @@ $(function () {
 
 							// Submit 系ボタンをテンプレートから展開
 							var $submitbtngrp = $mainColumnFooter.find('.submit_btn_group').empty();
-							var opeTypeIds = function (v) {
+							var opeTypeIds = function(v){
 								var ids = [];
 								//clutil.isValidOpeTypeId(num);
-								if (_.isNumber(v) && clutil.isValidOpeTypeId(v)) {
+								if(_.isNumber(v) && clutil.isValidOpeTypeId(v)){
 									ids.push(v);
 									return ids;
 								}
-								if (_.isArray(v)) {
-									for (var i = 0; i < v.length; i++) {
+								if(_.isArray(v)){
+									for(var i = 0; i < v.length; i++) {
 										var vi = v[i];
-										if (_.isNumber(vi) && clutil.isValidOpeTypeId(vi)) {
+										if(_.isNumber(vi) && clutil.isValidOpeTypeId(vi)){
 											ids.push(vi);
 											continue;
 										}
-										if (_.isObject(vi)) {
-											if (!_.isEmpty(vi.label)) {
+										if(_.isObject(vi)){
+											if(!_.isEmpty(vi.label)){
 												ids.push(vi);
 												continue;
 											}
-											if (_.isNumber(vi.opeTypeId) && clutil.isValidOpeTypeId(vi)) {
+											if(_.isNumber(vi.opeTypeId) && clutil.isValidOpeTypeId(vi)){
 												ids.push(vi);
 												continue;
 											}
@@ -29155,39 +29116,39 @@ $(function () {
 								return ids;
 							}(this.options.opeTypeId);
 							var opeTypeIds_n = opeTypeIds.length;
-							if (opeTypeIds_n > 0) {
-								for (var i = 0; i < opeTypeIds_n; i++) {
+							if(opeTypeIds_n > 0){
+								for(var i = 0; i < opeTypeIds_n; i++){
 									var btn_ope = opeTypeIds[i];
 									var model = null;
-									if (_.isNumber(btn_ope)) {
+									if(_.isNumber(btn_ope)){
 										var label = clutil.opeTypeIdtoString(opeTypeIds[i], opeTypeIds_n);
-										if (!_.isEmpty(label)) {
+										if(!_.isEmpty(label)){
 											model = {
 												opeTypeId: opeTypeIds[i],
 												label: label
 											};
 										}
-									} else {
+									}else{
 										model = btn_ope;
 									}
 
-									var w = (i < opeTypeIds_n - 1) ? Math.floor(100 / opeTypeIds_n) : Math.ceil(100 / opeTypeIds_n);
+									var w = (i < opeTypeIds_n -1) ? Math.floor(100 / opeTypeIds_n) : Math.ceil(100 / opeTypeIds_n);
 									model.width = w + '%';
 
-									if (_.isEmpty(model.classNames)) {
-										switch (model.opeTypeId) {
-											case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-											case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:
-											case am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK:
-												model.classNames = 'delete';
-												break;
-											default:
-												model.classNames = 'apply';
+									if(_.isEmpty(model.classNames)){
+										switch(model.opeTypeId){
+										case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+										case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:
+										case am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK:
+											model.classNames = 'delete';
+											break;
+										default:
+											model.classNames = 'apply';
 										}
 									}
 									// ロス追求完了スペシャル #20151117
-									if (model.classNames == 'apply' &&
-										model.label == 'ロス追求完了') {
+									if( model.classNames == 'apply' &&
+										model.label == 'ロス追求完了' ){
 										model.classNames = 'applySpecial';
 									}
 
@@ -29195,50 +29156,50 @@ $(function () {
 									$submitbtngrp.append($btn);
 									$btn.find('.cl_submit').data('cl_model', model);
 								}
-							} else {
+							}else{
 								// ope 系ボタンが無い。キャンセルボタンぼっち ⇒ 幅を 100% にする。
 								$submitbtngrp.remove();
-								$mainColumnFooter.find('.cancel').css({ position: 'relative', width: '100%' });
+								$mainColumnFooter.find('.cancel').css({position: 'relative', width: '100%'});
 							}
 
 							// DL 系ボタンをテンプレートから展開
 							var $dlbtngrp = $mainColumnFooter.find('.dl_btn_group').empty();
 							var dlBtnModels = [];
-							if (this.options.btn_csv) {
+							if(this.options.btn_csv){
 								var opeTypeId = am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV;
 								dlBtnModels.push({
 									opeTypeId: opeTypeId,
 									label: clutil.opeTypeIdtoString(opeTypeId)
 								});
 							}
-							if (this.options.btn_pdf) {
+							if(this.options.btn_pdf){
 								var opeTypeId = am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF;
 								dlBtnModels.push({
 									opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF,
 									label: clutil.opeTypeIdtoString(opeTypeId)
 								});
 							}
-							if (_.isArray(this.options.btns_dl)) {
-								for (var i = 0; i < this.options.btns_dl.length; i++) {
+							if(_.isArray(this.options.btns_dl)){
+								for(var i = 0; i < this.options.btns_dl.length; i++){
 									var btn_dl = this.options.btns_dl[i];
-									if (_.isNumber(btn_dl)) {
+									if(_.isNumber(btn_dl)){
 										dlBtnModels.push({
 											opeTypeId: btn_dl,
 											label: clutil.opeTypeIdtoString(btn_dl)
 										});
-									} else if (_.isObject(btn_dl)) {
+									}else if(_.isObject(btn_dl)){
 										dlBtnModels.push(btn_dl);
 									}
 								}
 							}
-							for (var i = 0; i < dlBtnModels.length; i++) {
-								var w = (i < dlBtnModels.length - 1) ? Math.floor(100 / dlBtnModels.length) : Math.ceil(100 / dlBtnModels.length);
+							for(var i = 0;i < dlBtnModels.length; i++){
+								var w = (i < dlBtnModels.length -1) ? Math.floor(100 / dlBtnModels.length) : Math.ceil(100 / dlBtnModels.length);
 								dlBtnModels[i].width = w + '%';
 								var $btn = $(this.footernav2_dlbtn_tmpl(dlBtnModels[i]));//.data('cl_model', dlBtnModels[i]);
 								$dlbtngrp.append($btn);
 								$btn.find('.cl_download').data('cl_model', dlBtnModels[i]);
 							}
-						} finally {
+						}finally{
 							$mainColumnFooter.css('visibility', 'visible');
 						}
 					}
@@ -29255,18 +29216,18 @@ $(function () {
 			 * ＜オプション＞
 			 * opt.setSubmitEnable	下部のSubmitボタンをblockする場合は true を指定。block解除する場合は false を指定。
 			 */
-			clear: function (opt) {
+			clear: function(opt){
 
 				// 内部のGETデータを破棄する。
 				var stat = this.pagesStat[this.options.pageIndex];
 				stat.status = null;
-				if (opt && _.has(opt, 'setSubmitEnable')) {
+				if(opt && _.has(opt, 'setSubmitEnable')){
 					// 下部のSubmitボタンの活性/非活性状態は、基本キープ。
 					// オプションで指定された場合のみ、指定状態でクリアする。
 					stat.block = !opt.setSubmitEnable;
 				}
 				stat.comment = null,
-					stat.ribbon = null;
+				stat.ribbon = null;
 				stat.data = null;
 
 				// stat に応じたUI設定
@@ -29276,7 +29237,7 @@ $(function () {
 				this._setConstraint(stat);
 
 				// オプションボタンの自動 enable 設定が有効になっている場合は、すべて disanabled とする。
-				if (this.options.opebtn_auto_enable) {
+				if(this.options.opebtn_auto_enable){
 					this._setOpeButtonUI('*', null);
 				}
 
@@ -29288,17 +29249,17 @@ $(function () {
 			/**
 			 * キャンセルボタン
 			 */
-			_onCancelClick: function (e) {
+			_onCancelClick: function(e){
 				//clutil.mediator.trigger('onViewCtrl', 'onCancel', e);		// キャンセルボタン
-				if (this.options.btn_cancel && _.isFunction(this.options.btn_cancel.action)) {
+				if(this.options.btn_cancel && _.isFunction(this.options.btn_cancel.action)){
 					// キャンセルボタンコールバック指定の場合
 					this.options.btn_cancel.action(e);
 					return;
 				}
-				if (this.options.confirmLeaving) {
+				if(this.options.confirmLeaving){
 					// 登録確認をして、元来たページへ戻る。
 					this._ConfirmLeaving(clcom.popPage);
-				} else {
+				}else{
 					// 元来たページへ戻るのが基本動作のはず。
 					clcom.popPage(null);
 				}
@@ -29306,72 +29267,72 @@ $(function () {
 
 			// OPE 系
 			// { name = 'AM_PROTO_COMMON_RTYPE_NEW',        val = 1, description = '新規登録' },
-			_onNewClick: function (e) {
+			_onNewClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_NEW)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_UPD',        val = 2, description = '編集' },
-			_onEditClick: function (e) {
+			_onEditClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_UPD)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_DEL',        val = 3, description = '削除' },
-			_onDelClick: function (e) {
+			_onDelClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_DEL)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_REL',        val = 4, description = '参照' },
-			_onCSVClick: function (e) {
+			_onCSVClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_REL)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_REL, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_CSV',        val = 5, description = 'CSV出力' },
-			_onCSVClick: function (e) {
+			_onCSVClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_CSV)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_CSV_INPUT',  val = 6, description = 'CSV取込' },
-			_onCSVInputClick: function (e) {
+			_onCSVInputClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_CSV_INPUT)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_COPY',       val = 7, description = '複製' },
-			_onCopyClick: function (e) {
+			_onCopyClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_COPY)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_PDF',        val = 8, description = 'PDF出力' },
-			_onPDFClick: function (e) {
+			_onPDFClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_PDF)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_PDF, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_DELCANCEL',  val = 9, description = '削除復活' },
-			_onDelCancelClick: function (e) {
+			_onDelCancelClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_DELCANCEL)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_DELCANCEL, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_RSVCANCEL',  val = 10, description = '予約取消' },
-			_onRsvCancelClick: function (e) {
+			_onRsvCancelClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_RSVCANCEL)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_TMPSAVE',    val = 11, description = '一時保存' },
-			_onTmpSaveClick: function (e) {
+			_onTmpSaveClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_TMPSAVE)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_TMPSAVE, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_APPLY',      val = 12, description = '申請' },
-			_onApplyClick: function (e) {
+			_onApplyClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_APPLY)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_APPLY, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_APPROVAL',   val = 13, description = '承認' },
-			_onApprovalClick: function (e) {
+			_onApprovalClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_APPROVAL)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_APPROVAL, this.options.pageIndex, e);
 			},
 			// { name = 'AM_PROTO_COMMON_RTYPE_PASSBACK',   val = 14, description = '差戻し' },
-			_onPassbackClick: function (e) {
+			_onPassbackClick: function(e){
 				console.log('trigger(onOperation, AM_PROTO_COMMON_RTYPE_PASSBACK)');
 				clutil.mediator.trigger('onOperation', am_proto_defs.AM_PROTO_COMMON_RTYPE_PASSBACK, this.options.pageIndex, e);
 			},
@@ -29379,10 +29340,10 @@ $(function () {
 			// 画面制御系 --------------------------------------------------------------//
 
 			// ダウンロード系ボタン
-			_onFooterNavDownloadClick: function (e) {
+			_onFooterNavDownloadClick: function(e){
 				var $btn = $(e.currentTarget);
 				var opeTypeId = parseInt($btn.data('opetypeid'));
-				if (_.isNaN(opeTypeId) || opeTypeId <= 0) {
+				if(_.isNaN(opeTypeId) || opeTypeId <= 0){
 					return;
 				}
 				clutil.mediator.trigger('onOperation', opeTypeId, this.options.pageIndex, e);
@@ -29391,12 +29352,12 @@ $(function () {
 			/**
 			 * アプリ用：サブミット処理発行
 			 */
-			doSubmit: function (opeTypeId, e) {
+			doSubmit: function(opeTypeId, e){
 				this.__submitInternal(opeTypeId, e);
 			},
 
 			// Submit系ボタン
-			_onFooterNavSubmitClick: function (e) {
+			_onFooterNavSubmitClick: function(e){
 				var $btn = $(e.currentTarget);
 				var opeTypeId = parseInt($btn.data('opetypeid'));
 				this.__submitInternal(opeTypeId, e);
@@ -29404,20 +29365,20 @@ $(function () {
 
 			// Submit 系 ope ボタン処理
 			// Submit関数が仕込んでいる場合	＝＝＞	options.buildSubmitReqFunction			★buildSubmitReqFunction
-			__submitInternal: function (opeTypeId, e) {
-				if (_.isNull(opeTypeId) || _.isUndefined(opeTypeId) || _.isNaN(opeTypeId) || opeTypeId <= 0) {
+			__submitInternal: function(opeTypeId, e){
+				if(_.isNull(opeTypeId) || _.isUndefined(opeTypeId) || _.isNaN(opeTypeId) || opeTypeId <= 0){
 					console.warn('__submitInternal: ivalid opeTypeId[' + opeTypeId + ']');
 					return;
 				}
 
 				// 権限チェック内部関数
-				var isBadPermFunc = function (opeTypeId) {
-					if (clutil._XXXDBGGetIniPermChk === false) {
+				var isBadPermFunc = function(opeTypeId){
+					if(clutil._XXXDBGGetIniPermChk === false){
 						// 権限チェックをスキップする
 						return;
 					}
 					var pageId = clcom.pageId;
-					if (_.isEmpty(pageId) || !/^AM[A-Z]{2}V[0-9]{4}$/.test(pageId)) {
+					if(_.isEmpty(pageId) || !/^AM[A-Z]{2}V[0-9]{4}$/.test(pageId)){
 						// MDの画面コード体系にマッチしていないので、権限制限外（制限を受けない）と判断する。
 						return;	// OK
 					}
@@ -29426,11 +29387,11 @@ $(function () {
 					var permtype = clutil.opeTypeIdPerm(opeTypeId);
 
 					if (permtype == 'write') {
-						if (!_.isEmpty(pm) && (pm.f_allow_write)) {
+						if(!_.isEmpty(pm) && (pm.f_allow_write)){
 							return;	// OK
 						}
 					} else if (permtype == 'del') {
-						if (!_.isEmpty(pm) && (pm.f_allow_del)) {
+						if(!_.isEmpty(pm) && (pm.f_allow_del)){
 							return;	// OK
 						}
 					}
@@ -29441,28 +29402,28 @@ $(function () {
 				// 更新権限チェック追加
 				var permChk = isBadPermFunc(opeTypeId);
 				if (permChk == 'write') {
-					this.validator.setErrorInfo({ _eb_: clmsg.is_upd_false });
+					this.validator.setErrorInfo({_eb_: clmsg.is_upd_false});
 					return;
 				} else if (permChk == 'del') {
-					this.validator.setErrorInfo({ _eb_: clmsg.is_del_false });
+					this.validator.setErrorInfo({_eb_: clmsg.is_del_false});
 					return;
 				}
 
 				var pgIndex = this.options.pageIndex;
-				if (_.isFunction(this.options.buildSubmitReqFunction)) {
+				if(_.isFunction(this.options.buildSubmitReqFunction)){
 
 					// ページジャンプ先のページ情報
 					var stat = this.pagesStat[pgIndex];
 
 					// リクエスト
 					var req = this.options.buildSubmitReqFunction(opeTypeId, pgIndex);
-					if (req === null || req === undefined) {
+					if(req === null || req === undefined){
 						// 画面先で、入力ミス等の理由でカレントページにとどまる意志と見做す。
-						console.log('buildSubmitReqFunction: null, submit opeTypeId[' + opeTypeId + '] canceled.');
+						console.log('buildSubmitReqFunction: null, submit opeTypeId[' + opeTypeId +  '] canceled.');
 						return;
 					}
 					// 応答構造のチェック
-					if (!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)) {
+					if(!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)){
 						// I/F が正しくない
 						var m = 'buildSubmitReqFunction: ' + this.options.subtitle + ' 引数に誤りがあります。コードを見直してください。';
 						console.error(m);
@@ -29471,7 +29432,7 @@ $(function () {
 					}
 
 					// 共通Reqヘッダサポート
-					if (true) {
+					if(true){
 						var defaultRecHead = (stat.data && stat.data.rspHead) ? {
 							opeTypeId: opeTypeId,
 							recno: stat.data.rspHead.recno,
@@ -29479,9 +29440,9 @@ $(function () {
 						} : {
 							opeTypeId: opeTypeId
 						};
-						if (req.data.reqHead) {
+						if(req.data.reqHead) {
 							req.data.reqHead = _.defaults(req.data.reqHead, defaultRecHead);
-						} else {
+						}else{
 							req.data.reqHead = defaultRecHead;
 						}
 
@@ -29489,25 +29450,25 @@ $(function () {
 						req.data.reqHead.forceUpdFlag = 0;
 					}
 
-					if (this.config.allowUpdateByNonChangedData) {
+					if(this.config.allowUpdateByNonChangedData){
 						// 空更新チェックは行わない。
-					} else {
+					}else{
 						// 空更新チェックは行わない。
 						// 空更新チェック
 						// GET してきたときのデータ stat.data と同じ内容で更新しようとしていないかをチェックする。
 						// 新規更新のときは、stat.submitreq は空っぽなので、この空更新チェックは通らない。
-						if (opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD && !_.isEmpty(stat.submitCheckData)) {
+						if(opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD && !_.isEmpty(stat.submitCheckData)){
 							// XXXXV0000GetRsp
-							var getRsp = _.omit(stat.submitCheckData, 'rspHead', 'rspPage');
+							var getRsp     = _.omit(stat.submitCheckData, 'rspHead', 'rspPage');
 							var getRecProp = _.keys(getRsp)[0];
-							var getRec = getRsp[getRecProp];
+							var getRec     = getRsp[getRecProp];
 
 							// XXXXV0000UpdReq
-							var submitReq = _.omit(req.data, 'reqHead', 'reqPage', req.resId + 'GetReq');
+							var submitReq     = _.omit(req.data, 'reqHead', 'reqPage', req.resId + 'GetReq');
 							var submitRecProp = _.keys(submitReq)[0];
-							var submitRec = req.data[submitRecProp];
+							var submitRec     = req.data[submitRecProp];
 
-							if (clutil.protoIsEqual(getRec, submitRec)) {
+							if(clutil.protoIsEqual(getRec, submitRec)){
 								// 空更新  -- 更新箇所が無い！
 								var txt = (e && e.target) ? $(e.target).text() : clutil.opeTypeIdtoString(opeTypeId);
 								clutil.MessageDialog2(txt + '変更箇所がありません。');
@@ -29517,39 +29478,39 @@ $(function () {
 					}
 
 					// Submit 処理関数を浮かせる。--- 確認ダイアログのコールバックにするために wrap。
-					var doSubmit = _.bind(function () {
+					var doSubmit = _.bind(function(){
 						this.__doSubmit(req, e);
 					}, this);
 
 					//確認ダイアログを出す
 					var confirmMsg = null;
-					if (!_.isEmpty(req.confirm)) {
+					if(!_.isEmpty(req.confirm)){
 						// アプリ指定の Confirm メッセージ
 						confirmMsg = req.confirm.toString();
-					} else {
+					}else{
 						// デフォルトの Confirm メッセージ -- 「削除」と「予約取消」はデフォルトでメッセージを出す。
-						switch (opeTypeId) {
-							case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-							case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:
-								confirmMsg = clutil.opeTypeIdtoString(opeTypeId) + 'を行います。よろしいですか？';
+						switch(opeTypeId){
+						case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+						case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:
+							confirmMsg = clutil.opeTypeIdtoString(opeTypeId) + 'を行います。よろしいですか？';
 						}
 					}
-					if (_.isEmpty(confirmMsg)) {
+					if(_.isEmpty(confirmMsg)){
 						// 確認メッセージが無い ⇒ すぐに submit 処理を続ける。
 						doSubmit();
-					} else {
+					}else{
 						// confirm メッセージを出す。[OK]ならば、submit 処理を続行する。
 						clutil.ConfirmDialog(confirmMsg, doSubmit);
 					}
 
-				} else {
+				}else{
 					// クリックイベントを伝播させる。
 					console.log('trigger(onOperation, ' + opeTypeId + ')');
 					clutil.mediator.trigger('onOperation', opeTypeId, pgIndex, e);
 				}
 			},
 			// Submit処理内部２
-			__doSubmit: function (reqArg, e) {
+			__doSubmit: function(reqArg, e){
 				var pgIndex = this.options.pageIndex;
 				var stat = this.pagesStat[pgIndex];
 
@@ -29557,140 +29518,140 @@ $(function () {
 				var forceUpdFlag = reqArg.data.reqHead.forceUpdFlag;
 
 				// AJAX で処理を要求する
-				clutil.postJSON(reqArg).done(_.bind(function (data) {
+				clutil.postJSON(reqArg).done(_.bind(function(data){
 					// Submit 処理が成功
 					//document.location = '#';
 
 					// 更新完了ダイアログ表示
-					if (this.options.updMessageDialog !== false) {	// false 明示しないと updMessageDialog スキップしない
+					if(this.options.updMessageDialog !== false){	// false 明示しないと updMessageDialog スキップしない
 						var dialogClosedFunc = undefined;
 						// 「削除」と「予約取消」は処理完了後に遷移元へ戻す。
-						switch (opeTypeId) {
-							case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
-							case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:
-								if (this.options.pageCount <= 1) {
-									dialogClosedFunc = function () {
-										// 元来たページへ戻るのが基本動作のはず。
-										clcom.popPage(null);
-									};
-								}
+						switch(opeTypeId){
+						case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:
+						case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:
+							if(this.options.pageCount <= 1){
+								dialogClosedFunc = function(){
+									// 元来たページへ戻るのが基本動作のはず。
+									clcom.popPage(null);
+								};
+							}
 						}
 						// 表示時間が短い確認ダイアログ #20151117
 						console.log("DEBUG: useShortDialog=" + this.options.useShortDialog);
-						if (this.options.useShortDialog === true) {
-							clutil.updMessageDialogShort({
-								message: function (opeTypeId, e) {
-									var opeLabel = null;
-									if (e && e.target && !_.isEmpty(e.target.text)) {
-										// ボタンラベル名
-										opeLabel = e.target.text;
-									} else {
-										// 処理区分値からボタンラベル名を推測
-										opeLabel = clutil.opeTypeIdtoString(opeTypeId, true);
-									}
-									return _.isEmpty(opeLabel)
-										? clmsg.cl_rtype_upd_confirm	// デフォルト：「登録が完了しました。」
-										: clutil.fmt(clmsg.cl_rtype_any_confirm, opeLabel);
-								}(opeTypeId, e),
-								okCallback: dialogClosedFunc
-							});
+						if( this.options.useShortDialog === true ){
+						  clutil.updMessageDialogShort({
+							message: function(opeTypeId, e){
+								var opeLabel = null;
+								if(e && e.target && !_.isEmpty(e.target.text)){
+									// ボタンラベル名
+									opeLabel = e.target.text;
+								}else{
+									// 処理区分値からボタンラベル名を推測
+									opeLabel = clutil.opeTypeIdtoString(opeTypeId, true);
+								}
+								return _.isEmpty(opeLabel)
+									? clmsg.cl_rtype_upd_confirm	// デフォルト：「登録が完了しました。」
+									: clutil.fmt(clmsg.cl_rtype_any_confirm, opeLabel);
+							}(opeTypeId, e),
+							okCallback: dialogClosedFunc
+						  });
 						}
 						else {
-							clutil.updMessageDialog({
-								message: function (opeTypeId, e) {
-									var opeLabel = null;
-									if (e && e.target && !_.isEmpty(e.target.text)) {
-										// ボタンラベル名
-										opeLabel = e.target.text;
-									} else {
-										// 処理区分値からボタンラベル名を推測
-										opeLabel = clutil.opeTypeIdtoString(opeTypeId, true);
-									}
-									return _.isEmpty(opeLabel)
-										? clmsg.cl_rtype_upd_confirm	// デフォルト：「登録が完了しました。」
-										: clutil.fmt(clmsg.cl_rtype_any_confirm, opeLabel);
-								}(opeTypeId, e),
-								okCallback: dialogClosedFunc
-							});
+						  clutil.updMessageDialog({
+							message: function(opeTypeId, e){
+								var opeLabel = null;
+								if(e && e.target && !_.isEmpty(e.target.text)){
+									// ボタンラベル名
+									opeLabel = e.target.text;
+								}else{
+									// 処理区分値からボタンラベル名を推測
+									opeLabel = clutil.opeTypeIdtoString(opeTypeId, true);
+								}
+								return _.isEmpty(opeLabel)
+									? clmsg.cl_rtype_upd_confirm	// デフォルト：「登録が完了しました。」
+									: clutil.fmt(clmsg.cl_rtype_any_confirm, opeLabel);
+							}(opeTypeId, e),
+							okCallback: dialogClosedFunc
+						  });
 						}
 					}
 
 					// 確定済 - ブロックする。
 					stat.status = 'DONE';
 					stat.block = true,					// 登録ボタンを読み取り専用にする
-						stat.comment = null;
+					stat.comment = null;
 					stat.ribbon = clutil.opeTypeIdtoString(opeTypeId, true) + '済';
 					stat.data = clutil.dclone(data);	// Deep コピーを取ってキャッシュ
 					this._setConstraint(stat);
 
-					console.log('trigger(onMDSubmitCompleted, {status: ' + stat.status + ', index: ' + pgIndex + ', resId: ' + reqArg.resId + '})');
-					clutil.mediator.trigger('onMDSubmitCompleted', { status: stat.status, index: pgIndex, resId: reqArg.resId, opeTypeId: opeTypeId, data: data, forceUpdFlag: forceUpdFlag, req: reqArg.data }, e);
-				}, this)).fail(_.bind(function (data) {
+					console.log('trigger(onMDSubmitCompleted, {status: ' + stat.status + ', index: '+ pgIndex + ', resId: ' + reqArg.resId + '})');
+					clutil.mediator.trigger('onMDSubmitCompleted', {status: stat.status, index: pgIndex, resId: reqArg.resId, opeTypeId: opeTypeId, data: data, forceUpdFlag: forceUpdFlag, req: reqArg.data}, e);
+				}, this)).fail(_.bind(function(data){
 					// 処理が失敗
 					var stat_cd = 'NG';
-					if (data && data.rspHead) {
-						switch (data.rspHead.message) {
-							case 'cl_sys_db_other':			// 別のユーザによってＤＢが更新されました。
-								stat_cd = 'CONFLICT';
-								data_pub = data;
-								stat.status = stat_cd;
-								stat.block = true;
-								stat.comment = data.rspHead,
-									stat.ribbon = null;
-								stat.data = clutil.dclone(data);	// ★最新データが応答に入ってくるはず！
-								this._setConstraint(stat);
-								break;
-							case 'ca_bad_dbdelete':		// データが既に削除されています。
-								stat_cd = 'DELETED';
-								data_pub = data;		// 削除済の場合、何が入っているのか？？？
-								stat.status = stat_cd;
-								stat.block = true;
-								stat.comment = data.rspHead,
-									stat.ribbon = null;
-								//stat.data = clutil.dclone(data);	// キャッシュを維持？ -- これから復元すると、ユーザ入力編集入力前の状態になる。
-								this._setConstraint(stat);
-								break;
-							case 'EMS0164':
-							case 'EMS0165':
-								this._onTicker(clmsg.cl_echoback);
-								break;
-							default:
-							case 'cl_sys_error':		// システムエラーが発生しました。
-							case 'cl_sys_nomem':		// メモリ確保に失敗しました。
-							case 'cl_sys_db_error':		// システムエラー：データベースアクセスに失敗しました。
-							case 'cl_sys_db_access':	// システムエラー：データベースアクセスに失敗しました。
-								this._onTicker(data);
+					if(data && data.rspHead){
+						switch(data.rspHead.message){
+						case 'cl_sys_db_other':			// 別のユーザによってＤＢが更新されました。
+							stat_cd = 'CONFLICT';
+							data_pub = data;
+							stat.status = stat_cd;
+							stat.block = true;
+							stat.comment = data.rspHead,
+							stat.ribbon = null;
+							stat.data = clutil.dclone(data);	// ★最新データが応答に入ってくるはず！
+							this._setConstraint(stat);
+							break;
+						case 'ca_bad_dbdelete':		// データが既に削除されています。
+							stat_cd = 'DELETED';
+							data_pub = data;		// 削除済の場合、何が入っているのか？？？
+							stat.status = stat_cd;
+							stat.block = true;
+							stat.comment = data.rspHead,
+							stat.ribbon = null;
+							//stat.data = clutil.dclone(data);	// キャッシュを維持？ -- これから復元すると、ユーザ入力編集入力前の状態になる。
+							this._setConstraint(stat);
+							break;
+						case 'EMS0164':
+						case 'EMS0165':
+							this._onTicker(clmsg.cl_echoback);
+							break;
+						default:
+						case 'cl_sys_error':		// システムエラーが発生しました。
+						case 'cl_sys_nomem':		// メモリ確保に失敗しました。
+						case 'cl_sys_db_error':		// システムエラー：データベースアクセスに失敗しました。
+						case 'cl_sys_db_access':	// システムエラー：データベースアクセスに失敗しました。
+							this._onTicker(data);
 						}
-					} else {
+					}else{
 						// 致命的なエラーとか・・・
 						this._onTicker(data);
 					}
-					console.log('trigger(onMDSubmitCompleted, {status: ' + stat_cd + ', index: ' + pgIndex + ', resId: ' + reqArg.resId + ', opeTypeId:' + opeTypeId + '})');
-					clutil.mediator.trigger('onMDSubmitCompleted', { status: stat_cd, index: pgIndex, resId: reqArg.resId, opeTypeId: opeTypeId, data: data, forceUpdFlag: false, req: reqArg.data }, e);
+					console.log('trigger(onMDSubmitCompleted, {status: ' + stat_cd + ', index: '+ pgIndex + ', resId: ' + reqArg.resId + ', opeTypeId:' + opeTypeId + '})');
+					clutil.mediator.trigger('onMDSubmitCompleted', {status: stat_cd, index: pgIndex, resId: reqArg.resId, opeTypeId: opeTypeId, data: data, forceUpdFlag: false, req: reqArg.data}, e);
 				}, this));
 			},
 
-			__doSubmit2: function (reqArg, e) {
+			__doSubmit2: function(reqArg, e) {
 				// AJAX で処理を要求する
-				clutil.postJSON(reqArg).then(function (data) {
+				clutil.postJSON(reqArg).then(function(data) {
 					var hd = data.rspHead;
-					if (!_.isEmpty(hd.message)) {
+					if(!_.isEmpty(hd.message)){
 						clutil.mediator.trigger('onTicker', hd);
 						//data.rspHead.message = null;	// fail で再表示しないように、null にしておく。
 					}
-					if (hd.uri) {
+					if(hd.uri){
 						// DLファイルが指定された ⇒ DLメソッドを呼び出す。
 						// PDF ファイルを指定されるなど、別窓でDLをやらせるケースってあるの？
-						clutil.download({ url: hd.uri });
-					} else {
+						clutil.download({url: hd.uri});
+					}else{
 						return this;
 					}
-				}).done(function (data) {
+				}).done(function(data) {
 					if (!clutil.saveFileUploadView.saveOpt.noDialogOnDone) {
 						clutil.MessageDialog2('取込が完了しました。');				// FIXME: height を抑えたダイアログで
 					}
 					clutil.saveFileUploadView.trigger('done', data);
-				}).fail(function (data) {
+				}).fail(function(data) {
 					console.warn(reqArg.resId + ': failed.', data);
 					clutil.mediator.trigger('onTicker', data);
 					clutil.saveFileUploadView.trigger('fail', data);
@@ -29707,23 +29668,23 @@ $(function () {
 			 * @param {int} [defaultOpeType] 適切な処理区分値が見つからなかった場合のデフォルト値。
 			 * @return {int} 処理区分値
 			 */
-			getRepresentOpeTypeId: function (opeTypeId, defaultOpeType) {
-				if (opeTypeId == null) {
+			getRepresentOpeTypeId: function(opeTypeId, defaultOpeType){
+				if(opeTypeId == null){
 					opeTypeId = this.options.opeTypeId;
 				}
 				var anyType = opeTypeId;
-				if (_.isArray(anyType) && anyType.length >= 1) {
+				if(_.isArray(anyType) && anyType.length >= 1){
 					anyType = anyType[0];
 				}
-				if (_.isObject(anyType) && _.has(anyType, 'opeTypeId')) {
+				if(_.isObject(anyType) && _.has(anyType, 'opeTypeId')){
 					anyType = anyType.opeTypeId;
 				}
-				if (_.isFinite(anyType)) {
+				if(_.isFinite(anyType)){
 					anyType = parseInt(anyType);
-					if (!clutil.isValidOpeTypeId(anyType)) {
+					if(!clutil.isValidOpeTypeId(anyType)){
 						anyType = defaultOpeType;
 					}
-				} else {
+				}else{
 					anyType = defaultOpeType;
 				}
 				return anyType;
@@ -29739,9 +29700,9 @@ $(function () {
 			 * @param {string} [reqArgs.confirm] 確認ダイアログメッセージ。
 			 * @param {function} [reqArgs.cancel] 確認ダイアログのキャンセルコールバック
 			 */
-			forceSubmit: function (reqArgs) {
+			forceSubmit: function(reqArgs){
 				// 強制モードの Submit 処理の Ajax 呼び出し部
-				var doForceSubmit = _.bind(function () {
+				var doForceSubmit = _.bind(function(){
 					// 強制更新フラグ = ON
 					reqArgs.data.reqHead.forceUpdFlag = 1;
 					this.__doSubmit(reqArgs);
@@ -29749,13 +29710,13 @@ $(function () {
 
 				// 確認ダイアログメッセージをつくる。
 				var confirmMsgs = [];
-				if (!_.isEmpty(reqArgs.confirm)) {
+				if(!_.isEmpty(reqArgs.confirm)){
 					// アプリ指定の Confirm メッセージ
-					if (_.isArray(reqArgs.confirm)) {
-						for (var i = 0; i < reqArgs.confirm.length; i++) {
+					if(_.isArray(reqArgs.confirm)){
+						for(var i = 0; i < reqArgs.confirm.length; i++){
 							confirmMsgs.push(reqArgs.confirm[i].toString());
 						}
-					} else {
+					}else{
 						confirmMsgs.push(reqArgs.confirm.toString());
 					}
 				}
@@ -29765,9 +29726,9 @@ $(function () {
 				clutil.ConfirmDialog(confirmMsgs.join('<br />'), doForceSubmit, reqArgs.cancel);
 			},
 
-			forceUpload: function (reqArgs) {
+			forceUpload: function(reqArgs) {
 				// 強制モードの Submit 処理の Ajax 呼び出し部
-				var doForceSubmit = _.bind(function () {
+				var doForceSubmit = _.bind(function(){
 					// 強制更新フラグ = ON
 					reqArgs.data.reqHead.forceUpdFlag = 1;
 					this.__doSubmit2(reqArgs);
@@ -29775,13 +29736,13 @@ $(function () {
 
 				// 確認ダイアログメッセージをつくる。
 				var confirmMsgs = [];
-				if (!_.isEmpty(reqArgs.confirm)) {
+				if(!_.isEmpty(reqArgs.confirm)){
 					// アプリ指定の Confirm メッセージ
-					if (_.isArray(reqArgs.confirm)) {
-						for (var i = 0; i < reqArgs.confirm.length; i++) {
+					if(_.isArray(reqArgs.confirm)){
+						for(var i = 0; i < reqArgs.confirm.length; i++){
 							confirmMsgs.push(reqArgs.confirm[i].toString());
 						}
-					} else {
+					}else{
 						confirmMsgs.push(reqArgs.confirm.toString());
 					}
 				}
@@ -29794,69 +29755,69 @@ $(function () {
 			},
 
 			// 戻るボタン
-			_onPrevClick: function (e) {
+			_onPrevClick: function(e){
 				var fromIndex = this.options.pageIndex;
-				var toIndex = this.options.pageIndex - 1;
+				var toIndex = this.options.pageIndex -1;
 				var pgCount = this.options.pageCount;
 
-				if (this.options.confirmLeaving) {
-					if (pgCount <= 0 /*新規作成はデータが無い*/ || toIndex < 0 || toIndex >= Math.max(pgCount, 1)) {
+				if(this.options.confirmLeaving){
+					if(pgCount <= 0 /*新規作成はデータが無い*/ || toIndex < 0 || toIndex >= Math.max(pgCount,1)){
 						// ボタン表示を fadeIn/fadeOut で表示コントロールすると滑ってイベントを拾うことがある。オーバーランは無視で。
 						return;
 					}
 					this._ConfirmLeaving(this.__getInternal, fromIndex, toIndex, pgCount, e);
-				} else {
+				}else{
 					this.__getInternal(fromIndex, toIndex, pgCount, e);
 				}
 			},
 			// 次へボタン
-			_onNextClick: function (e) {
+			_onNextClick: function(e){
 				var fromIndex = this.options.pageIndex;
-				var toIndex = this.options.pageIndex + 1;
+				var toIndex = this.options.pageIndex +1;
 				var pgCount = this.options.pageCount;
 
-				if (this.options.confirmLeaving) {
-					if (pgCount <= 0 /*新規作成はデータが無い*/ || toIndex < 0 || toIndex >= Math.max(pgCount, 1)) {
+				if(this.options.confirmLeaving){
+					if(pgCount <= 0 /*新規作成はデータが無い*/ || toIndex < 0 || toIndex >= Math.max(pgCount,1)){
 						// ボタン表示を fadeIn/fadeOut で表示コントロールすると滑ってイベントを拾うことがある。オーバーランは無視で。
 						return;
 					}
 					this._ConfirmLeaving(this.__getInternal, fromIndex, toIndex, pgCount, e);
-				} else {
+				}else{
 					this.__getInternal(fromIndex, toIndex, pgCount, e);
 				}
 			},
 			// ページを離れる前に「登録が完了していません。このまま移動しますか？」確認する。
-			_ConfirmLeaving: function (action, args) {
+			_ConfirmLeaving: function(action, args){
 				var confirm = false;
 				var pgIndex = this.options.pageIndex;
-				do {
+				do{
 					var stat = this.pagesStat[pgIndex];
-					if (stat.block) {
+					if(stat.block){
 						// Submit 系処理ボタンがブロックされている。
 						break;
 					}
 					confirm = true;
-				} while (false);
+				}while(false);
 
-				if (_.isFunction(action)) {
+				if(_.isFunction(action)){
 					var context = this;
-					var actionArgs = _.map(arguments, function (a) { return a; });
+					var actionArgs = _.map(arguments,function(a){return a;});
 					actionArgs.shift();
-					if (this._isConfirmLeaving(confirm, pgIndex) === true) {
+					if(this._isConfirmLeaving(confirm, pgIndex) === true){
 						// ページ遷移の確認ダイアログを表示する！！！
-						var msg = function (myMdView) {
+						var msg = function(myMdView){
 							var label = myMdView.options.subtitle;
-							if (_.isEmpty(label)) {
+							if(_.isEmpty(label)){
 								var ope = myMdView.getRepresentOpeTypeId(myMdView.options.opeTypeId);
 								label = ope ? clutil.opeTypeIdtoString(ope) : '登録';
 							}
 							return label + 'が完了していません。このまま移動しますか？';
 						}(this);
-						var okcallback = function () {
+						var okcallback = function(){
 							action.apply(context, actionArgs);
 						};
 						clutil.ConfirmDialog(msg, okcallback);
-					} else {
+					}else{
 						// 即アクション実行
 						action.apply(context, actionArgs);
 					}
@@ -29893,114 +29854,114 @@ $(function () {
 			 * @param {number} pgIndex 一覧で編集対象を複数選択した場合、現在表示しているコンテントのインデックスを表す。
 			 * @return true:確認ダイアログは表示される。other:このまま移動する。
 			 */
-			_isConfirmLeaving: function (isSubmitBlocking, pgIndex) {
+			_isConfirmLeaving: function(isSubmitBlocking, pgIndex) {
 				var appFunc = this.options.isConfirmLeaving;
-				if (_.isFunction(appFunc)) {
+				if(_.isFunction(appFunc)){
 					return appFunc(isSubmitBlocking, pgIndex);
-				} else if (_.isBoolean(appFunc)) {
+				}else if(_.isBoolean(appFunc)){
 					return appFunc;
 				}
 				return isSubmitBlocking;
 			},
-			//			// 更新データが編集中かどうか判定して、処理の続行を問う。
-			//			_ConfirmLeaving: function(action, args){
-			//				// XXX 処理区分が明確じゃない ⇒ デフォルトは AM_PROTO_COMMON_RTYPE_UPD 固定としておく？？？
-			//				var opeTypeId = this.getRepresentOpeTypeId(this.options.opeTypeId, am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD);
-			//				var isDirty = false;
-			//
-			//				do{
-			//					var pgIndex = this.options.pageIndex;
-			//					var stat = this.pagesStat[pgIndex];
-			//					if(stat.block){
-			//						// Submit 系処理ボタンがブロックされている。
-			//						break;
-			//					}
-			//					// XXX 新規作成の場合は必ず Confirm を通す？？？
-			//					if(opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW || opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY){
-			//						isDirty = true;
-			//						break;
-			//					}
-			//
-			//					if(stat.submitCheckData == null){
-			//						// 比較用データ（初期GETしてきたデータ）が無いのでスキップ
-			//						break;
-			//					}
-			//					if(!_.isFunction(this.options.buildSubmitReqFunction)){
-			//						// Submit 系リクエストデータ作成方法を知らないのでスキップ。（アプリでチェックをやってね）
-			//						break;
-			//					}
-			//					var req = this.options.buildSubmitReqFunction(opeTypeId, pgIndex);
-			//					if(req == null){
-			//						// 入力エラー等で submit 処理できないことを検出。
-			//						// 即ち、入力途中であると判断し、確認ダイアログルートに乗せる。
-			//						isDirty = true;
-			//						break;
-			//					}
-			//					// 応答構造のチェック
-			//					if(!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)){
-			//						// I/F が正しくない - アプリのバグ！！！
-			//						var m = 'buildSubmitReqFunction: ' + this.options.subtitle + ' 引数に誤りがあります。コードを見直してください。';
-			//						console.error(m);
-			//						alert(m);			// バグ修正を喚起する
-			//						return;
-			//					}
-			//
-			//					// 以下、Get データと画面データとの比較
-			//					// XXXXV0000GetRsp
-			//					var getRsp     = _.omit(stat.submitCheckData, 'rspHead', 'rspPage');
-			//					var getRecProp = _.keys(getRsp)[0];
-			//					var getRec     = getRsp[getRecProp];
-			//
-			//					// XXXXV0000UpdReq
-			//					var submitReq     = _.omit(req.data, 'reqHead', 'reqPage', req.resId + 'GetReq');
-			//					var submitRecProp = _.keys(submitReq)[0];
-			//					var submitRec     = req.data[submitRecProp];
-			//
-			//					isDirty = !clutil.protoIsEqual(getRec, submitRec);
-			//				}while(false);
-			//
-			//				if(_.isFunction(action)){
-			//					var context = this;
-			//					var actionArgs = _.map(arguments,function(a){return a;});
-			//					actionArgs.shift();
-			//					if(isDirty){
-			//						// ページ遷移の確認ダイアログを表示する！！！
-			//						var msg = function(opeTypeId){
-			//							switch(opeTypeId){
-			//							case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
-			//							case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:
-			//								return '登録が完了していません。このまま移動しますか？';
-			//							}
-			//							return '編集が完了していません。このまま移動しますか？';
-			//						}(opeTypeId);
-			//						var okcallback = function(){
-			//							action.apply(context, actionArgs);
-			//						};
-			//						clutil.ConfirmDialog(msg, okcallback);
-			//					}else{
-			//						// 編集途中じゃない ⇒ 即アクション実行
-			//						action.apply(context, actionArgs);
-			//					}
-			//				}
-			//				return isDirty;
-			//			},
+//			// 更新データが編集中かどうか判定して、処理の続行を問う。
+//			_ConfirmLeaving: function(action, args){
+//				// XXX 処理区分が明確じゃない ⇒ デフォルトは AM_PROTO_COMMON_RTYPE_UPD 固定としておく？？？
+//				var opeTypeId = this.getRepresentOpeTypeId(this.options.opeTypeId, am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD);
+//				var isDirty = false;
+//
+//				do{
+//					var pgIndex = this.options.pageIndex;
+//					var stat = this.pagesStat[pgIndex];
+//					if(stat.block){
+//						// Submit 系処理ボタンがブロックされている。
+//						break;
+//					}
+//					// XXX 新規作成の場合は必ず Confirm を通す？？？
+//					if(opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW || opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY){
+//						isDirty = true;
+//						break;
+//					}
+//
+//					if(stat.submitCheckData == null){
+//						// 比較用データ（初期GETしてきたデータ）が無いのでスキップ
+//						break;
+//					}
+//					if(!_.isFunction(this.options.buildSubmitReqFunction)){
+//						// Submit 系リクエストデータ作成方法を知らないのでスキップ。（アプリでチェックをやってね）
+//						break;
+//					}
+//					var req = this.options.buildSubmitReqFunction(opeTypeId, pgIndex);
+//					if(req == null){
+//						// 入力エラー等で submit 処理できないことを検出。
+//						// 即ち、入力途中であると判断し、確認ダイアログルートに乗せる。
+//						isDirty = true;
+//						break;
+//					}
+//					// 応答構造のチェック
+//					if(!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)){
+//						// I/F が正しくない - アプリのバグ！！！
+//						var m = 'buildSubmitReqFunction: ' + this.options.subtitle + ' 引数に誤りがあります。コードを見直してください。';
+//						console.error(m);
+//						alert(m);			// バグ修正を喚起する
+//						return;
+//					}
+//
+//					// 以下、Get データと画面データとの比較
+//					// XXXXV0000GetRsp
+//					var getRsp     = _.omit(stat.submitCheckData, 'rspHead', 'rspPage');
+//					var getRecProp = _.keys(getRsp)[0];
+//					var getRec     = getRsp[getRecProp];
+//
+//					// XXXXV0000UpdReq
+//					var submitReq     = _.omit(req.data, 'reqHead', 'reqPage', req.resId + 'GetReq');
+//					var submitRecProp = _.keys(submitReq)[0];
+//					var submitRec     = req.data[submitRecProp];
+//
+//					isDirty = !clutil.protoIsEqual(getRec, submitRec);
+//				}while(false);
+//
+//				if(_.isFunction(action)){
+//					var context = this;
+//					var actionArgs = _.map(arguments,function(a){return a;});
+//					actionArgs.shift();
+//					if(isDirty){
+//						// ページ遷移の確認ダイアログを表示する！！！
+//						var msg = function(opeTypeId){
+//							switch(opeTypeId){
+//							case am_proto_defs.AM_PROTO_COMMON_RTYPE_NEW:
+//							case am_proto_defs.AM_PROTO_COMMON_RTYPE_COPY:
+//								return '登録が完了していません。このまま移動しますか？';
+//							}
+//							return '編集が完了していません。このまま移動しますか？';
+//						}(opeTypeId);
+//						var okcallback = function(){
+//							action.apply(context, actionArgs);
+//						};
+//						clutil.ConfirmDialog(msg, okcallback);
+//					}else{
+//						// 編集途中じゃない ⇒ 即アクション実行
+//						action.apply(context, actionArgs);
+//					}
+//				}
+//				return isDirty;
+//			},
 
 			// スクロール位置補正
 			// カレントのフォーカス保持要素がフッタナビ部のボタンと被らないように、body のスクロール位置を調整する。
-			_onFocusForScrollAdjust: function (e) {
+			_onFocusForScrollAdjust: function(e){
 				var $mainColumnFooter = this.$('#mainColumnFooter');
-				if ($mainColumnFooter.length <= 0 || !$mainColumnFooter.is(':visible')) {
+				if($mainColumnFooter.length <= 0 || !$mainColumnFooter.is(':visible')){
 					// フッターナビ部無い OR 非表示 ⇒ input はFooterに隠れないので補正不要
 					return;
 				}
 				var mainColumnFooterOff = $mainColumnFooter.offset();
 
 				var $tgt = $(e.currentTarget);
-				if ($tgt.is('div')) {
+				if($tgt.is('div')){
 					// コンテナ系な要素は省略。ひとまず <div> 要素だけで判定。FIXME
 					return;
 				}
-				if ($tgt.hasClass('cl_valid_blur_off')) {
+				if($tgt.hasClass('cl_valid_blur_off')){
 					// 経験則的に・・・
 					console.log('_onFocusForScrollAdjust: cl_valid_blur_off, skip.');
 					return;
@@ -30010,19 +29971,19 @@ $(function () {
 				console.log('_onFocusForScrollAdjust: ', e, $tgt);
 
 				var bottomY = off.top + $tgt.outerHeight();
-				if (bottomY >= mainColumnFooterOff.top) {
+				if(bottomY >= mainColumnFooterOff.top){
 					// 入力部品がフッターナビ部と被っている: position 補正
 					var scrollTop = this.$el.scrollTop();
-					//					var y = scrollTop + Math.floor($(window).outerHeight() / 2);
+//					var y = scrollTop + Math.floor($(window).outerHeight() / 2);
 					var y = scrollTop + $mainColumnFooter.outerHeight();
 
 					// グリッド内部の input は、表頭表示位置を優先。
 					var $dataGrid = $tgt.closest('.cl_datagrid');
-					if ($dataGrid.length > 0) {
+					if($dataGrid.length > 0){
 						// データグリッド内部のエディタ: なるべく表頭部のTOPを基準位置とする。
 						var gridy = $dataGrid.offset().top - 24/*[24]適度なマージン*/;
 						var dy = gridy - scrollTop;
-						if (bottomY < mainColumnFooterOff.top + dy) {
+						if(bottomY < mainColumnFooterOff.top + dy){
 							// エディタがフッターナビ部下に埋没しない
 							y = gridy;
 						}
@@ -30036,37 +29997,37 @@ $(function () {
 			},
 
 			// バリデーションエラーのクリア
-			_onFocusClValidate: function (e) {
-				if (!this.options.auto_cl_validate) {
+			_onFocusClValidate: function(e){
+				if(!this.options.auto_cl_validate){
 					return;
 				}
 				this.validator.clear($(e.currentTarget));
 			},
 			// バリデーションチェック（focusout イベント経由）
-			_onBlurClValidate: function (e) {
+			_onBlurClValidate: function(e){
 				var $elem = $(e.currentTarget);
-				if ($elem.is('[data-limit],[data-filter]')) {
+				if ($elem.is('[data-limit],[data-filter]')){
 					// inputlimiter
 					return;
 				}
 				this._onBlurClValidateImpl($elem, 'focusout');
 			},
 			// バリデーションチェック（要素指定）
-			_onBlurClValidateImpl: function ($elem, evType) {
+			_onBlurClValidateImpl: function($elem, evType){
 				console.log('#AutoValid... evType:', evType);
-				if (!this.options.auto_cl_validate) {
+				if(!this.options.auto_cl_validate){
 					return;
 				}
-				if ($elem.hasClass('cl_valid_auto_off')) {
+				if($elem.hasClass('cl_valid_auto_off')){
 					return;
 				}
-				if ($elem.hasClass('cl_valid_blur_off') && evType === 'focusout') {
+				if($elem.hasClass('cl_valid_blur_off') && evType === 'focusout'){
 					return;
 				}
-				if ($elem.hasClass('select') || $elem.hasClass('bootstrap-select')) {
+				if($elem.hasClass('select') || $elem.hasClass('bootstrap-select')){
 					// selectpicker のボタンelementから発信したイベント
 					$elem = $elem.prev();
-					if (!$elem.is('select')) {
+					if(!$elem.is('select')){
 						return;
 					}
 				}
@@ -30075,90 +30036,90 @@ $(function () {
 			},
 
 			// ページ遷移時のデータ取得
-			__getInternal: function (fromIndex, toIndex, pgCount, e) {
-				if (pgCount <= 0 /*新規作成はデータが無い*/ || toIndex < 0 || toIndex >= Math.max(pgCount, 1)) {
+			__getInternal: function(fromIndex, toIndex, pgCount, e){
+				if(pgCount <= 0 /*新規作成はデータが無い*/ || toIndex < 0 || toIndex >= Math.max(pgCount,1)){
 					// ボタン表示を fadeIn/fadeOut で表示コントロールすると滑ってイベントを拾うことがある。オーバーランは無視で。
 					return;
 				}
 
 				// ＜前へ｜次へ＞ 制御：ページの端っこにきたら、それ以上進めないように防御する
-				var prevnextCtrl = function (mdView) {
+				var prevnextCtrl = function(mdView){
 					var pgCount = mdView.options.pageCount;
-					if (toIndex > fromIndex) {
+					if(toIndex > fromIndex){
 						// 次へ
-						if (fromIndex === 0) {
+						if(fromIndex === 0){
 							mdView.$('#cl_prev').fadeIn();
 						}
-						if (toIndex >= pgCount - 1) {
+						if(toIndex >= pgCount -1){
 							mdView.$('#cl_next').fadeOut();
 						}
-					} else if (toIndex < fromIndex) {
+					}else if (toIndex < fromIndex){
 						// 前へ
-						if (toIndex === 0) {
+						if(toIndex === 0){
 							mdView.$('#cl_prev').fadeOut();
 						}
-						if (fromIndex === pgCount - 1) {
+						if(fromIndex === pgCount -1){
 							mdView.$('#cl_next').fadeIn();
 						}
-					} else {
-						if (toIndex === 0) {
+					}else{
+						if(toIndex === 0){
 							mdView.$('#cl_prev').hide();
 							mdView.$('#cl_next').show();
-						} else if (toIndex >= pgCount - 1) {
+						}else if(toIndex >= pgCount-1){
 							mdView.$('#cl_prev').show();
 							mdView.$('#cl_next').hide();
-						} else {
+						}else{
 							mdView.$('#cl_prev').show();
 							mdView.$('#cl_next').show();
 						}
 					}
 					// ラベル #cl_step
-					mdView.$('#cl_step').text((toIndex + 1) + '/' + pgCount);
+					mdView.$('#cl_step').text((toIndex+1) + '/' + pgCount);
 
 					// ページインデックス値入れ替え
 					mdView.options.pageIndex = toIndex;
 				};
 
 				// GET関数が仕込んでいる場合	＝＝＞	options.buildGetReqFunction			★buildGetReqFunction
-				if (_.isFunction(this.options.buildGetReqFunction)) {
+				if(_.isFunction(this.options.buildGetReqFunction)){
 
 					// ページジャンプ先のページ情報
 					var stat = this.pagesStat[toIndex];
 
 					// 削除済 or 削除済エラーが起きていないかチェック
-					switch (stat.status) {
-						case 'DONE':
-							// Submit 処理が完了し、かつ、処理区分が削除 or 予約削除の場合 ⇒ 再検索無しでキャッシュ内容を返す。
-							// 他の処理区分の場合は、他者に更新されていないかどうかを再検索してチェックする。
-							if (this.options.opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL
-								|| this.options.opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL) {
-								// ＜前へ｜次へ＞ ボタンの制御
-								prevnextCtrl(this);
-								// 削除系オペレーションが自身で完了済 ⇒ 再検索無しで、キャッシュ内容を返す。
-								console.log('trigger(onMDGetCompleted, {status: ' + stat.status + ', fromIndex: ' + fromIndex + ', index: ' + toIndex + ', resId: ' + req.resId + '})');
-								clutil.mediator.trigger('onMDGetCompleted', { status: stat.status, fromIndex: fromIndex, index: toIndex, resId: req.resId, data: clutil.dclone(data) }, e);
-								return;
-							}
-							// 更に他ユーザによる更新が無いかどうかチェックするために再検索する。
-							break;
-						case 'DELETED':		// 他者が削除済の場合
-							// 再検索しても無駄なので、キャッシュ内容を返す。キャッシュが無い場合もありうるので、アプリ実装は要注意！
+					switch(stat.status){
+					case 'DONE':
+						// Submit 処理が完了し、かつ、処理区分が削除 or 予約削除の場合 ⇒ 再検索無しでキャッシュ内容を返す。
+						// 他の処理区分の場合は、他者に更新されていないかどうかを再検索してチェックする。
+						if(this.options.opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL
+								|| this.options.opeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL){
 							// ＜前へ｜次へ＞ ボタンの制御
 							prevnextCtrl(this);
-							// 他者が削除済 ⇒ 再検索無しで、キャッシュ内容を返す。
-							console.log('trigger(onMDGetCompleted, {status: ' + stat.status + ', fromIndex: ' + fromIndex + ', index: ' + toIndex + ', resId: ' + req.resId + '})');
-							clutil.mediator.trigger('onMDGetCompleted', { status: stat.status, fromIndex: fromIndex, index: toIndex, resId: req.resId, data: clutil.dclone(data) }, e);
+							// 削除系オペレーションが自身で完了済 ⇒ 再検索無しで、キャッシュ内容を返す。
+							console.log('trigger(onMDGetCompleted, {status: ' + stat.status + ', fromIndex: ' + fromIndex + ', index: '+ toIndex + ', resId: ' + req.resId + '})');
+							clutil.mediator.trigger('onMDGetCompleted', {status: stat.status, fromIndex: fromIndex, index: toIndex, resId: req.resId, data: clutil.dclone(data)}, e);
 							return;
+						}
+						// 更に他ユーザによる更新が無いかどうかチェックするために再検索する。
+						break;
+					case 'DELETED':		// 他者が削除済の場合
+						// 再検索しても無駄なので、キャッシュ内容を返す。キャッシュが無い場合もありうるので、アプリ実装は要注意！
+						// ＜前へ｜次へ＞ ボタンの制御
+						prevnextCtrl(this);
+						// 他者が削除済 ⇒ 再検索無しで、キャッシュ内容を返す。
+						console.log('trigger(onMDGetCompleted, {status: ' + stat.status + ', fromIndex: ' + fromIndex + ', index: '+ toIndex + ', resId: ' + req.resId + '})');
+						clutil.mediator.trigger('onMDGetCompleted', {status: stat.status, fromIndex: fromIndex, index: toIndex, resId: req.resId, data: clutil.dclone(data)}, e);
+						return;
 					}
 
 					// 再検索実行
 					var req = this.options.buildGetReqFunction(this.options.opeTypeId, toIndex);
-					if (req === null || req === undefined) {
+					if(req === null || req === undefined){
 						// 画面先で、入力ミス等の理由でカレントページに留まる意志と見做す。
-						console.log('buildGetReqFunction: null, page[' + fromIndex + '->' + toIndex + '] change canceled.');
+						console.log('buildGetReqFunction: null, page[' + fromIndex + '->' + toIndex +  '] change canceled.');
 						return;
 					}
-					if (!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)) {
+					if(!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)){
 						// I/F が正しくないよ！
 						var m = 'buildGetReqFunction: GET 引数に誤りがあります。コードを見直してください。';
 						console.error(m);
@@ -30167,57 +30128,57 @@ $(function () {
 					}
 
 					// AJAX データを取得
-					clutil.postJSON(req).always(_.bind(function (data) {
+					clutil.postJSON(req).always(_.bind(function(data){
 						// [ALWAYS]	＜前へ|次へ＞ ボタンのコントロール
 						prevnextCtrl(this);
-					}, this)).done(_.bind(function (data) {
+					}, this)).done(_.bind(function(data){
 						// 処理が成功
 						//document.location = '#';
 						// [DONE]	ＧＥＴ処理がＯＫで完了
 						var diff = false;
-						if (stat.data) {
+						if(stat.data){
 							// 比較する
 							// 共通ヘッダの recno, status を、新旧で比較する。
 							var old = _.pick(stat.data.rspHead, 'recno', 'state');
 							var cur = _.pick(data.rspHead, 'recno', 'state');
 							diff = _.isEqual(old, cur);
-							if (!diff) {
+							if(!diff){
 								// 他人に更新されています。で、Submit ブロックする。
 								//stat.data = data;
 								stat.status = 'CONFLICT';
 								stat.block = true,
-									stat.comment = clmsg.cl_sys_db_other;
+								stat.comment = clmsg.cl_sys_db_other;
 								stat.ribbon = null;
 								stat.data = clutil.dclone(data);	// Deep コピーを取ってキャッシュ
-							} else {
+							}else{
 								// データが合致
 								// 原則、元々の状態を保持する。
 								// 元々が 'NG' だった場合は、'OK' に復帰させておく。いいのか？
-								if (stat.status == 'NG') {
+								if(stat.status == 'NG'){
 									stat.status = 'OK';
 									stat.block = false;
 									stat.comment = null,
-										stat.ribbon = null;
+									stat.ribbon = null;
 								}
 							}
-						} else {
+						}else{
 							// はじめてのデータ取得。
 							// ブロッキングされている場合は解除
 							stat.status = 'OK';
 							stat.block = false;
 							stat.comment = null,
-								stat.ribbon = null;
+							stat.ribbon = null;
 							stat.data = clutil.dclone(data);			// Deep コピーを取ってキャッシュ
 
 							// 空更新チェック用データをつくる。
 							// アプリ側の buildSubmitCheckDataFunction(data) にチェック不要項目を delete してもらう。
-							if (_.isFunction(this.options.buildSubmitCheckDataFunction)) {
+							if(_.isFunction(this.options.buildSubmitCheckDataFunction)){
 								stat.submitCheckData = this.options.buildSubmitCheckDataFunction({
 									index: toIndex,				// 複数レコード選択編集時におけるインデックス番号
 									resId: req.resId,			// リソースId -- "XXXXV0010" など
 									data: clutil.dclone(data)	// GETの応答データ（共通ヘッダも含む）
 								});
-							} else {
+							}else{
 								stat.submitCheckData = stat.data;
 							}
 						}
@@ -30226,37 +30187,37 @@ $(function () {
 						this._setConstraint(stat);
 
 						// onMDGetSuccess イベントで結果を戻すので、View への値セットをお願い。
-						console.log('trigger(onMDGetCompleted, {status: ' + stat.status + ', fromIndex: ' + fromIndex + ', index: ' + toIndex + ', resId: ' + req.resId + '})');
-						clutil.mediator.trigger('onMDGetCompleted', { status: stat.status, fromIndex: fromIndex, index: toIndex, resId: req.resId, data: data }, e);
-					}, this)).fail(_.bind(function (data) {
+						console.log('trigger(onMDGetCompleted, {status: ' + stat.status + ', fromIndex: ' + fromIndex + ', index: '+ toIndex + ', resId: ' + req.resId + '})');
+						clutil.mediator.trigger('onMDGetCompleted', {status: stat.status, fromIndex: fromIndex, index: toIndex, resId: req.resId, data: data}, e);
+					},this)).fail(_.bind(function(data){
 						// [FAIL] ＧＥＴ処理が失敗
 						// キャッシュデータ stat.data は維持する
 						var stat_cd = 'NG';
-						if (data && data.rspHead) {
-							switch (data.rspHead.message) {
-								case 'cl_sys_db_other':		// 別のユーザによってＤＢが更新されました。
-								case 'ca_bad_dbdelete':		// データが既に削除されています。
-									stat_cd = 'DELETED';
-									stat.status = stat_cd;
-									stat.block = true;
-									stat.comment = data.rspHead,
-										stat.ribbon = null;
-									break;
-								case 'cl_sys_error':		// システムエラーが発生しました。
-								case 'cl_sys_nomem':		// メモリ確保に失敗しました。
-								case 'cl_sys_db_error':		// システムエラー：データベースアクセスに失敗しました。
-								case 'cl_sys_db_access':	// システムエラー：データベースアクセスに失敗しました。
+						if(data && data.rspHead){
+							switch(data.rspHead.message){
+							case 'cl_sys_db_other':		// 別のユーザによってＤＢが更新されました。
+							case 'ca_bad_dbdelete':		// データが既に削除されています。
+								stat_cd = 'DELETED';
+								stat.status = stat_cd;
+								stat.block = true;
+								stat.comment = data.rspHead,
+								stat.ribbon = null;
+								break;
+							case 'cl_sys_error':		// システムエラーが発生しました。
+							case 'cl_sys_nomem':		// メモリ確保に失敗しました。
+							case 'cl_sys_db_error':		// システムエラー：データベースアクセスに失敗しました。
+							case 'cl_sys_db_access':	// システムエラー：データベースアクセスに失敗しました。
 								//stat_cd = 'FATAL';
 								// fall throgh
-								default:
-									// その他のエラー
-									//stat_cd = 'NG';
-									stat.status = stat_cd;
-									stat.block = true;
-									stat.comment = data.rspHead;
-									stat.ribbon = null;
+							default:
+								// その他のエラー
+								//stat_cd = 'NG';
+								stat.status = stat_cd;
+								stat.block = true;
+								stat.comment = data.rspHead;
+								stat.ribbon = null;
 							}
-						} else {
+						}else{
 							// 致命的なエラーとか・・・GETでコケると何も操作できないので、Sbumit ボタンをブロックする。
 							//stat_cd = 'FATAL';
 							stat.status = stat_cd;
@@ -30267,16 +30228,16 @@ $(function () {
 						// ボタン非活性とか、登録済リボン表示とか、制約情報を表示する
 						this._setConstraint(stat);
 
-						console.log('trigger(onMDGetCompleted, {status: ' + stat_cd + ', index: ' + toIndex + ', resId: ' + req.resId + '})');
-						clutil.mediator.trigger('onMDGetCompleted', { status: stat_cd, index: toIndex, resId: req.resId, data: data }, e);
-					}, this));
-				} else {
-					if (!e) {
+						console.log('trigger(onMDGetCompleted, {status: ' + stat_cd + ', index: '+ toIndex + ', resId: ' + req.resId + '})');
+						clutil.mediator.trigger('onMDGetCompleted', {status: stat_cd, index: toIndex, resId: req.resId, data: data}, e);
+					},this));
+				}else{
+					if(!e){
 						// ＜前へ｜次へ＞ ボタンクリック
 						// ページ遷移情報を戻すだけ。
 						prevnextCtrl(this);
-						//						console.log('trigger(onViewCtrl, onItemChanged, {fromIndex: ' + fromIndex + ', index: ' + toIndex + '}');
-						clutil.mediator.trigger('onSelectedItemChanged', { fromIndex: fromIndex, index: toIndex }, e);
+//						console.log('trigger(onViewCtrl, onItemChanged, {fromIndex: ' + fromIndex + ', index: ' + toIndex + '}');
+						clutil.mediator.trigger('onSelectedItemChanged', {fromIndex: fromIndex, index: toIndex}, e);
 					}
 				}
 			},
@@ -30284,29 +30245,29 @@ $(function () {
 			/**
 			 * 共通ヘッダの通知エリアにエラーメッセージを表示する
 			 */
-			_onTicker: function (anyArg) {
+			_onTicker: function(anyArg){
 				// エラーメッセージをセット
 				var msg = null;
-				if (_.isEmpty(anyArg)) {
+				if(_.isEmpty(anyArg)){
 					;
-				} else if (_.isString(anyArg)) {
+				}else if(_.isString(anyArg)){
 					// 文字列型の場合
 					msg = anyArg;
-				} else if (anyArg._eb_) {
+				}else if(anyArg._eb_){
 					// validator.setErrorInfo の引数の場合
 					msg = anyArg._eb_;
-				} else if (anyArg.status && anyArg.message) {
+				}else if(anyArg.status && anyArg.message){
 					// 共通ヘッダそのものの場合
 					msg = clutil.fmtargs(clutil.getclmsg(anyArg.message), anyArg.args);
-				} else if (anyArg.rspHead && anyArg.rspHead.message) {
+				}else if(anyArg.rspHead && anyArg.rspHead.message){
 					// 共通ヘッダを包括したオブジェクトの場合
 					msg = clutil.fmtargs(clutil.getclmsg(anyArg.rspHead.message), anyArg.rspHead.args);
-				} else {
+				}else{
 					msg = '???';
 				}
-				if (_.isEmpty(anyArg)) {
+				if(_.isEmpty(anyArg)){
 					this.validator.clearErrorHeader();
-				} else {
+				}else{
 					this.validator.setErrorHeader(msg);
 				}
 			},
@@ -30314,61 +30275,61 @@ $(function () {
 			/**
 			 * ope ボタンのＵＩ制御
 			 */
-			_setOpeButtonUI: function (groupid, arg, from) {
+			_setOpeButtonUI: function(groupid, arg, from){
 				var opeDate = clcom.getOpeDate();
 				var selectedRecs = (arg && _.isArray(arg.selectedRecs)) ? arg.selectedRecs : [];
 
 				var hasHistory = false;
-				if (from && _.isFunction(from.hasHistory)) {
+				if(from && _.isFunction(from.hasHistory)){
 					hasHistory = from.hasHistory();
 				}
 
 				// 履歴条件への考慮
 				var ope1SelectedRecs = selectedRecs;	// 1種：編集、削除ができる要素
 				var ope2SelectedRecs = selectedRecs;	// 2種：予約取消ができる要素
-				if (hasHistory) {
-					ope1SelectedRecs = _.filter(arg.selectedRecs, function (dto) {
+				if(hasHistory){
+					ope1SelectedRecs = _.filter(arg.selectedRecs, function(dto){
 						return dto.toDate >= clcom.max_date;
 					});
-					ope2SelectedRecs = _.filter(arg.selectedRecs, function (dto) {
+					ope2SelectedRecs = _.filter(arg.selectedRecs, function(dto){
 						return dto.fromDate > opeDate && dto.toDate >= clcom.max_date;
 					});
 				}
 
 				// デフォルトの活性/非活性判定関数
-				var defaultIsEnabled = function (args) {
-					if (args.selectedCount <= 0) {
+				var defaultIsEnabled = function(args){
+					if(args.selectedCount <= 0){
 						// 選択されていない。
 						return false;
-					} else if (args.selectedCount == 1) {
+					}else if(args.selectedCount == 1){
 						// 1個選択
-						if (args.hasHistory) {
-							switch (args.btnOpeTypeId) {
-								case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:	// 編集
-								case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:	// 削除
-									if (args.selectedCount - ope1SelectedRecs.length > 0) {
-										// ＜履歴条件1種＞
-										// 履歴適用外のものが含まれている
-										return false;
-									}
-									break;
-								case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:	// 予約削除
-									if (args.selectedCount - ope2SelectedRecs.length > 0) {
-										// ＜履歴条件2種＞
-										// 履歴適用外のものが含まれている
-										return false;
-									}
-									break;
+						if(args.hasHistory){
+							switch(args.btnOpeTypeId){
+							case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:	// 編集
+							case am_proto_defs.AM_PROTO_COMMON_RTYPE_DEL:	// 削除
+								if(args.selectedCount - ope1SelectedRecs.length > 0){
+									// ＜履歴条件1種＞
+									// 履歴適用外のものが含まれている
+									return false;
+								}
+								break;
+							case am_proto_defs.AM_PROTO_COMMON_RTYPE_RSVCANCEL:	// 予約削除
+								if(args.selectedCount - ope2SelectedRecs.length > 0){
+									// ＜履歴条件2種＞
+									// 履歴適用外のものが含まれている
+									return false;
+								}
+								break;
 							}
 						}
-					} else {
+					}else{
 						// 複数行選択
-						if (args.selectionPolicy == 'single') {
+						if(args.selectionPolicy == 'single'){
 							return false;
 						}
-						if (args.hasHistory
-							&& args.btnOpeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD
-							&& (args.selectedCount - ope1SelectedRecs.length) > 0) {
+						if(args.hasHistory
+									&& args.btnOpeTypeId === am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD
+									&& (args.selectedCount - ope1SelectedRecs.length) > 0){
 							// 履歴適用外のものが含まれている
 							return false;
 						}
@@ -30376,36 +30337,36 @@ $(function () {
 					return true;
 				};
 				var opeBtnIsEnabled = _.isFunction(this.options.opebtn_auto_enable)
-					? this.options.opebtn_auto_enable : defaultIsEnabled;
+								? this.options.opebtn_auto_enable : defaultIsEnabled;
 
 				var pmctlSwitcher = clutil.permcntl.getReadonlySwitcher();
 
-				$('.cl_opebtngroup').each(function () {
+				$('.cl_opebtngroup').each(function(){
 					var $pdiv = $(this);
 					var gid = $pdiv.data('cl_groupid');
 
-					if (_.isEmpty(gid) || gid == '*' || _.isEmpty(groupid) || groupid == '*' || gid == groupid) {
+					if(_.isEmpty(gid) || gid == '*' || _.isEmpty(groupid) || groupid == '*' || gid == groupid){
 						// ボタン個々に enabled(true/false) セットする、for-each() ループ
-						$pdiv.find('.btn').each(function () {
+						$pdiv.find('.btn').each(function(){
 							var $btn = $(this);
 							var btnOpeTypeId = clutil.btnOpeTypeId($btn);
 							var selectionPolicy = null;
-							switch (btnOpeTypeId) {
-								case -1:	// 処理区分不定
-									if ($btn.hasClass('cl_selectui_multi')) {
-										selectionPolicy = 'multi';
-									} else if ($btn.hasClass('cl_selectui_single')) {
-										selectionPolicy = 'single';
-									} else {
-										// 不定 -- コントロール下にないボタンなので SKIP する。
-										return;
-									}
-									break;
-								case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:	// 編集
+							switch(btnOpeTypeId){
+							case -1:	// 処理区分不定
+								if($btn.hasClass('cl_selectui_multi')){
 									selectionPolicy = 'multi';
-									break;
-								default:
+								}else if($btn.hasClass('cl_selectui_single')){
 									selectionPolicy = 'single';
+								}else{
+									// 不定 -- コントロール下にないボタンなので SKIP する。
+									return;
+								}
+								break;
+							case am_proto_defs.AM_PROTO_COMMON_RTYPE_UPD:	// 編集
+								selectionPolicy = 'multi';
+								break;
+							default:
+								selectionPolicy = 'single';
 							}
 							var args = {
 								$btn: $btn,
@@ -30417,19 +30378,19 @@ $(function () {
 								opeDate: opeDate
 							};
 
-							if (!false/* FIXME 権限コントロール実装＝ＯＦＦ中 */) {
-								if (opeBtnIsEnabled(args)) {
+							if(!false/* FIXME 権限コントロール実装＝ＯＦＦ中 */){
+								if(opeBtnIsEnabled(args)){
 									// 活性化
 									pmctlSwitcher.turnOff($btn);
-								} else {
+								}else{
 									// 非活性化
 									pmctlSwitcher.turnOn($btn);
 								}
-							} else {
-								if (opeBtnIsEnabled(args)) {
+							}else{
+								if(opeBtnIsEnabled(args)){
 									// 活性化
 									$btn.removeAttr('disabled');
-								} else {
+								}else{
 									// 非活性化
 									$btn.attr('disabled', true);
 								}
@@ -30444,9 +30405,9 @@ $(function () {
 			 * blocking = true を指定すると、以後、登録/削除系ボタンは使用不可にする。
 			 * reason を指定すると、ヘッダメッセージを表示する。
 			 */
-			_setConstraint: function () {
+			_setConstraint: function(){
 				var stat = arguments[0];
-				if (!stat) {
+				if(!stat){
 					stat = this.pagesStat[this.options.pageIndex];
 				}
 
@@ -30457,9 +30418,9 @@ $(function () {
 				this._onTicker(stat.comment);
 
 				// リボンエリアに表示するテキストをセット
-				if (stat.ribbon) {
+				if(stat.ribbon){
 					this.showRibbon(stat.ribbon);
-				} else {
+				}else{
 					this.hideRibbon();
 				}
 			},
@@ -30467,7 +30428,7 @@ $(function () {
 			/**
 			 * 現在選択中アイテムのインデックスを取得する。
 			 */
-			getSelectedItemIndex: function () {
+			getSelectedItemIndex: function(){
 				return this.options.pageIndex;
 			},
 
@@ -30477,30 +30438,30 @@ $(function () {
 			 * @param {boolean} enable true:活性化、false:非活性化
 			 * @param {object} [filterOpt] setEnable 操作を適用する要素フィルタ
 			 */
-			setSubmitEnable: function (enable, filterOpt) {
+			setSubmitEnable: function(enable, filterOpt){
 				var stat = this.pagesStat[this.options.pageIndex];
 				stat.block = !enable;
 
-				if (true/* 権限コントロール実装＝ＯＮ */) {
+				if(true/* 権限コントロール実装＝ＯＮ */){
 					var $footer = this.$('#mainColumnFooter');
 					var switcher = clutil.permcntl.getReadonlySwitcher();
-					try {
+					try{
 						var $w = $footer.wrap('<div></div>').parent();
-						if (enable) {
+						if(enable){
 							switcher.turnOffAll($w, filterOpt);
-						} else {
+						}else{
 							switcher.turnOnAll($w, filterOpt);
 						}
-					} finally {
+					}finally{
 						$footer.unwrap();
 					}
-				} else {
+				}else{
 					// 権限実装＝ＯＦＦ
 					var $btns = this.$('#mainColumnFooter .cl_submit');
-					if (enable) {
+					if(enable){
 						$btns.removeAttr('disabled').parent().removeClass('disable');
-					} else {
-						$btns.attr('disabled', 'disabled').parent().addClass('disable');
+					}else{
+						$btns.attr('disabled','disabled').parent().addClass('disable');
 					}
 				}
 			},
@@ -30510,13 +30471,13 @@ $(function () {
 			 * @param {boolean} enable true:活性化、false:非活性化
 			 * @param {string} [side] "submit":オペボタンに適用、"download":出力ボタンに適用、指定ナシ:両方に適用
 			 */
-			setFooterNaviEnable: function (enable, side) {
+			setFooterNaviEnable: function(enable, side){
 				var filterOpt = null;
-				switch (side) {
-					case 'submit':
-						filterOpt = { filter: '.cl_' + side }; break;
-					case 'download':
-						filterOpt = { filter: '.cl_' + side }; break;
+				switch(side){
+				case 'submit':
+					filterOpt = {filter: '.cl_' + side}; break;
+				case 'download':
+					filterOpt = {filter: '.cl_' + side}; break;
 				}
 				this.setSubmitEnable(enable, filterOpt);
 			},
@@ -30524,13 +30485,13 @@ $(function () {
 			/**
 			 * 字幕リボンを表示する。
 			 */
-			showRibbon: function (text) {
+			showRibbon: function(text){
 				// 確定済ラベルとか・・・ ==> $('#title').after(!ココに差し込む!)
 				//ribbonBox_tmpl: _.template('<div class="ribbonBox primary dispn"><%- text %></div>'),
-				if (this.$ribbon) {
+				if(this.$ribbon){
 					this.$ribbon.text(_.escape(text));
-				} else {
-					var $ribbon = $(this.ribbonBox_tmpl({ text: text }));
+				}else{
+					var $ribbon = $(this.ribbonBox_tmpl({text: text}));
 					this.$('#title').after($ribbon);
 					this.$ribbon = $ribbon.show();
 				}
@@ -30539,8 +30500,8 @@ $(function () {
 			/**
 			 * 字幕リボン破棄
 			 */
-			hideRibbon: function () {
-				if (this.$ribbon) {
+			hideRibbon: function(){
+				if(this.$ribbon){
 					this.$ribbon.remove();
 					this.$ribbon = null;
 				}
@@ -30549,7 +30510,7 @@ $(function () {
 			/**
 			 * GET リクエストを実行する。
 			 */
-			fetch: function () {
+			fetch: function(){
 				var pgIndex = this.options.pageIndex;
 				var pgCount = this.options.pageCount;
 				this.__getInternal(pgIndex, pgIndex, pgCount, null);
@@ -30559,7 +30520,7 @@ $(function () {
 			/**
 			 * オートバリデートを on/off する。
 			 */
-			setAutoValidate: function (flag) {
+			setAutoValidate: function(flag){
 				this.options.auto_cl_validate = flag;
 			},
 
@@ -30583,16 +30544,16 @@ $(function () {
 			//		</div>
 			//	</div>
 			template: _.template(''
-				+ '<div class="displaypanel">'
-				//				+		'<div class="count"></div>'
-				//				+		'<div class="viewnum"></div>'
-				+ '</div>'
-				+ '<div class="pagination">'
-				+ '<ul></ul>'
-				+ '</div>'
+				+	'<div class="displaypanel">'
+//				+		'<div class="count"></div>'
+//				+		'<div class="viewnum"></div>'
+				+	'</div>'
+				+	'<div class="pagination">'
+				+		'<ul></ul>'
+				+	'</div>'
 			),
 
-			initialize: function (opt) {
+			initialize: function(opt){
 				_.bindAll(this);
 
 				// グループID
@@ -30605,13 +30566,13 @@ $(function () {
 					itemsOnPage: 0,//25, 表示件数選択肢の中から補正する。
 					//currentPage: 1,
 					//isselect: true,	// MD 版は、itemsOnPageSelection で指定する。
-					itemsOnPageSelection: [10, 25, 100],
+					itemsOnPageSelection: [ 10, 25, 100 ],
 					//displaypanel: this.$('.count'),		// ← 表示件数: render 直前で設定する。
 					onPageClickBefore: this._onPageClickBefore,
 					onSelectChangeBefore: this._onSelectChangeBefore,
 					onPageClick: this._onPageClick,
 					onSelectChange: this._onSelectChange,
-					pagination_store: false
+					pagination_store : false
 				};
 				this.pgOptions = _.isObject(opt.pgOptions) ? _.defaults(opt.pgOptions, pgDefaultOpt) : pgDefaultOpt;
 
@@ -30620,7 +30581,7 @@ $(function () {
 				clutil.mediator.on('onPageMirroring', this._onPageMirroring);
 			},
 
-			render: function () {
+			render: function(){
 				this.$el.html(this.template(this));
 				this.$ul = this.$('.pagination > ul');
 
@@ -30631,55 +30592,55 @@ $(function () {
 				return this;
 			},
 
-			buildPager: function (pgOptions) {
+			buildPager: function(pgOptions){
 				var fixedPgOptions = this.pgOptions;
-				if (_.isObject(pgOptions)) {
+				if(_.isObject(pgOptions)){
 					fixedPgOptions = _.defaults({}, pgOptions, this.pgOptions);
 				}
-				//				this.savedPgOptions = fixedPgOptions;
+//				this.savedPgOptions = fixedPgOptions;
 				this.$ul.pagination(fixedPgOptions);
 				return this;
 			},
 
 			// pageRsp から、ページを変える。
-			_setPageRsp: function (groupid, pageRspDto) {
-				if (this.groupid == groupid) {
+			_setPageRsp: function(groupid, pageRspDto){
+				if(this.groupid == groupid){
 					this.deserialize(pageRspDto);
 				}
 			},
 
-			_onPageClickBefore: function (ev) {
+			_onPageClickBefore: function(ev){
 				var that = this;
 				var commit = ev.commit;
-				ev.commit = function () {
+				ev.commit = function(){
 					commit.call(ev);
 					that._onPageClick(ev.pageIndex, ev.itemsOnPage);
 				};
 				clutil.mediator.trigger('onPageClickBefore', this.groupid, ev);
 			},
 
-			_onSelectChangeBefore: function (ev) {
+			_onSelectChangeBefore: function(ev){
 				var that = this;
 				var commit = ev.commit;
-				ev.commit = function () {
+				ev.commit = function(){
 					commit.call(ev);
 					that._onSelectChange(ev.itemsOnPage);
 				};
 				clutil.mediator.trigger('onSelectChangeBefore', this.groupid, ev);
 			},
 
-			_onPageClick: function (pageNumber, itemsOnPage, cancel) {
+			_onPageClick: function(pageNumber, itemsOnPage, cancel){
 				// ページ変更
 				this._publishMirroring();
 
 				var pageReq = {
-					start_record: itemsOnPage * (pageNumber - 1),
-					page_size: itemsOnPage
+						start_record: itemsOnPage * (pageNumber -1),
+						page_size: itemsOnPage
 				};
 				clutil.mediator.trigger('onPageChanged', this.groupid, pageReq, this);
 			},
 
-			_onSelectChange: function (itemsOnPage) {
+			_onSelectChange: function(itemsOnPage){
 				// 表示件数変更
 				var pageReq = {
 					start_record: 0,
@@ -30690,19 +30651,19 @@ $(function () {
 			},
 
 			// ページャの表示を同期化する
-			_onPageMirroring: function (groupid, pgOpt, from) {
-				//				if(this === from){
-				//					// 発信元が自分自身なので省略。
-				//					return;
-				//				}
-				if (this.groupid != groupid) {
+			_onPageMirroring: function(groupid, pgOpt, from){
+//				if(this === from){
+//					// 発信元が自分自身なので省略。
+//					return;
+//				}
+				if(this.groupid != groupid){
 					return;
 				}
 				this.buildPager(pgOpt);
 			},
 
 			// ページ同期化イベントを発火する。
-			_publishMirroring: function () {
+			_publishMirroring: function(){
 				var $ul = this.$ul;
 				var pgopt = _.pick($ul.data('pagination') || {}, 'items', 'itemsOnPage', 'currentPage');
 				var mirroringArg = _.extend({
@@ -30718,7 +30679,7 @@ $(function () {
 			},
 
 			// ページのリクエストヘッダを生成する。
-			serialize: function () {
+			serialize: function(){
 				var pgData = this.$ul.data('pagination');
 				return {
 					start_record: pgData.itemsOnPage * pgData.currentPage,
@@ -30734,47 +30695,47 @@ $(function () {
 			//		page_size: 10,		// ページ内マックスレコード数
 			//		page_num: 10		// X 総ページ数
 			//	};
-			deserialize: function (pgRsp) {
+			deserialize: function(pgRsp){
 				// パラメターが揃っていいるかチェック
 				var start_index = 0;
 				var page_size = 0;
-				var isValidPgRsp = _.bind(function (pgRsp) {
-					if (!_.isObject(pgRsp)) {
+				var isValidPgRsp = _.bind(function(pgRsp){
+					if(!_.isObject(pgRsp)){
 						return false;
 					}
 					// 最低、以下３個のフィールドをもっていること
-					if (!_.isNumber(pgRsp.curr_record)) {
+					if(!_.isNumber(pgRsp.curr_record)){
 						return false;
 					}
-					if (!_.isNumber(pgRsp.total_record)) {
+					if(!_.isNumber(pgRsp.total_record)){
 						return false;
 					}
-					if (!_.isNumber(pgRsp.page_size)) {
+					if(!_.isNumber(pgRsp.page_size)){
 						return false;
 					}
 					// page_size が 0 の場合、itemsOnPage 値で補正しておく。
-					if (pgRsp.page_size <= 0) {
+					if(pgRsp.page_size <= 0){
 						page_size = this.get('itemsOnPage');
-					} else {
+					}else{
 						page_size = pgRsp.page_size;
 					}
 					// start_record と curr_record
-					if (pgRsp.start_record) {
+					if(pgRsp.start_record){
 						start_index = pgRsp.start_record;
-					} else {
+					}else {
 						start_index = pgRsp.curr_record;
 					}
 					return true;
-				}, this)(pgRsp);
+				},this)(pgRsp);
 				var fixOpt;
-				if (isValidPgRsp) {
+				if(isValidPgRsp){
 					fixOpt = {
-						items: pgRsp.total_record,
-						itemsOnPage: page_size,
-						currentPage: Math.floor((start_index + page_size) / page_size)
+						items: 			pgRsp.total_record,
+						itemsOnPage:	page_size,
+						currentPage:	Math.floor((start_index + page_size) / page_size)
 					};
-				} else {
-					fixOpt = { items: 0, currentPage: 1 };	// itemsOnPage はそのまま。
+				}else{
+					fixOpt = {items: 0, currentPage: 1};	// itemsOnPage はそのまま。
 				}
 				this.buildPager(fixOpt);
 			},
@@ -30784,9 +30745,9 @@ $(function () {
 			 * 使用例：
 			 * 	var itemOnPage = pgView.get('itemsOnPage');
 			 */
-			get: function (pgPropName) {
+			get: function(pgPropName){
 				var pgData = this.$ul.data('pagination');
-				if (!pgPropName) {
+				if(!pgPropName){
 					return pgData;
 				}
 				return pgData[pgPropName];
@@ -30795,7 +30756,7 @@ $(function () {
 			/**
 			 * 初回検索用ページリクエストヘッダを生成する。
 			 */
-			buildReqPage0: function () {
+			buildReqPage0: function(){
 				return {
 					start_record: 0,
 					page_size: this.get('itemsOnPage')
@@ -30810,9 +30771,9 @@ $(function () {
 		 * ページネーションView を適用する。
 		 * @return clutil.View.PaginationView の配列
 		 */
-		buildPaginationView: function (groupid, $elem) {
+		buildPaginationView: function(groupid, $elem){
 			var pagerViews = [];
-			$.each($elem.find('.pagination-wrapper'), function (arg) {
+			$.each($elem.find('.pagination-wrapper'), function(arg){
 				var opt = {
 					el: this,
 					groupid: groupid
@@ -30856,20 +30817,20 @@ $(function () {
 			rb_template: _.template('<label class="radio    <% if(_select){ %>checked<% } %>"><input type="radio"    data-toggle="radio"    <% if(_select){ %>checked<% } %>></label>'),
 
 			events: {
-				'toggle thead th.cl_checkbox_selectall input[type="checkbox"]': '_onToggleSelectAll',
-				'toggle tbody td.cl_checkbox_selectrec input[type="checkbox"]': '_onToggleSelect',
-				'toggle tbody td.cl_radio_selectrec input[type="radio"]': '_onRadioToggle',
-				'click tbody td:not(.cl_checkbox_selectrec,.cl_radio_selectrec)': '_onRowClick',
-				'click tbody tr': '_onClickTR'
+				'toggle thead th.cl_checkbox_selectall input[type="checkbox"]'		: '_onToggleSelectAll',
+				'toggle tbody td.cl_checkbox_selectrec input[type="checkbox"]'		: '_onToggleSelect',
+				'toggle tbody td.cl_radio_selectrec input[type="radio"]'			: '_onRadioToggle',
+				'click tbody td:not(.cl_checkbox_selectrec,.cl_radio_selectrec)'	: '_onRowClick',
+				'click tbody tr'	: '_onClickTR'
 			},
 
-			_onClickTR: function (e) {
+			_onClickTR: function(e){
 				var $tr = $(e.currentTarget);
-				this.trigger('onClickTR', { rec: $tr.data('cl_rec'), from: this }, e);
+				this.trigger('onClickTR', { rec: $tr.data('cl_rec'), from: this}, e);
 			},
 
-			_onRowClick: function (e) {
-				if (this.onOperationSilent) {
+			_onRowClick: function(e){
+				if(this.onOperationSilent){
 					return;
 				}
 				var $td = $(e.target);
@@ -30882,16 +30843,16 @@ $(function () {
 				//clutil.mediator.trigger('onRowClick', this.groupid, data, e);
 			},
 
-			initialize: function (opt) {
+			initialize: function(opt){
 				_.bindAll(this);
 
-				if (!_.isArray(this.collection)) {
+				if(!_.isArray(this.collection)){
 					this.collection = [];
 				}
 				this.groupid = (opt && opt.groupid) ? opt.groupid : '*';
 
 				// template 引数は必須！
-				if (opt.template === null || opt.template === undefined) {
+				if(opt.template === null || opt.template === undefined){
 					alert('RowSelectListView: テンプレートを指定してください。');
 				}
 				this.template = opt.template;
@@ -30900,24 +30861,24 @@ $(function () {
 				this.onOperationSilent = (opt && opt.onOperationSilent);
 			},
 
-			initUIElement: function () {
+			initUIElement: function(){
 				this.$('thead th.cl_checkbox_selectall').html(this.cb_selectall_html);
 				return this;
 			},
 
-			render: function () {
+			render: function(){
 				// thead: Bootstrap 対応
 				//clutil.initUIelement(this.$('thead'));
 
-				if (this.className) {
+				if(this.className){
 					this.$el.addClass(this.className);
 				}
 
 				// tbody
 				var $tbody = this.$('tbody').empty();
-				if (_.isArray(this.collection)) {
-					_.each(this.collection, function (rec) {
-						if (!_.isBoolean(rec._select)) {
+				if(_.isArray(this.collection)){
+					_.each(this.collection, function(rec){
+						if(!_.isBoolean(rec._select)){
 							rec._select = false;
 						}
 
@@ -30953,7 +30914,7 @@ $(function () {
 			 * 行の表示色には削除行デザインを適用する。
 			 * @param isRowMatchFunc 行データが削除行かどうかを判定する関数。
 			 */
-			setDeletedRowUI: function (isRowMatchFunc) {
+			setDeletedRowUI: function(isRowMatchFunc){
 				var args = {
 					isMatch: isRowMatchFunc,
 					select: false,
@@ -30969,7 +30930,7 @@ $(function () {
 			 * 行の表示色から削除行デザインを解除する。
 			 * @param isRowMatchFunc 行データが削除行かどうかを判定する関数。
 			 */
-			unsetDeletedRowUI: function (isRowMatchFunc) {
+			unsetDeletedRowUI: function(isRowMatchFunc){
 				var args = {
 					isMatch: isRowMatchFunc,
 					enable: true,
@@ -30988,27 +30949,27 @@ $(function () {
 			 * @param {string} [addClasses]		TR要素に追加するクラス。
 			 * @param {string} [rmClasses]		TR要素から削除するクラス。
 			 */
-			setRowState: function (args) {
-				if (!args || !_.isFunction(args.isMatch)) {
+			setRowState: function(args){
+				if(!args || !_.isFunction(args.isMatch)){
 					console.warn('clutil.View.RowSelectListView.setRowState: invalid arguments.');
 					return;
 				}
 
-				if (_.isEmpty(this.collection)) {
+				if(_.isEmpty(this.collection)){
 					return;
 				}
 
 				var changedCount = 0;
 				var $trAll, $trtr = $();
-				try {
+				try{
 					this._bulkUpdating = true;
 
 					// 履歴を持つかどうか判定
-					$trAll = this.$('tbody tr').each(function (rowIndex) {
+					$trAll = this.$('tbody tr').each(function(rowIndex){
 						var $tr = $(this);
 						var $chk_td = $tr.find('td.cl_checkbox_selectrec');
 						var dto = $tr.data('cl_rec');
-						if (!args.isMatch(dto)) {
+						if(!args.isMatch(dto)){
 							return;
 						}
 
@@ -31016,9 +30977,9 @@ $(function () {
 						$trtr = $trtr.add($tr);
 
 						// 選択状態をセット
-						if (_.has(args, 'select')) {
+						if(_.has(args, 'select')){
 							var fixSelect = (args.select == true);
-							if (dto._select !== fixSelect) {
+							if(dto._select !== fixSelect){
 								dto._select = fixSelect;
 								++changedCount;
 								$chk_td.find('[data-toggle="checkbox"]').checkbox('toggle');
@@ -31026,16 +30987,16 @@ $(function () {
 						}
 
 						// 活性化状態をセット
-						if (_.has(args, 'enable')) {
+						if(_.has(args, 'enable')){
 							var fixEnabled = (args.enable == true);
 							var dtoIsEnabled = !(dto._enable === false);	// false を明示して disabled。
-							if (dtoIsEnabled !== fixEnabled) {
+							if(dtoIsEnabled !== fixEnabled){
 								dto._enable = fixEnabled;
-								if (fixEnabled) {
+								if(fixEnabled){
 									$chk_td.removeClass('notAvailable').removeAttr('disabled');
 									$chk_td.find('label.checkbox').removeClass('disabled');
 									$chk_td.find('[data-toggle="checkbox"]').removeAttr('disabled');
-								} else {
+								}else{
 									$chk_td.addClass('notAvailable').attr('disabled', true);
 									$chk_td.find('label.checkbox').addClass('disabled');
 									$chk_td.find('[data-toggle="checkbox"]').attr('disabled', true);
@@ -31043,20 +31004,20 @@ $(function () {
 							}
 						}
 					});
-				} finally {
+				}finally{
 					this._bulkUpdating = false;
 				}
 
 				// <tr>要素への削除クラス
-				if (args.rmClasses) {
+				if(args.rmClasses){
 					$trAll.removeClass(args.rmClasses);
 				}
 				// <tr>要素への追加クラス
-				if (args.addClasses) {
+				if(args.addClasses){
 					$trtr.addClass(args.addClasses);
 				}
 
-				if (changedCount > 0) {
+				if(changedCount > 0){
 					// 全レコードが選択中の場合 or Not
 					this._setupSelectAllToggle();
 
@@ -31075,19 +31036,19 @@ $(function () {
 			 *
 			 * @return 行操作対象 <tr> 要素の jQuery オブジェクトを返す。
 			 */
-			setEnableRecs: function (recs, enable, uniqKeys) {
-				if (_.isEmpty(recs) || _.isEmpty(this.collection)) {
+			setEnableRecs: function(recs, enable, uniqKeys){
+				if(_.isEmpty(recs) || _.isEmpty(this.collection)){
 					return;
 				}
 
 				// 選択対象行データ補正
 				var fixRecs = recs;
-				if (!_.isArray(recs)) {
-					if (!_.isObject(recs)) {
+				if(!_.isArray(recs)){
+					if(!_.isObject(recs)){
 						console.error('setEnableRecs: 引数の型が違います。');
 						throw '引数の型が違います';
 					}
-					fixRecs = [recs];
+					fixRecs = [ recs ];
 				}
 
 				// enabled フラグ値補正 - 明示的 false 指定で非活性とする。null, undefined は true 扱い。
@@ -31095,8 +31056,8 @@ $(function () {
 
 				// キー名リスト補正
 				var fixUniqKeys = uniqKeys;
-				if (_.isEmpty(uniqKeys)) {
-					fixUniqKeys = ['id'];
+				if(_.isEmpty(uniqKeys)){
+					fixUniqKeys = [ 'id' ];
 				}
 
 				// ハッシュ値マップをつくる： key1=134&key2=999&key3=abcde
@@ -31106,33 +31067,33 @@ $(function () {
 				var hasHasHistory = this.hasHistory();
 				var myView = this;
 				var $trtr = $();
-				this.$('tbody tr').each(function (rowIndex) {
+				this.$('tbody tr').each(function(rowIndex){
 					var $tr = $(this);
 					var $chk_td = $tr.find('td.cl_checkbox_selectrec');
 					var dto = $tr.data('cl_rec');
 					var hash = myView.dtohash(dto, fixUniqKeys);
 					var argDtoArray = keyMap[hash];
 					var argDto;
-					if (hasHasHistory) {
-						argDto = _.find(argDtoArray, function (x) {
+					if(hasHasHistory){
+						argDto = _.find(argDtoArray, function(x){
 							// リレキありの場合
 							// 適用期間チェック ⇒ 少しでも期間が重なる場合は対象とみなしておく。
 							return (x.toDate >= dto.fromDate && x.fromDate <= dto.toDate);
 						});
-					} else {
+					}else{
 						argDto = _.isEmpty(argDtoArray) ? null : argDtoArray[0];
 					}
 
-					if (argDto) {
+					if(argDto){
 						// キーマッチング＋期間マッチング ⇒ TRUE
 						var dtoIsEnabled = !(dto._enable === false);
-						if (dtoIsEnabled !== fixEnabled) {
+						if(dtoIsEnabled !== fixEnabled){
 							dto._enable = fixEnabled;
-							if (fixEnabled) {
+							if(fixEnabled){
 								$chk_td.removeClass('notAvailable').removeAttr('disabled');
 								$chk_td.find('label.checkbox').removeClass('disabled');
 								$chk_td.find('[data-toggle="checkbox"]').removeAttr('disabled');
-							} else {
+							}else{
 								$chk_td.addClass('notAvailable').attr('disabled', true);
 								$chk_td.find('label.checkbox').addClass('disabled');
 								$chk_td.find('[data-toggle="checkbox"]').attr('disabled', true);
@@ -31148,20 +31109,20 @@ $(function () {
 			},
 
 			// 行データのハッシュ値関数（内部関数）
-			dtohash: function (dto, uniqKeys) {
-				var ss = _.reduce(uniqKeys, _.bind(function (array, key) {
+			dtohash: function(dto, uniqKeys){
+				var ss = _.reduce(uniqKeys, _.bind(function(array, key){
 					array.push(key + '=' + dto[key]);
 					return array;
-				}, this), []);
+				},this), []);
 				return ss.join('&');
 			},
 
 			// ハッシュ値 - [行データ,..]マップオブジェクトをつくる（内部関数）
-			buildRecsHashMap: function (recs, uniqKeys) {
-				var map = _.reduce(recs, _.bind(function (map, dto) {
+			buildRecsHashMap: function(recs, uniqKeys){
+				var map = _.reduce(recs, _.bind(function(map, dto){
 					var hash = this.dtohash(dto, uniqKeys);
 					var vv = map[hash];
-					if (!vv) {
+					if(!vv){
 						vv = new Array();
 						map[hash] = vv;
 					}
@@ -31173,7 +31134,7 @@ $(function () {
 			},
 
 			// 履歴アリ/ナシレコードを判定する。
-			hasHistory: function (dto) {
+			hasHistory: function(dto){
 				var xdto = !_.isEmpty(dto) ? dto : !_.isEmpty(this.collection) ? this.collection[0] : null;
 				return (xdto != null) ? _.has(xdto, 'fromDate') && _.has(xdto, 'toDate') : false;
 			},
@@ -31186,19 +31147,19 @@ $(function () {
 			 *
 			 * @return 行操作対象 <tr> 要素の jQuery オブジェクトを返す。
 			 */
-			setSelectRecs: function (selectedRecs, select, uniqKeys) {
-				if (_.isEmpty(selectedRecs) || _.isEmpty(this.collection)) {
+			setSelectRecs: function(selectedRecs, select, uniqKeys){
+				if(_.isEmpty(selectedRecs) || _.isEmpty(this.collection)){
 					return;
 				}
 
 				// 選択対象行データ補正
 				var fixSelectedRecs = selectedRecs;
-				if (!_.isArray(selectedRecs)) {
-					if (!_.isObject(selectedRecs)) {
+				if(!_.isArray(selectedRecs)){
+					if(!_.isObject(selectedRecs)){
 						console.error('setSelectRecs: 引数の型が違います。');
 						throw '引数の型が違います';
 					}
-					fixSelectedRecs = [selectedRecs];
+					fixSelectedRecs = [ selectedRecs ];
 				}
 
 				// select フラグ値補正
@@ -31206,8 +31167,8 @@ $(function () {
 
 				// キー名リスト補正
 				var fixUniqKeys = uniqKeys;
-				if (_.isEmpty(uniqKeys)) {
-					fixUniqKeys = ['id'];
+				if(_.isEmpty(uniqKeys)){
+					fixUniqKeys = [ 'id' ];
 				}
 
 				// ハッシュ値マップをつくる： key1=134&key2=999&key3=abcde
@@ -31215,32 +31176,32 @@ $(function () {
 
 				var changedCount = 0;
 				var $trtr = $();
-				try {
+				try{
 					this._bulkUpdating = true;
 
 					// 履歴を持つかどうか判定
 					var hasHistory = this.hasHistory();
 					var myView = this;
-					this.$('tbody tr').each(function (rowIndex) {
+					this.$('tbody tr').each(function(rowIndex){
 						var $tr = $(this);
 						var $chk_td = $tr.find('td.cl_checkbox_selectrec');
 						var dto = $tr.data('cl_rec');
 						var hash = myView.dtohash(dto, fixUniqKeys);
 						var argDtoArray = keyMap[hash];
 						var argDto;
-						if (hasHistory) {
-							argDto = _.find(argDtoArray, function (x) {
+						if(hasHistory){
+							argDto = _.find(argDtoArray, function(x){
 								// リレキありの場合
 								// 適用期間チェック ⇒ 少しでも期間が重なる場合は対象とみなしておく。
 								return (x.toDate >= dto.fromDate && x.fromDate <= dto.toDate);
 							});
-						} else {
+						}else{
 							argDto = _.isEmpty(argDtoArray) ? null : argDtoArray[0];
 						}
 
-						if (argDto) {
+						if(argDto){
 							// キーマッチング＋期間マッチング ⇒ TRUE
-							if (dto._select !== fixSelect) {
+							if(dto._select !== fixSelect){
 								dto._select = fixSelect;
 								++changedCount;
 								$chk_td.find('[data-toggle="checkbox"]').checkbox('toggle');
@@ -31249,11 +31210,11 @@ $(function () {
 							$trtr = $trtr.add($tr);
 						}
 					});
-				} finally {
+				}finally{
 					this._bulkUpdating = false;
 				}
 
-				if (changedCount > 0) {
+				if(changedCount > 0){
 					// 全レコードが選択中の場合 or Not
 					this._setupSelectAllToggle();
 
@@ -31268,44 +31229,44 @@ $(function () {
 			 * id のリスト、または 'id' をプロパティに含む Dto のリストを指定して行選択する。
 			 * 注意：履歴アリのマスタは、setSelectRecs() を使用してください。
 			 */
-			setSelectById: function (idList, select) {
+			setSelectById: function(idList, select){
 				var idmap = {};
-				if (_.isArray(idList)) {
-					_.reduce(idList, function (map, id) {
-						if (_.has(id, 'id')) {
+				if(_.isArray(idList)){
+					_.reduce(idList, function(map,id){
+						if(_.has(id, 'id')){
 							map[id.id] = true;
-						} else {
+						}else{
 							map[id] = true;
 						}
 						return map;
 					}, idmap);
-				} else if (_.isNumber(idList)) {
+				}else if(_.isNumber(idList)){
 					idmap[idList] = true;
-				} else if (_.has(idList, 'id')) {
+				}else if(_.has(idList, 'id')){
 					idmap[idList.id] = true;
 				}
 
 				var fixSelect = (select == true);
 
 				var changedCount = 0;
-				try {
+				try{
 					this._bulkUpdating = true;
 
-					this.$('tbody tr').each(function (rowIndex) {
+					this.$('tbody tr').each(function(rowIndex){
 						var $tr = $(this);
 						var $chk_td = $tr.find('td.cl_checkbox_selectrec');
 						var dto = $tr.data('cl_rec');
-						if (idmap[dto.id] && dto._select !== fixSelect) {
+						if(idmap[dto.id] && dto._select !== fixSelect){
 							dto._select = fixSelect;
 							++changedCount;
 							$chk_td.find('[data-toggle="checkbox"]').checkbox('toggle');
 						}
 					});
-				} finally {
+				}finally{
 					this._bulkUpdating = false;
 				}
 
-				if (changedCount > 0) {
+				if(changedCount > 0){
 					// 全レコードが選択中の場合 or Not
 					this._setupSelectAllToggle();
 
@@ -31315,7 +31276,7 @@ $(function () {
 			},
 
 			// 結果表示をクリアする
-			clear: function () {
+			clear: function(){
 				// クリア前の行数
 				var beforeRecCount = this.recsCount();
 
@@ -31323,7 +31284,7 @@ $(function () {
 				this.collection = [];
 				this.$('thead > th.cl_checkbox_selectall input').checkbox('uncheck');
 
-				if (beforeRecCount !== 0) {
+				if(beforeRecCount !== 0){
 					// クリア前後で行数変化がある場合は、行選択が変更されたイベント発火 ⇒ opeBtn の enabled 制御へ伝播させる。
 					this._publishOnRowSelectChanged();
 				}
@@ -31334,14 +31295,14 @@ $(function () {
 			/**
 			 * 行データを取得する
 			 */
-			serialize: function () {
+			serialize: function(){
 				return _.clone(this.collection);
 			},
 
 			/**
 			 * 行データのコレクションをセットする
 			 */
-			deserialize: function (array) {
+			deserialize: function(array){
 				this.collection = array;
 				return this;
 			},
@@ -31350,7 +31311,7 @@ $(function () {
 			 * 行データをセットする
 			 * deserialize() + render()
 			 */
-			setRecs: function (array) {
+			setRecs: function(array) {
 				this.deserialize(array);
 				this.render();
 				return this;
@@ -31360,38 +31321,38 @@ $(function () {
 			 * 全行データを取得する
 			 * @returns
 			 */
-			getRecs: function () {
+			getRecs: function(){
 				return this.serialize();
 			},
 
 			/**
 			 * レコード数を返す
 			 */
-			recsCount: function () {
+			recsCount: function(){
 				return _.isArray(this.collection) ? this.collection.length : 0;
 			},
 
 			/**
 			 * 選択レコード数を返す
 			 */
-			selectedRecsCount: function () {
+			selectedRecsCount: function(){
 				return this.getSelectedRecs().length;
 			},
 
 			/**
 			 * 選択された行データを返す
 			 */
-			getSelectedRecs: function () {
-				return _.isArray(this.collection) ? _.where(this.collection, { _select: true }) : [];
+			getSelectedRecs: function(){
+				return _.isArray(this.collection) ? _.where(this.collection, {_select: true}) : [];
 			},
 
 			/**
 			 * 選択された行の id 値配列を返す。
 			 */
-			getSelectedIdList: function () {
+			getSelectedIdList: function(){
 				var selectedRows = this.getSelectedRecs();
-				return _.reduce(selectedRows, function (array, dto) {
-					if (_.has(dto, 'id')) {
+				return _.reduce(selectedRows, function(array, dto){
+					if(_.has(dto, 'id')){
 						array.push(dto.id);
 					}
 					return array;
@@ -31401,7 +31362,7 @@ $(function () {
 			/**
 			 * 最後にクリックされた行データを返す。
 			 */
-			getLastClickedRec: function () {
+			getLastClickedRec: function(){
 				return this.lastClickedRec;
 			},
 
@@ -31409,7 +31370,7 @@ $(function () {
 			_bulkUpdating: false,
 
 			// 全選択チェックボックスの選択値変更イベント
-			_onToggleSelectAll: function (e) {
+			_onToggleSelectAll: function(e){
 				var $target = $(e.target);
 				var isSelected = $target.prop('checked');
 
@@ -31417,24 +31378,24 @@ $(function () {
 				var cb_arg = (isSelected) ? 'check' : 'uncheck';
 
 				// <tr> に仕込んだ rec を更新
-				try {
+				try{
 					this._bulkUpdating = true;
 
-					this.$('tbody tr td.cl_checkbox_selectrec:not([disabled]) input').checkbox(cb_arg).closest('tr').each(function () {
+					this.$('tbody tr td.cl_checkbox_selectrec:not([disabled]) input').checkbox(cb_arg).closest('tr').each(function(){
 						var $tr = $(this);
 						var dto = $tr.data('cl_rec');
-						if (!dto || dto._enable === false) {
+						if(!dto || dto._enable === false){
 							return;
 						}
 
 						dto._select = isSelected;
-						if (isSelected) {
+						if(isSelected){
 							$tr.addClass('checked');
-						} else {
+						}else{
 							$tr.removeClass('checked');
 						}
 					});
-				} finally {
+				}finally{
 					this._bulkUpdating = false;
 				}
 
@@ -31443,12 +31404,12 @@ $(function () {
 			},
 
 			// 単一選択：ラジオボタンの選択値変更イベント
-			_onRadioToggle: function (e) {
+			_onRadioToggle: function(e){
 				var $target = $(e.target);
 				var $tr = $target.closest('tr');
 				var dto = $tr.data('cl_rec');
 
-				for (var i = 0; i < this.collection.length; i++) {
+				for(var i = 0; i < this.collection.length; i++){
 					var x = this.collection[i];
 					x._select = false;
 				}
@@ -31461,8 +31422,8 @@ $(function () {
 			},
 
 			// 各行のチェックボックスの選択値変更イベント
-			_onToggleSelect: function (e) {
-				if (this._bulkUpdating) {
+			_onToggleSelect: function(e){
+				if(this._bulkUpdating){
 					// 一括実行中
 					return;
 				}
@@ -31476,15 +31437,15 @@ $(function () {
 				// <tr> に仕込んだ rec を更新
 				var $tr = $target.closest('tr');
 				$tr.data('cl_rec')._select = isSelected;
-				if (isSelected) {
+				if(isSelected){
 					$tr.addClass('checked');
-				} else {
+				}else{
 					$tr.removeClass('checked');
 				}
 
 				// 全選択 or 全未選択に応じて、selectall の表示を合わせる
 				var selectarg = (this.selectedRecsCount() >= this.recsCount())
-					? 'check' : 'uncheck';
+									? 'check' : 'uncheck';
 				this.$('thead th.cl_checkbox_selectall input').checkbox(selectarg);
 
 				// 行選択が変更されたイベント発火
@@ -31492,8 +31453,8 @@ $(function () {
 			},
 
 			// 行選択変更イベントを発行する
-			_publishOnRowSelectChanged: function (force) {
-				if (force || this.recsCount() > 0) {
+			_publishOnRowSelectChanged: function(force){
+				if(force || this.recsCount() > 0){
 					var recs = this.collection;
 					var selectedRecs = this.getSelectedRecs();
 					var arg = {
@@ -31511,7 +31472,7 @@ $(function () {
 			/**
 			 * 各行が全選択されている or Not の状態で、テーブルヘッダ行のトグルとの整合性を合わせる。
 			 */
-			_setupSelectAllToggle: function () {
+			_setupSelectAllToggle: function(){
 				var recCount = this.recsCount();
 				var selectedRecCount = this.selectedRecsCount();
 				var selectarg = (recCount > 0 && recCount === selectedRecCount) ? 'check' : 'uncheck';
@@ -31544,31 +31505,31 @@ $(function () {
 				//homeURL: '/',
 				stayingMillis: 5000
 			},
-			initialize: function (opt) {
-				this.options = function (argopt, dopt) {
-					var opt = _.defaults(argopt || {}, dopt);
-					if (opt.rspHead && opt.rspHead.httpStatus == 401) {
+			initialize: function(opt) {
+				this.options = function(argopt, dopt){
+					var opt = _.defaults(argopt||{}, dopt);
+					if(opt.rspHead && opt.rspHead.httpStatus == 401){
 						// 401 エラーは別格扱い
 						var xx = ['自動的にログアウトしました。'];
 						var stayingSec = Math.floor(opt.stayingMillis / 1000);
-						if (stayingSec > 0) {
-							xx.push(stayingSec + '秒後にログインページに移動します。');
+						if(stayingSec > 0){
+							xx.push( stayingSec + '秒後にログインページに移動します。');
 						}
 						opt.messages = xx;
-					} else {
+					}else{
 						var rspHdMsg = (opt.rspHead)
-							? clutil.fmtargs(clutil.getclmsg(opt.rspHead.message), opt.rspHead.message.args)
-							: null;
-						if (_.isString(opt.messages)) {
-							opt.messages = [opt.messages];
+								? clutil.fmtargs(clutil.getclmsg(opt.rspHead.message), opt.rspHead.message.args)
+								: null;
+						if(_.isString(opt.messages)){
+							opt.messages = [ opt.messages ];
 						}
-						if (!_.isArray(opt.messages)) {
+						if(!_.isArray(opt.messages)){
 							opt.messages = [];
 						}
-						if (rspHdMsg) {
+						if(rspHdMsg){
 							opt.messages.push(rspHdMsg);
 						}
-						if (_.isEmpty(opt.messages)) {
+						if(_.isEmpty(opt.messages)){
 							opt.messages.push('Abort!');
 						}
 					}
@@ -31576,35 +31537,35 @@ $(function () {
 					return opt;
 				}(opt, this.defaultopt);
 			},
-			render: function () {
+			render: function(){
 				var content = this.template(this.options);
 				this.$el.html(content);
 				return this;
 			},
-			doAbort: function () {
+			doAbort: function(){
 				var opt = this.options;
-				$('body').html(this.render().el).show().css({ visibility: 'visible' }).removeClass('cl_body_hidden');
+				$('body').html(this.render().el).show().css({visibility: 'visible'}).removeClass('cl_body_hidden');
 
 				// デバッグ用: ページ移動を抑止する。
-				if (clcom._preventGoHome) {
+				if(clcom._preventGoHome){
 					return;
 				}
 
-				if (opt.stayingMillis === 0) {
+				if(opt.stayingMillis === 0){
 					// 速攻でページ移動
-					if (opt.logout) {
+					if(opt.logout){
 						clcom.logout(opt.homeURL);
-					} else {
+					}else{
 						clcom.gohome(opt.homeURL);
 					}
-				} else if (opt.stayingMillis < 0) {
+				}else if(opt.stayingMillis < 0){
 					// 留まる。
-				} else {
+				}else{
 					// 指定ミリ秒後にジャンプする
-					setTimeout(function () {
-						if (opt.logout) {
+					setTimeout(function(){
+						if(opt.logout){
 							clcom.logout(opt.homeURL);
-						} else {
+						}else{
 							clcom.gohome(opt.homeURL);
 						}
 					}, opt.stayingMillis);
@@ -31618,11 +31579,11 @@ $(function () {
 		 * エラーメッセージを表示して、ホーム画面へ戻る。
 		 * 引数は、AbortView のオプションと同じ。
 		 */
-		doAbort: function (abortopt) {
+		doAbort: function(abortopt){
 			var fixopt = {
 				homeURL: clcom.urlRoot
 			};
-			if (abortopt) {
+			if(abortopt){
 				_.extend(fixopt, abortopt);
 			}
 			new clutil.View.AbortView(fixopt).doAbort();
@@ -31633,34 +31594,34 @@ $(function () {
 		 */
 		FileTypes: {
 			image: {
-				description: '画像ファイル',
-				matcher: [/^image\//]
+				description:'画像ファイル',
+				matcher:[/^image\//]
 			},
 			excel: {
-				description: 'エクセルファイル',
-				matcher: [
-					//					'application/vnd.ms-excel',
-					//					'application/vnd.ms-excel.sheet.macroEnabled.12',
+				description:'エクセルファイル',
+				matcher:[
+//					'application/vnd.ms-excel',
+//					'application/vnd.ms-excel.sheet.macroEnabled.12',
 					/^application\/vnd.ms-excel/,
 					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'	// *.xlsx
 				],
 				extension: [/\.xls$/i, /\.xlsx$/i, /\.xlsm$/i]
 			},
 			xlsx: {
-				description: 'エクセルファイル(xlsx)',
-				matcher: [
-					//					'application/vnd.ms-excel',
-					//					'application/vnd.ms-excel.sheet.macroEnabled.12',
+				description:'エクセルファイル(xlsx)',
+				matcher:[
+//					'application/vnd.ms-excel',
+//					'application/vnd.ms-excel.sheet.macroEnabled.12',
 					/^application\/vnd.ms-excel/,
 					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'	// *.xlsx
 				],
 				extension: [/\.xls$/i, /\.xlsx$/i]
 			},
 			xlsm: {
-				description: 'エクセルファイル(xlsm)',
-				matcher: [
-					//					'application/vnd.ms-excel',
-					//					'application/vnd.ms-excel.sheet.macroEnabled.12',
+				description:'エクセルファイル(xlsm)',
+				matcher:[
+//					'application/vnd.ms-excel',
+//					'application/vnd.ms-excel.sheet.macroEnabled.12',
 					/^application\/vnd.ms-excel/,
 					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'	// *.xlsx
 				],
@@ -31669,7 +31630,7 @@ $(function () {
 			csv: {
 				description: 'ＣＳＶファイル',
 				matcher: ['text/csv', 'application/vnd.ms-excel'],
-				extension: [/\.csv$/i]
+				extension: [ /\.csv$/i ]
 			},
 			xml: {
 				description: 'ＸＭＬファイル',
@@ -31681,11 +31642,11 @@ $(function () {
 			},
 			pdf: {
 				description: 'ＰＤＦファイル',
-				extension: [/\.pdf$/i]
+				extension: [ /\.pdf$/i ]
 			},
 			zip: {
 				description: 'ＺＩＰファイル',
-				extension: [/\.zip$/i]
+				extension: [ /\.zip$/i ]
 			}
 		},
 
@@ -31705,22 +31666,22 @@ $(function () {
 				+ '</a>'),
 
 			events: {
-				'mousemove a': '_adjustPosition',
-				'click input[type=file]': function (e) {
+				'mousemove a'				: '_adjustPosition',
+				'click input[type=file]'	: function(e){
 					return this._beforeShowFileChooser();
 				},
-				'keydown a:not([disabled])': function (e) {
+				'keydown a:not([disabled])'	: function (e) {
 					// Enter キーでクリック発火
 					if (e.keyCode === 13 && this._beforeShowFileChooser()) {
 						this.$inputFile.trigger('click');
 					}
 				},
-				'change input[type=file]': '_inputFileChanged'
+				'change input[type=file]'	: '_inputFileChanged'
 			},
 
 			/**
 			 */
-			initialize: function (opt) {
+			initialize: function(opt){
 				_.bindAll(this);
 
 				var defaultOpts = {
@@ -31733,15 +31694,15 @@ $(function () {
 				this.options = _.isObject(opt) ? _.extend(defaultOpts, opt) : defaultOpts;
 			},
 
-			//			// お約束の内部部品初期化
-			//			initUIElement: function(){
-			//				return this;
-			//			},
+//			// お約束の内部部品初期化
+//			initUIElement: function(){
+//				return this;
+//			},
 
-			render: function () {
+			render: function(){
 				this.$el.html(this.template(this.options));
 				this.$btn = this.$el.find('a');
-				if (this.options.width) {
+				if(this.options.width){
 					this.$btn.css('width', this.options.width + 'px');
 				}
 				this.$inputFile = this.$el.find('input[name="file"]');
@@ -31751,12 +31712,12 @@ $(function () {
 			},
 
 			// <a> タグ内のmousemove で、内部の input[type=file] がストーキングするおまじない。
-			_adjustPosition: function (cursor) {
+			_adjustPosition: function(cursor) {
 				var input, wrapper,
-					wrapperX, wrapperY,
-					inputWidth, inputHeight,
-					cursorX, cursorY,
-					moveInputX, moveInputY;
+				wrapperX, wrapperY,
+				inputWidth, inputHeight,
+				cursorX, cursorY,
+				moveInputX, moveInputY;
 
 				// This wrapper element (the button surround this file input)
 				wrapper = this.$btn;//$(this);
@@ -31767,9 +31728,9 @@ $(function () {
 				// The top-most position of the wrapper
 				wrapperY = wrapper.offset().top;
 				// The with of the browsers input field
-				inputWidth = input.width();
+				inputWidth= input.width();
 				// The height of the browsers input field
-				inputHeight = input.height();
+				inputHeight= input.height();
 				//The position of the cursor in the wrapper
 				cursorX = cursor.pageX;
 				cursorY = cursor.pageY;
@@ -31778,25 +31739,25 @@ $(function () {
 				// The 20 at the end is an arbitrary number of pixels that we can shift the input such that cursor is not pointing at the end of the Browse button but somewhere nearer the middle
 				moveInputX = cursorX - wrapperX - inputWidth + 20;
 				// Slides the invisible input Browse button to be positioned middle under the cursor
-				moveInputY = cursorY - wrapperY - (inputHeight / 2);
+				moveInputY = cursorY- wrapperY - (inputHeight/2);
 
 				// Apply the positioning styles to actually move the invisible file input
 				input.css({
-					left: moveInputX,
-					top: moveInputY
+					left:moveInputX,
+					top:moveInputY
 				});
 			},
 			// ファイル選択直前のアプリチェック割り込み
-			_beforeShowFileChooser: function () {
+			_beforeShowFileChooser: function(){
 
 				// 権限チェック内部関数
-				var isBadPermFunc = function (opeTypeId) {
-					if (clutil._XXXDBGGetIniPermChk === false) {
+				var isBadPermFunc = function(opeTypeId){
+					if(clutil._XXXDBGGetIniPermChk === false){
 						// 権限チェックをスキップする
 						return;
 					}
 					var pageId = clcom.pageId;
-					if (_.isEmpty(pageId) || !/^AM[A-Z]{2}V[0-9]{4}$/.test(pageId)) {
+					if(_.isEmpty(pageId) || !/^AM[A-Z]{2}V[0-9]{4}$/.test(pageId)){
 						// MDの画面コード体系にマッチしていないので、権限制限外（制限を受けない）と判断する。
 						return;	// OK
 					}
@@ -31805,11 +31766,11 @@ $(function () {
 					var permtype = clutil.opeTypeIdPerm(opeTypeId);
 
 					if (permtype == 'write') {
-						if (!_.isEmpty(pm) && (pm.f_allow_write)) {
+						if(!_.isEmpty(pm) && (pm.f_allow_write)){
 							return;	// OK
 						}
 					} else if (permtype == 'del') {
-						if (!_.isEmpty(pm) && (pm.f_allow_del)) {
+						if(!_.isEmpty(pm) && (pm.f_allow_del)){
 							return;	// OK
 						}
 					}
@@ -31827,16 +31788,16 @@ $(function () {
 				}
 
 
-				if (!_.isFunction(this.options.beforeShowFileChooser)) {
+				if(!_.isFunction(this.options.beforeShowFileChooser)){
 					return true;
 				}
 				// 明示的に false を返さないと、キャンセル扱いにしない。
 				return this.options.beforeShowFileChooser() !== false;
 			},
 			// ファイル選択が変更された
-			_inputFileChanged: function (e) {
+			_inputFileChanged: function(e){
 				var files = e.target.files;
-				if (files.length <= 0) {
+				if(files.length <= 0){
 					// キャンセル？
 					this.clear();
 					return;
@@ -31846,16 +31807,16 @@ $(function () {
 
 				// ファイルタイプチェック
 				var chkFileType = this.options.fileType;
-				if (chkFileType) {
-					var isMatch = function (str, matcher) {
-						if (_.isRegExp(matcher)) {
+				if(chkFileType){
+					var isMatch = function(str, matcher){
+						if(_.isRegExp(matcher)){
 							return str.match(matcher);
-						} else {
+						}else{
 							return str == matcher;
 						}
 						return false;
 					};
-					var ftypeNG_Abort = _.bind(function () {
+					var ftypeNG_Abort = _.bind(function(){
 						// ファイルタイプがNG
 						var msg = chkFileType.description + 'を選択してください。';
 						clutil.mediator.trigger('onTicker', msg);
@@ -31864,17 +31825,17 @@ $(function () {
 
 					// ファイルタイプチェック
 					var isValidFileType = true;
-					if (_.isArray(chkFileType.matcher) && chkFileType.matcher.length > 0) {
+					if(_.isArray(chkFileType.matcher) && chkFileType.matcher.length > 0){
 						isValidFileType = false;
-						for (var i = 0; i < chkFileType.matcher.length; i++) {
+						for(var i = 0; i < chkFileType.matcher.length; i++){
 							var matcher = chkFileType.matcher[i];
-							if (isMatch(selectedFile.type, matcher)) {
+							if(isMatch(selectedFile.type, matcher)){
 								isValidFileType = true;
 								break;
 							}
 						}
 					}
-					if (!isValidFileType) {
+					if(!isValidFileType){
 						// ファイルタイプがNG
 						ftypeNG_Abort();
 						return;
@@ -31883,17 +31844,17 @@ $(function () {
 					// ファイル拡張子チェック
 					var isValidExtension = true;
 					var fname = e.target.value;
-					if (_.isArray(chkFileType.extension) && chkFileType.extension.length > 0) {
+					if(_.isArray(chkFileType.extension) && chkFileType.extension.length > 0){
 						isValidExtension = false;
-						for (var i = 0; i < chkFileType.extension.length; i++) {
+						for(var i = 0; i < chkFileType.extension.length; i++){
 							var ext = chkFileType.extension[i];
-							if (isMatch(fname, ext)) {
+							if(isMatch(fname, ext)){
 								isValidExtension = true;
 								break;
 							}
 						}
 					}
-					if (!isValidExtension) {
+					if(!isValidExtension){
 						// ファイル拡張子がNG
 						ftypeNG_Abort();
 						return;
@@ -31901,7 +31862,7 @@ $(function () {
 				}
 
 				// ファイルサイズのチェック
-				if (this.options.maxFileSize > 0 && selectedFile.size > this.options.maxFileSize) {
+				if(this.options.maxFileSize > 0 && selectedFile.size > this.options.maxFileSize){
 					var msg = 'ファイルサイズが大きすぎます。{0} 以下のファイルを選択してください。';
 					var arg = (this.options.maxFileSize / 1024) + '[KB]';
 					clutil.mediator.trigger('onTicker', clutil.fmt(msg, arg));
@@ -31910,13 +31871,13 @@ $(function () {
 				}
 
 				// 即時アップロード
-				if (this.options.doUploadImmediately) {
+				if(this.options.doUploadImmediately){
 					this.doUpload(selectedFile);
 				}
 			},
 			// Windows形式のパス表現文字列からファイル名のみをぬきだす。
 			// input type=file のvalueの値からファイル名取得するために使用
-			_baseName: function (path) {
+			_baseName: function(path) {
 				var filename = _.last(path.split('\\'));
 				return filename;
 			},
@@ -31924,10 +31885,10 @@ $(function () {
 			/**
 			 * アップロードする。
 			 */
-			doUpload: function (selectedFile) {
-				if (!selectedFile) {
+			doUpload: function(selectedFile){
+				if(!selectedFile){
 					var files = this.$inputFile[0].files;
-					if (files.length === 0) {
+					if(files.length === 0){
 						clutil.mediator.trigger('onTicker', 'ファイルを選択してください。');
 						return;
 					}
@@ -31966,9 +31927,9 @@ $(function () {
 			},
 			_onUploadError: function (jqXHR, textStatus, errorThrown) {
 				console.error(textStatus, errorThrown);
-				//				if (this.options.showDialogOnError) {
-				//					new clutil.ErrorDialog('ファイルアップロードに失敗しました。');
-				//				}
+//				if (this.options.showDialogOnError) {
+//					new clutil.ErrorDialog('ファイルアップロードに失敗しました。');
+//				}
 				clutil.mediator.trigger('onTicker', 'ファイルアップロードに失敗しました。');
 
 				this.trigger('error', jqXHR, textStatus, errorThrown);
@@ -31981,7 +31942,7 @@ $(function () {
 			/**
 			 * クリアする。
 			 */
-			clear: function () {
+			clear: function(){
 				// ファイル選択解除
 				this.$el.resetForm();
 
@@ -31992,10 +31953,10 @@ $(function () {
 			/**
 			 * ボタンの活性化/非活性化を設定する。
 			 */
-			setEnable: function (enable) {
-				if (enable) {
+			setEnable: function(enable){
+				if(enable){
 					this.$btn.removeAttr('disabled');
-				} else {
+				}else{
 					this.$btn.attr('disabled', true);
 				}
 			},
@@ -32003,7 +31964,7 @@ $(function () {
 			/**
 			 * ボタンの活性/非活性状態を取得する。
 			 */
-			isEnabled: function () {
+			isEnabled: function(){
 				//return this.$btn.prop('disabled');
 				return !this.$btn.attr('disabled');
 			},
@@ -32016,18 +31977,18 @@ $(function () {
 		 * ファイルアップロード用ボタンビューをつくる。
 		 * 引数 btn のボタン要素は、FileUploadButtonView.$el に置き換えられます。
 		 */
-		buildFileUploadButtonView: function (btn, opts) {
+		buildFileUploadButtonView: function(btn, opts){
 			var $btn = (btn instanceof jQuery) ? btn : $(btn);
 
 			var defaulOpts = {
-				label: function ($btn) {
+				label: function($btn){
 					var label;
-					if ($btn.is('input')) {
+					if($btn.is('input')){
 						label = $btn.val();
-					} else {
+					}else {
 						label = $btn.text();
 					}
-					if (_.isEmpty(label)) {
+					if(_.isEmpty(label)){
 						var id = $btn.attr('id');
 						var opeTypeId = clutil.btnOpeTypeId(id);
 						label = clutil.opeTypeIdtoString(opeTypeId);
@@ -32036,9 +31997,9 @@ $(function () {
 				}($btn),
 				btnCssClassName: $btn.attr('class')		// ボタンクラス名複写用
 			};
-			if (_.isObject(opts)) {
+			if(_.isObject(opts)){
 				opts = _.extend(defaulOpts, opts);
-			} else {
+			}else{
 				opts = defaulOpts;
 			}
 			var fileUploadView = new clutil.View.FileUploadButtonView(opts);
@@ -32056,29 +32017,29 @@ $(function () {
 		 * opt.buildCSVInputReqFunction - CSV取込用のリクエストビルダ関数
 		 * opt.noDialogOnDone - ファイルアップロード成功時にダイアログを表示しない
 		 */
-		OpeCSVInputController: function (opt/*btn, buildCSVInputReqFunction, fileUploadViewOpts*/) {
+		OpeCSVInputController: function(opt/*btn, buildCSVInputReqFunction, fileUploadViewOpts*/){
 			var fixFileUploadOpts = _.extend({
 				maxFileSize: 1024 * 1024,					// ファイルサイズ上限：1MB
 				fileType: clutil.View.FileTypes.excel		// エクセル
 			}, (opt && opt.fileUploadViewOpts) || {});
 
 			var fileUploadView = clutil.View.buildFileUploadButtonView(opt.btn, fixFileUploadOpts);
-			fileUploadView.on('success', function (file) {
+			fileUploadView.on('success', function(file){
 				// サーバスプールへのアップロードまで成功。
 				// file: { id: <ファイルID>, filename: <ファイル名>, uri: <ファイルアクセス用のURI> }
-				if (!_.isFunction(opt.buildCSVInputReqFunction)) {
+				if(!_.isFunction(opt.buildCSVInputReqFunction)){
 					// 取込用の要求パケットの作り方がわからないので、すぐ return する。
 					return;
 				}
 
 				var req = opt.buildCSVInputReqFunction(file);
-				if (req == null) {
+				if(req == null){
 					// アプリ側の事情でキャンセルした。
 					console.log('buildCSVInputReqFunction: req is null, canceled.');
 					return;
 				}
 				// 応答構造のチェック
-				if (!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)) {
+				if(!_.isObject(req) || !_.isString(req.resId) || _.isEmpty(req.resId)){
 					// I/F が正しくない
 					var m = 'buildCSVInputReqFunction: 引数に誤りがあります。コードを見直してください。';
 					console.error(m);
@@ -32087,17 +32048,17 @@ $(function () {
 				}
 
 				// 共通Reqヘッダ補完サポート
-				if (true) {
+				if(true){
 					var defaultReqHead = {
 						opeTypeId: am_proto_defs.AM_PROTO_COMMON_RTYPE_CSV_INPUT,
 						fileId: file.id
 					};
-					if (req.data.reqHead) {
+					if(req.data.reqHead){
 						req.data.reqHead = _.defaults(req.data.reqHead, defaultReqHead);
-					} else {
+					}else{
 						req.data.reqHead = defaultReqHead;
 					}
-					if (!_.isObject(req.data.reqPage)) {
+					if(!_.isObject(req.data.reqPage)){
 						req.data.reqPage = {};
 					}
 				}
@@ -32106,25 +32067,25 @@ $(function () {
 				req.onRspPage = false;
 
 				// 要求
-				clutil.postJSON(req).then(function (data) {
+				clutil.postJSON(req).then(function(data){
 					var hd = data.rspHead;
-					if (!_.isEmpty(hd.message)) {
+					if(!_.isEmpty(hd.message)){
 						clutil.mediator.trigger('onTicker', hd);
 						//data.rspHead.message = null;	// fail で再表示しないように、null にしておく。
 					}
-					if (hd.uri) {
+					if(hd.uri){
 						// DLファイルが指定された ⇒ DLメソッドを呼び出す。
 						// PDF ファイルを指定されるなど、別窓でDLをやらせるケースってあるの？
-						clutil.download({ url: hd.uri });
-					} else {
+						clutil.download({url: hd.uri});
+					}else{
 						return this;
 					}
-				}).done(function (data) {
+				}).done(function(data){
 					if (!opt.noDialogOnDone) {
 						clutil.MessageDialog2('取込が完了しました。');				// FIXME: height を抑えたダイアログで
 					}
 					fileUploadView.trigger('done', data);
-				}).fail(function (data) {
+				}).fail(function(data){
 					clutil.saveFileUploadView = fileUploadView;
 					clutil.saveFileUploadView.saveOpt = opt;
 					console.warn(req.resId + ': failed.', data);
@@ -32143,70 +32104,70 @@ $(function () {
 
 (function (Syphon, clutil) {
 
-	////////////////////////////////////////////////////////////////
-	Syphon.ElementExtractor = function ($view) {
-		return $view.find('input,textarea,select,span[data-name]');
-	};
+  ////////////////////////////////////////////////////////////////
+  Syphon.ElementExtractor = function ($view) {
+    return $view.find('input,textarea,select,span[data-name]');
+  };
 
-	////////////////////////////////////////////////////////////////
-	// KeyExtractor
-	var supportedTags = ['span'];
-	_.each(supportedTags, function (tagName) {
-		Syphon.KeyExtractors.register(tagName, function ($el) {
-			return $el.attr('data-name');
-		});
-	});
+  ////////////////////////////////////////////////////////////////
+  // KeyExtractor
+  var supportedTags = ['span'];
+  _.each(supportedTags, function (tagName) {
+    Syphon.KeyExtractors.register(tagName, function ($el) {
+      return $el.attr('data-name');
+    });
+  });
 
-	////////////////////////////////////////////////////////////////
-	// InputReader
-	Syphon.InputReaders.register('text', function ($el) {
-		var val = $el.val();
+  ////////////////////////////////////////////////////////////////
+  // InputReader
+  Syphon.InputReaders.register('text', function ($el) {
+    var val = $el.val();
 
-		if ($el.hasClass('cl_date')) {
-			val = clutil.dateFormat(val, 'yyyymmdd');
-		} else if ($el.hasClass('cl_month')) {
-			val = clutil.monthFormat(val, 'yyyymm');
-		} else if ($el.hasClass('cl_time')) {
-			val = clutil.timeFormat(val, 'hhmm');
-		}
+    if ($el.hasClass('cl_date')) {
+      val = clutil.dateFormat(val, 'yyyymmdd');
+    } else if ($el.hasClass('cl_month')) {
+      val = clutil.monthFormat(val, 'yyyymm');
+    } else if ($el.hasClass('cl_time')) {
+      val = clutil.timeFormat(val, 'hhmm');
+    }
 
-		return val;
-	});
+    return val;
+  });
 
-	Syphon.InputReaders.register('checkbox', function ($el) {
-		return $el.prop('checked') ? 1 : 0;
-	});
+  Syphon.InputReaders.register('checkbox', function ($el) {
+    return $el.prop('checked') ? 1 : 0;
+  });
 
-	Syphon.InputReaders.register('span', function ($el) {
-		return $el.text();
-	});
+  Syphon.InputReaders.register('span', function ($el) {
+    return $el.text();
+  });
 
-	////////////////////////////////////////////////////////////////
-	// InputWriters
-	Syphon.InputWriters.register('span', function ($el, value) {
-		return $el.text(value);
-	});
+  ////////////////////////////////////////////////////////////////
+  // InputWriters
+  Syphon.InputWriters.register('span', function ($el, value) {
+    return $el.text(value);
+  });
 
-	Syphon.InputWriters.register('text', function ($el, value) {
-		if ($el.hasClass('cl_date')) {
-			value = clutil.dateFormat(value, 'yyyy/mm/dd');
-		} else if ($el.hasClass('cl_month')) {
-			value = clutil.monthFormat(value, 'yyyy/mm');
-		} else if ($el.hasClass('cl_time')) {
-			value = clutil.timeFormat(value, 'hh:mm');
-		} else {
-			value = clutil.cStr(value);
-		}
-		$el.val(value);
-	});
+  Syphon.InputWriters.register('text', function ($el, value) {
+    if ($el.hasClass('cl_date')) {
+      value = clutil.dateFormat(value, 'yyyy/mm/dd');
+    } else if ($el.hasClass('cl_month')) {
+      value = clutil.monthFormat(value, 'yyyy/mm');
+    } else if ($el.hasClass('cl_time')) {
+      value = clutil.timeFormat(value, 'hh:mm');
+    } else {
+      value = clutil.cStr(value);
+    }
+    $el.val(value);
+  });
 }(Backbone.Syphon, clutil));
 
 //////////////////////////////////////////////////////////////////
 // Datepicker.js プラグインに独自メソッド追加
-(function () {
+(function(){
 	var dpPROP_NAME = 'Datepicker';
 
-	if (!$.datepicker) {
+	if(!$.datepicker){
 		console.warn('Datepicker not found.');
 		return;
 	}
@@ -32215,7 +32176,7 @@ $(function () {
 	 * Datepicker に８ケタ日付を設定する。yyyyMMdd 引数を省略した場合はクリアに相当。
 	 * 使い方: $elem.datepicker('setIymd', yyyyMMdd)
 	 */
-	$.datepicker['_setIymd' + dpPROP_NAME] = function (target, iymd) {
+	$.datepicker['_setIymd' + dpPROP_NAME] = function(target, iymd){
 		console.log('_setIymd' + dpPROP_NAME);
 
 		var $dp = $(target).val('');
@@ -32224,13 +32185,13 @@ $(function () {
 		// クリア
 		$dpWrap.removeClass("dayOfWeek0 dayOfWeek1 dayOfWeek2 dayOfWeek3 dayOfWeek4 dayOfWeek5 dayOfWeek6");
 
-		if (iymd == null || iymd == undefined || iymd <= 0) {
+		if(iymd == null || iymd == undefined || iymd <= 0){
 			// テキストを空欄にする。
 			$dp.datepicker('setDate', null);
 			return;
 		}
 		var fixDate = clutil.ymd2date(iymd);
-		if (!_.isDate(fixDate) || isNaN(fixDate)) {
+		if(!_.isDate(fixDate) || isNaN(fixDate)){
 			console.warn('datepicker.setIymd: bad iymd[' + iymd + ']');
 			return;
 		}
@@ -32243,15 +32204,15 @@ $(function () {
 	 * Datepicker 表示をリフレッシュする。
 	 * 使い方: $elem.datepicker('refresh')
 	 */
-	$.datepicker['_refresh' + dpPROP_NAME] = function (target) {
+	$.datepicker['_refresh' + dpPROP_NAME] = function(target){
 		var $target = $(target);
 		var iymd = -1;
 		var val = $target.val();
-		if (!_.isEmpty(val)) {
+		if(!_.isEmpty(val)){
 			var date = new Date(val);
-			if (_.isDate(date) || !isNaN(date.getMilliseconds())) {
+			if(_.isDate(date) || !isNaN(date.getMilliseconds())){
 				// valid date format
-				var iymd = date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+				var iymd = date.getFullYear() * 10000 + (date.getMonth()+1) * 100 + date.getDate();
 			}
 		}
 
@@ -32262,91 +32223,91 @@ $(function () {
 }());
 ////////////////////////////////////////////////////////////////
 //jQuery ui-autocomplete プラグインに独自メソッド追加
-(function () {
+(function(){
 
-	if (!$.widget) {
+	if(!$.widget){
 		console.warn('$.widget: not available.');
 		return;
 	}
-	if (!$.ui || !$.ui.autocomplete) {
+	if(!$.ui || !$.ui.autocomplete){
 		console.warn('$.ui: not available.');
 		return;
 	}
 
 	$.widget('ui.autocomplete', $.ui.autocomplete, {
-		_renderMenu: function (ul, items) {
+		_renderMenu: function( ul, items ) {
 			var maxItems = this.options.maxItems || Infinity;
 			var i, len;
-			for (i = 0, len = items.length; i < len && i < maxItems; i++) {
-				this._renderItemData(ul, items[i]);
+			for(i = 0, len = items.length; i < len && i < maxItems; i++) {
+				this._renderItemData( ul, items[i] );
 			}
 			if (maxItems !== Infinity && len > maxItems) {
 				ul.append('<li class="cl-ac-more"><span>&#183;&#183;&#183;</span></li>');
 			}
 		},
 
-		_renderItem: function (ul, item) {
-			var li = $("<li>")
-				.append($("<a>").text(item.label))
-				.appendTo(ul);
+		_renderItem: function( ul, item ) {
+			var li = $( "<li>" )
+				.append( $( "<a>" ).text( item.label ) )
+				.appendTo( ul );
 			if (this.selectedItem && item.id == this.selectedItem.id) {
 				li.addClass('selected');
 			}
 			return li;
 		},
 
-		_resizeMenu: function () {
+		_resizeMenu: function() {
 			var ul = this.menu.element;
-			if (this.options.resizeMenu) {
+			if(this.options.resizeMenu){
 				this.options.resizeMenu.call(this, ul);
-			} else {
+			}else{
 				this._superApply(arguments);
 			}
 		},
 
-		_isClAutocomplete: function () {
+		_isClAutocomplete: function(){
 			return $(this.element).hasClass('cl_autocomplete');
 		},
-		_clItem2LabelText: function (item) {
-			if (_.isFunction(this.options.getLabel)) {
+		_clItem2LabelText: function(item){
+			if(_.isFunction(this.options.getLabel)){
 				var labelText = this.options.getLabel(item);
 				return (_.isEmpty(labelText)) ? '' : labelText.toString();
 			}
-			if (_.isString(this.options.getLabel)) {
+			if(_.isString(this.options.getLabel)){
 				return (item) ? item[this.options.getLabel] : '';
 			}
 
 			var cn = [];
-			if (item) {
+			if(item){
 				var keys = (_.isArray(this.options.getLabel))
-					? this.options.getLabel : ['code', 'name'];
-				for (var i = 0; i < keys.length; i++) {
+						? this.options.getLabel : ['code', 'name'];
+				for(var i = 0; i < keys.length; i++){
 					var val = item[keys[i]];
-					if (!_.isEmpty(val)) {
+					if(!_.isEmpty(val)){
 						cn.push(val);
 					}
 				}
 			}
 			return cn.join(':');
 		},
-		_getInputTextValue: function () {
+		_getInputTextValue: function(){
 			var $elem = $(this.element);
 			var val = $elem.val();
 			return (val) ? val : '';
 		},
-		_getClItem: function (opt) {
+		_getClItem: function(opt){
 			// empty check
 			var valLabel = this._getInputTextValue();
 			var data = undefined;
-			if (valLabel == '') {
+			if(valLabel == ''){
 				this._clClear(opt);
-			} else {
+			}else{
 				data = this.selectedItem;//$(this.element).data('cl_autocomplete_item');
 			}
 			return data;
 		},
-		_setClItem: function (item, keepinputval) {
-			if (item && item._mismatch) {
+		_setClItem: function(item, keepinputval){
+			if (item && item._mismatch){
 				// グリッドで未確定時の入力をクリアしないため
 				keepinputval = true;
 			}
@@ -32355,15 +32316,15 @@ $(function () {
 			var label = this._clItem2LabelText(item);
 			var fixLabel = (keepinputval) ? $this_element.val() : label;
 			var fixItem = item;
-			if (label.length > 0 && item && item.id) {
-				fixItem = (item.label && item.value) ? item : _.extend({ label: label, value: label }, item);
+			if(label.length > 0 && item && item.id){
+				fixItem = (item.label && item.value) ? item : _.extend({label: label, value: label}, item);
 				$this_element.val(fixLabel);
-			} else {
-				this._clClear({ keepinputval: keepinputval });
+			}else{
+				this._clClear({keepinputval: keepinputval});
 			}
 			this.selectedItem = fixItem;
 		},
-		_clClear: function (opt) {
+		_clClear: function(opt){
 			var $el = $(this.element);
 			var val = (opt && opt.keepinputval) ? $el.val() : '';
 			$el.val(val);
@@ -32373,22 +32334,22 @@ $(function () {
 		 * 独自拡張した autocomplete 要素かどうか判定
 		 * 要素にクラス 'cl_autocomplete' が付いているかどうかで判定するロジックで実装。
 		 */
-		isClAutocomplete: function () {
+		isClAutocomplete: function(){
 			return this._isClAutocomplete();
 		},
 		/**
 		 * 独自拡張上の内部オブジェクトを get or set する。
 		 * 引数が無い場合は get、引数つきの場合は set 扱い。
 		 */
-		clAutocompleteItem: function () {
-			if (!this._isClAutocomplete()) {
+		clAutocompleteItem: function(){
+			if(!this._isClAutocomplete()){
 				return;
 			}
-			if (arguments.length === 0) {
+			if(arguments.length === 0){
 				// get
 				var item = this._getClItem();
 				return item ? item : null;
-			} else {
+			}else{
 				// set: data-cl_autocomplete_item に保持しつつ、ラベル表示を設定する。
 				this._setClItem(arguments[0], arguments[1]);
 			}
@@ -32396,8 +32357,8 @@ $(function () {
 		/**
 		 * 独自拡張上の内部設定値を削除する。
 		 */
-		removeClAutocompleteItem: function () {
-			if (!this._isClAutocomplete()) {
+		removeClAutocompleteItem: function(){
+			if(!this._isClAutocomplete()){
 				return false;
 			}
 			this._setClItem();
@@ -32408,13 +32369,13 @@ $(function () {
 		 * 表示ラベルと内部設定オブジェクトとの整合性を検査する。
 		 * @returns true:正常、false:不整合 or 独自拡張モンじゃない
 		 */
-		isValidClAutocompleteSelect: function () {
+		isValidClAutocompleteSelect: function(){
 			console.log('cl_autocomplete: isValidClAutocompleteSelect');
 			// cl_no_autocomplete_checkの場合オートコンプリートチェックしない
-			if ($(this.element).hasClass('cl_no_autocomplete_check')) {
+			if ($(this.element).hasClass('cl_no_autocomplete_check')){
 				return true;
 			}
-			if (!this._isClAutocomplete()) {
+			if(!this._isClAutocomplete()){
 				return false;
 			}
 			var item = this._getClItem();
@@ -32422,8 +32383,8 @@ $(function () {
 			var valLabel = this._getInputTextValue();
 
 			var isValid = ((label == valLabel) && (!item || item.id));
-			if (!isValid) {
-				this._clClear({ keepinputval: true });
+			if(!isValid){
+				this._clClear({keepinputval: true});
 			}
 			return isValid;
 		},
@@ -32435,29 +32396,29 @@ $(function () {
 			api.clAutocompleteItem(ui ? ui.item : null, 1/* keepinputval */);
 			// clAutocompleteItemの呼び出しでapi.selectedItemが変更され
 			// ている可能性があるからuiを更新する。
-			var newUi = { item: api.selectedItem };
-			if (_.isFunction(api.user_select)) {
+			var newUi = {item: api.selectedItem};
+			if(_.isFunction(api.user_select)){
 				api.user_select.call(this, e, newUi);
 			}
-			api._trigger('clchange', e, newUi);
+			api._trigger('clchange', e, newUi );
 		},
 
 		_clchange: function (e, ui) {
 			//console.log('^^^^^^^^^^^_clchange', ui);
 			var api = $(e.target).data('uiAutocomplete');
 			api.clAutocompleteItem(ui ? ui.item : null, 1/* keepinputval */);
-			var newUi = { item: api.selectedItem };
-			if (_.isFunction(api.user_change)) {
+			var newUi = {item: api.selectedItem};
+			if(_.isFunction(api.user_change)){
 				api.user_change.apply(this, arguments);
 				api.user_select.call(this, e, newUi);
 			}
-			api._trigger('clchange', e, newUi);
+			api._trigger('clchange', e, newUi );
 		},
 
 		_create: function () {
 			this.user_select = this.options.select;
 			this.user_change = this.options.change;
-			if (!this.options.disableClChange) {
+			if(!this.options.disableClChange){
 				this.options.select = this._clselect;
 				this.options.change = this._clchange;
 			}
@@ -32465,7 +32426,7 @@ $(function () {
 			this._super();
 			this._clAutocompleteInit();
 			var that = this;
-			this.options.response = function (e, ui) {
+			this.options.response = function(e, ui) {
 				that.lastcontent = ui.content;
 				console.log('^^^^ ac', 'lastcontent changed', ui.content);
 			};
@@ -32474,33 +32435,33 @@ $(function () {
 		/**
 		 * cl_autocomplete 初期化
 		 */
-		_clAutocompleteInit: function () {
+		_clAutocompleteInit: function(){
 			var $el = $(this.element);
-			if ($el.hasClass('cl_autocomplete')) {
+			if($el.hasClass('cl_autocomplete')){
 				return;
 			}
 			$el.addClass('cl_autocomplete');
 
 			// $el を wrap して、オートコンプリート識別アイコンを挿入
-			if (!this.options.noAutoFillIcon) {
+			if (!this.options.noAutoFillIcon){
 				$el.wrap('<div class="cl_autocomplete_wrap">').parent()
-					// クラス cl_autocomplete_wrap で、styel2.css でスタイル定義した。
-					//					.css({
-					//						float: 'left',
-					//						position: 'relative'
-					//					})
+// クラス cl_autocomplete_wrap で、styel2.css でスタイル定義した。
+//					.css({
+//						float: 'left',
+//						position: 'relative'
+//					})
 					.prepend('<span class="autofill"></span>');
 			}
 
 			// keydown イベント
 			// Enter キー押下時に候補要素が１個の場合は、その１個を選択する
 			var that = this;
-			$el.keydown(function (e) {
+			$el.keydown(function(e){
 				var keyCode = $.ui.keyCode,
 					keyEvents = e;
-				if (!(e.keyCode == keyCode.ENTER ||
-					e.keyCode == keyCode.NUMPAD_ENTER ||
-					e.keyCode == keyCode.TAB)) {
+				if(!(e.keyCode == keyCode.ENTER ||
+					 e.keyCode == keyCode.NUMPAD_ENTER ||
+					 e.keyCode == keyCode.TAB)){
 					// ENTERとTAB キー以外は興味なし
 					return;
 				}
@@ -32508,10 +32469,10 @@ $(function () {
 
 				var value = that._value();
 
-				if (value.length < that.options.minLength) {
+				if ( value.length < that.options.minLength ) {
 					// 入力値が短かい場合は興味なし
-					if (that.term !== that._value()) {
-						that._clClear({ keepinputval: true });
+					if(that.term !== that._value()){
+						that._clClear({keepinputval: true});
 						console.log('^^^^', 9.01);
 					}
 					console.log('^^^^', 9.02);
@@ -32536,7 +32497,7 @@ $(function () {
 					}
 					//that.term が信用できないので再検索 TODO
 				} else if (that.clAutocompleteItem() &&
-					that.term === that._value()) {
+						   that.term === that._value()) {
 					console.log('^^^^', 0.2);
 					// 既に検索済
 				} else {
@@ -32553,14 +32514,14 @@ $(function () {
 					// 検索中のとき
 					console.log('^^^^', 3);
 					that.options.prevResponse = that.options.response;
-					that.options.response = _.after(count, _.once(function (e, ui) {
+					that.options.response = _.after(count, _.once(function(e, ui){
 						var content = ui.content;
 						console.log('^^^^', 4, content);
 						if (content && content.length === 1) {
 							console.log('^^^^', 5);
 							api._setClItem(content[0]);
 						} else {
-							api._clClear({ keepinputval: true });
+							api._clClear({keepinputval: true});
 						}
 						clutil.focus2(keyEvents);
 						clutil.mediator.trigger('validation:require', $el);
@@ -32573,12 +32534,12 @@ $(function () {
 					if (that.lastcontent && that.lastcontent.length === 1) {
 						console.log('^^^^', 9.1);
 						api._setClItem(that.lastcontent[0]);
-					} else if (item) {
+					}else if(item){
 						console.log('^^^^', 9.2);
 						api._setClItem(item);
-					} else {
+					}else{
 						console.log('^^^^', 9.3);
-						api._clClear({ keepinputval: true });
+						api._clClear({keepinputval: true});
 					}
 					clutil.focus2(keyEvents);
 					clutil.mediator.trigger('validation:require', $el);
@@ -32604,16 +32565,16 @@ $(function () {
 
 			// change イベントが飛ばない措置（その１）
 			// focus イベントで選択アイテムを憶えておく。
-			$el.focus(function (e) {
+			$el.focus(function(e){
 				var api = $(e.target).data('uiAutocomplete');
-				api.cl_previous = api._getClItem({ keepinputval: true });
+				api.cl_previous = api._getClItem({keepinputval: true});
 			});
 
 			// change イベントが飛ばない措置（その２）
 			// blur イベントで focus 時のものと異なっていれば cl_change イベントを出す。
-			$el.blur(function (e) {
+			$el.blur(function(e){
 				var api = $(e.target).data('uiAutocomplete');
-				var cl_item = api._getClItem({ keepinputval: true });
+				var cl_item = api._getClItem({keepinputval: true});
 				var prev_item = null;
 				if (api.cl_previous) {
 					prev_item = _.pick(api.cl_previous, 'label', 'value', 'id', 'code', 'name');
@@ -32621,7 +32582,7 @@ $(function () {
 				if (cl_item) {
 					cl_item = _.pick(cl_item, 'label', 'value', 'id', 'code', 'name');
 				}
-				if (!_.isEqual(prev_item, cl_item)) {
+				if(!_.isEqual(prev_item, cl_item)){
 					$el.trigger('cl_change');
 				}
 			});
@@ -32631,36 +32592,36 @@ $(function () {
 }());
 
 // bootstrap-selectをAOKライクに変更
-(function () {
+(function(){
 	if (!$.fn.selectpicker) return;
-
+	
 	$.fn.selectpicker.defaults.style = "btn-input btn-info";
 	$.fn.selectpicker.defaults.liveSearch = true;
 	$.fn.selectpicker.defaults.noneSelectedText = '';
 }());
 
-(function ($) {
+(function( $ ) {
 	var instanceCount = 0;
 
 	var ESC_NBSP = $('<span>&nbsp;</span>').text();
-
+	
 	$(document)
-		.on('focusin', '.combobox-wrap', function (e) {
+		.on('focusin', '.combobox-wrap', function(e){
 			var $cw = $(e.currentTarget),
 				$input = $cw.find('.combobox-input');
-			if (!$input.is('[readonly]')) {
+			if (!$input.is('[readonly]')){
 				$cw.find('button').css('border', '2px solid #1e9ce6');
 			}
 		})
-		.on('focusout', '.combobox-wrap ', function (e) {
+		.on('focusout', '.combobox-wrap ', function(e){
 			var $cw = $(e.currentTarget);
 			$cw.find('button').css('border', '');
 		});
 
-
-	$.widget("custom.combobox", {
-		_create: function () {
-			if (instanceCount++ === 0) {
+	
+    $.widget("custom.combobox", {
+		_create: function() {
+			if (instanceCount++ === 0){
 				$('body').append('<div id="ca_comboboxMenuWrap"></div>');
 			}
 			_.defaults(this.options, $.fn.combobox.defaults);
@@ -32673,34 +32634,34 @@ $(function () {
 			this._setStyle();
 			this.setWidth(this.options.width);
 			this.refresh();
-
+			
 			this.element.attr('debug', _.uniqueId());
 			// console.log('**** _create', this.element.attr('debug'));
 		},
 
-		_bindUIElement: function () {
+		_bindUIElement: function(){
 			this.$input = this.$dropdown.find('input');
 			this.$button = this.$dropdown.find('button');
 		},
 
-		_createDropdown: function () {
+		_createDropdown: function(){
 			var $drop = $('<div class="btn-group combobox-wrap">' +
-				'<input type="text" class="form-control combobox-input cl_no_autocomplete_check ">' +
-				'<button type="button" tabindex="-1" class="btn btn-input btn-info combobox-btn">' +
-				'<!-- <span class="filter-option pull-left">&nbsp;</span>&nbsp; -->' +
-				'<span class="caret"></span>' +
-				'</button>' +
-				'</div>');
+						  '<input type="text" class="form-control combobox-input cl_no_autocomplete_check ">' +
+						  '<button type="button" tabindex="-1" class="btn btn-input btn-info combobox-btn">' +
+						  '<!-- <span class="filter-option pull-left">&nbsp;</span>&nbsp; -->' +
+						  '<span class="caret"></span>' +
+						  '</button>' +
+						  '</div>');
 			return $drop;
 		},
 
-		_setStyle: function () {
+		_setStyle: function(){
 			this.$button.addClass(
 				this.element.attr('class')
 					.replace(/_clcombobox|cl[_a-z0-9A-Z]+/gi, ''));
 		},
 
-		setWidth: function (width) {
+		setWidth: function(width){
 			var $button = this.$dropdown.find('button');
 			var $input = this.$dropdown.find('input');
 			if (width == 'auto') {
@@ -32708,13 +32669,13 @@ $(function () {
 				var w = parseInt($buttonClone.css('width')) || 0;
 				$input.css('width', Math.max(60, w - 40));
 				$buttonClone.remove();
-			} else if (width) {
+			}else if(width){
 				$button.css('width', width);
 				$input.css('width', Math.max(60, width - 40));
 			}
 		},
-
-		_createAutocomplete: function () {
+		
+		_createAutocomplete: function() {
 			var $button = this.$dropdown.find('button');
 			this.$input
 				.autocomplete({
@@ -32722,8 +32683,8 @@ $(function () {
 					noAutoFillIcon: true,
 					delay: 0,
 					minLength: 0,
-					source: $.proxy(this, "_source"),
-					getLabel: function (item) {
+					source: $.proxy( this, "_source" ),
+					getLabel: function(item){
 						return item && item.label || '';
 					},
 					appendTo: this.options.appendTo || '#ca_comboboxMenuWrap',
@@ -32733,61 +32694,61 @@ $(function () {
 						collision: "none",
 						of: this.$dropdown
 					},
-					resizeMenu: function (ul) {
+					resizeMenu: function(ul){
 						ul.outerWidth(Math.max(
 							// Firefox wraps long text (possibly a rounding bug)
 							// so we add 1px to avoid the wrapping (#7513)
-							ul.width("").outerWidth() + 1,
+							ul.width( "" ).outerWidth() + 1,
 							$button.outerWidth()
 						));
 					}
 				});
 
-			this._on(this.$input, {
-				autocompleteselect: function (event, ui) {
+			this._on( this.$input, {
+				autocompleteselect: function( event, ui ) {
 					// console.log('**** autocomplete select', ui.item);
 					ui.item.option.selected = true;
-					this._trigger("select", event, {
+					this._trigger( "select", event, {
 						item: ui.item.option
 					});
 					this._triggerIfChanged(ui.item);
 					clutil.mediator.trigger('validation:require', this.element);
 				},
-
+				
 				autocompletechange: "_removeIfInvalid"
 			});
 		},
-
-		_createShowAllButton: function () {
+		
+		_createShowAllButton: function() {
 			var input = this.$input,
 				wasOpen = false;
 
-			if (this.options.noButton) {
+			if(this.options.noButton){
 				this.$button.find('.caret').remove();
 				return;
 			}
 			this.$button
-				.mousedown(function () {
-					wasOpen = input.autocomplete("widget").is(":visible");
+				.mousedown(function() {
+					wasOpen = input.autocomplete( "widget" ).is( ":visible" );
 				})
-				.click(function () {
+				.click(function() {
 					input.focus();
-
+					
 					// Close if already visible
-					if (wasOpen) {
+					if ( wasOpen ) {
 						return;
 					}
-
+					
 					// Pass empty string as value to search for, displaying all results
-					input.autocomplete("search", "");
+					input.autocomplete( "search", "" );
 				});
 		},
 
-		_optionToData: function (option) {
+		_optionToData: function(option){
 			if (!option) return null;
-
+			
 			var text = $(option).text();
-			if (option.value == '0' && text === ESC_NBSP) {
+			if (option.value == '0' && text === ESC_NBSP){
 				text = '';
 			}
 			return {
@@ -32797,19 +32758,19 @@ $(function () {
 				option: option
 			};
 		},
-
-		_source: function (request, response) {
-			var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+		
+		_source: function( request, response ) {
+			var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
 			var that = this;
-			response(this.element.children("option").map(function () {
+			response( this.element.children( "option" ).map(function() {
 				var data = that._optionToData(this);
 				if (data.id && (!request.term || matcher.test(data.value))) {
 					return data;
 				}
-			}));
+			}) );
 		},
-
-		_removeIfInvalid: function (event, ui) {
+		
+		_removeIfInvalid: function( event, ui ) {
 			// console.log('**** autocomplete change', ui.item);
 			var item = ui.item;
 			var val = this.$input.val();
@@ -32817,62 +32778,62 @@ $(function () {
 			clutil.mediator.trigger('validation:require', this.element);
 		},
 
-		_triggerIfChanged: function (item) {
+		_triggerIfChanged: function(item){
 			var id = item && item.id;
-			if (this._previousId != id) {
+			if (this._previousId != id){
 				this.element.trigger('change');
 			}
 			this._previousId = id;
 		},
-
-		_destroy: function () {
+		
+		_destroy: function() {
 			// console.log('**** destroy', this.element.attr('debug'));
 			this.element.removeClass('_clcombobox');
 			this.$dropdown.remove();
 			this.element.show();
 		},
 
-		_refreshSelected: function (_item, triggerChange, empty) {
+		_refreshSelected: function(_item, triggerChange, empty){
 			var items = this.items,
 				prevVal = this.val(),
 				value = _item && _item.id || prevVal,
 				item;
-			if (empty) {
+			if(empty){
 				// 空のときは最初を選択する
 				item = items[0];
 				value = item && item.id;
-			} else {
-				for (var i = 0, l = items.length; i < l; i++) {
-					if (value == items[i].id) {
+			}else{
+				for(var i=0, l=items.length; i<l; i++) {
+					if (value == items[i].id){
 						item = items[i];
 						break;
 					}
 				}
 			}
-			if (item) {
+			if(item){
 				this.$input.autocomplete('clAutocompleteItem', item);
 			}
-			if (prevVal != value) {
+			if (prevVal != value){
 				this.element.val(value);
 			}
-			if (triggerChange) {
+			if (triggerChange){
 				this._triggerIfChanged(item);
-			} else {
+			}else{
 				this._previousId = value;
 			}
 		},
 
-		_refreshState: function () {
+		_refreshState: function(){
 			var disabled = this.element.prop('disabled');
 			this.setEnable(!disabled);
 		},
-
-		refresh: function () {
+		
+		refresh: function(){
 			var that = this;
 			this._refreshState();
-			this.items = this.element.children("option").map(function () {
+			this.items = this.element.children("option").map(function() {
 				var data = that._optionToData(this);
-				if (data.id) {
+				if (data.id){
 					return data;
 				}
 			});
@@ -32880,14 +32841,14 @@ $(function () {
 			return this;
 		},
 
-		setEnable: function (sw) {
-			if (arguments.length === 0 || sw) {
+		setEnable: function(sw){
+			if(arguments.length === 0 || sw){
 				this.element
 					.prop('disabled', false)
 
 					.next('.combobox-wrap')
 					.removeClass('disabled')
-
+				
 					.find('.combobox-input')
 					.attr('readonly', false)
 					.end()
@@ -32895,13 +32856,13 @@ $(function () {
 					.find('.combobox-btn')
 					.prop('disabled', false)
 					.end();
-			} else {
+			}else{
 				this.element
 					.prop('disabled', true)
 
 					.next('.combobox-wrap')
 					.addClass('disabled')
-
+				
 					.find('.combobox-input')
 					.attr('readonly', true)
 					.end()
@@ -32912,13 +32873,13 @@ $(function () {
 			}
 		},
 
-		val: function (value) {
+		val: function(value){
 			if (arguments.length) {
 				this.element.val(value);
 				this._refreshSelected();
-			} else {
+			}else{
 				var selected = this.element.children('option:selected');
-				if (!selected.length) {
+				if(!selected.length){
 					selected = this.element.children('option:first');
 				}
 				var val = selected.val();
@@ -32927,50 +32888,50 @@ $(function () {
 			return this;
 		},
 
-		open: function () {
+		open: function(){
 			var input = this.$input;
 			input.focus();
-
+			
 			// Pass empty string as value to search for, displaying all results
-			input.autocomplete("search", "");
+			input.autocomplete( "search", "" );
 		}
-	});
+    });
 
 	$.fn.combobox.defaults = {
 		width: 'auto',
-		select: function (e) {
+		select: function(e){
 			// console.log('**** comboboxselect');
 		}
 	};
 
 	var _selectpicker;
-	var callold = function (target, args) {
+	var callold = function(target, args){
 		var ret;
 		$.fn.selectpicker = $.fn.bootstrapSelect;
-		try {
+		try{
 			ret = $.fn.selectpicker.apply(target, args);
-		} catch (e) { }
+		}catch(e){}
 		$.fn.selectpicker = _selectpicker;
 		return ret;
 	};
-
-	window.useSelectpicker2 = function () {
+	
+	window.useSelectpicker2 = function(){
 		$.fn.bootstrapSelect = $.fn.selectpicker;
-		_selectpicker = $.fn.selectpicker = function (option, event) {
+		_selectpicker = $.fn.selectpicker = function(option, event) {
 			// console.log('**** selectpicker', option, event, this.attr('debug'));
 			//get the args of the outer function..
 			var ret, args = arguments;
 			var value;
 			var multiple = option && option.multiple;
-			if (multiple) {
+			if(multiple){
 				return callold(this, [option, event]);
-			} else {
+			}else{
 				var target = this.filter('[multiple]');
-				if (target.length) {
+				if (target.length){
 					value = callold(target, args);
 				}
 				target = this.filter(':not([multiple])');
-				if (target.length) {
+				if (target.length){
 					try {
 						value = $.fn.combobox.apply(target, args);
 					} catch (e) {
@@ -32978,27 +32939,27 @@ $(function () {
 					}
 				}
 			}
-			if (value !== undefined) {
+			if (value !== undefined){
 				return value;
-			} else {
+			}else{
 				return this;
 			}
 		};
 	};
 
-})(jQuery);
+})( jQuery );
 
 // perfectscrollbar のデフォルト設定変更 - { wheelPropagation: true }
-(function () {
+(function(){
 	if (!$.fn.perfectScrollbar) return;
 
 	var origFunc = $.fn.perfectScrollbar;
-	$.fn.perfectScrollbar = function () {
-		var argArray = _.map(arguments, function (x) { return x; });
-		if (argArray.length === 0) {
-			argArray.push({ wheelPropagation: true });
-		} else if (_.isObject(argArray[0])) {
-			_.defaults(argArray[0], { wheelPropagation: true });
+	$.fn.perfectScrollbar = function(){
+		var argArray = _.map(arguments, function(x){return x;});
+		if(argArray.length === 0){
+			argArray.push({wheelPropagation: true});
+		}else if(_.isObject(argArray[0])){
+			_.defaults(argArray[0], {wheelPropagation: true});
 		}
 		return origFunc.apply(this, argArray);
 	}
@@ -33030,7 +32991,7 @@ $(function () {
 	 * obj: ok押下時に渡したいオブジェクト
 	 * $dialog_area: ダイアログ表示エリアのオブジェクト デフォルトはcl_dialog_area
 	 */
-	exports.ConfirmDialog = function (msg, okcallback, cancelcallback, obj, $dialog_area) {
+	exports.ConfirmDialog = function(msg, okcallback, cancelcallback, obj, $dialog_area) {
 		var $dialogArea = $dialog_area == null ? $('#cl_dialog_area') : $dialog_area;
 		var html_source = "";
 		html_source += '<div class="modal wd1">';
@@ -33051,21 +33012,21 @@ $(function () {
 		var $modalBody = $wn.find('.modalBody');
 		var mW = $modalBody.innerWidth() / 2;
 		var mH = $modalBody.innerHeight() / 2;
-		$modalBody.css({ 'margin-left': -mW, 'margin-top': -mH });
+		$modalBody.css({'margin-left':-mW,'margin-top':-mH});
 		var $body = $("body").toggleClass("dialogIsOpen");
 
 		// Enterキーによるフォーカスをする。
 		clutil.leaveEnterFocusMode();
 		clutil.enterFocusMode({
-			view: $dialogArea
+			view : $dialogArea
 		});
 
 		// キャンセルボタンにフォーカス
 		$('.cl_cancel').focus();
 
 		// キャンセル、閉じるボタン
-		$(Config.cancelClickSelector).click(function () {
-			$wn.fadeOut(500, function () {
+		$(Config.cancelClickSelector).click(function(){
+			$wn.fadeOut(500, function(){
 				$dialogArea.empty();
 				$body.toggleClass("dialogIsOpen");
 				clutil.leaveEnterFocusMode();
@@ -33076,8 +33037,8 @@ $(function () {
 			});
 		});
 		// はいボタン
-		$(Config.okClickSelector).click(function () {
-			$wn.fadeOut(500, function () {
+		$(Config.okClickSelector).click(function(){
+			$wn.fadeOut(500, function(){
 				$dialogArea.empty();
 				$body.toggleClass("dialogIsOpen");
 				clutil.leaveEnterFocusMode();
@@ -33094,7 +33055,7 @@ $(function () {
 	 * msg: 表示するメッセージ
 	 * okcallback: ok押下時のcallback関数
 	 */
-	exports.ErrorDialog = function (msg, okcallback, obj, $dialog_area) {
+	exports.ErrorDialog = function(msg, okcallback, obj, $dialog_area) {
 		clutil.showDialog(msg, okcallback, 'wd2', 'txtDanger', obj, $dialog_area);
 	};
 	/**
@@ -33102,7 +33063,7 @@ $(function () {
 	 * msg: 表示するメッセージ
 	 * okcallback: ok押下時のcallback関数
 	 */
-	exports.WarningDialog = function (msg, okcallback, obj, $dialog_area) {
+	exports.WarningDialog = function(msg, okcallback, obj, $dialog_area) {
 		clutil.showDialog(msg, okcallback, 'wd3', 'txtWarning', obj, $dialog_area);
 	};
 	/**
@@ -33110,7 +33071,7 @@ $(function () {
 	 * msg: 表示するメッセージ
 	 * okcallback: ok押下時のcallback関数
 	 */
-	exports.MessageDialog = function (msg, okcallback, obj, $dialog_area) {
+	exports.MessageDialog = function(msg, okcallback, obj, $dialog_area) {
 		clutil.showDialog(msg, okcallback, 'wd4', 'txtInfo', obj, $dialog_area);
 	};
 	/**
@@ -33118,10 +33079,10 @@ $(function () {
 	 * msg: 表示するメッセージ
 	 * okcallback: ok押下時のcallback関数
 	 */
-	exports.MessageDialog2 = function (msg, okcallback, obj, $dialog_area) {
+	exports.MessageDialog2 = function(msg, okcallback, obj, $dialog_area) {
 		clutil.showDialog2(msg, okcallback, 'wd5', 'txtPrimary', obj, $dialog_area, 3000);
 	};
-	exports.MessageDialogShort = function (msg, okcallback, obj, $dialog_area) {
+	exports.MessageDialogShort = function(msg, okcallback, obj, $dialog_area) {
 		clutil.showDialog2(msg, okcallback, 'wd5', 'txtPrimary', obj, $dialog_area, 500);
 	};
 
@@ -33132,7 +33093,7 @@ $(function () {
 	 * wnclass: ダイアログのクラス
 	 * $dialog_area: ダイアログ表示エリアのオブジェクト デフォルトはcl_dialog_area
 	 */
-	exports.showDialog2 = function (msg, okcallback, wnclass, txtclass, obj, $dialog_area, millisec) {
+	exports.showDialog2 = function(msg, okcallback, wnclass, txtclass, obj, $dialog_area, millisec) {
 		console.log("DEBUG: millisec=" + millisec);
 		var $dialogArea = $dialog_area == null ? $('#cl_dialog_area') : $dialog_area;
 		var html_source = "";
@@ -33150,11 +33111,11 @@ $(function () {
 		var $msgBody = $wn.find('.msgBody');
 		var mW = $msgBody.innerWidth() / 2;
 		var mH = $msgBody.innerHeight() / 2;
-		$msgBody.css({ 'margin-left': -mW, 'margin-top': -mH });
+		$msgBody.css({'margin-left':-mW,'margin-top':-mH});
 		var $body = $("body").toggleClass("dialogIsOpen");
 
-		setTimeout(function () {
-			$wn.fadeOut(500, function () {
+		setTimeout(function() {
+			$wn.fadeOut(500, function(){
 				$dialogArea.empty();
 				$body.toggleClass("dialogIsOpen");
 				clutil.leaveEnterFocusMode();
@@ -33174,7 +33135,7 @@ $(function () {
 	 * wnclass: ダイアログのクラス
 	 * $dialog_area: ダイアログ表示エリアのオブジェクト デフォルトはcl_dialog_area
 	 */
-	exports.showDialog = function (msg, okcallback, wnclass, txtclass, obj, $dialog_area) {
+	exports.showDialog = function(msg, okcallback, wnclass, txtclass, obj, $dialog_area) {
 		var $dialogArea = $dialog_area == null ? $('#cl_dialog_area') : $dialog_area;
 		var html_source = "";
 		html_source += '<div class="modal ' + ((wnclass == null) ? '' : wnclass) + '">';
@@ -33194,21 +33155,21 @@ $(function () {
 		var $modalBody = $wn.find('.modalBody');
 		var mW = $modalBody.innerWidth() / 2;
 		var mH = $modalBody.innerHeight() / 2;
-		$modalBody.css({ 'margin-left': -mW, 'margin-top': -mH });
+		$modalBody.css({'margin-left':-mW,'margin-top':-mH});
 		var $body = $("body").toggleClass("dialogIsOpen");
 
 		// Enterキーによるフォーカスをする。
 		clutil.leaveEnterFocusMode();
 		clutil.enterFocusMode({
-			view: $dialogArea
+			view : $dialogArea
 		});
 
 		// OKボタンにフォーカス
 		$('.cl_ok').focus();
 
 		// キャンセル、閉じるボタン
-		$(Config.cancelClickSelector).click(function () {
-			$wn.fadeOut(500, function () {
+		$(Config.cancelClickSelector).click(function(){
+			$wn.fadeOut(500, function(){
 				$dialogArea.empty();
 				$body.toggleClass("dialogIsOpen");
 				clutil.leaveEnterFocusMode();
@@ -33219,8 +33180,8 @@ $(function () {
 			});
 		});
 		// はいボタン
-		$(Config.okClickSelector).click(function () {
-			$wn.fadeOut(500, function () {
+		$(Config.okClickSelector).click(function(){
+			$wn.fadeOut(500, function(){
 				$dialogArea.empty();
 				$body.toggleClass("dialogIsOpen");
 				clutil.leaveEnterFocusMode();
@@ -33236,34 +33197,34 @@ $(function () {
 	/**
 	 * 削除確認ダイアログ
 	 */
-	exports.delConfirmDialog = function (okcallback, cancelcallback, obj, $dialog_area) {
+	exports.delConfirmDialog = function(okcallback, cancelcallback, obj, $dialog_area) {
 		clutil.ConfirmDialog(clmsg.cl_rtype_del_confirm_chk, okcallback, cancelcallback, obj, $dialog_area);
 	};
 
 	/**
 	 * 削除完了ダイアログ
 	 */
-	exports.delMessageDialog = function (okcallback, obj, $dialog_area) {
+	exports.delMessageDialog = function(okcallback, obj, $dialog_area) {
 		clutil.MessageDialog(clmsg.cl_rtype_del_confirm, okcallback, obj, $dialog_area);
 	};
 
 	/**
 	 * 更新確認ダイアログ
 	 */
-	exports.updConfirmDialog = function (okcallback, cancelcallback, obj, $dialog_area) {
+	exports.updConfirmDialog = function(okcallback, cancelcallback, obj, $dialog_area) {
 		clutil.ConfirmDialog(clmsg.cl_rtype_upd_confirm_chk, okcallback, cancelcallback, obj, $dialog_area);
 	};
 
 	/**
 	 * 更新完了ダイアログ
 	 */
-	exports.updMessageDialog = function (okcallback, obj, $dialog_area) {
+	exports.updMessageDialog = function(okcallback, obj, $dialog_area) {
 		var arg;
-		if (arguments.length === 1 && !_.isFunction(arguments[0])) {
+		if(arguments.length === 1 && !_.isFunction(arguments[0])){
 			arg = _.defaults(arguments[0], {
 				message: clmsg.cl_rtype_upd_confirm
 			});
-		} else {
+		}else{
 			arg = {
 				message: clmsg.cl_rtype_upd_confirm,
 				okCallback: okcallback,
@@ -33274,13 +33235,13 @@ $(function () {
 		//clutil.MessageDialog(arg.message, arg.okCallback, arg.okCallbackArg, arg.$dialog_area);
 		clutil.MessageDialog2(arg.message, arg.okCallback, arg.okCallbackArg, arg.$dialog_area);
 	};
-	exports.updMessageDialogShort = function (okcallback, obj, $dialog_area) {
+	exports.updMessageDialogShort = function(okcallback, obj, $dialog_area) {
 		var arg;
-		if (arguments.length === 1 && !_.isFunction(arguments[0])) {
+		if(arguments.length === 1 && !_.isFunction(arguments[0])){
 			arg = _.defaults(arguments[0], {
 				message: clmsg.cl_rtype_upd_confirm
 			});
-		} else {
+		}else{
 			arg = {
 				message: clmsg.cl_rtype_upd_confirm,
 				okCallback: okcallback,
@@ -33295,14 +33256,14 @@ $(function () {
 	/**
 	 * 削除取消確認ダイアログ
 	 */
-	exports.delCancelConfirmDialog = function (okcallback, cancelcallback, obj, $dialog_area) {
+	exports.delCancelConfirmDialog = function(okcallback, cancelcallback, obj, $dialog_area) {
 		clutil.ConfirmDialog(clmsg.cl_rtype_delcancel_confirm_chk, okcallback, cancelcallback, obj, $dialog_area);
 	};
 
 	/**
 	 * 削除取消完了ダイアログ
 	 */
-	exports.delCancelMessageDialog = function (okcallback, obj, $dialog_area) {
+	exports.delCancelMessageDialog = function(okcallback, obj, $dialog_area) {
 		clutil.MessageDialog(clmsg.cl_rtype_delcancel_confirm, okcallback, obj, $dialog_area);
 	};
 
@@ -33327,46 +33288,46 @@ $(function () {
 		'<tr data-cid="<%- cid %>">' +
 		'<td><input class="delcheck" type="checkbox" <%- checked %>></td>' +
 		'<td><%- no %></td>' +
-		//		'<td><a target="_blank" href="<%- uri %>"><%- filename %></a></td>' +
+//		'<td><a target="_blank" href="<%- uri %>"><%- filename %></a></td>' +
 		'<td><a target="_blank" file-id="<%- id %>" file-uri="<%- uri %>" class="cl_filedownld"><%- filename %></a></td>' +
 		'</tr>'
 	);
 
-	//	function adjustPosition(cursor) {
-	//		var input, wrapper,
-	//		wrapperX, wrapperY,
-	//		inputWidth, inputHeight,
-	//		cursorX, cursorY,
-	//		moveInputX, moveInputY;
-	//
-	//		// This wrapper element (the button surround this file input)
-	//		wrapper = $(this);
-	//		// The invisible file input element
-	//		input = wrapper.find("input[type=file]");
-	//		// The left-most position of the wrapper
-	//		wrapperX = wrapper.offset().left;
-	//		// The top-most position of the wrapper
-	//		wrapperY = wrapper.offset().top;
-	//		// The with of the browsers input field
-	//		inputWidth= input.width();
-	//		// The height of the browsers input field
-	//		inputHeight= input.height();
-	//		//The position of the cursor in the wrapper
-	//		cursorX = cursor.pageX;
-	//		cursorY = cursor.pageY;
-	//
-	//		//The positions we are to move the invisible file input
-	//		// The 20 at the end is an arbitrary number of pixels that we can shift the input such that cursor is not pointing at the end of the Browse button but somewhere nearer the middle
-	//		moveInputX = cursorX - wrapperX - inputWidth + 20;
-	//		// Slides the invisible input Browse button to be positioned middle under the cursor
-	//		moveInputY = cursorY- wrapperY - (inputHeight/2);
-	//
-	//		// Apply the positioning styles to actually move the invisible file input
-	//		input.css({
-	//			left:moveInputX,
-	//			top:moveInputY
-	//		});
-	//	}
+//	function adjustPosition(cursor) {
+//		var input, wrapper,
+//		wrapperX, wrapperY,
+//		inputWidth, inputHeight,
+//		cursorX, cursorY,
+//		moveInputX, moveInputY;
+//
+//		// This wrapper element (the button surround this file input)
+//		wrapper = $(this);
+//		// The invisible file input element
+//		input = wrapper.find("input[type=file]");
+//		// The left-most position of the wrapper
+//		wrapperX = wrapper.offset().left;
+//		// The top-most position of the wrapper
+//		wrapperY = wrapper.offset().top;
+//		// The with of the browsers input field
+//		inputWidth= input.width();
+//		// The height of the browsers input field
+//		inputHeight= input.height();
+//		//The position of the cursor in the wrapper
+//		cursorX = cursor.pageX;
+//		cursorY = cursor.pageY;
+//
+//		//The positions we are to move the invisible file input
+//		// The 20 at the end is an arbitrary number of pixels that we can shift the input such that cursor is not pointing at the end of the Browse button but somewhere nearer the middle
+//		moveInputX = cursorX - wrapperX - inputWidth + 20;
+//		// Slides the invisible input Browse button to be positioned middle under the cursor
+//		moveInputY = cursorY- wrapperY - (inputHeight/2);
+//
+//		// Apply the positioning styles to actually move the invisible file input
+//		input.css({
+//			left:moveInputX,
+//			top:moveInputY
+//		});
+//	}
 
 	// input type='file'をaタグでwrapする
 	function wrapInputElement($elem, $button) {
@@ -33376,8 +33337,8 @@ $(function () {
 		// ).hide();
 		var href = 'javascript:void(0)';//'';//'#';
 		$button.before(
-			'<a href="' + href + '" class="file-input-wrapper ' + $button.attr('class') + '">' +
-			$button.text() + input + '</a>'
+				'<a href="' + href + '" class="file-input-wrapper ' + $button.attr('class') + '">' +
+				$button.text() + input + '</a>'
 		).hide();
 		$elem.remove();
 	}
@@ -33399,7 +33360,7 @@ $(function () {
 		url: clcom.uploadDestUri,	// '/system/api/am_cm_fileupload',
 
 		events: {
-			'click input[type=file]': function (e) {
+			'click input[type=file]': function(e){
 				return this.beforeShowFileChooser();
 			},
 			'change input[type=file]': 'inputChanged',
@@ -33415,10 +33376,10 @@ $(function () {
 		// <a> タグ内のmousemove で、内部の input[type=file] がストーキングするおまじない。
 		_adjustPosition: function (cursor) {
 			var input, wrapper,
-				wrapperX, wrapperY,
-				inputWidth, inputHeight,
-				cursorX, cursorY,
-				moveInputX, moveInputY;
+			wrapperX, wrapperY,
+			inputWidth, inputHeight,
+			cursorX, cursorY,
+			moveInputX, moveInputY;
 
 			// This wrapper element (the button surround this file input)
 			wrapper = $(cursor.target);//$(this);
@@ -33429,9 +33390,9 @@ $(function () {
 			// The top-most position of the wrapper
 			wrapperY = wrapper.offset().top;
 			// The with of the browsers input field
-			inputWidth = input.width();
+			inputWidth= input.width();
 			// The height of the browsers input field
-			inputHeight = input.height();
+			inputHeight= input.height();
 			//The position of the cursor in the wrapper
 			cursorX = cursor.pageX;
 			cursorY = cursor.pageY;
@@ -33440,17 +33401,17 @@ $(function () {
 			// The 20 at the end is an arbitrary number of pixels that we can shift the input such that cursor is not pointing at the end of the Browse button but somewhere nearer the middle
 			moveInputX = cursorX - wrapperX - inputWidth + 20;
 			// Slides the invisible input Browse button to be positioned middle under the cursor
-			moveInputY = cursorY - wrapperY - (inputHeight / 2);
+			moveInputY = cursorY- wrapperY - (inputHeight/2);
 
 			// Apply the positioning styles to actually move the invisible file input
 			input.css({
-				left: moveInputX,
-				top: moveInputY
+				left:moveInputX,
+				top:moveInputY
 			});
 		},
 
-		beforeShowFileChooser: function () {
-			if (!_.isFunction(this.options.beforeShowFileChooser)) {
+		beforeShowFileChooser: function(){
+			if(!_.isFunction(this.options.beforeShowFileChooser)){
 				return true;
 			}
 			// 明示的に false を返さないと、キャンセル扱いにしない。
@@ -33466,17 +33427,17 @@ $(function () {
 			this.$fileInput.attr('name', 'file');
 			wrapInputElement(this.$fileInput, this.$('.cl-file-attach'));
 			this.$fileInput = this.$('input[type=file]');
-			//			this.$('.file-input-wrapper').mousemove(adjustPosition);
+//			this.$('.file-input-wrapper').mousemove(adjustPosition);
 			this.vent = this.options.vent;
 		},
 
 		onUploadSuccess: function (data, dataType) {
 			var filename = getFileName(this.$fileInput.val()),
-				file = {
-					id: data.id,            // ファイル識別子
-					filename: filename,
-					uri: data.uri           // ファイル取得用URI
-				};
+			file = {
+				id: data.id,            // ファイル識別子
+				filename: filename,
+				uri: data.uri           // ファイル取得用URI
+			};
 			if (this.options.selectMode === 'single') {
 				this.collection.reset([file]);
 			} else {
@@ -33497,7 +33458,7 @@ $(function () {
 
 		onUploadComplete: function (jqXHR, textStatus) {
 			var $form = this.$fileInput.closest('form'),
-				form = $form.get(0);
+			form = $form.get(0);
 			$form.find('.cl-file-attr').remove();
 
 			if (form) {
@@ -33511,8 +33472,8 @@ $(function () {
 
 		inputChanged: function (event) {
 			var filename = getFileName(this.$fileInput.val()),
-				$form = this.$fileInput.wrap('<form>').parent(),
-				$hidden = $('<input class="cl-file-attr" name="attr" type="hidden">').appendTo($form);
+			$form = this.$fileInput.wrap('<form>').parent(),
+			$hidden = $('<input class="cl-file-attr" name="attr" type="hidden">').appendTo($form);
 
 			$hidden.val(JSON.stringify({
 				filename: filename
@@ -33541,8 +33502,8 @@ $(function () {
 	});
 
 	var fileLabelTemplate = _.template(
-		//			'<a target="_blank" href="<%- uri %>"><%- filename %></a>'
-		'<a target="_blank" file-id="<%- id %>" file-uri="<%- uri %>" class="cl_filedownld"><%- filename %></a>'
+//			'<a target="_blank" href="<%- uri %>"><%- filename %></a>'
+			'<a target="_blank" file-id="<%- id %>" file-uri="<%- uri %>" class="cl_filedownld"><%- filename %></a>'
 	);
 	var FileLabel = Backbone.View.extend({
 		initialize: function (options) {
@@ -33559,7 +33520,7 @@ $(function () {
 			this.collection.some(function (model) {
 				this.$el.html(fileLabelTemplate(this.serializeData(model)));
 
-				$('.cl_filedownld').click(function (e) {
+				$('.cl_filedownld').click(function(e){
 					var uri = $(e.target).attr('file-uri');
 					var id = $(e.target).attr('file-id');
 					clutil.download(uri, id);
@@ -33590,7 +33551,7 @@ $(function () {
 
 		initialize: function (options) {
 			_.bindAll(this);
-			this.$el.html(this.tableTemplate({ headerFileName: options.headerFileName || '添付ファイル' }));
+			this.$el.html(this.tableTemplate({headerFileName: options.headerFileName || '添付ファイル'}));
 			this.listenTo(this.collection, 'add', this.addOne);
 			this.listenTo(this.collection, 'reset', this.addAll);
 			this.listenTo(this.collection, 'remove', this.addAll);
@@ -33601,7 +33562,7 @@ $(function () {
 			var serialized = _.extend(model.toJSON(), {
 				no: model.collection.indexOf(model) + 1,
 				cid: model.cid,
-				checked: model.checked ? 'checked' : ''
+				checked: model.checked ? 'checked': ''
 			});
 			return serialized;
 		},
@@ -33623,10 +33584,10 @@ $(function () {
 
 		checkItem2: function (input) {
 			var $input = $(input),
-				$tr = $input.parents('tr'),
-				cid = $tr.attr('data-cid'),
-				model = this.collection.get(cid);
-			model.set({ checked: $input.is(':checked') });
+			$tr = $input.parents('tr'),
+			cid = $tr.attr('data-cid'),
+			model = this.collection.get(cid);
+			model.set({checked: $input.is(':checked')});
 		},
 
 		toggleAll: function () {
@@ -33699,29 +33660,29 @@ $(function () {
 
 		var vent = _.extend({}, Backbone.Events),
 
-			normalizeFiles = function (files) {
-				return _.map(files, function (file) {
-					return {
-						id: file[options['id']],
-						filename: file[options.filename],
-						uri: file[options.uri]
-					};
-				});
-			},
+		normalizeFiles = function (files) {
+			return _.map(files, function (file) {
+				return {
+					id: file[options['id']],
+					filename: file[options.filename],
+					uri: file[options.uri]
+				};
+			});
+		},
 
-			collection = new Collection(normalizeFiles(options.files)),
+		collection = new Collection(normalizeFiles(options.files)),
 
-			fileInputView = new FileInputView({
-				el: options.fileInput,
-				selectMode: selectMode,
-				collection: collection,
-				showDialogOnError: options.showDialogOnError,
-				beforeShowFileChooser: options.beforeShowFileChooser,
-				vent: vent
-			}),
+		fileInputView = new FileInputView({
+			el: options.fileInput,
+			selectMode: selectMode,
+			collection: collection,
+			showDialogOnError: options.showDialogOnError,
+			beforeShowFileChooser: options.beforeShowFileChooser,
+			vent: vent
+		}),
 
-			fileAttachTable,
-			fileLabel;
+		fileAttachTable,
+		fileLabel;
 
 		if (options.fileTable) {
 			fileAttachTable = new FileAttachTable(_.defaults({
@@ -33798,12 +33759,12 @@ $(function () {
 * http://flaviusmatis.github.com/license.html
 */
 
-(function ($) {
+(function($){
 
 	// コンボボックスの選択値
 	var dispSelect = null;
 	var methods = {
-		init: function (options) {
+		init: function(options) {
 			var o = $.extend({
 				items: 1,
 				itemsOnPage: 10,
@@ -33815,29 +33776,29 @@ $(function () {
 				prevText: '&nbsp;',
 				nextText: '&nbsp;',
 				ellipseText: '&hellip;',
-				isselect: true,	// コンボ表示フラグ defaultは表示（互換用） ⇒ MD 版では itemsOnPageSelection で指定
+				isselect : true,	// コンボ表示フラグ defaultは表示（互換用） ⇒ MD 版では itemsOnPageSelection で指定
 				itemsOnPageSelection: null,
 				//cssStyle: 'light-theme',
-				onPageClickBefore: function (pageNumber, itemsOnPage, cancel) {
+				onPageClickBefore: function(pageNumber, itemsOnPage, cancel) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onSelectChange: function (itemsOnPage, cancel) {
+				onSelectChange: function(itemsOnPage, cancel) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onPageClick: function (pageNumber, itemsOnPage) {
+				onPageClick: function(pageNumber, itemsOnPage) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onSelectChange: function (itemsOnPage) {
+				onSelectChange: function(itemsOnPage) {
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
-				onInit: function () {
+				onInit: function() {
 					// Callback triggered immediately after initialization
 				},
-				displaypanel: 'displaypanel'
+				displaypanel : 'displaypanel'
 			}, options || {});
 
 			var self = this;
@@ -33846,7 +33807,7 @@ $(function () {
 			o.currentPage = o.currentPage - 1;
 			o.halfDisplayed = o.displayedPages / 2;
 
-			this.each(function () {
+			this.each(function() {
 				self.addClass(o.cssStyle).data('pagination', o);
 				methods._draw.call(self);
 			});
@@ -33856,12 +33817,12 @@ $(function () {
 			return this;
 		},
 
-		selectPage: function (page) {
+		selectPage: function(page) {
 			methods._selectPage.call(this, page - 1);
 			return this;
 		},
 
-		prevPage: function () {
+		prevPage: function() {
 			var o = this.data('pagination');
 			if (o.currentPage > 0) {
 				methods._selectPage.call(this, o.currentPage - 1);
@@ -33869,7 +33830,7 @@ $(function () {
 			return this;
 		},
 
-		nextPage: function () {
+		nextPage: function() {
 			var o = this.data('pagination');
 			if (o.currentPage < o.pages - 1) {
 				methods._selectPage.call(this, o.currentPage + 1);
@@ -33877,17 +33838,17 @@ $(function () {
 			return this;
 		},
 
-		destroy: function () {
+		destroy: function(){
 			this.empty();
 			return this;
 		},
 
-		redraw: function () {
+		redraw: function(){
 			methods._draw.call(this);
 			return this;
 		},
 
-		disable: function () {
+		disable: function(){
 			var o = this.data('pagination');
 			o.disabled = true;
 			this.data('pagination', o);
@@ -33895,7 +33856,7 @@ $(function () {
 			return this;
 		},
 
-		enable: function () {
+		enable: function(){
 			var o = this.data('pagination');
 			o.disabled = false;
 			this.data('pagination', o);
@@ -33903,7 +33864,7 @@ $(function () {
 			return this;
 		},
 
-		_draw: function () {
+		_draw: function() {
 			var self = this, options, $link, o = self.data('pagination');
 			var $panel = this,
 				o = $panel.data('pagination'),
@@ -33914,26 +33875,26 @@ $(function () {
 
 			// o.itemsOnPage 補正
 			{
-				if ($.isArray(o.itemsOnPageSelection) && o.itemsOnPageSelection.length > 0) {
+				if($.isArray(o.itemsOnPageSelection) && o.itemsOnPageSelection.length > 0){
 					var fixItemsOnPage = null;
-					for (i = 0; i < o.itemsOnPageSelection.length; i++) {
-						if (o.itemsOnPage === o.itemsOnPageSelection[i]) {
+					for(i = 0; i < o.itemsOnPageSelection.length; i++) {
+						if(o.itemsOnPage === o.itemsOnPageSelection[i]){
 							fixItemsOnPage = o.itemsOnPageSelection[i];
 						}
 					}
-					if (fixItemsOnPage === null) {
+					if(fixItemsOnPage === null){
 						fixItemsOnPage = o.itemsOnPageSelection[0];
 					}
 					o.itemsOnPage = fixItemsOnPage;
-				} else if (o.isselect) {
+				}else if(o.isselect){
 					// 旧 I/F 互換用。
-					o.itemsOnPageSelection = [10, 25, 100];
-					switch (o.itemsOnPage) {
-						case 25:
-						case 100:
-							break;
-						default:
-							o.itemsOnPage = o.itemsOnPageSelection[0];
+					o.itemsOnPageSelection = [ 10, 25, 100 ];
+					switch(o.itemsOnPage){
+					case 25:
+					case 100:
+						break;
+					default:
+						o.itemsOnPage = o.itemsOnPageSelection[0];
 					}
 				}
 			}
@@ -33954,14 +33915,14 @@ $(function () {
 				}
 
 				var dp = null;
-				if (o.displaypanel instanceof Object) {
+				if(o.displaypanel instanceof Object){
 					dp = o.displaypanel;
-				} else {
+				}else{
 					dp = $('#' + o.displaypanel).empty();
 				}
 
 				// 選択されている表示件数には<a>タグはつけない
-				var makenum = function (n) {
+				var makenum = function(n) {
 					var s = '<span class="pagination_select';
 					if (n == o.itemsOnPage) {
 						s += 'selected';
@@ -33970,7 +33931,7 @@ $(function () {
 					if (n != o.itemsOnPage) {
 						s += '<a>' + n + '</a>';
 					} else {
-						s += n;
+							s += n;
 					}
 					s += '</span>';
 					return s;
@@ -33978,46 +33939,46 @@ $(function () {
 
 				// 表示件数エリア - itemsOnPageSelection 指定されている場合はページ内件数を変更するセレクタ要素を付け加える。
 				var str = '<div class="count">' + currentitem + '-' + lastitem + '表示 / ' + o.items + '件中 </div>';
-				if ($.isArray(o.itemsOnPageSelection) && o.itemsOnPageSelection.length > 0) {
+				if($.isArray(o.itemsOnPageSelection) && o.itemsOnPageSelection.length > 0){
 					str += '<div class="viewnum">'
-						+ '<p class="group">表示件数：';
-					for (i = 0; i < o.itemsOnPageSelection.length; i++) {
+						+  '<p class="group">表示件数：';
+					for(i = 0; i < o.itemsOnPageSelection.length; i++){
 						str += makenum(o.itemsOnPageSelection[i]);
 					}
 					str += '</p>'
-						+ '</div>';
+						+  '</div>';
 				}
 				dp.empty().append(str);
 
 				dp.find('span.pagination_select').removeClass('selected');
 				dp.find('span.pagination_select[num=' + o.itemsOnPage + ']').addClass('selected');
-				dp.find('span.pagination_select').click(function (e) {
+				dp.find('span.pagination_select').click(function(e){
 					var num = parseInt($(e.target).closest('span.pagination_select').attr('num'));
 					var ev = {
 						itemsOnPage: num,
-						cancel: function () {
+						cancel: function(){
 							this._cancel = true;
 							return this.commit;
 						},
-						commit: function () {
+						commit: function(){
 							o.itemsOnPage = num;
 						}
 					};
 					o.onSelectChangeBefore(ev);
 					console.log("select: " + num, 'cancel: ', ev._cancel);
-					if (ev._cancel) return this;
-
+					if(ev._cancel) return this;
+					
 					ev.commit();
 					o.onSelectChange(num);
-
-					return this;
-					//処理を記述する
+					
+					 return this;
+				    //処理を記述する
 				});
 			}
 
 			// Generate Prev link
 			if (o.prevText) {
-				methods._appendItem.call(this, o.currentPage - 1, { text: o.prevText, classes: 'previous', a_class: 'fui-arrow-left' });
+				methods._appendItem.call(this, o.currentPage - 1, {text: o.prevText, classes: 'previous', a_class: 'fui-arrow-left'});
 			}
 
 			// Generate start edges
@@ -34049,27 +34010,27 @@ $(function () {
 
 			// Generate Next link
 			if (o.nextText) {
-				methods._appendItem.call(this, o.currentPage + 1, { text: o.nextText, classes: 'next', a_class: 'fui-arrow-right' });
+				methods._appendItem.call(this, o.currentPage + 1, {text: o.nextText, classes: 'next', a_class: 'fui-arrow-right'});
 			}
 
 		},
 
-		_getInterval: function (o) {
+		_getInterval: function(o) {
 			return {
 				start: Math.ceil(o.currentPage > o.halfDisplayed ? Math.max(Math.min(o.currentPage - o.halfDisplayed, (o.pages - o.displayedPages)), 0) : 0),
 				end: Math.ceil(o.currentPage > o.halfDisplayed ? Math.min(o.currentPage + o.halfDisplayed, o.pages) : Math.min(o.displayedPages, o.pages))
 			};
 		},
 
-		_appendItem: function (pageIndex, opts) {
+		_appendItem: function(pageIndex, opts) {
 			var self = this, options, $link, o = self.data('pagination');
 
 			pageIndex = pageIndex < 0 ? 0 : (pageIndex < o.pages ? pageIndex : o.pages - 1);
 
 			options = $.extend({
-				//fix: kaeriyama
+//fix: kaeriyama
 				a_class: '',
-				//---
+//---
 				text: pageIndex + 1,
 				classes: ''
 			}, opts || {});
@@ -34078,12 +34039,12 @@ $(function () {
 				$link = $('<li class="active"><span class="current">' + (options.text) + '</span></li>');
 			} else {
 				//$link = $('<a href="' + o.hrefText + (pageIndex + 1) + '" class="page-link">' + (options.text) + '</a>');
-				//fix: kaeriyama: フォーカス制御から外すため、href を付けない。
-				//				$link = $('<li><a href="' + o.hrefText + (pageIndex + 1) + '" class="page ' + (options.a_class) +'">' + (options.text) + '</a></li>');
-				//---
-				$link = $('<li><a class="page ' + (options.a_class) + '">' + (options.text) + '</a></li>');
-				//
-				$link.click(function () {
+//fix: kaeriyama: フォーカス制御から外すため、href を付けない。
+//				$link = $('<li><a href="' + o.hrefText + (pageIndex + 1) + '" class="page ' + (options.a_class) +'">' + (options.text) + '</a></li>');
+//---
+				$link = $('<li><a class="page ' + (options.a_class) +'">' + (options.text) + '</a></li>');
+//
+				$link.click(function(){
 					methods._selectPage.call(self, pageIndex);
 				});
 			}
@@ -34095,32 +34056,32 @@ $(function () {
 			self.append($link);
 		},
 
-		_selectPage: function (pageIndex) {
+		_selectPage: function(pageIndex) {
 			var that = this, o = this.data('pagination');
 			var ev = {
 				pageIndex: pageIndex + 1,
 				itemsOnPage: o.itemsOnPage,
-				cancel: function () {
+				cancel: function(){
 					this._cancel = true;
 					return this.commit;
 				},
 				_cancel: false,
-				commit: function () {
+				commit: function(){
 					var o = that.data('pagination');
 					o.currentPage = pageIndex;
 				}
 			};
 			o.onPageClickBefore(ev);
-			if (ev._cancel) {
+			if(ev._cancel){
 				return;
 			}
 			ev.commit();
-			o.onPageClick(pageIndex + 1, o.itemsOnPage);
-		}
+				o.onPageClick(pageIndex + 1, o.itemsOnPage);
+			}
 
 	};
 
-	$.fn.pagination = function (method) {
+	$.fn.pagination = function(method) {
 
 		// Method calling logic
 		if (methods[method] && method.charAt(0) != '_') {
@@ -34128,7 +34089,7 @@ $(function () {
 		} else if (typeof method === 'object' || !method) {
 			return methods.init.apply(this, arguments);
 		} else {
-			$.error('Method ' + method + ' does not exist on jQuery.pagination');
+			$.error('Method ' +  method + ' does not exist on jQuery.pagination');
 		}
 
 	};
@@ -34139,63 +34100,63 @@ $(function () {
  * ORIGINAL - clstart.js
  */
 jQuery.ajaxSetup({
-	//	timeout: 3 * 60 * 1000		// タイムアウト3分
+//	timeout: 3 * 60 * 1000		// タイムアウト3分
 	timeout: 10 * 60 * 1000		// タイムアウト10分
 });
 
-(function () {
+(function(){
 	// cltxtFieldLimitへのイベントのとりまわし
 	clutil.mediator.on({
 		// data2view時にカウンターを更新
-		'data2view:done': function () {
+		'data2view:done': function(){
 			clutil.mediator.trigger('cltxtFieldLimit:requireUpdateRemain');
 		}
 	});
 
 	$.inputlimiter.vent.on({
 		// inputlimiterの入力制限時にカウンターを更新
-		'inputlimiter:change': function () {
+		'inputlimiter:change': function(){
 			clutil.mediator.trigger('cltxtFieldLimit:requireUpdateRemain');
 		}
 	});
 }());
 
-$(function () {
+$(function(){
 	var kinsokuRegxp = new RegExp("[" + clcom.kinsokuTable + "]", "g");
 	var errorTemplate = _.template(
 		'禁則文字が入力されたため、以下の文字は削除されました。\n\n' +
-		'<%= it.errors.join("、") %>', null, { variable: 'it' });
-	$(document).on('blur', 'input[type=text],textarea', function (e) {
-		try {
+			'<%= it.errors.join("、") %>', null, {variable: 'it'});
+	$(document).on('blur', 'input[type=text],textarea', function(e){
+		try{
 			var $input = $(e.currentTarget);
 			var value = $input.val();
-			if (!value) return;
+			if(!value) return;
 			var msg, hasError, errors = {};
-			value = value.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function (err) {
+			value = value.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(err){
 				hasError = true;
-				errors[err] = 1;
+				errors[err]=1;
 				return '';
 			});
 
-			value = value.replace(kinsokuRegxp, function (err) {
+			value = value.replace(kinsokuRegxp, function(err){
 				hasError = true;
-				errors[err] = 1;
+				errors[err]=1;
 				return '';
 			});
 
-			if (hasError) {
-				msg = errorTemplate({ errors: _.keys(errors) });
+			if(hasError){
+				msg = errorTemplate({errors: _.keys(errors)});
 				$input.val(value);
 				$input.trigger('change');
 				alert(msg);
 			}
-		} catch (err) {
+		}catch(err){
 			console.error(err);
 		}
 	});
 });
 
-$(function () {
+$(function(){
 	// 共通の入力制限を設定する：
 	// 1. 4バイトなunicode文字の入力を制限する
 	// 2. 禁則文字表による制限を行う
@@ -34209,41 +34170,41 @@ $(function () {
 	$.inputlimiter.start();
 });
 
-(function () {
+(function(){
 	clutil.permcntl.getReadonlySwitcher().setHandlers({
 		// MDBaseView フッタナビ部
 		'#mainColumnFooter .cl_submit': {
-			off: function ($el) {
+			off: function($el){
 				$el.removeAttr('disabled').parent().removeClass('disable');
 			},
-			on: function ($el) {
-				$el.attr('disabled', 'disabled').parent().addClass('disable');
+			on: function($el){
+				$el.attr('disabled','disabled').parent().addClass('disable');
 			},
-			check: function ($el) {
+			check: function($el){
 				return $el.parent().hasClass('disable');
 			}
 		},
 		// MDBaseView ダウンロードボタン
 		'#mainColumnFooter .cl_download': {
-			off: function ($el) {
+			off: function($el){
 				$el.removeAttr('disabled').parent().removeClass('disable');
 			},
-			on: function ($el) {
-				$el.attr('disabled', 'disabled').parent().addClass('disable');
+			on: function($el){
+				$el.attr('disabled','disabled').parent().addClass('disable');
 			},
-			check: function ($el) {
+			check: function($el){
 				return $el.parent().hasClass('disable');
 			}
 		},
 		// 「＋新規追加」ボタン
 		'a#cl_new': {
-			off: function ($el) {
+			off: function($el){
 				$el.removeAttr('disabled');
 			},
-			on: function ($el) {
+			on: function($el){
 				$el.attr('disabled', true);
 			},
-			check: function ($el) {
+			check: function($el){
 				return $el.attr('disabled') == 'disabled';
 			}
 		}
@@ -34252,8 +34213,8 @@ $(function () {
 
 // bootstrap-selctのプルダウンのボタンにフォーカス時にENTERでプルダウン
 // をオープンするのでなく次のフィールドに移動する。
-$(document).on('keydown', '.selectpicker.dropdown-toggle', function (e) {
-	if (e.which === 13 || e.which === 108) {
+$(document).on('keydown', '.selectpicker.dropdown-toggle', function(e){
+	if(e.which === 13 || e.which ===108){
 		e.preventDefault();
 	}
 });
@@ -34307,15 +34268,15 @@ $(document).on('keydown', '.selectpicker.dropdown-toggle', function (e) {
 			'10.1.3.176',		// aokmd98.suri.co.jp
 			'10.1.3.177'		// aokmd99.suri.co.jp
 		],
-		isTestHost: function (hostname) {
-			return _.find(this.testHosts, function (hostname) { return hostname == location.hostname; });
+		isTestHost: function(hostname){
+			return _.find(this.testHosts, function(hostname){ return hostname == location.hostname;});
 		},
-		doApply: function () {
+		doApply: function(){
 			var testCSS = '<link media="screen" rel="stylesheet" type="text/css" href="/css/test.css">';
 			$('head > link[rel="stylesheet"][href$="\/css\/style.css"]').after(testCSS);
 		}
 	};
-	if (TestStyleCtrl.isTestHost(location.hostname)) {
+	if(TestStyleCtrl.isTestHost(location.hostname)){
 		TestStyleCtrl.doApply();
 	}
 	// ------------------------------------------------------------------------

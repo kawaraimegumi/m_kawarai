@@ -4,22 +4,26 @@ $(function () {
   $.inputlimiter.noTrim = true; //字数制限エラー等の刈取り防止
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
-  const MainView = Backbone.View.extend({
+  const XXXXV0000 = Backbone.View.extend({
     el: $('#ca_main'),
+    events: {},
 
     initialize: function () {
       this.baseView = new clutil.View.MDBaseView({
-        title: '空画面',
+        title: 'POS外売上一覧',
         subtitle: '',
       })
         .initUIElement()
         .render();
+        clutil.clbusunitselector(this.$('#業態'), 1);
+        clutil.datepicker(this.$('#テスト1'));
+        clutil.datepicker(this.$('#テスト2'));
     },
   });
 
   return clutil.getIniJSON().then(
     (response) => {
-      mainView = new MainView();
+      mainView = new XXXXV0000();
     },
     (response) => {
       clutil.View.doAbort({

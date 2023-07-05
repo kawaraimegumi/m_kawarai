@@ -43,8 +43,8 @@ $(function () {
         return paginationView.render();
       });
 
-      const $table = this.multiple ? this.$('#table2') : this.$('#table1');
-      this.rowSelectListView = new clutil.View.RowSelectListView({
+      const $table = this.multiple ? this.$('#list2') : this.$('#list1');
+      this.listView = new clutil.View.RowSelectListView({
         el: $table.show(),
         template: _.template($table.find('script').html()),
         groupid: this.cid,
@@ -171,7 +171,7 @@ $(function () {
               return;
             }
             _.extend(this, { request: request, response: response });
-            this.rowSelectListView.setRecs(list);
+            this.listView.setRecs(list);
             this.controlSrchArea.show_result();
           })
           // モック用
@@ -207,7 +207,7 @@ $(function () {
       addtoSelected.set(
         _(addtoSelected.get())
           .chain()
-          .union(this.rowSelectListView.getSelectedRecs())
+          .union(this.listView.getSelectedRecs())
           .uniq((rec) => {
             return rec.bbcustId;
           })
@@ -243,7 +243,7 @@ $(function () {
       }
       const data = this.multiple
         ? this.addtoSelected.get()
-        : this.rowSelectListView.getSelectedRecs();
+        : this.listView.getSelectedRecs();
       this.hide();
       this.callback(data);
     },
