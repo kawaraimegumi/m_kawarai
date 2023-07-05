@@ -118,13 +118,13 @@
                       <tr class="csptr">
                         <!-- ★ -->
                         <td class="cl_checkbox_selectrec"></td>
-                        <td><%= keijoudate %></td>
+                        <td><%= clutil.dateFormat(keijoudate, 'yyyy/mm/dd') %></td>
                         <td><%= code %></td>
                         <td><%= storename %></td>
-                        <td><%= denpyodate %></td>
+                        <td><%= clutil.dateFormat(denpyodate, 'yyyy/mm/dd') %></td>
                         <td><%= denpyoNum %></td>
-                        <td><%= count %></td>
-                        <td><%= value %></td>
+                        <td class="text-right"><%= clutil.comma(count) %></td>
+                        <td class="text-right"><%= clutil.comma(value) %></td>
                       </tr>
                     </script>
                   </table>

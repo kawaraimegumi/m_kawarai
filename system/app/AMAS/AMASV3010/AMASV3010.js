@@ -61,7 +61,7 @@ $(function () {
                 code,
                 code + '.html',
               ].join('/');
-            })('AMASV3010'), // ★
+            })('AMASV3020'), // ★
             args: { opeTypeId: opeTypeId, recs: recs },
             saved: { request: this.request, recs: recs },
             newWindow: opeTypeId == am_proto_defs.AM_PROTO_COMMON_RTYPE_REL,
@@ -88,10 +88,10 @@ $(function () {
               list: _(10).times((index) => {
                 index += 1;
                 return {
-                  keijoudate: '07/05',
+                  keijoudate: 20230705,
                   code: ('0000000000' + index).slice(-5),
                   storename: '名称' + index,
-                  denpyodate: '07/05',
+                  denpyodate: 20230705,
                   denpyoNum: '0001',
                   count: '100',
                   value: '3000',
