@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0" />
-  <title>支払明細書出力</title>
+  <title>補正賃対比分析表出力</title>
   <link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet" />
   <link href="../../../bootstrap/css/prettify.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="../../../../css/jquery-ui-1.10.3.custom.css" />
@@ -45,8 +45,8 @@
   <script src="../../../js/clcom.js"></script>
   <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
   <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-  <link rel="stylesheet" href="AMRSV3010.css" type="text/css" />
-  <script src="AMRSV3010.js"></script>
+  <link rel="stylesheet" href="AMRSV3030.css" type="text/css" />
+  <script src="AMRSV3030.js"></script>
 </head>
 
 <body class="cl_body_hidden">
@@ -56,9 +56,6 @@
         <div id="mainColumninBox" class="noLeftColumn">
           <div id="content">
             <div class="fieldgroup">
-              <!-- <div class="fieldTitle">
-                <h1>支払明細書出力</h1>
-              </div> -->
               <div class="fieldgroupInBox">
                 <div class="fieldUnit flleft">
                   <p class="fieldName">業態</p>
@@ -76,31 +73,7 @@
                   </div>
                 </div>
                 <div class="clear"></div>
-                <div class="fieldUnit mrgb10 flleft mrgr20 required">
-                  <p class="fieldName">補正業者</p>
-                  <div class="fieldBox required">
-                    <input type="text" placeholder="" class="form-control wt280 flleft cl_valid cl_store cl_required"
-                      id="補正業者" />
-                  </div>
-                  <div class="clear"></div>
-                </div>
-                <div class="clear"></div>
-                <div class="fieldUnit flleft">
-                  <p class="fieldName">対象</p>
-                  <div class="fieldBox">
-                    <ul>
-                      <li>
-                        <label class="radio"><input type="radio" name="ラジオボタン" value="1" data-toggle="radio"
-                            checked />ブルーリバース</label>
-                      </li>
-                      <li>
-                        <label class="radio"><input type="radio" name="ラジオボタン" value="2"
-                            data-toggle="radio" />本社営業部</label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="clear"></div>
+
                 <div class="fieldUnit">
                   <div class="fieldBox mrgt20 noName btnCenter">
                     <button id="ca_srch" class="btn btn-info wt280">帳票出力</button>
