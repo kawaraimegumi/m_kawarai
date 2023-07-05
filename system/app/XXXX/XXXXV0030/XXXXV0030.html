@@ -44,7 +44,7 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
-    <script src="XXXXV0020.js"></script>
+    <script src="XXXXV0030.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
@@ -57,45 +57,11 @@
                   <!-- ★ -->
                   <div class="fieldUnit mrgt10">
                     <div class="fieldBox noName btnCenter">
-                      <button id="search" class="btn btn-info wt280">検索</button>
+                      <button id="out" class="btn btn-info wt280">出力</button>
                     </div>
                   </div>
                   <div class="clear"></div>
                 </div>
-                <button id="searchAgain" class="btn dispn">検索条件を再指定</button>
-              </div>
-              <div id="result" class="fieldgroup dispn">
-                <div class="pagination-wrapper"></div>
-                <div class="table" style="overflow: scroll">
-                  <table id="list" class="hilightRow">
-                    <thead>
-                      <tr>
-                        <!-- ★ -->
-                        <th class="cl_checkbox_selectall wt40"></th>
-                        <th>コード</th>
-                        <th>名称</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                    <script type="text/template">
-                      <tr class="csptr">
-                        <!-- ★ -->
-                        <td class="cl_checkbox_selectrec"></td>
-                        <td><%= code %></td>
-                        <td><%= name %></td>
-                      </tr>
-                    </script>
-                  </table>
-                </div>
-                <div class="pagination-wrapper"></div>
-                <div class="fieldUnit">
-                  <div class="fieldBox noName cl_opebtngroup">
-                    <button id="cl_edit" class="btn btn-primary flleft wt280">編集</button>
-                    <button id="cl_copy" class="btn btn-primary flleft wt280 mrgl10">複製</button>
-                    <button id="cl_delete" class="btn btn-default delete flright wt140">削除</button>
-                  </div>
-                </div>
-                <div class="clear"></div>
               </div>
             </div>
           </div>
