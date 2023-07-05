@@ -44,10 +44,13 @@
     <script src="../../../js/clcom.js"></script>
     <link rel="stylesheet" href="../../../css/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../css/tsort/style.css" type="text/css" />
+    <script src="../../AMPA/AMPAV0010/AMPAV0010.js"></script>
+    <script src="../../AMPA/AMPAV0020/AMPAV0020.js"></script>
     <script src="XXXXV0010.js"></script>
   </head>
   <body class="cl_body_hidden">
     <div id="ca_main">
+      <div id="AMPAV0010container"></div>
       <div id="container">
         <div id="mainColumn">
           <div id="mainColumninBox" class="noLeftColumn">
@@ -154,6 +157,26 @@
                     <p class="fieldName">プルダウン(複数)(必須)</p>
                     <div class="fieldBox">
                       <select id="プルダウン複数必須" class="cl_valid wt280 cl_required" multiple></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <!-- よく分かってないので、まだ使わないで下さい。 -->
+              <div class="fieldgroup">
+                <div class="fieldgroupInBox">
+                  <div class="fieldUnit flleft">
+                    <p class="fieldName">業態</p>
+                    <div class="fieldBox">
+                      <select id="業態" class="cl_valid wt280"></select>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="fieldUnit">
+                    <p class="fieldName">店舗</p>
+                    <div class="fieldBox">
+                      <input type="text" id="店舗" class="form-control cl_valid wt280 flleft" />
+                      <button id="店舗参照" class="btn btn-default">参照...</button>
                     </div>
                   </div>
                   <div class="clear"></div>

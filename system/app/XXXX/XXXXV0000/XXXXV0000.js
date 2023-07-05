@@ -5,7 +5,7 @@ $(function () {
   clutil.enterFocusMode($('body')); // Enterキーによるフォーカスをする
 
   const MainView = Backbone.View.extend({
-    el: $('#ca_main'),
+    el: $('#container'),
 
     initialize: function () {
       this.baseView = new clutil.View.MDBaseView({
