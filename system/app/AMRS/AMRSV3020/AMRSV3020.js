@@ -52,8 +52,6 @@ $(function () {
         ],
       });
 
-      //clutil.getVendorTypeID(this.$('#補正業者'));
-
     },
   });
 
