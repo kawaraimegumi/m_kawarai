@@ -52,7 +52,7 @@ $(function () {
         ],
       });
 
-      clutil.getVendorTypeID(this.$('#補正業者'));
+      //clutil.getVendorTypeID(this.$('#補正業者'));
 
     },
   });
